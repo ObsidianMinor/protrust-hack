@@ -1,0 +1,6 @@
+[package]
+name = "protrust"
+version = "0.1.0"
+authors = ["ObsidianMinor <obsidianminor@gmail.com>"]
+
+[dependencies]
