@@ -110,6 +110,10 @@ pub mod sizes {
         }
     }
 
+    pub fn group(value: &::LiteMessage) -> Option<i32> {
+        value.calculate_size()
+    }
+
     pub fn fixed32(_value: u32) -> i32 {
         4
     }
