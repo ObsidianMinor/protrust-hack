@@ -1,4 +1,7 @@
+use std::mem;
+use std::cmp;
 use std::num::NonZeroU32;
+use std::io::{Read};
 
 use ::LiteMessage;
 
@@ -26,11 +29,11 @@ impl WireType {
         }
     }
 
-    pub fn get_num(value: u32) -> u32 {
+    pub const fn get_num(value: u32) -> u32 {
         value >> 3
     }
 
-    pub fn make_tag(num: u32, wt: WireType) -> u32 {
+    pub const fn make_tag(num: u32, wt: WireType) -> u32 {
         (num << 3) as u32 | wt as u32
     }
 }
@@ -185,12 +188,31 @@ pub mod sizes {
 }
 
 /// The error in a [InputResult](#InputResult`1)
-pub struct InputError;
+#[derive(Debug)]
+pub enum InputError {
+    MalformedVarint,
+    NegativeSize,
+    InvalidTag,
+    IoError(std::io::Error),
+    InvalidString(std::string::FromUtf8Error)
+}
+
+impl From<std::io::Error> for InputError {
+    fn from(value: std::io::Error) -> InputError {
+        InputError::IoError(value)
+    }
+}
+
+impl From<std::string::FromUtf8Error> for InputError {
+    fn from(value: std::string::FromUtf8Error) -> InputError {
+        InputError::InvalidString(value)
+    }
+}
 
 /// The result of a read from a [CodedInput](#CodedInput)
 pub type InputResult<T> = Result<T, InputError>;
 
-/// A protocol buffer input stream
+/// A protocol buffer input stream.
 pub trait CodedInput {
     /// Reads a double from the coded input
     fn read_double(&mut self) -> InputResult<f64>;
@@ -229,6 +251,207 @@ pub trait CodedInput {
 
     /// Reads a tag from the coded input
     fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>>;
+}
+
+pub struct CodedInputReader<R> {
+    inner: R,
+    limit: Option<i32>
+}
+
+impl<R> CodedInputReader<R> { 
+    pub fn new(inner: R) -> CodedInputReader<R> {
+        CodedInputReader { inner, limit: None }
+    }
+
+    pub fn into_inner(self) -> R {
+        self.inner
+    }
+}
+
+impl<R: Read> CodedInputReader<R> {
+    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+        if let Some(limit) = self.limit {
+            if limit == 0 {
+                return Ok(0);
+            }
+
+            let max = cmp::min(buf.len() as i32, limit) as usize;
+            let n = self.inner.read(&mut buf[..max])?;
+            self.limit = Some(limit - n as i32);
+            Ok(n)
+        } else {
+            self.inner.read(buf)
+        }
+    }
+
+    fn read_exact(&mut self, buf: &mut [u8]) -> std::io::Result<()> {
+        if let Some(limit) = self.limit {
+            if buf.len() > limit as usize {
+                Err(std::io::Error::new(std::io::ErrorKind::UnexpectedEof, "the input ended in the middle of a field"))
+            } else {
+                self.limit = Some(limit - buf.len() as i32);
+                self.inner.read_exact(buf)
+            }
+        } else {
+            self.inner.read_exact(buf)
+        }
+    }
+}
+
+impl<R: Read> CodedInput for CodedInputReader<R> {
+    fn read_bool(&mut self) -> InputResult<bool> {
+        Ok(self.read_uint32()? != 0)
+    }
+    fn read_message(&mut self, message: &mut LiteMessage) -> InputResult<()> {
+        let len = self.read_int32()?;
+        match self.limit {
+            Some(existing) => {
+                self.limit = Some(len);
+                message.merge_from(self)?;
+                self.limit = Some(existing - len);
+            },
+            None => {
+                self.limit = Some(len);
+                message.merge_from(self)?;
+                self.limit = None;
+            }
+        }
+        Ok(())
+    }
+    fn read_group(&mut self, message: &mut LiteMessage) -> InputResult<()> { 
+        // jk we just pass-through to merge_from, add verification in your own impl
+        message.merge_from(self)
+    }
+    fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
+        let len = self.read_uint32()? as usize;
+        let mut buf = Vec::with_capacity(len);
+        unsafe { 
+            buf.set_len(len);
+        }
+        self.read_exact(&mut buf)?;
+        Ok(buf)
+    }
+    fn read_string(&mut self) -> InputResult<String> {
+        let bytes = self.read_bytes()?;
+        Ok(String::from_utf8(bytes)?)
+    }
+    fn read_fixed32(&mut self) -> InputResult<u32> {
+        let mut buf = [0u8; 4];
+        self.read_exact(&mut buf)?;
+        unsafe {
+            Ok(u32::from_le(mem::transmute(buf)))
+        }
+    }
+    fn read_sfixed32(&mut self) -> InputResult<i32> {
+        let mut buf = [0u8; 4];
+        self.read_exact(&mut buf)?;
+        unsafe {
+            Ok(i32::from_le(mem::transmute(buf)))
+        }
+    }
+    fn read_float(&mut self) -> InputResult<f32> {
+        Ok(f32::from_bits(self.read_fixed32()?))
+    }
+    fn read_fixed64(&mut self) -> InputResult<u64> {
+        let mut buf = [0u8; 8];
+        self.read_exact(&mut buf)?;
+        unsafe {
+            Ok(u64::from_le(mem::transmute(buf)))
+        }
+    }
+    fn read_sfixed64(&mut self) -> InputResult<i64> {
+        let mut buf = [0u8; 8];
+        self.read_exact(&mut buf)?;
+        unsafe {
+            Ok(i64::from_le(mem::transmute(buf)))
+        }
+    }
+    fn read_double(&mut self) -> InputResult<f64> {
+        Ok(f64::from_bits(self.read_fixed64()?))
+    }
+    fn read_sint32(&mut self) -> InputResult<i32> {
+        let val = self.read_uint32()?;
+        Ok(((val >> 1) as i32) ^ -((val & 1) as i32))
+    }
+    fn read_sint64(&mut self) -> InputResult<i64> {
+        let val = self.read_uint64()?;
+        Ok(((val >> 1) as i64) ^ -((val & 1) as i64))
+    }
+    fn read_int32(&mut self) -> InputResult<i32> {
+        Ok(self.read_uint32()? as i32)
+    }
+    fn read_int64(&mut self) -> InputResult<i64> {
+        Ok(self.read_uint64()? as i64)
+    }
+    fn read_uint32(&mut self) -> InputResult<u32> {
+        let mut shift = 0i32;
+        let mut result = 0i32;
+        let mut buf = [0u8; 1];
+        while shift < 32 {
+            self.read_exact(&mut buf)?;
+            result |= ((buf[0] & 0x7F) as i32) << shift;
+            if (buf[0] & 0x80) == 0 {
+                return Ok(result as u32);
+            }
+            shift += 7;
+        }
+        while shift < 64 {
+            self.read_exact(&mut buf)?;
+            if (buf[0] & 0x80) == 0 {
+                return Ok(result as u32);
+            }
+            shift += 7;
+        }
+        Err(InputError::MalformedVarint)
+    }
+    fn read_uint64(&mut self) -> InputResult<u64> {
+        let mut shift = 0i32;
+        let mut result = 0u64;
+        let mut buf = [0u8; 1];
+        while shift < 64 {
+            self.read_exact(&mut buf)?;
+            result |= ((buf[0] & 0x7F) << shift) as u64;
+            if (buf[0] & 0x80) == 0 {
+                return Ok(result);
+            }
+            shift += 7;
+        }
+        Err(InputError::MalformedVarint)
+    }
+    fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>> {
+        let mut shift = 0i32;
+        let mut result = 0i32;
+        let mut buf = [0u8; 1];
+        let mut in_tag = false; // the first byte we read we check for eof, after that we're in a tag and "UnexpectedEof" happens on eof
+        while shift < 32 {
+            if !in_tag {
+                let result = self.read(&mut buf)?;
+                if result == 0 {
+                    return Ok(None);
+                }
+                in_tag = true;
+            } else {
+                self.read_exact(&mut buf)?;
+            }
+            result |= ((buf[0] & 0x7F) as i32) << shift;
+            if (buf[0] & 0x80) == 0 {
+                if result == 0 {
+                    return Err(InputError::InvalidTag);
+                } else {
+                    return Ok(NonZeroU32::new(result as u32));
+                }
+            }
+            shift += 7;
+        }
+        while shift < 64 {
+            self.read_exact(&mut buf)?;
+            if (buf[0] & 0x80) == 0 {
+                return Ok(NonZeroU32::new(result as u32));
+            }
+            shift += 7;
+        }
+        Err(InputError::MalformedVarint)
+    }
 }
 
 /// The error of an [OutputResult](#OutputResult)
