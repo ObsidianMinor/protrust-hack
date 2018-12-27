@@ -138,13 +138,11 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
                 },
                 FieldLabel::Repeated => {
                     if let FieldType::Message(m) = field.field_type() {
-                        if let Some(options) = m.options() {
-                            if *options.ref_map_entry_or_default() {
-                                return format!("{}::collections::MapField<{}, {}>", 
-                                        crate_name, 
-                                        get_rust_type(TypeResolution::Indirection, &m.fields()[0], crate_name),
-                                        get_rust_type(TypeResolution::Indirection, &m.fields()[1], crate_name))
-                            }
+                        if m.map_entry() {
+                            return format!("{}::collections::MapField<{}, {}>", 
+                                    crate_name, 
+                                    get_rust_type(TypeResolution::Indirection, &m.fields()[0], crate_name),
+                                    get_rust_type(TypeResolution::Indirection, &m.fields()[1], crate_name))
                         }
                     }
 

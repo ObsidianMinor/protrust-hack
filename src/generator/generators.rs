@@ -162,8 +162,8 @@ pub struct {type_name} {{", type_name);
         self.generate_coded_message_impl()?;
         self.generate_lite_message_impl()?;
 
-        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| o.ref_optimize_for_or_default()) {
-            if *o != OptimizeMode::LiteRuntime {
+        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| o.optimize_for.unwrap_or(EnumValue::Defined(OptimizeMode::Speed))) {
+            if o != OptimizeMode::LiteRuntime {
                 self.generate_message_impl()?;
             }
         }
@@ -469,7 +469,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
                 match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.printer; self.vars => "\nif let self::{oneof}::{name}(existing) = &self.{field_name} {{", oneof, name, field_name);
+                        gen!(self.printer; self.vars => "\nif let self::{oneof}::{name}(existing) = &mut self.{field_name} {{", oneof, name, field_name);
                         self.printer.indent();
 
                         gen!(self.printer; self.vars => "\nexisting.merge({field_name});", field_name);
@@ -805,10 +805,8 @@ fn default_field_value(field: &FieldDescriptor, crate_name: &str) -> String {
         },
         FieldLabel::Repeated => {
             if let FieldType::Message(m) = field.field_type() {
-                if let Some(options) = m.options() {
-                    if *options.ref_map_entry_or_default() {
-                        return format!("{}::collections::MapField::new()", crate_name)
-                    }
+                if m.map_entry() {
+                    return format!("{}::collections::MapField::new()", crate_name)
                 }
             }
 

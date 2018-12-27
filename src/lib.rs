@@ -1,99 +1,172 @@
+//! protrust: Another Protocol Buffers implementation in Rust focused on being a complete implementation with support
+//! for proto3 json mapping, reflection, and being easy to use.
+
 #![feature(const_fn)]
 #![feature(const_string_new)]
 #![feature(const_vec_new)]
 #![feature(try_from)]
 
-use std::num::NonZeroU32;
+use std::collections::HashMap;
 use std::convert::TryFrom;
-use std::hash::Hash;
+use std::num::NonZeroU32;
 
+pub(crate) mod generated;
+
+/// The protrust prelude
+/// 
+/// Alleviates imports of many common protobuf traits and io structs
+/// by adding a glob import to the top of protobuf heavy modules
+pub mod prelude {
+    pub use crate::CodedMessage;
+    pub use crate::LiteMessage;
+    #[cfg(feature = "reflection")]
+    pub use crate::Message;
+    pub use crate::EnumValue;
+    pub use crate::io::CodedInput;
+    pub use crate::io::CodedOutput;
+}
 /// Provides modules for using vectors and hashmaps as repeated fields and map fields
 pub mod collections;
 /// Provides input output types for reading and writing protobuf streams
 pub mod io;
 /// Provides runtime support for well known types
+#[cfg(all(feature = "reflection", feature = "json"))]
 pub mod wkt;
-pub mod descriptor;
+/// Provides descriptor types from descriptor.proto
+#[cfg(feature = "reflection")]
+pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
+/// Provides plugin types from plugin.proto
+#[cfg(feature = "reflection")]
+pub use crate::generated::google_protobuf_compiler_plugin_proto as plugin;
 /// Provides reflection acccess for messages
+#[cfg(feature = "reflection")]
 pub mod reflect;
-/// Provides types for LITE_RUNTIME optimized proto files
-pub mod litegen {
-    pub use LiteMessage;
-    pub use GeneratedLiteMessage;
-    pub use reflect::LiteDescriptor;
-    pub use io::CodedInput;
-    pub use io::InputResult;
-    pub use io::CodedOutput;
-    pub use io::OutputResult;
-    pub use io::sizes;
-    pub use collections;
-    pub use Codec;
-    pub use EnumValue;
-    pub use VariantUndefinedError;
-    pub use std::convert::TryFrom;
-    pub use std::convert::From;
-    pub use UnknownFieldSet;
-}
-/// Provides types for CODE_SIZE and SPEED optimized proto files
-pub mod codegen {
-    pub use ::litegen::*;
-    pub use Message;
-    pub use GeneratedMessage;
-    pub use reflect::Descriptor;
-}
+/// Provides proto3 JSON mapping support
+#[cfg(feature = "json")]
+pub mod json;
 
-/// A message with all the required information to merge, write, size, and get basic reflection information
-pub trait LiteMessage {
-    fn is_initialized(&self) -> bool { true }
-    /// Gets a lite descriptor of this message
-    fn descriptor(&self) -> &reflect::LiteDescriptor { unimplemented!() }
+/// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
+pub trait CodedMessage {
     /// Merges fields from the coded input into this message
     fn merge_from(&mut self, input: &mut io::CodedInput) -> io::InputResult<()>;
     /// Calculates the size of the message and returns it as an 32-bit integer or None if the message is larger than `i32::MAX`
     fn calculate_size(&self) -> Option<i32>;
     /// Writes the fields of this message to the coded output
     fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult;
+    /// Gets whether all the required fields and messages are initialized
+    fn is_initialized(&self) -> bool { true }
 }
 
-/// A generated lite message
-pub trait GeneratedLiteMessage : LiteMessage + Clone + PartialEq {
+/// A LITE Protocol Buffers message
+pub trait LiteMessage : CodedMessage + Clone + PartialEq {
     /// Creates a new instance of the message
     fn new() -> Self;
-    /// Gets the lite descriptor for this message
-    fn descriptor() -> &'static reflect::LiteDescriptor { unimplemented!() }
-    /// Merges two messages of the same type, copying fields from the other message
+    /// Merges another instance of the message
     fn merge(&mut self, other: &Self);
 
-    /// Creates a new instance of the message and then merges from the specified coded input
-    fn merge_new(input: &mut io::CodedInput) -> io::InputResult<Self> {
-        let mut val = Self::new();
-        val.merge_from(input)?;
-        Ok(val)
+    /// Reads a new instance of Self from the specified Read using a CodedInputReader
+    fn read_new(read: &mut std::io::Read) -> io::InputResult<Self> {
+        let mut reader = io::CodedInput::new(read);
+        Self::read_input(&mut reader)
+    }
+
+    /// Reads a new instance of Self from the specified CodedInput
+    fn read_input(input: &mut io::CodedInput) -> io::InputResult<Self> {
+        let mut instance = Self::new();
+        instance.merge_from(input)?;
+        Ok(instance)
+    }
+
+    /// Merges an instance of self from a Read instance
+    fn merge_from_read(&mut self, read: &mut std::io::Read) -> io::InputResult<()> {
+        let mut reader = io::CodedInput::new(read);
+        self.merge_from(&mut reader)
+    }
+
+    /// Writes the message to a new Vec<u8> or Err(io::OutputError::ValueTooLarge) if the message is too large
+    fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
+        if let Some(size) = self.calculate_size() {
+            let mut out = Vec::with_capacity(size as usize);
+            self.write(&mut out)?;
+            Ok(out)
+        } else {
+            Err(io::OutputError::ValueTooLarge)
+        }
+    }
+
+    /// Writes the message to a Write instance
+    fn write(&self, write: &mut std::io::Write) -> io::OutputResult {
+        let mut writer = io::CodedOutput::new(write);
+        self.write_to(&mut writer)
     }
 }
 
-/// A message allowing access to its descriptor
+/// A Protocol Buffers message
+#[cfg(feature = "reflection")]
 pub trait Message : LiteMessage {
-    /// Gets the descriptor for this message
-    fn descriptor(&self) -> &reflect::Descriptor { unimplemented!() }
+    /// Gets a static reference to the descriptor describing this message type
+    fn descriptor() -> &'static reflect::MessageDescriptor { unimplemented!() }
 }
 
-/// A generated message allowing full static type access to its descriptor
-pub trait GeneratedMessage : Message + GeneratedLiteMessage {
-    /// Gets the descriptor for this message
-    fn descriptor() -> &'static reflect::Descriptor { unimplemented!() }
+impl<T: CodedMessage> CodedMessage for Box<T> {
+    fn merge_from(&mut self, input: &mut io::CodedInput) -> io::InputResult<()> {
+        self.as_mut().merge_from(input)
+    }
+    fn calculate_size(&self) -> Option<i32> {
+        self.as_ref().calculate_size()
+    }
+    fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult {
+        self.as_ref().write_to(output)
+    }
+    fn is_initialized(&self) -> bool {
+        self.as_ref().is_initialized()
+    }
 }
 
-#[derive(Clone, PartialEq, Hash)]
-pub enum EnumValue<E: Clone + PartialEq + Hash + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> {
-    Defined(E),
-    Undefined(i32)
+impl<T: LiteMessage> LiteMessage for Box<T> {
+    fn new() -> Box<T> {
+        Box::new(T::new())
+    }
+    fn merge(&mut self, other: &Self) {
+        self.as_mut().merge(other)
+    }
 }
 
 /// The error result for when an enum value is undefined
 pub struct VariantUndefinedError;
 
-impl<E: Clone + PartialEq + Hash + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> From<i32> for EnumValue<E> {
+/// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
+/// 
+/// In Rust, enums with values without discriminants is considered undefined behaviour.
+/// In Protocol Buffers, there is no guarantee that an enum value will be valid.
+/// Thus, this union is introduced to allow for both undefined enum values and defined enum values.
+#[derive(Copy, Clone)]
+pub enum EnumValue<E> {
+    /// A defined enum value
+    Defined(E),
+    /// An undefined enum value
+    Undefined(i32)
+}
+
+impl<E> EnumValue<E> {
+    /// Returns a Defined value, panics if it's Undefined
+    pub fn unwrap(self) -> E {
+        match self {
+            EnumValue::Defined(e) => e,
+            EnumValue::Undefined(u) => panic!("Undefined enum value {}", u)
+        }
+    }
+}
+
+impl<E: Into<i32> + Clone> PartialEq for EnumValue<E> {
+    fn eq(&self, other: &Self) -> bool {
+        Into::<i32>::into(self.clone()) == Into::<i32>::into(other.clone())
+    }
+}
+
+impl<E: Into<i32> + Clone> Eq for EnumValue<E> { }
+
+impl<E: TryFrom<i32, Error = VariantUndefinedError>> From<i32> for EnumValue<E> {
     fn from(value: i32) -> EnumValue<E> {
         if let Ok(e) = E::try_from(value) {
             EnumValue::Defined(e)
@@ -103,16 +176,16 @@ impl<E: Clone + PartialEq + Hash + Into<i32> + TryFrom<i32, Error = VariantUndef
     }
 }
 
-impl<E: Clone + PartialEq + Hash + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> From<EnumValue<E>> for i32 {
+impl<E: Into<i32> + Clone> From<EnumValue<E>> for i32 {
     fn from(value: EnumValue<E>) -> i32 {
         match value {
-            EnumValue::Defined(ref e) => Into::<i32>::into(e.clone()),
+            EnumValue::Defined(ref e) => e.clone().into(),
             EnumValue::Undefined(v) => v
         }
     }
 }
 
-pub struct Codec<T: Clone + PartialEq> {
+pub struct Codec<T> {
     default: Option<T>,
     start: u32,
     end: Option<NonZeroU32>,
@@ -123,7 +196,7 @@ pub struct Codec<T: Clone + PartialEq> {
     packable: bool
 }
 
-enum ValueSize<T: Clone + PartialEq> {
+enum ValueSize<T> {
     Fixed(i32),
     Func(fn(&T) -> Option<i32>)
 }
@@ -134,8 +207,13 @@ const fn is_packed(tag: u32) -> bool {
 
 impl<T: Clone + PartialEq> Codec<T> {
     /// Gets a Some bool indicating if this type is packed or not, or None if the tag is invalid
-    pub fn packed(&self, tag: u32) -> Option<bool> {
+    pub fn is_packed_tag(&self, tag: u32) -> Option<bool> {
         Some(self.packable && io::WireType::get_type(tag)? == io::WireType::LengthDelimited)
+    }
+
+    /// Gets whether this field is packed or not
+    pub fn is_packed(&self) -> bool {
+        self.packed
     }
 
     /// Gets the tag of the codec or the start tag for groups
@@ -146,10 +224,9 @@ impl<T: Clone + PartialEq> Codec<T> {
 
     /// Gets whether the value is default and should be written to an output
     pub fn is_default(&self, value: &T) -> bool {
-        if let Some(ref default) = self.default {
-            default == value
-        } else {
-            false
+        match &self.default {
+            None => false,
+            Some(default) => default == value
         }
     }
 
@@ -161,10 +238,12 @@ impl<T: Clone + PartialEq> Codec<T> {
         }
     }
 
+    /// Writes the value to the provided output
     pub fn write_to(&self, output: &mut io::CodedOutput, value: &T) -> io::OutputResult {
         (self.write)(output, value)
     }
 
+    /// Reads a value from the provided input
     pub fn read_from(&self, input: &mut io::CodedInput) -> io::InputResult<T> {
         let mut value = None;
         self.merge_from(input, &mut value)?;
@@ -175,182 +254,199 @@ impl<T: Clone + PartialEq> Codec<T> {
         }
     }
 
+    /// Merges a value from the provided input into the the given Option instance
     pub fn merge_from(&self, input: &mut io::CodedInput, value: &mut Option<T>) -> io::InputResult<()> {
         (self.merge)(input, value)
     }
+}
 
-    pub const fn double(def: f64, tag: u32) -> Codec<f64> {
+impl Codec<f32> {
+    pub const fn float(tag: u32) -> Codec<f32> {
         Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Func(|i| Some(io::sizes::double(*i))),
-            merge: |i,v| { *v = Some(i.read_double()?); Ok(()) },
-            write: |o,v| o.write_double(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-
-    pub const fn float(def: f32, tag: u32) -> Codec<f32> {
-        Codec {
-            default: Some(def),
+            default: Some(0.0),
             start: tag,
             end: None,
             size: ValueSize::Func(|i| Some(io::sizes::float(*i))),
             merge: |i,v| { *v = Some(i.read_float()?); Ok(()) },
-            write: |o,v| o.write_float(v),
+            write: |o,v| o.write_float(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
+}
 
-    pub const fn int32(def: i32, tag: u32) -> Codec<i32> {
+impl Codec<f64> {
+    pub const fn double(tag: u32) -> Codec<f64> {
         Codec {
-            default: Some(def),
+            default: Some(0.0),
+            start: tag,
+            end: None,
+            size: ValueSize::Func(|i| Some(io::sizes::double(*i))),
+            merge: |i,v| { *v = Some(i.read_double()?); Ok(()) },
+            write: |o,v| o.write_double(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+}
+
+impl Codec<i32> {
+    pub const fn int32(tag: u32) -> Codec<i32> {
+        Codec {
+            default: Some(0),
             start: tag,
             end: None,
             size: ValueSize::Func(|i| Some(io::sizes::int32(*i))),
             merge: |i,v| { *v = Some(i.read_int32()?); Ok(()) },
-            write: |o,v| o.write_int32(v),
+            write: |o,v| o.write_int32(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
 
-    pub const fn int64(def: i64, tag: u32) -> Codec<i64> {
+    pub const fn sint32(tag: u32) -> Codec<i32> {
         Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Func(|i| Some(io::sizes::int64(*i))),
-            merge: |i,v| { *v = Some(i.read_int64()?); Ok(()) },
-            write: |o,v| o.write_int64(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-
-    pub const fn uint32(def: u32, tag: u32) -> Codec<u32> {
-        Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Func(|i| Some(io::sizes::uint32(*i))),
-            merge: |i,v| { *v = Some(i.read_uint32()?); Ok(()) },
-            write: |o,v| o.write_uint32(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-
-    pub const fn uint64(def: u64, tag: u32) -> Codec<u64> {
-        Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Func(|i| Some(io::sizes::uint64(*i))),
-            merge: |i,v| { *v = Some(i.read_uint64()?); Ok(()) },
-            write: |o,v| o.write_uint64(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-
-    pub const fn sint32(def: i32, tag: u32) -> Codec<i32> {
-        Codec {
-            default: Some(def),
+            default: Some(0),
             start: tag,
             end: None,
             size: ValueSize::Func(|i| Some(io::sizes::sint32(*i))),
             merge: |i,v| { *v = Some(i.read_sint32()?); Ok(()) },
-            write: |o,v| o.write_sint32(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-    
-    pub const fn sint64(def: i64, tag: u32) -> Codec<i64> {
-        Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Func(|i| Some(io::sizes::sint64(*i))),
-            merge: |i,v| { *v = Some(i.read_sint64()?); Ok(()) },
-            write: |o,v| o.write_sint64(v),
+            write: |o,v| o.write_sint32(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
 
-    pub const fn fixed32(def: u32, tag: u32) -> Codec<u32> {
+    pub const fn sfixed32(tag: u32) -> Codec<i32> {
         Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Fixed(4),
-            merge: |i,v| { *v = Some(i.read_fixed32()?); Ok(()) },
-            write: |o,v| o.write_fixed32(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-    
-    pub const fn fixed64(def: u64, tag: u32) -> Codec<u64> {
-        Codec {
-            default: Some(def),
-            start: tag,
-            end: None,
-            size: ValueSize::Fixed(8),
-            merge: |i,v| { *v = Some(i.read_fixed64()?); Ok(()) },
-            write: |o,v| o.write_fixed64(v),
-            packed: is_packed(tag),
-            packable: true
-        }
-    }
-
-    pub const fn sfixed32(def: i32, tag: u32) -> Codec<i32> {
-        Codec {
-            default: Some(def),
+            default: Some(0),
             start: tag,
             end: None,
             size: ValueSize::Fixed(4),
             merge: |i,v| { *v = Some(i.read_sfixed32()?); Ok(()) },
-            write: |o,v| o.write_sfixed32(v),
+            write: |o,v| o.write_sfixed32(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+}
+
+impl Codec<u32> {
+    pub const fn uint32(tag: u32) -> Codec<u32> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Func(|i| Some(io::sizes::uint32(*i))),
+            merge: |i,v| { *v = Some(i.read_uint32()?); Ok(()) },
+            write: |o,v| o.write_uint32(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+
+    pub const fn fixed32(tag: u32) -> Codec<u32> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Fixed(4),
+            merge: |i,v| { *v = Some(i.read_fixed32()?); Ok(()) },
+            write: |o,v| o.write_fixed32(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+}
+
+impl Codec<i64> {
+    pub const fn int64(tag: u32) -> Codec<i64> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Func(|i| Some(io::sizes::int64(*i))),
+            merge: |i,v| { *v = Some(i.read_int64()?); Ok(()) },
+            write: |o,v| o.write_int64(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+
+    pub const fn sint64(tag: u32) -> Codec<i64> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Func(|i| Some(io::sizes::sint64(*i))),
+            merge: |i,v| { *v = Some(i.read_sint64()?); Ok(()) },
+            write: |o,v| o.write_sint64(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+
+    pub const fn sfixed64(tag: u32) -> Codec<i64> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Fixed(8),
+            merge: |i,v| { *v = Some(i.read_sfixed64()?); Ok(()) },
+            write: |o,v| o.write_sfixed64(*v),
+            packed: is_packed(tag),
+            packable: true
+        }
+    }
+}
+
+impl Codec<u64> {
+    pub const fn uint64(tag: u32) -> Codec<u64> {
+        Codec {
+            default: Some(0),
+            start: tag,
+            end: None,
+            size: ValueSize::Func(|i| Some(io::sizes::uint64(*i))),
+            merge: |i,v| { *v = Some(i.read_uint64()?); Ok(()) },
+            write: |o,v| o.write_uint64(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
     
-    pub const fn sfixed64(def: i64, tag: u32) -> Codec<i64> {
+    pub const fn fixed64(tag: u32) -> Codec<u64> {
         Codec {
-            default: Some(def),
+            default: Some(0),
             start: tag,
             end: None,
             size: ValueSize::Fixed(8),
-            merge: |i,v| { *v = Some(i.read_sfixed64()?); Ok(()) },
-            write: |o,v| o.write_sfixed64(v),
+            merge: |i,v| { *v = Some(i.read_fixed64()?); Ok(()) },
+            write: |o,v| o.write_fixed64(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
+}
 
-    pub const fn bool(def: bool, tag: u32) -> Codec<bool> {
+impl Codec<bool> {
+    pub const fn bool(tag: u32) -> Codec<bool> {
         Codec {
-            default: Some(def),
+            default: Some(false),
             start: tag,
             end: None,
             size: ValueSize::Fixed(1),
             merge: |i,v| { *v = Some(i.read_bool()?); Ok(()) },
-            write: |o,v| o.write_bool(v),
+            write: |o,v| o.write_bool(*v),
             packed: is_packed(tag),
             packable: true
         }
     }
+}
 
-    pub const fn string(def: String, tag: u32) -> Codec<String> {
+impl Codec<String> {
+    pub const fn string(tag: u32) -> Codec<String> {
         Codec {
-            default: Some(def),
+            default: Some(String::new()),
             start: tag,
             end: None,
             size: ValueSize::Func(|s| io::sizes::string(s)),
@@ -360,10 +456,12 @@ impl<T: Clone + PartialEq> Codec<T> {
             packable: false
         }
     }
+}
 
-    pub const fn bytes(def: Vec<u8>, tag: u32) -> Codec<Vec<u8>> {
+impl Codec<Vec<u8>> {
+    pub const fn bytes(tag: u32) -> Codec<Vec<u8>> {
         Codec {
-            default: Some(def),
+            default: Some(Vec::new()),
             start: tag,
             end: None,
             size: ValueSize::Func(|b| io::sizes::bytes(b)),
@@ -373,8 +471,10 @@ impl<T: Clone + PartialEq> Codec<T> {
             packable: false
         }
     }
+}
 
-    pub const fn message<M: GeneratedLiteMessage>(tag: u32) -> Codec<M> {
+impl<M: LiteMessage> Codec<M> {
+    pub const fn message(tag: u32) -> Codec<M> {
         Codec {
             default: None,
             start: tag,
@@ -396,7 +496,7 @@ impl<T: Clone + PartialEq> Codec<T> {
         }
     }
 
-    pub const fn group<M: GeneratedLiteMessage>(start: u32, end: NonZeroU32) -> Codec<M> {
+    pub const fn group(start: u32, end: NonZeroU32) -> Codec<M> {
         Codec {
             default: None,
             start,
@@ -417,22 +517,28 @@ impl<T: Clone + PartialEq> Codec<T> {
             packable: false
         }
     }
+}
 
-    pub const fn enum_value<E: Clone + PartialEq + Hash + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>>(def: EnumValue<E>, tag: u32) -> Codec<EnumValue<E>> {
+impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> Codec<EnumValue<E>> {
+    pub const fn enum_value(tag: u32) -> Codec<EnumValue<E>> {
         Codec {
-            default: Some(def),
+            default: Some(EnumValue::Undefined(0)),
             start: tag,
             end: None,
-            size: ValueSize::Func(|e| Some(io::sizes::int32(Into::<i32>::into(e.clone())))),
+            size: ValueSize::Func(|e| Some(io::sizes::enum_value(e.clone()))),
             merge: |i,v| { *v = Some(EnumValue::from(i.read_int32()?)); Ok(()) },
-            write: |o,v| { o.write_int32(&Into::<i32>::into(v.clone())) },
+            write: |o,v| { o.write_int32(Into::<i32>::into(v.clone())) },
             packed: is_packed(tag),
             packable: true
         }
     }
 }
 
-pub enum UnknownField {
+#[derive(Clone, PartialEq)]
+pub struct UnknownFieldSet(HashMap<i32, UnknownField>);
+
+#[derive(Clone, PartialEq)]
+enum UnknownField {
     Varint(u64),
     Bit64(u64),
     LengthDelimited(Vec<u8>),
@@ -440,12 +546,66 @@ pub enum UnknownField {
     Bit32(u32)
 }
 
-#[derive(Clone, PartialEq)]
-pub struct UnknownFieldSet;
-
 impl UnknownFieldSet {
     pub fn new() -> UnknownFieldSet {
-        UnknownFieldSet { }
+        UnknownFieldSet(HashMap::new())
+    }
+
+    pub fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult {
+        for field in &self.0 {
+            match field.1 {
+                UnknownField::Varint(v) => {
+                    output.write_tag(*field.0, io::WireType::Varint)?;
+                    output.write_uint64(*v)?;
+                },
+                UnknownField::Bit64(v) => {
+                    output.write_tag(*field.0, io::WireType::Bit64)?;
+                    output.write_fixed64(*v)?;
+                },
+                UnknownField::LengthDelimited(v) => {
+                    output.write_tag(*field.0, io::WireType::LengthDelimited)?;
+                    output.write_bytes(v)?;
+                },
+                UnknownField::Group(v) => {
+                    output.write_tag(*field.0, io::WireType::StartGroup)?;
+                    v.write_to(output)?;
+                    output.write_tag(*field.0, io::WireType::EndGroup)?;
+                },
+                UnknownField::Bit32(v) => {
+                    output.write_tag(*field.0, io::WireType::Bit32)?;
+                    output.write_fixed32(*v)?;
+                }
+            }
+        }
+        Ok(())
+    }
+
+    pub fn calculate_size(&self) -> Option<i32> {
+        let mut size = 0i32;
+        for field in &self.0 {
+            match field.1 {
+                UnknownField::Varint(v) => {
+                },
+                UnknownField::Bit64(v) => {
+                },
+                UnknownField::LengthDelimited(v) => {
+                },
+                UnknownField::Group(v) => {
+                },
+                UnknownField::Bit32(v) => {
+                }
+            }
+        }
+        Some(size)
+    }
+
+    pub fn merge_from(&mut self, tag: u32, input: &mut io::CodedInput) -> io::InputResult<()> {
+        
+        Ok(())
+    }
+
+    pub fn merge(&mut self, other: &Self) {
+
     }
 }
 

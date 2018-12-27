@@ -176,14 +176,14 @@ impl crate::LiteMessage for self::Value {
             self.kind = self::Value_Kind::BoolValue(kind);
         }
         if let self::Value_Kind::StructValue(kind) = &other.kind {
-            if let self::Value_Kind::StructValue(existing) = &self.kind {
+            if let self::Value_Kind::StructValue(existing) = &mut self.kind {
                 existing.merge(kind);
             } else {
                 self.kind = self::Value_Kind::StructValue(kind.clone());
             }
         }
         if let self::Value_Kind::ListValue(kind) = &other.kind {
-            if let self::Value_Kind::ListValue(existing) = &self.kind {
+            if let self::Value_Kind::ListValue(existing) = &mut self.kind {
                 existing.merge(kind);
             } else {
                 self.kind = self::Value_Kind::ListValue(kind.clone());

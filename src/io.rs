@@ -1,12 +1,13 @@
 use std::mem;
 use std::cmp;
 use std::num::NonZeroU32;
-use std::io::{Read};
+use std::convert::TryInto;
+use std::io::{Read, Write};
 
-use ::LiteMessage;
+use crate::CodedMessage;
 
 /// The wire type of a protobuf value
-#[derive(PartialEq)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug)]
 pub enum WireType {
     Varint = 0,
     Bit64 = 1,
@@ -17,8 +18,22 @@ pub enum WireType {
 }
 
 impl WireType {
+    /// Gets the wire type of a constructed tag value or None if the value does not have a valid wire type
+    /// 
+    /// # Examples
+    /// ```
+    /// # use protrust::io::WireType;
+    /// assert_eq!(Some(WireType::Varint), WireType::get_type(8));
+    /// assert_eq!(Some(WireType::Bit64), WireType::get_type(8388609));
+    /// assert_eq!(Some(WireType::LengthDelimited), WireType::get_type(536870914));
+    /// assert_eq!(Some(WireType::StartGroup), WireType::get_type(772603539));
+    /// assert_eq!(Some(WireType::EndGroup), WireType::get_type(772603540));
+    /// assert_eq!(Some(WireType::Bit32), WireType::get_type(13));
+    /// assert_eq!(None, WireType::get_type(14));
+    /// assert_eq!(None, WireType::get_type(15));
+    /// ```
     pub fn get_type(value: u32) -> Option<WireType> {
-        match value | 0b111 {
+        match value & 0b111 {
             0 => Some(WireType::Varint),
             1 => Some(WireType::Bit64),
             2 => Some(WireType::LengthDelimited),
@@ -33,13 +48,24 @@ impl WireType {
         value >> 3
     }
 
-    pub const fn make_tag(num: u32, wt: WireType) -> u32 {
+    pub const fn make_tag(num: i32, wt: WireType) -> u32 {
         (num << 3) as u32 | wt as u32
+    }
+
+    /// Gets whether a wire type is eligable for repeated field packing
+    pub fn is_packable(self) -> bool {
+        return self == WireType::Bit32 
+            || self == WireType::Bit64 
+            || self == WireType::Varint;
     }
 }
 
 /// Provides helper functions for calculating the size of values
 pub mod sizes {
+    use crate::CodedMessage;
+
+    #[inline]
+    /// Gets the size of a given int32 value
     pub fn int32(value: i32) -> i32 {
         if value >= 0 {
             raw_varint32_size(value as u32)
@@ -48,42 +74,58 @@ pub mod sizes {
         }
     }
 
+    #[inline]
+    pub fn enum_value<E: Into<i32> + Clone>(value: crate::EnumValue<E>) -> i32 {
+        int32(value.into())
+    }
+
+    #[inline]
+    /// Gets the size of a given 
     pub fn int64(value: i64) -> i32 {
         raw_varint64_size(value as u64)
     }
 
+    #[inline]
     pub fn uint32(value: u32) -> i32 {
         raw_varint32_size(value)
     }
 
+    #[inline]
     pub fn uint64(value: u64) -> i32 {
         raw_varint64_size(value)
     }
 
+    #[inline]
     pub fn sint32(value: i32) -> i32 {
         raw_varint32_size(zig_zag32(value))
     }
 
+    #[inline]
     pub fn sint64(value: i64) -> i32 {
         raw_varint64_size(zig_zag64(value))
     }
 
+    #[inline]
     pub fn bool(_value: bool) -> i32 {
         1 
     }
 
+    #[inline]
     pub fn fixed64(_value: u64) -> i32 {
         8
     }
 
+    #[inline]
     pub fn sfixed64(_value: i64) -> i32 {
         8
     }
 
+    #[inline]
     pub fn double(_value: f64) -> i32 {
         8
     }
 
+    #[inline]
     pub fn string(value: &String) -> Option<i32> {
         let size = value.len();
         if size > i32::max_value() as usize {
@@ -94,6 +136,7 @@ pub mod sizes {
         }
     }
 
+    #[inline]
     pub fn bytes(value: &Vec<u8>) -> Option<i32> {
         let size = value.len();
         if size > i32::max_value() as usize {
@@ -104,7 +147,8 @@ pub mod sizes {
         }
     }
 
-    pub fn message(value: &::LiteMessage) -> Option<i32> {
+    #[inline]
+    pub fn message(value: &CodedMessage) -> Option<i32> {
         let length = value.calculate_size();
         if let Some(length) = length {
             length.checked_add(int32(length))
@@ -113,30 +157,38 @@ pub mod sizes {
         }
     }
 
-    pub fn group(value: &::LiteMessage) -> Option<i32> {
+    #[inline]
+    pub fn group(value: &CodedMessage) -> Option<i32> {
         value.calculate_size()
     }
 
+    #[inline]
     pub fn fixed32(_value: u32) -> i32 {
         4
     }
 
+    #[inline]
     pub fn sfixed32(_value: i32) -> i32 {
         4
     }
 
+    /// Gets the size of float values
+    #[inline]
     pub fn float(_value: f32) -> i32 {
         4
     }
-
+    
+    #[inline]
     fn zig_zag32(value: i32) -> u32 {
         ((value << 1) ^ (value >> 31)) as u32
     }
-
+    
+    #[inline]
     fn zig_zag64(value: i64) -> u64 {
         ((value << 1) ^ (value >> 63)) as u64
     }
 
+    #[inline]
     fn raw_varint32_size(value: u32) -> i32 {
         if (value & (0xffffffff << 7)) == 0 {
             1
@@ -154,6 +206,7 @@ pub mod sizes {
         }
     }
 
+    #[inline]
     fn raw_varint64_size(value: u64) -> i32 {
         if (value & (0xffffffffffffffff << 7)) == 0 {
             1
@@ -211,7 +264,7 @@ impl From<std::string::FromUtf8Error> for InputError {
 
 /// The result of a read from a [CodedInput](#CodedInput)
 pub type InputResult<T> = Result<T, InputError>;
-
+/*
 /// A protocol buffer input stream.
 pub trait CodedInput {
     /// Reads a double from the coded input
@@ -245,30 +298,36 @@ pub trait CodedInput {
     /// Reads a bytes value from the coded input
     fn read_bytes(&mut self) -> InputResult<Vec<u8>>;
     /// Merges the coded input into the given message
-    fn read_message(&mut self, &mut LiteMessage) -> InputResult<()>;
+    fn read_message(&mut self, value: &mut CodedMessage) -> InputResult<()>;
     /// Merges the coded input into the given group
-    fn read_group(&mut self, &mut LiteMessage) -> InputResult<()>;
+    fn read_group(&mut self, value: &mut CodedMessage) -> InputResult<()>;
 
     /// Reads a tag from the coded input
     fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>>;
-}
 
-pub struct CodedInputReader<R> {
-    inner: R,
+    /// Pushes a limit, returning the previous limit
+    fn push_limit(&mut self, limit: i32) -> Option<i32>;
+    /// Returns a bool indicating which the read limit has been reached
+    fn reached_limit(&self) -> bool;
+    /// Pops the current limit, reapplying the previous limit
+    fn pop_limit(&mut self, previous: Option<i32>);
+}
+*/
+/// A protocol buffers input stream
+pub struct CodedInput<'a> {
+    inner: &'a mut Read,
     limit: Option<i32>
 }
 
-impl<R> CodedInputReader<R> { 
-    pub fn new(inner: R) -> CodedInputReader<R> {
-        CodedInputReader { inner, limit: None }
+impl<'a> CodedInput<'a> {
+    pub fn new(inner: &'a mut Read) -> Self {
+        CodedInput { inner, limit: None }
     }
 
-    pub fn into_inner(self) -> R {
+    pub fn into_inner(self) -> &'a mut Read {
         self.inner
     }
-}
 
-impl<R: Read> CodedInputReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         if let Some(limit) = self.limit {
             if limit == 0 {
@@ -296,33 +355,37 @@ impl<R: Read> CodedInputReader<R> {
             self.inner.read_exact(buf)
         }
     }
-}
-
-impl<R: Read> CodedInput for CodedInputReader<R> {
-    fn read_bool(&mut self) -> InputResult<bool> {
+    pub(crate) fn push_limit(&mut self, limit: i32) -> Option<i32> {
+        let old = {
+            if let Some(existing) = self.limit {
+                Some(existing - limit)
+            } else {
+                None
+            }
+        };
+        self.limit = Some(limit);
+        old
+    }
+    pub(crate) fn reached_limit(&self) -> bool {
+        self.limit == Some(0)
+    }
+    pub(crate) fn pop_limit(&mut self, previous: Option<i32>) {
+        std::mem::replace(&mut self.limit, previous);
+    }
+    pub fn read_bool(&mut self) -> InputResult<bool> {
         Ok(self.read_uint32()? != 0)
     }
-    fn read_message(&mut self, message: &mut LiteMessage) -> InputResult<()> {
+    pub fn read_message(&mut self, message: &mut CodedMessage) -> InputResult<()> {
         let len = self.read_int32()?;
-        match self.limit {
-            Some(existing) => {
-                self.limit = Some(len);
-                message.merge_from(self)?;
-                self.limit = Some(existing - len);
-            },
-            None => {
-                self.limit = Some(len);
-                message.merge_from(self)?;
-                self.limit = None;
-            }
-        }
+        let old = self.push_limit(len);
+        message.merge_from(self)?;
+        self.pop_limit(old);
         Ok(())
     }
-    fn read_group(&mut self, message: &mut LiteMessage) -> InputResult<()> { 
-        // jk we just pass-through to merge_from, add verification in your own impl
+    pub fn read_group(&mut self, message: &mut CodedMessage) -> InputResult<()> {
         message.merge_from(self)
     }
-    fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
+    pub fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
         let len = self.read_uint32()? as usize;
         let mut buf = Vec::with_capacity(len);
         unsafe { 
@@ -331,59 +394,59 @@ impl<R: Read> CodedInput for CodedInputReader<R> {
         self.read_exact(&mut buf)?;
         Ok(buf)
     }
-    fn read_string(&mut self) -> InputResult<String> {
+    pub fn read_string(&mut self) -> InputResult<String> {
         let bytes = self.read_bytes()?;
         Ok(String::from_utf8(bytes)?)
     }
-    fn read_fixed32(&mut self) -> InputResult<u32> {
+    pub fn read_fixed32(&mut self) -> InputResult<u32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
         unsafe {
             Ok(u32::from_le(mem::transmute(buf)))
         }
     }
-    fn read_sfixed32(&mut self) -> InputResult<i32> {
+    pub fn read_sfixed32(&mut self) -> InputResult<i32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
         unsafe {
             Ok(i32::from_le(mem::transmute(buf)))
         }
     }
-    fn read_float(&mut self) -> InputResult<f32> {
+    pub fn read_float(&mut self) -> InputResult<f32> {
         Ok(f32::from_bits(self.read_fixed32()?))
     }
-    fn read_fixed64(&mut self) -> InputResult<u64> {
+    pub fn read_fixed64(&mut self) -> InputResult<u64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
         unsafe {
             Ok(u64::from_le(mem::transmute(buf)))
         }
     }
-    fn read_sfixed64(&mut self) -> InputResult<i64> {
+    pub fn read_sfixed64(&mut self) -> InputResult<i64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
         unsafe {
             Ok(i64::from_le(mem::transmute(buf)))
         }
     }
-    fn read_double(&mut self) -> InputResult<f64> {
+    pub fn read_double(&mut self) -> InputResult<f64> {
         Ok(f64::from_bits(self.read_fixed64()?))
     }
-    fn read_sint32(&mut self) -> InputResult<i32> {
+    pub fn read_sint32(&mut self) -> InputResult<i32> {
         let val = self.read_uint32()?;
         Ok(((val >> 1) as i32) ^ -((val & 1) as i32))
     }
-    fn read_sint64(&mut self) -> InputResult<i64> {
+    pub fn read_sint64(&mut self) -> InputResult<i64> {
         let val = self.read_uint64()?;
         Ok(((val >> 1) as i64) ^ -((val & 1) as i64))
     }
-    fn read_int32(&mut self) -> InputResult<i32> {
+    pub fn read_int32(&mut self) -> InputResult<i32> {
         Ok(self.read_uint32()? as i32)
     }
-    fn read_int64(&mut self) -> InputResult<i64> {
+    pub fn read_int64(&mut self) -> InputResult<i64> {
         Ok(self.read_uint64()? as i64)
     }
-    fn read_uint32(&mut self) -> InputResult<u32> {
+    pub fn read_uint32(&mut self) -> InputResult<u32> {
         let mut shift = 0i32;
         let mut result = 0i32;
         let mut buf = [0u8; 1];
@@ -404,7 +467,7 @@ impl<R: Read> CodedInput for CodedInputReader<R> {
         }
         Err(InputError::MalformedVarint)
     }
-    fn read_uint64(&mut self) -> InputResult<u64> {
+    pub fn read_uint64(&mut self) -> InputResult<u64> {
         let mut shift = 0i32;
         let mut result = 0u64;
         let mut buf = [0u8; 1];
@@ -418,7 +481,7 @@ impl<R: Read> CodedInput for CodedInputReader<R> {
         }
         Err(InputError::MalformedVarint)
     }
-    fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>> {
+    pub fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>> {
         let mut shift = 0i32;
         let mut result = 0i32;
         let mut buf = [0u8; 1];
@@ -452,50 +515,64 @@ impl<R: Read> CodedInput for CodedInputReader<R> {
         }
         Err(InputError::MalformedVarint)
     }
+    pub fn read_enum_value<E: std::convert::TryFrom<i32, Error = crate::VariantUndefinedError>>(&mut self) -> InputResult<crate::EnumValue<E>> {
+        self.read_int32().map(crate::EnumValue::from)
+    }
 }
 
 /// The error of an [OutputResult](#OutputResult)
-pub struct OutputError;
+#[derive(Debug)]
+pub enum OutputError {
+    ValueTooLarge,
+    IoError(std::io::Error)
+}
+
+impl From<std::io::Error> for OutputError {
+    fn from(value: std::io::Error) -> OutputError {
+        OutputError::IoError(value)
+    }
+}
 
 /// The result of a write to a [CodedOutput](#CodedOutput)
 pub type OutputResult = Result<(), OutputError>;
 
+/*
 /// A protocol buffer output stream
 pub trait CodedOutput {
     /// Writes a double value to the coded output
-    fn write_double(&mut self, value: &f64) -> OutputResult;
+    fn write_double(&mut self, value: f64) -> OutputResult;
     /// Writes a float value to the coded output
-    fn write_float(&mut self, value: &f32) -> OutputResult;
+    fn write_float(&mut self, value: f32) -> OutputResult;
     /// Writes an int32 value to the coded output
-    fn write_int32(&mut self, value: &i32) -> OutputResult;
+    fn write_int32(&mut self, value: i32) -> OutputResult;
     /// Writes an int64 value to the coded output
-    fn write_int64(&mut self, value: &i64) -> OutputResult;
+    fn write_int64(&mut self, value: i64) -> OutputResult;
     /// Writes a uint32 value to the coded output
-    fn write_uint32(&mut self, value: &u32) -> OutputResult;
+    fn write_uint32(&mut self, value: u32) -> OutputResult;
     /// Writes a uint64 value to the coded output
-    fn write_uint64(&mut self, value: &u64) -> OutputResult;
+    fn write_uint64(&mut self, value: u64) -> OutputResult;
     /// Writes an sint32 value to the coded output
-    fn write_sint32(&mut self, value: &i32) -> OutputResult;
+    fn write_sint32(&mut self, value: i32) -> OutputResult;
     /// Writes an sint64 value to the coded output
-    fn write_sint64(&mut self, value: &i64) -> OutputResult;
+    fn write_sint64(&mut self, value: i64) -> OutputResult;
     /// Writes a fixed32 value to the coded output
-    fn write_fixed32(&mut self, value: &u32) -> OutputResult;
+    fn write_fixed32(&mut self, value: u32) -> OutputResult;
     /// Writes a fixed64 value to the coded output
-    fn write_fixed64(&mut self, value: &u64) -> OutputResult;
+    fn write_fixed64(&mut self, value: u64) -> OutputResult;
     /// Writes an sfixed32 value to the coded output
-    fn write_sfixed32(&mut self, value: &i32) -> OutputResult;
+    fn write_sfixed32(&mut self, value: i32) -> OutputResult;
     /// Writes an sfixed64 value to the coded output
-    fn write_sfixed64(&mut self, value: &i64) -> OutputResult;
+    fn write_sfixed64(&mut self, value: i64) -> OutputResult;
     /// Writes a bool value to the coded output
-    fn write_bool(&mut self, value: &bool) -> OutputResult;
+    fn write_bool(&mut self, value: bool) -> OutputResult;
     /// Writes a string value to the coded output
     fn write_string(&mut self, value: &String) -> OutputResult;
     /// Writes a bytes value to the coded output
     fn write_bytes(&mut self, value: &Vec<u8>) -> OutputResult;
     /// Writes a message to the coded output
-    fn write_message(&mut self, &LiteMessage) -> OutputResult;
+    fn write_message(&mut self, value: &CodedMessage) -> OutputResult;
     /// Writes a group to the coded output
-    fn write_group(&mut self, &LiteMessage) -> OutputResult;
+    fn write_group(&mut self, value: &CodedMessage) -> OutputResult;
 
     /// Writes a float value to the coded output
     fn write_tag(&mut self, num: i32, wtype: WireType) -> OutputResult;
@@ -503,4 +580,149 @@ pub trait CodedOutput {
     fn write_raw_tag(&mut self, value: u32) -> OutputResult;
     /// Writes a float value to the coded output
     fn write_raw_tag_bytes(&mut self, value: &[u8]) -> OutputResult;
+}
+*/
+
+pub struct CodedOutput<'a> {
+    inner: &'a mut Write
+}
+
+impl<'a> CodedOutput<'a> {
+    pub fn new(inner: &'a mut Write) -> Self {
+        CodedOutput { inner }
+    }
+
+    pub fn into_inner(self) -> &'a mut Write {
+        self.inner
+    }
+
+    pub fn write_raw_tag_bytes(&mut self, value: &[u8]) -> OutputResult {
+        Ok(self.inner.write_all(value)?)
+    }
+
+    pub fn write_raw_tag(&mut self, value: u32) -> OutputResult {
+        self.write_uint32(value)
+    }
+
+    pub fn write_tag(&mut self, num: i32, wtype: WireType) -> OutputResult {
+        self.write_uint32(WireType::make_tag(num, wtype))
+    }
+
+    pub fn write_group(&mut self, value: &CodedMessage) -> OutputResult {
+        value.write_to(self)
+    }
+
+    pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
+        if let Some(len) = value.calculate_size() {
+            self.write_int32(len)?;
+            value.write_to(self)
+        } else {
+            Err(OutputError::ValueTooLarge)
+        }
+    }
+
+    pub fn write_bytes(&mut self, value: &Vec<u8>) -> OutputResult {
+        if let Some(len) = value.len().try_into().ok() {
+            self.write_int32(len)?;
+            Ok(self.inner.write_all(value)?)
+        } else {
+            Err(OutputError::ValueTooLarge)
+        }
+    }
+
+    pub fn write_string(&mut self, value: &String) -> OutputResult {
+        let slice = value.as_bytes();
+        if let Some(len) = slice.len().try_into().ok() {
+            self.write_int32(len)?;
+            Ok(self.inner.write_all(slice)?)
+        } else {
+            Err(OutputError::ValueTooLarge)
+        }
+    }
+
+    pub fn write_bool(&mut self, value: bool) -> OutputResult {
+        Ok(self.inner.write_all(&[if value { 1 } else { 0 }])?)
+    }
+
+    pub fn write_sfixed64(&mut self, value: i64) -> OutputResult {
+        Ok(self.inner.write_all(&value.to_le_bytes())?)
+    }
+
+    pub fn write_sfixed32(&mut self, value: i32) -> OutputResult {
+        Ok(self.inner.write_all(&value.to_le_bytes())?)
+    }
+
+    pub fn write_fixed64(&mut self, value: u64) -> OutputResult {
+        Ok(self.inner.write_all(&value.to_le_bytes())?)
+    }
+
+    pub fn write_fixed32(&mut self, value: u32) -> OutputResult {
+        Ok(self.inner.write_all(&value.to_le_bytes())?)
+    }
+
+    pub fn write_sint64(&mut self, value: i64) -> OutputResult {
+        unsafe {
+            self.write_int64(std::mem::transmute((value << 1) ^ (value >> 63)))
+        }
+    }
+
+    pub fn write_sint32(&mut self, value: i32) -> OutputResult {
+        unsafe {
+            self.write_int32(std::mem::transmute((value << 1) ^ (value >> 31)))
+        }
+    }
+
+    pub fn write_uint64(&mut self, value: u64) -> OutputResult {
+        let mut value = value.to_le();
+        let mut buf: [u8; 1] = [0];
+        while value > 127 {
+            buf[0] = ((value & 0x7F) | 0x80) as u8;
+            self.inner.write_all(&buf)?;
+            value >>= 7;
+        }
+        buf[0] = value as u8;
+        self.inner.write_all(&buf)?;
+        Ok(())
+    }
+
+    pub fn write_uint32(&mut self, value: u32) -> OutputResult {
+        let mut value = value.to_le();
+        let mut buf: [u8; 1] = [0];
+        while value > 127 {
+            buf[0] = ((value & 0x7F) | 0x80) as u8;
+            self.inner.write_all(&buf)?;
+            value >>= 7;
+        }
+        buf[0] = value as u8;
+        self.inner.write_all(&buf)?;
+        Ok(())
+    }
+
+    pub fn write_int64(&mut self, value: i64) -> OutputResult {
+        unsafe {
+            self.write_uint64(std::mem::transmute(value))
+        }
+    }
+
+    pub fn write_int32(&mut self, value: i32) -> OutputResult {
+        if value >= 0 {
+            self.write_uint32(value as u32)
+        } else {
+            unsafe {
+                self.write_uint64(std::mem::transmute(value as i64))
+            }
+        }
+    }
+
+    pub fn write_float(&mut self, value: f32) -> OutputResult {
+        self.write_fixed32(value.to_bits())
+    }
+
+    pub fn write_double(&mut self, value: f64) -> OutputResult {
+        self.write_fixed64(value.to_bits())
+    }
+
+    pub fn write_enum_value<E: Into<i32> + Clone>(&mut self, value: crate::EnumValue<E>) -> OutputResult {
+        self.write_int32(value.into())
+    }
 }

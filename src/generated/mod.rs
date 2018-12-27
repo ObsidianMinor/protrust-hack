@@ -1,3 +1,8 @@
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+#![allow(dead_code)]
+#![allow(non_camel_case_types)]
+
 #[path = "google/protobuf/any.proto.rs"]
 pub mod google_protobuf_any_proto;
 #[path = "google/protobuf/api.proto.rs"]

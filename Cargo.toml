@@ -1,7 +1,24 @@
 [package]
 name = "protrust"
 version = "0.1.0"
-authors = ["ObsidianMinor <obsidianminor@gmail.com>"]
+authors = ["Sydney Acksman <obsidianminor@gmail.com>"]
+edition = "2018"
+autobins = false
+
+[features]
+default = ["reflection", "json"]
+
+# Reflection is optional, you can remove reflection if you are only using LITE_RUNTIME files
+reflection = []
+
+json = ["base64"]
+
+# Use checked addition in calculate_size methods
+checked_size = []
+
+[dependencies]
+base64 = { version = "0.10.*", optional = true }
+lazy_static = { version = "1.2.*" }
 
 [[bin]]
 name = "protoc-gen-rust"
