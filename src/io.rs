@@ -44,8 +44,8 @@ impl WireType {
         }
     }
 
-    pub const fn get_num(value: u32) -> u32 {
-        value >> 3
+    pub const fn get_num(value: u32) -> i32 {
+        (value >> 3) as i32
     }
 
     pub const fn make_tag(num: i32, wt: WireType) -> u32 {

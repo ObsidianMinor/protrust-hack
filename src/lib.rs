@@ -6,10 +6,6 @@
 #![feature(const_vec_new)]
 #![feature(try_from)]
 
-use std::collections::HashMap;
-use std::convert::TryFrom;
-use std::num::NonZeroU32;
-
 pub(crate) mod generated;
 
 /// The protrust prelude
@@ -44,6 +40,11 @@ pub mod reflect;
 /// Provides proto3 JSON mapping support
 #[cfg(feature = "json")]
 pub mod json;
+
+use std::collections::HashMap;
+use std::convert::TryFrom;
+use std::num::NonZeroU32;
+use crate::io::WireType;
 
 /// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
 pub trait CodedMessage {
@@ -555,24 +556,24 @@ impl UnknownFieldSet {
         for field in &self.0 {
             match field.1 {
                 UnknownField::Varint(v) => {
-                    output.write_tag(*field.0, io::WireType::Varint)?;
+                    output.write_tag(*field.0, WireType::Varint)?;
                     output.write_uint64(*v)?;
                 },
                 UnknownField::Bit64(v) => {
-                    output.write_tag(*field.0, io::WireType::Bit64)?;
+                    output.write_tag(*field.0, WireType::Bit64)?;
                     output.write_fixed64(*v)?;
                 },
                 UnknownField::LengthDelimited(v) => {
-                    output.write_tag(*field.0, io::WireType::LengthDelimited)?;
+                    output.write_tag(*field.0, WireType::LengthDelimited)?;
                     output.write_bytes(v)?;
                 },
                 UnknownField::Group(v) => {
-                    output.write_tag(*field.0, io::WireType::StartGroup)?;
+                    output.write_tag(*field.0, WireType::StartGroup)?;
                     v.write_to(output)?;
-                    output.write_tag(*field.0, io::WireType::EndGroup)?;
+                    output.write_tag(*field.0, WireType::EndGroup)?;
                 },
                 UnknownField::Bit32(v) => {
-                    output.write_tag(*field.0, io::WireType::Bit32)?;
+                    output.write_tag(*field.0, WireType::Bit32)?;
                     output.write_fixed32(*v)?;
                 }
             }
@@ -585,14 +586,25 @@ impl UnknownFieldSet {
         for field in &self.0 {
             match field.1 {
                 UnknownField::Varint(v) => {
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::Varint)))?;
+                    size = size.checked_add(io::sizes::uint64(*v))?;
                 },
                 UnknownField::Bit64(v) => {
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::Bit64)))?;
+                    size = size.checked_add(io::sizes::fixed64(*v))?;
                 },
                 UnknownField::LengthDelimited(v) => {
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::LengthDelimited)))?;
+                    size = size.checked_add(io::sizes::bytes(v)?)?;
                 },
                 UnknownField::Group(v) => {
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::StartGroup)))?;
+                    size = size.checked_add(v.calculate_size()?)?;
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::EndGroup)))?;
                 },
                 UnknownField::Bit32(v) => {
+                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(*field.0, WireType::Bit32)))?;
+                    size = size.checked_add(io::sizes::fixed32(*v))?;
                 }
             }
         }
@@ -600,12 +612,46 @@ impl UnknownFieldSet {
     }
 
     pub fn merge_from(&mut self, tag: u32, input: &mut io::CodedInput) -> io::InputResult<()> {
-        
+        let wt = 
+            match WireType::get_type(tag) {
+                Some(tag) => tag,
+                None => return Err(io::InputError::InvalidTag)
+            };
+        let num = WireType::get_num(tag);
+        match wt {
+            WireType::Varint => {
+                self.0.insert(num, UnknownField::Varint(input.read_uint64()?));
+            },
+            WireType::Bit64 => {
+                self.0.insert(num, UnknownField::Bit64(input.read_fixed64()?));
+            },
+            WireType::LengthDelimited => {
+                self.0.insert(num, UnknownField::LengthDelimited(input.read_bytes()?));
+            },
+            WireType::StartGroup => {
+                let end = WireType::make_tag(num, WireType::EndGroup);
+                let mut set = UnknownFieldSet::new();
+                while let Some(tag) = input.read_tag()? {
+                    match tag.get() {
+                        end_tag if end == end_tag => break,
+                        tag => set.merge_from(tag, input)?
+                    }
+                }
+                self.0.insert(num, UnknownField::Group(set));
+            },
+            WireType::EndGroup => return Err(io::InputError::InvalidTag),
+            WireType::Bit32 => {
+                self.0.insert(num, UnknownField::Bit32(input.read_fixed32()?));
+            }
+        }
+
         Ok(())
     }
 
     pub fn merge(&mut self, other: &Self) {
-
+        for field in &other.0 {
+            self.0.insert(*field.0, field.1.clone());
+        }
     }
 }
 
