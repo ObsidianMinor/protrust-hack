@@ -754,19 +754,17 @@ pub const {field_number_const}: i32 = {number};", proto_name, field_number_const
         if self.proto.label() == FieldLabel::Repeated {
             match self.proto.field_type() {
                 FieldType::Message(m) if m.map_entry() => {
-                    gen!(self.printer; self.vars => "\nstatic {codec}: ({crate_name}::Codec<", codec, crate_name);
+                    gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::collections::MapCodec<", codec, crate_name);
                     let generator = Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]);
-                    gen!(generator.printer; generator.vars => "{indirected_type}", indirected_type);
-
-                    gen!(self.printer; self.vars => ">, {crate_name}::Codec<", crate_name);
+                    gen!(generator.printer; generator.vars => "{indirected_type}, ", indirected_type);
                     let generator = Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]);
                     gen!(generator.printer; generator.vars => "{indirected_type}", indirected_type);
-                    gen!(self.printer, ">) = (");
+                    gen!(self.printer; self.vars => "> = {crate_name}::collections::MapCodec::new(", crate_name);
 
                     Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]).generate_codec_new()?;
                     gen!(self.printer, ", ");
                     Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]).generate_codec_new()?;
-                    gen!(self.printer, ");");
+                    gen!(self.printer; self.vars => ", {tag});", tag);
                 },
                 _ => {
                     gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::Codec<{indirected_type}> = ", codec, crate_name, indirected_type);
