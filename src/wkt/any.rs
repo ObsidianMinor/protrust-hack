@@ -1,5 +1,5 @@
-use crate::prelude::*;
 use crate::io::OutputError;
+use crate::prelude::*;
 use crate::reflect::MessageDescriptor;
 
 pub use crate::generated::google_protobuf_any_proto::*;
@@ -15,7 +15,7 @@ fn get_type_url(descriptor: &MessageDescriptor, prefix: &str) -> String {
 }
 
 /// Gets the type name from a type url in an Any value
-/// 
+///
 /// # Examples
 /// ```
 /// # use protrust::wkt::any::get_type_name;
@@ -45,17 +45,17 @@ impl Any {
     pub fn is<T: Message>(&self) -> bool {
         match get_type_name(&self.type_url) {
             Some(msg_type) => *msg_type == T::descriptor().full_name()[1..],
-            None => false
+            None => false,
         }
     }
 
     /// Unpacks a message of the specified type
-    /// 
+    ///
     /// # Examples
     /// ```text
     /// let msg = Timestamp::from_system_time(&SystemTime::now())?;
     /// let packed = Any::pack(msg);
-    /// 
+    ///
     /// if let Some(timestamp) = packed.unpack<Timestamp>()? {
     ///     assert!(timestamp.eq(msg));
     /// }

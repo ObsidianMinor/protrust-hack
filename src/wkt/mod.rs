@@ -1,13 +1,13 @@
 /// Provides runtime support for the `Any` type defined in `google/protobuf/any.proto`
-/// 
+///
 /// ### Packing / Unpacking
 /// ```text
 /// extern crate protrust;
-/// 
+///
 /// use protrust::wkt::any::Any;
 /// use protrust::wkt::timestamp::Timestamp;
 /// use std::time::SystemTime;
-/// 
+///
 /// fn main() -> Result<T, E> {
 ///     let msg = Timestamp::from_system_time(&SystemTime::now())?;
 ///     let packed = Any::pack(msg);

@@ -2,7 +2,7 @@ use std::fmt::Write;
 
 pub struct Printer<W> {
     inner: W,
-    indent: usize
+    indent: usize,
 }
 
 impl<W> Printer<W> {

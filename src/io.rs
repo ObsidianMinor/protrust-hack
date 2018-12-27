@@ -13,12 +13,12 @@ pub enum WireType {
     LengthDelimited = 2,
     StartGroup = 3,
     EndGroup = 4,
-    Bit32 = 5
+    Bit32 = 5,
 }
 
 impl WireType {
     /// Gets the wire type of a constructed tag value or None if the value does not have a valid wire type
-    /// 
+    ///
     /// # Examples
     /// ```
     /// # use protrust::io::WireType;
@@ -39,7 +39,7 @@ impl WireType {
             3 => Some(WireType::StartGroup),
             4 => Some(WireType::EndGroup),
             5 => Some(WireType::Bit32),
-            _ => None
+            _ => None,
         }
     }
 
@@ -53,9 +53,7 @@ impl WireType {
 
     /// Gets whether a wire type is eligable for repeated field packing
     pub fn is_packable(self) -> bool {
-        return self == WireType::Bit32 
-            || self == WireType::Bit64 
-            || self == WireType::Varint;
+        return self == WireType::Bit32 || self == WireType::Bit64 || self == WireType::Varint;
     }
 }
 
@@ -79,7 +77,7 @@ pub mod sizes {
     }
 
     #[inline]
-    /// Gets the size of a given 
+    /// Gets the size of a given
     pub fn int64(value: i64) -> i32 {
         raw_varint64_size(value as u64)
     }
@@ -106,7 +104,7 @@ pub mod sizes {
 
     #[inline]
     pub fn bool(_value: bool) -> i32 {
-        1 
+        1
     }
 
     #[inline]
@@ -125,6 +123,7 @@ pub mod sizes {
     }
 
     #[inline]
+    #[cfg(checked_size)]
     pub fn string(value: &String) -> Option<i32> {
         let size = value.len();
         if size > i32::max_value() as usize {
@@ -136,6 +135,19 @@ pub mod sizes {
     }
 
     #[inline]
+    #[cfg(not(checked_size))]
+    pub fn string(value: &String) -> i32 {
+        let size = value.len();
+        if size > i32::max_value() as usize {
+            panic!("value too large")
+        } else {
+            let length = size as i32;
+            length + int32(length)
+        }
+    }
+
+    #[inline]
+    #[cfg(checked_size)]
     pub fn bytes(value: &Vec<u8>) -> Option<i32> {
         let size = value.len();
         if size > i32::max_value() as usize {
@@ -147,6 +159,19 @@ pub mod sizes {
     }
 
     #[inline]
+    #[cfg(not(checked_size))]
+    pub fn bytes(value: &Vec<u8>) -> i32 {
+        let size = value.len();
+        if size > i32::max_value() as usize {
+            panic!("value too large")
+        } else {
+            let length = size as i32;
+            length + int32(length)
+        }
+    }
+
+    #[inline]
+    #[cfg(checked_size)]
     pub fn message(value: &CodedMessage) -> Option<i32> {
         let length = value.calculate_size();
         if let Some(length) = length {
@@ -157,7 +182,21 @@ pub mod sizes {
     }
 
     #[inline]
+    #[cfg(not(checked_size))]
+    pub fn message(value: &CodedMessage) -> i32 {
+        let length = value.calculate_size();
+        length + int32(length)
+    }
+
+    #[inline]
+    #[cfg(checked_size)]
     pub fn group(value: &CodedMessage) -> Option<i32> {
+        value.calculate_size()
+    }
+
+    #[inline]
+    #[cfg(not(checked_size))]
+    pub fn group(value: &CodedMessage) -> i32 {
         value.calculate_size()
     }
 
@@ -176,12 +215,12 @@ pub mod sizes {
     pub fn float(_value: f32) -> i32 {
         4
     }
-    
+
     #[inline]
     fn zig_zag32(value: i32) -> u32 {
         ((value << 1) ^ (value >> 31)) as u32
     }
-    
+
     #[inline]
     fn zig_zag64(value: i64) -> u64 {
         ((value << 1) ^ (value >> 63)) as u64
@@ -191,14 +230,11 @@ pub mod sizes {
     fn raw_varint32_size(value: u32) -> i32 {
         if (value & (0xffffffff << 7)) == 0 {
             1
-        } else 
-        if (value & (0xffffffff << 14)) == 0 {
+        } else if (value & (0xffffffff << 14)) == 0 {
             2
-        } else
-        if (value & (0xffffffff << 21)) == 0 {
+        } else if (value & (0xffffffff << 21)) == 0 {
             3
-        } else
-        if (value & (0xffffffff << 28)) == 0 {
+        } else if (value & (0xffffffff << 28)) == 0 {
             4
         } else {
             5
@@ -209,29 +245,21 @@ pub mod sizes {
     fn raw_varint64_size(value: u64) -> i32 {
         if (value & (0xffffffffffffffff << 7)) == 0 {
             1
-        } else
-        if (value & (0xffffffffffffffff << 14)) == 0 {
+        } else if (value & (0xffffffffffffffff << 14)) == 0 {
             2
-        } else
-        if (value & (0xffffffffffffffff << 21)) == 0 {
+        } else if (value & (0xffffffffffffffff << 21)) == 0 {
             3
-        } else
-        if (value & (0xffffffffffffffff << 28)) == 0 {
+        } else if (value & (0xffffffffffffffff << 28)) == 0 {
             4
-        } else
-        if (value & (0xffffffffffffffff << 35)) == 0 {
+        } else if (value & (0xffffffffffffffff << 35)) == 0 {
             5
-        } else
-        if (value & (0xffffffffffffffff << 42)) == 0 {
+        } else if (value & (0xffffffffffffffff << 42)) == 0 {
             6
-        } else
-        if (value & (0xffffffffffffffff << 49)) == 0 {
+        } else if (value & (0xffffffffffffffff << 49)) == 0 {
             7
-        } else
-        if (value & (0xffffffffffffffff << 56)) == 0 {
+        } else if (value & (0xffffffffffffffff << 56)) == 0 {
             8
-        } else
-        if (value & (0xffffffffffffffff << 63)) == 0 {
+        } else if (value & (0xffffffffffffffff << 63)) == 0 {
             9
         } else {
             10
@@ -246,7 +274,7 @@ pub enum InputError {
     NegativeSize,
     InvalidTag,
     IoError(std::io::Error),
-    InvalidString(std::string::FromUtf8Error)
+    InvalidString(std::string::FromUtf8Error),
 }
 
 impl From<std::io::Error> for InputError {
@@ -315,7 +343,7 @@ pub trait CodedInput {
 /// A protocol buffers input stream
 pub struct CodedInput<'a> {
     inner: &'a mut Read,
-    limit: Option<i32>
+    limit: Option<i32>,
 }
 
 impl<'a> CodedInput<'a> {
@@ -345,7 +373,10 @@ impl<'a> CodedInput<'a> {
     fn read_exact(&mut self, buf: &mut [u8]) -> std::io::Result<()> {
         if let Some(limit) = self.limit {
             if buf.len() > limit as usize {
-                Err(std::io::Error::new(std::io::ErrorKind::UnexpectedEof, "the input ended in the middle of a field"))
+                Err(std::io::Error::new(
+                    std::io::ErrorKind::UnexpectedEof,
+                    "the input ended in the middle of a field",
+                ))
             } else {
                 self.limit = Some(limit - buf.len() as i32);
                 self.inner.read_exact(buf)
@@ -375,22 +406,22 @@ impl<'a> CodedInput<'a> {
         match WireType::get_type(tag) {
             Some(WireType::Varint) => {
                 self.read_uint64()?;
-            },
+            }
             Some(WireType::Bit64) => {
                 self.read_fixed64()?;
-            },
+            }
             Some(WireType::LengthDelimited) => {
                 self.read_bytes()?;
-            },
+            }
             Some(WireType::StartGroup) => {
                 while let Some(tag) = self.read_tag()? {
                     self.skip(tag.get())?;
                 }
-            },
+            }
             Some(WireType::Bit32) => {
                 self.read_fixed32()?;
-            },
-            _ => return Err(InputError::InvalidTag)
+            }
+            _ => return Err(InputError::InvalidTag),
         }
 
         Ok(())
@@ -411,7 +442,7 @@ impl<'a> CodedInput<'a> {
     pub fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
         let len = self.read_uint32()? as usize;
         let mut buf = Vec::with_capacity(len);
-        unsafe { 
+        unsafe {
             buf.set_len(len);
         }
         self.read_exact(&mut buf)?;
@@ -424,16 +455,12 @@ impl<'a> CodedInput<'a> {
     pub fn read_fixed32(&mut self) -> InputResult<u32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
-        unsafe {
-            Ok(u32::from_le(mem::transmute(buf)))
-        }
+        unsafe { Ok(u32::from_le(mem::transmute(buf))) }
     }
     pub fn read_sfixed32(&mut self) -> InputResult<i32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
-        unsafe {
-            Ok(i32::from_le(mem::transmute(buf)))
-        }
+        unsafe { Ok(i32::from_le(mem::transmute(buf))) }
     }
     pub fn read_float(&mut self) -> InputResult<f32> {
         Ok(f32::from_bits(self.read_fixed32()?))
@@ -441,16 +468,12 @@ impl<'a> CodedInput<'a> {
     pub fn read_fixed64(&mut self) -> InputResult<u64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
-        unsafe {
-            Ok(u64::from_le(mem::transmute(buf)))
-        }
+        unsafe { Ok(u64::from_le(mem::transmute(buf))) }
     }
     pub fn read_sfixed64(&mut self) -> InputResult<i64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
-        unsafe {
-            Ok(i64::from_le(mem::transmute(buf)))
-        }
+        unsafe { Ok(i64::from_le(mem::transmute(buf))) }
     }
     pub fn read_double(&mut self) -> InputResult<f64> {
         Ok(f64::from_bits(self.read_fixed64()?))
@@ -538,7 +561,9 @@ impl<'a> CodedInput<'a> {
         }
         Err(InputError::MalformedVarint)
     }
-    pub fn read_enum_value<E: std::convert::TryFrom<i32, Error = crate::VariantUndefinedError>>(&mut self) -> InputResult<crate::EnumValue<E>> {
+    pub fn read_enum_value<E: std::convert::TryFrom<i32, Error = crate::VariantUndefinedError>>(
+        &mut self,
+    ) -> InputResult<crate::EnumValue<E>> {
         self.read_int32().map(crate::EnumValue::from)
     }
 }
@@ -547,7 +572,7 @@ impl<'a> CodedInput<'a> {
 #[derive(Debug)]
 pub enum OutputError {
     ValueTooLarge,
-    IoError(std::io::Error)
+    IoError(std::io::Error),
 }
 
 impl From<std::io::Error> for OutputError {
@@ -607,7 +632,7 @@ pub trait CodedOutput {
 */
 
 pub struct CodedOutput<'a> {
-    inner: &'a mut Write
+    inner: &'a mut Write,
 }
 
 impl<'a> CodedOutput<'a> {
@@ -635,6 +660,7 @@ impl<'a> CodedOutput<'a> {
         value.write_to(self)
     }
 
+    #[cfg(checked_size)]
     pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
         if let Some(len) = value.calculate_size() {
             self.write_int32(len)?;
@@ -642,6 +668,12 @@ impl<'a> CodedOutput<'a> {
         } else {
             Err(OutputError::ValueTooLarge)
         }
+    }
+
+    #[cfg(not(checked_size))]
+    pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
+        self.write_int32(value.calculate_size())?;
+        value.write_to(self)
     }
 
     pub fn write_bytes(&mut self, value: &Vec<u8>) -> OutputResult {
@@ -684,15 +716,11 @@ impl<'a> CodedOutput<'a> {
     }
 
     pub fn write_sint64(&mut self, value: i64) -> OutputResult {
-        unsafe {
-            self.write_int64(mem::transmute((value << 1) ^ (value >> 63)))
-        }
+        unsafe { self.write_int64(mem::transmute((value << 1) ^ (value >> 63))) }
     }
 
     pub fn write_sint32(&mut self, value: i32) -> OutputResult {
-        unsafe {
-            self.write_int32(mem::transmute((value << 1) ^ (value >> 31)))
-        }
+        unsafe { self.write_int32(mem::transmute((value << 1) ^ (value >> 31))) }
     }
 
     pub fn write_uint64(&mut self, value: u64) -> OutputResult {
@@ -722,18 +750,14 @@ impl<'a> CodedOutput<'a> {
     }
 
     pub fn write_int64(&mut self, value: i64) -> OutputResult {
-        unsafe {
-            self.write_uint64(mem::transmute(value))
-        }
+        unsafe { self.write_uint64(mem::transmute(value)) }
     }
 
     pub fn write_int32(&mut self, value: i32) -> OutputResult {
         if value >= 0 {
             self.write_uint32(value as u32)
         } else {
-            unsafe {
-                self.write_uint64(mem::transmute(value as i64))
-            }
+            unsafe { self.write_uint64(mem::transmute(value as i64)) }
         }
     }
 
@@ -745,7 +769,10 @@ impl<'a> CodedOutput<'a> {
         self.write_fixed64(value.to_bits())
     }
 
-    pub fn write_enum_value<E: Into<i32> + Clone>(&mut self, value: crate::EnumValue<E>) -> OutputResult {
+    pub fn write_enum_value<E: Into<i32> + Clone>(
+        &mut self,
+        value: crate::EnumValue<E>,
+    ) -> OutputResult {
         self.write_int32(value.into())
     }
 }

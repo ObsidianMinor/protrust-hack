@@ -18,6 +18,8 @@ pub struct Options {
     /// 
     /// Static default values will also be set to public
     pub pub_fields: bool,
+    /// Uses checked addition in CodedMessage::calculate_size
+    pub size_checks: bool
 }
 
 impl Default for Options {
@@ -26,6 +28,7 @@ impl Default for Options {
             crate_name: "protrust".to_string(),
             no_json: false,
             pub_fields: false,
+            size_checks: false
         }
     }
 }
@@ -207,15 +210,25 @@ pub struct {type_name} {{", type_name);
         self.printer.unindent();
         gen!(self.printer, "\n}}");
 
-        gen!(self.printer, "\nfn calculate_size(&self) -> std::option::Option<i32> {{");
+        if self.options.size_checks {
+            gen!(self.printer, "\nfn calculate_size(&self) -> std::option::Option<i32> {{");
+        } else {
+            gen!(self.printer, "\nfn calculate_size(&self) -> i32 {{");
+        }
+
         self.printer.indent();
         gen!(self.printer, "\nlet mut size = 0i32;");
 
         for field in self.proto.fields() {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_size_calculator()?;
         }
-        gen!(self.printer, "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;");
-        gen!(self.printer, "\nstd::option::Option::Some(size)");
+        if self.options.size_checks {
+            gen!(self.printer, "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;");
+            gen!(self.printer, "\nstd::option::Option::Some(size)");
+        } else {
+            gen!(self.printer, "\nsize += self._unknown_fields.calculate_size();");
+            gen!(self.printer, "\nsize");
+        }
         self.printer.unindent();
         gen!(self.printer, "\n}}");
 
@@ -595,7 +608,11 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
 
     pub fn generate_size_calculator(&mut self) -> Result {
         if self.proto.label() == FieldLabel::Repeated {
-            gen!(self.printer; self.vars => "\nsize = size.checked_add(self.{field_name}.calculate_size(&{codec})?)?;", field_name, codec);
+            if self.options.size_checks {
+                gen!(self.printer; self.vars => "\nsize = size.checked_add(self.{field_name}.calculate_size(&{codec})?)?;", field_name, codec);
+            } else {
+                gen!(self.printer; self.vars => "\nsize += self.{field_name}.calculate_size(&{codec});", field_name, codec);
+            }
         } else {
             if let FieldScope::Oneof(_) = self.proto.scope() {
                 if is_copy_type(self.proto.field_type()) {
@@ -632,14 +649,23 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
                 }
             }
 
-            gen!(self.printer; self.vars => "\nsize = size.checked_add({tag_size})?;", tag_size);
-            gen!(self.printer; self.vars => "\nsize = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name})", field_name, crate_name, proto_type);
-
-            if is_copy_type(self.proto.field_type()) {
-                gen!(self.printer, ")?;");
+            if self.options.size_checks {
+                gen!(self.printer; self.vars => "\nsize = size.checked_add({tag_size})?;", tag_size);
+                gen!(self.printer; self.vars => "\nsize = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name})", field_name, crate_name, proto_type);
             } else {
-                gen!(self.printer, "?)?;");
+                gen!(self.printer; self.vars => "\nsize += {tag_size};", tag_size);
+                gen!(self.printer; self.vars => "\nsize += {crate_name}::io::sizes::{proto_type}({field_name})", field_name, crate_name, proto_type);
             }
+
+            if self.options.size_checks {
+                if is_copy_type(self.proto.field_type()) {
+                    gen!(self.printer, ")?");
+                } else {
+                    gen!(self.printer, "?)?");
+                }
+            }
+
+            gen!(self.printer, ";");
 
             if let FieldScope::Oneof(_) = self.proto.scope() {
                 self.printer.unindent();

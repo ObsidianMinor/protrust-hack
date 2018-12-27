@@ -5,7 +5,8 @@ pub fn get_rust_file_name(file: &FileDescriptor) -> String {
 }
 
 pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
-    file.name().replace(|s| s == '/' || s == '-' || s == '.', "_")
+    file.name()
+        .replace(|s| s == '/' || s == '-' || s == '.', "_")
 }
 
 pub fn get_message_type_name(message: &MessageDescriptor) -> String {
@@ -33,32 +34,41 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
 }
 
 pub fn get_full_enum_variant_name(value: &EnumValueDescriptor, file: &FileDescriptor) -> String {
-    format!("{}::{}", get_full_enum_type_name(value.enum_type(), file), get_enum_variant_name(value))
+    format!(
+        "{}::{}",
+        get_full_enum_type_name(value.enum_type(), file),
+        get_enum_variant_name(value)
+    )
 }
 
 pub fn get_field_name(field: &FieldDescriptor) -> String {
     match field.scope() {
         FieldScope::Message(_) | FieldScope::File(_) => field.name().clone(),
-        FieldScope::Oneof(_) => underscores_to_pascal_case(field.name(), false)
+        FieldScope::Oneof(_) => underscores_to_pascal_case(field.name(), false),
     }
 }
 
 pub fn get_struct_field_name(field: &FieldDescriptor) -> String {
-    let mut name = 
-        match field.scope() {
-            FieldScope::Message(_) | FieldScope::File(_) => field.name().clone(),
-            FieldScope::Oneof(o) => o.name().clone()
-        };
+    let mut name = match field.scope() {
+        FieldScope::Message(_) | FieldScope::File(_) => field.name().clone(),
+        FieldScope::Oneof(o) => o.name().clone(),
+    };
     escape_name(&mut name);
     name
 }
 
 pub fn get_field_default_value_name(field: &FieldDescriptor) -> String {
-    pascal_to_shouty_case(&get_message_type_name(field.message())) + "_" + &field.name().to_ascii_uppercase() + "_DEFAULT_VALUE"
+    pascal_to_shouty_case(&get_message_type_name(field.message()))
+        + "_"
+        + &field.name().to_ascii_uppercase()
+        + "_DEFAULT_VALUE"
 }
 
 pub fn get_field_codec_name(field: &FieldDescriptor) -> String {
-    pascal_to_shouty_case(&get_message_type_name(field.message())) + "_" + &field.name().to_ascii_uppercase() + "_CODEC"
+    pascal_to_shouty_case(&get_message_type_name(field.message()))
+        + "_"
+        + &field.name().to_ascii_uppercase()
+        + "_CODEC"
 }
 
 pub fn get_field_number_const_name(field: &FieldDescriptor) -> String {
@@ -88,74 +98,77 @@ pub enum TypeResolution {
     /// The type including indirection types (boxes for messages and groups)
     Indirection,
     /// The full type including option and repeated field wrappers
-    Full
+    Full,
 }
 
 /// Gets the rust type for a field
 pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &str) -> String {
     use protrust::reflect::FieldType::*;
     match res {
-        TypeResolution::Base => {
-            match field.field_type() {
-                Message(m) | Group(m) => get_full_message_type_name(m, field.file()),
-                Enum(e) => get_full_enum_type_name(e, field.file()),
-                Bytes => format!("std::vec::Vec<u8>"),
-                String => format!("std::string::String"),
-                Bool => format!("bool"),
-                Sfixed32 | Sint32 | Int32 => format!("i32"),
-                Fixed32 | Uint32 => format!("u32"),
-                Sfixed64 | Sint64 | Int64 => format!("i64"),
-                Fixed64 | Uint64 => format!("u64"),
-                Double => format!("f64"),
-                Float => format!("f32")
-            }
+        TypeResolution::Base => match field.field_type() {
+            Message(m) | Group(m) => get_full_message_type_name(m, field.file()),
+            Enum(e) => get_full_enum_type_name(e, field.file()),
+            Bytes => format!("std::vec::Vec<u8>"),
+            String => format!("std::string::String"),
+            Bool => format!("bool"),
+            Sfixed32 | Sint32 | Int32 => format!("i32"),
+            Fixed32 | Uint32 => format!("u32"),
+            Sfixed64 | Sint64 | Int64 => format!("i64"),
+            Fixed64 | Uint64 => format!("u64"),
+            Double => format!("f64"),
+            Float => format!("f32"),
         },
         TypeResolution::Indirection => {
             let base = get_rust_type(TypeResolution::Base, field, crate_name);
             match field.field_type() {
                 Message(_) | Group(_) => format!("std::boxed::Box<{}>", base),
                 Enum(_) => format!("{}::EnumValue<{}>", crate_name, base),
-                _ => base
-            }
-        },
-        TypeResolution::Full => {
-            match field.label() {
-                FieldLabel::Optional | FieldLabel::Required => {
-                    let base = get_rust_type(TypeResolution::Indirection, field, crate_name);
-                    if field.file().syntax() == Syntax::Proto2 {
-                        format!("std::option::Option<{}>", base)
-                    } else {
-                        if let FieldScope::Oneof(_) = field.scope() {
-                            base
-                        } else {
-                            match field.field_type() {
-                                FieldType::Message(_) | FieldType::Group(_) 
-                                    => format!("std::option::Option<{}>", base),
-                                _ => base
-                            }
-                        }
-                    }
-                },
-                FieldLabel::Repeated => {
-                    if let FieldType::Message(m) = field.field_type() {
-                        if m.map_entry() {
-                            return format!("{}::collections::MapField<{}, {}>", 
-                                    crate_name, 
-                                    get_rust_type(TypeResolution::Indirection, &m.fields()[0], crate_name),
-                                    get_rust_type(TypeResolution::Indirection, &m.fields()[1], crate_name))
-                        }
-                    }
-
-                    format!("{}::collections::RepeatedField<{}>", crate_name, get_rust_type(TypeResolution::Indirection, field, crate_name))
-                }
+                _ => base,
             }
         }
+        TypeResolution::Full => match field.label() {
+            FieldLabel::Optional | FieldLabel::Required => {
+                let base = get_rust_type(TypeResolution::Indirection, field, crate_name);
+                if field.file().syntax() == Syntax::Proto2 {
+                    format!("std::option::Option<{}>", base)
+                } else {
+                    if let FieldScope::Oneof(_) = field.scope() {
+                        base
+                    } else {
+                        match field.field_type() {
+                            FieldType::Message(_) | FieldType::Group(_) => {
+                                format!("std::option::Option<{}>", base)
+                            }
+                            _ => base,
+                        }
+                    }
+                }
+            }
+            FieldLabel::Repeated => {
+                if let FieldType::Message(m) = field.field_type() {
+                    if m.map_entry() {
+                        return format!(
+                            "{}::collections::MapField<{}, {}>",
+                            crate_name,
+                            get_rust_type(TypeResolution::Indirection, &m.fields()[0], crate_name),
+                            get_rust_type(TypeResolution::Indirection, &m.fields()[1], crate_name)
+                        );
+                    }
+                }
+
+                format!(
+                    "{}::collections::RepeatedField<{}>",
+                    crate_name,
+                    get_rust_type(TypeResolution::Indirection, field, crate_name)
+                )
+            }
+        },
     }
 }
 
-/// Get the protobuf type name of a field. This resolves to the original type name for most field types, 
+/// Get the protobuf type name of a field. This resolves to the original type name for most field types,
 /// however for messages and groups are resolved to "message" and "group" respectively. Enums are returned as "enum_value"
-/// 
+///
 /// This method is used for easy method naming as read, write, size, codec, and extension creation methods all use these names
 pub fn get_proto_type(field: &FieldDescriptor) -> String {
     match field.field_type() {
@@ -176,8 +189,9 @@ pub fn get_proto_type(field: &FieldDescriptor) -> String {
         FieldType::Bytes => "bytes",
         FieldType::Enum(_) => "enum_value",
         FieldType::Message(_) => "message",
-        FieldType::Group(_) => "group"
-    }.to_string()
+        FieldType::Group(_) => "group",
+    }
+    .to_string()
 }
 
 pub fn get_oneof_name(oneof: &OneofDescriptor) -> String {
@@ -186,25 +200,13 @@ pub fn get_oneof_name(oneof: &OneofDescriptor) -> String {
 
 fn escape_name(name: &mut String) {
     match &**name {
-        "as" | "break" | "const" |
-        "continue" | "crate" |
-        "else" | "enum" | "extern" |
-        "false" | "fn" | "for" |
-        "if" | "impl" | "in" |
-        "let" | "loop" | "match" |
-        "mod" | "move" | "mut" |
-        "pub" | "ref" | "return" |
-        "self" | "Self" | "static" |
-        "struct" | "super" | "trait" |
-        "true" | "type" | "unsafe" |
-        "use" | "where" | "while" |
-        "dyn" | "abstract" | "become" |
-        "box" | "do" | "final" |
-        "macro" | "override" | "priv" |
-        "typeof" | "unsized" | "virtual" |
-        "yeild" | "async" | "await" |
-        "try" => name.insert_str(0, "r#"),
-        _ => { }
+        "as" | "break" | "const" | "continue" | "crate" | "else" | "enum" | "extern" | "false"
+        | "fn" | "for" | "if" | "impl" | "in" | "let" | "loop" | "match" | "mod" | "move"
+        | "mut" | "pub" | "ref" | "return" | "self" | "Self" | "static" | "struct" | "super"
+        | "trait" | "true" | "type" | "unsafe" | "use" | "where" | "while" | "dyn" | "abstract"
+        | "become" | "box" | "do" | "final" | "macro" | "override" | "priv" | "typeof"
+        | "unsized" | "virtual" | "yeild" | "async" | "await" | "try" => name.insert_str(0, "r#"),
+        _ => {}
     }
 }
 
@@ -235,14 +237,20 @@ fn get_full_type_name(name: &str, scope: &CompositeScope, file: &FileDescriptor)
 }
 
 fn try_remove_prefix<'a>(type_name: &str, value_name: &'a str) -> &'a str {
-    let mut prefix = type_name.chars().filter(|c| *c != '_').map(|c| c.to_ascii_lowercase());
-    let mut value = value_name.char_indices().filter(|(_, c)| *c != '_').map(|(i, c)| (i, c.to_ascii_lowercase()));
+    let mut prefix = type_name
+        .chars()
+        .filter(|c| *c != '_')
+        .map(|c| c.to_ascii_lowercase());
+    let mut value = value_name
+        .char_indices()
+        .filter(|(_, c)| *c != '_')
+        .map(|(i, c)| (i, c.to_ascii_lowercase()));
 
     loop {
         match (prefix.next(), value.next()) {
             (_, None) => return value_name,
             (a, Some((i, b))) if a != Some(b) => return &value_name[i..].trim_start_matches('_'),
-            _ => ()
+            _ => (),
         }
     }
 }
@@ -279,7 +287,7 @@ fn underscores_to_camel_case(input: &str, mut cap_next: bool, preserve_dot: bool
                     result.push(c);
                 }
                 cap_next = false;
-            },
+            }
             c @ 'A'...'Z' => {
                 if index == 0 && !cap_next {
                     result.push(c.to_ascii_lowercase());
@@ -287,11 +295,11 @@ fn underscores_to_camel_case(input: &str, mut cap_next: bool, preserve_dot: bool
                     result.push(c);
                 }
                 cap_next = false;
-            },
+            }
             c @ '0'...'9' => {
                 result.push(c);
                 cap_next = true;
-            },
+            }
             c @ _ => {
                 cap_next = true;
                 if c == '.' && preserve_dot {
