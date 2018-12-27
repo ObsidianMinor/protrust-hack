@@ -218,10 +218,10 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 
     /// Gets the tag of the codec or the start tag for groups
-    pub fn tag(&self) -> &u32 { &self.start }
+    pub fn tag(&self) -> u32 { self.start }
 
     /// Gets the end tag of the codec (groups only)
-    pub fn end_tag(&self) -> &Option<NonZeroU32> { &self.end }
+    pub fn end_tag(&self) -> Option<NonZeroU32> { self.end }
 
     /// Gets whether the value is default and should be written to an output
     pub fn is_default(&self, value: &T) -> bool {

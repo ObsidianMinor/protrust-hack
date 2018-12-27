@@ -371,6 +371,30 @@ impl<'a> CodedInput<'a> {
     pub(crate) fn pop_limit(&mut self, previous: Option<i32>) {
         mem::replace(&mut self.limit, previous);
     }
+    pub(crate) fn skip(&mut self, tag: u32) -> InputResult<()> {
+        match WireType::get_type(tag) {
+            Some(WireType::Varint) => {
+                self.read_uint64()?;
+            },
+            Some(WireType::Bit64) => {
+                self.read_fixed64()?;
+            },
+            Some(WireType::LengthDelimited) => {
+                self.read_bytes()?;
+            },
+            Some(WireType::StartGroup) => {
+                while let Some(tag) = self.read_tag()? {
+                    self.skip(tag.get())?;
+                }
+            },
+            Some(WireType::Bit32) => {
+                self.read_fixed32()?;
+            },
+            _ => return Err(InputError::InvalidTag)
+        }
+
+        Ok(())
+    }
     pub fn read_bool(&mut self) -> InputResult<bool> {
         Ok(self.read_uint32()? != 0)
     }

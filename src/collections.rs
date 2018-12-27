@@ -60,14 +60,14 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
                     ValueSize::Func(fun) => self.iter().fold(Some(0i32), |last,value| last?.checked_add(fun(value)?)),
                 }.ok_or(OutputError::ValueTooLarge)?;
 
-                output.write_raw_tag(*codec.tag())?;
+                output.write_raw_tag(codec.tag())?;
                 output.write_int32(size)?;
                 for value in self.iter() {
                     codec.write_to(output, value)?;
                 }
             } else {
                 for value in self.iter() {
-                    output.write_raw_tag(*codec.tag())?;
+                    output.write_raw_tag(codec.tag())?;
                     codec.write_to(output, value)?;
                     if let Some(end_tag) = codec.end_tag() {
                         output.write_raw_tag(end_tag.get())?;
@@ -118,18 +118,125 @@ impl<K, V> std::ops::DerefMut for MapField<K, V> {
     }
 }
 
-impl<K, V> MapField<K, V> {
-    pub fn add_entries(&mut self, tag: u32, input: &mut CodedInput, codec: &MapCodec<K, V>) -> InputResult<()> {
-        unimplemented!()
+impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
+    pub fn add_entries(&mut self, input: &mut CodedInput, codec: &MapCodec<K, V>) -> InputResult<()> {
+        let mut adapter = MapReadAdapter::new(codec);
+        input.read_message(&mut adapter)?;
+        if let Some(key) = adapter.key {
+            if let Some(value) = adapter.value {
+                self.insert(key, value);
+            }
+        }
+        Ok(())
     }
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> Option<i32> {
-        unimplemented!()
+        if self.is_empty() {
+            return Some(0)
+        }
+
+        let mut size = 0i32;
+        let mut adapter = MapWriteAdapter::new(codec);
+        for field in &self.0 {
+            adapter.key = Some(&field.0);
+            adapter.value = Some(&field.1);
+            size = size.checked_add(crate::io::sizes::uint32(codec.tag))?;
+            size = size.checked_add(crate::io::sizes::message(&adapter)?)?;
+        }
+        Some(size)
     }
     pub fn write_to(&self, output: &mut CodedOutput, codec: &MapCodec<K, V>) -> OutputResult {
-        unimplemented!()
+        let mut adapter = MapWriteAdapter::new(codec);
+        for field in &self.0 {
+            adapter.key = Some(&field.0);
+            adapter.value = Some(&field.1);
+            output.write_raw_tag(codec.tag)?;
+            output.write_message(&adapter)?;
+        }
+        Ok(())
     }
     pub fn merge(&mut self, other: &Self) {
-        unimplemented!()
+        for entry in &other.0 {
+            match self.get_mut(entry.0) {
+                Some(value) => *value = entry.1.clone(),
+                None => {
+                    self.insert(entry.0.clone(), entry.1.clone());
+                }
+            }
+        }
+    }
+}
+
+struct MapReadAdapter<'a, K, V> {
+    key: Option<K>,
+    value: Option<V>,
+    codec: &'a MapCodec<K, V>
+}
+
+impl<'a, K, V> MapReadAdapter<'a, K, V> {
+    pub fn new(codec: &'a MapCodec<K, V>) -> MapReadAdapter<'a, K, V> {
+        MapReadAdapter {
+            codec,
+            key: None,
+            value: None,
+        }
+    }
+}
+
+impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapReadAdapter<'_, K, V> {
+    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+        while let Some(tag) = input.read_tag()? {
+            match tag.get() {
+                tag if tag == self.codec.key.tag() => self.codec.key.merge_from(input, &mut self.key)?,
+                tag if tag == self.codec.value.tag() => self.codec.value.merge_from(input, &mut self.value)?,
+                tag => input.skip(tag)?
+            }
+        }
+        Ok(())
+    }
+    fn calculate_size(&self) -> Option<i32> {
+        unreachable!()
+    }
+    fn write_to(&self, _output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+        unreachable!()
+    }
+}
+
+struct MapWriteAdapter<'a, K, V> {
+    key: Option<&'a K>,
+    value: Option<&'a V>,
+    codec: &'a MapCodec<K, V>
+}
+
+impl<'a, K, V> MapWriteAdapter<'a, K, V> {
+    pub fn new(codec: &'a MapCodec<K, V>) -> MapWriteAdapter<'a, K, V> {
+        MapWriteAdapter {
+            codec,
+            key: None,
+            value: None
+        }
+    }
+}
+
+impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapWriteAdapter<'_, K, V> {
+    fn merge_from(&mut self, _input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+        unreachable!()
+    }
+    fn calculate_size(&self) -> Option<i32> {
+        let mut size = 0i32;
+        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag()))?;
+        size = size.checked_add(self.codec.key.calculate_size(self.key.unwrap())?)?;
+        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag()))?;
+        size = size.checked_add(self.codec.value.calculate_size(self.value.unwrap())?)?;
+
+        Some(size)
+    }
+    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+        output.write_raw_tag(self.codec.key.tag())?;
+        self.codec.key.write_to(output, self.key.unwrap())?;
+        output.write_raw_tag(self.codec.value.tag())?;
+        self.codec.value.write_to(output, self.value.unwrap())?;
+
+        Ok(())
     }
 }
 
