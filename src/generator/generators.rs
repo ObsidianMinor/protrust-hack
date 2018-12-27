@@ -198,7 +198,7 @@ pub struct {type_name} {{", type_name);
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_merge_arm()?;
         }
 
-        gen!(self.printer, "\n_ => {{ }}");// todo, read unknown fields
+        gen!(self.printer, "\ntag => self._unknown_fields.merge_from(tag, input)?");
         self.printer.unindent();
         gen!(self.printer, "\n}}");
         self.printer.unindent();
@@ -214,7 +214,7 @@ pub struct {type_name} {{", type_name);
         for field in self.proto.fields() {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_size_calculator()?;
         }
-
+        gen!(self.printer, "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;");
         gen!(self.printer, "\nstd::option::Option::Some(size)");
         self.printer.unindent();
         gen!(self.printer, "\n}}");
@@ -226,6 +226,7 @@ pub struct {type_name} {{", type_name);
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_writer()?;
         }
 
+        gen!(self.printer, "\nself._unknown_fields.write_to(output)?;");
         gen!(self.printer, "\nstd::result::Result::Ok(())");
 
         self.printer.unindent();
@@ -268,6 +269,8 @@ pub struct {type_name} {{", type_name);
         for field in self.proto.fields() {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_field_merge()?;
         }
+
+        gen!(self.printer, "\nself._unknown_fields.merge(&other._unknown_fields);");
 
         self.printer.unindent();
         write!(self.printer, "\n}}")?;
