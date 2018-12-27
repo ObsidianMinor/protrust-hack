@@ -1,9 +1,9 @@
 use crate::Codec;
 use crate::ValueSize;
-use crate::io::*;
+use crate::io::{CodedInput, InputResult, InputError, CodedOutput, OutputResult, OutputError};
+use std::collections::HashMap;
 use std::convert::TryInto;
 use std::hash::Hash;
-use std::collections::HashMap;
 
 #[derive(Clone, PartialEq)]
 pub struct RepeatedField<T>(Vec<T>);
@@ -119,16 +119,28 @@ impl<K, V> std::ops::DerefMut for MapField<K, V> {
 }
 
 impl<K, V> MapField<K, V> {
-    pub fn add_entries(&mut self, tag: u32, input: &mut CodedInput, codec: &(Codec<K>, Codec<V>)) -> InputResult<()> {
+    pub fn add_entries(&mut self, tag: u32, input: &mut CodedInput, codec: &MapCodec<K, V>) -> InputResult<()> {
         unimplemented!()
     }
-    pub fn calculate_size(&self, codec: &(Codec<K>, Codec<V>)) -> Option<i32> {
+    pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> Option<i32> {
         unimplemented!()
     }
-    pub fn write_to(&self, output: &mut CodedOutput, codec: &(Codec<K>, Codec<V>)) -> OutputResult {
+    pub fn write_to(&self, output: &mut CodedOutput, codec: &MapCodec<K, V>) -> OutputResult {
         unimplemented!()
     }
     pub fn merge(&mut self, other: &Self) {
         unimplemented!()
+    }
+}
+
+pub struct MapCodec<K, V> {
+    key: Codec<K>,
+    value: Codec<V>,
+    tag: u32
+}
+
+impl<K, V> MapCodec<K, V> {
+    pub const fn new(key: Codec<K>, value: Codec<V>, tag: u32) -> MapCodec<K, V> {
+        MapCodec { key, value, tag }
     }
 }
