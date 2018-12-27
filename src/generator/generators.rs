@@ -533,7 +533,13 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
         gen!(self.printer; self.vars => "{tags} => ", tags);
 
         match self.proto.label() {
-            FieldLabel::Repeated => gen!(self.printer; self.vars => "self.{field_name}.add_entries(tag.get(), input, &{codec})?", field_name, codec),
+            FieldLabel::Repeated => {
+                match self.proto.field_type() {
+                    FieldType::Message(m) if m.map_entry()
+                        => gen!(self.printer; self.vars => "self.{field_name}.add_entries(input, &{codec})?", field_name, codec),
+                    _   => gen!(self.printer; self.vars => "self.{field_name}.add_entries(tag.get(), input, &{codec})?", field_name, codec)
+                }
+            },
             _ => {
                 match self.proto.scope() {
                     FieldScope::Message(_) => {

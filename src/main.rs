@@ -30,10 +30,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
     };
 
     let mut mod_file_content = 
-"#![allow(unused_variables)]
-#![allow(unused_mut)]
-#![allow(dead_code)]
-#![allow(non_camel_case_types)]\n\n".to_string();
+"#![allow(unused_variables, dead_code, non_camel_case_types)]\n\n".to_string();
     let pool = reflect::DescriptorPool::build_from_files(&request.proto_file[..]);
     for file in request.file_to_generate.iter() {
         let descriptor: &reflect::FileDescriptor = pool.find_file_by_name(file).expect("proto_file did not contain file to generate");
