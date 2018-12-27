@@ -1,10 +1,9 @@
-use std::mem;
-use std::cmp;
-use std::num::NonZeroU32;
+use crate::CodedMessage;
+use std::cmp::min;
 use std::convert::TryInto;
 use std::io::{Read, Write};
-
-use crate::CodedMessage;
+use std::mem;
+use std::num::NonZeroU32;
 
 /// The wire type of a protobuf value
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug)]
@@ -334,7 +333,7 @@ impl<'a> CodedInput<'a> {
                 return Ok(0);
             }
 
-            let max = cmp::min(buf.len() as i32, limit) as usize;
+            let max = min(buf.len() as i32, limit) as usize;
             let n = self.inner.read(&mut buf[..max])?;
             self.limit = Some(limit - n as i32);
             Ok(n)
@@ -370,7 +369,7 @@ impl<'a> CodedInput<'a> {
         self.limit == Some(0)
     }
     pub(crate) fn pop_limit(&mut self, previous: Option<i32>) {
-        std::mem::replace(&mut self.limit, previous);
+        mem::replace(&mut self.limit, previous);
     }
     pub fn read_bool(&mut self) -> InputResult<bool> {
         Ok(self.read_uint32()? != 0)
@@ -662,13 +661,13 @@ impl<'a> CodedOutput<'a> {
 
     pub fn write_sint64(&mut self, value: i64) -> OutputResult {
         unsafe {
-            self.write_int64(std::mem::transmute((value << 1) ^ (value >> 63)))
+            self.write_int64(mem::transmute((value << 1) ^ (value >> 63)))
         }
     }
 
     pub fn write_sint32(&mut self, value: i32) -> OutputResult {
         unsafe {
-            self.write_int32(std::mem::transmute((value << 1) ^ (value >> 31)))
+            self.write_int32(mem::transmute((value << 1) ^ (value >> 31)))
         }
     }
 
@@ -700,7 +699,7 @@ impl<'a> CodedOutput<'a> {
 
     pub fn write_int64(&mut self, value: i64) -> OutputResult {
         unsafe {
-            self.write_uint64(std::mem::transmute(value))
+            self.write_uint64(mem::transmute(value))
         }
     }
 
@@ -709,7 +708,7 @@ impl<'a> CodedOutput<'a> {
             self.write_uint32(value as u32)
         } else {
             unsafe {
-                self.write_uint64(std::mem::transmute(value as i64))
+                self.write_uint64(mem::transmute(value as i64))
             }
         }
     }

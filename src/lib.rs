@@ -41,10 +41,10 @@ pub mod reflect;
 #[cfg(feature = "json")]
 pub mod json;
 
+use crate::io::WireType;
 use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::num::NonZeroU32;
-use crate::io::WireType;
 
 /// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
 pub trait CodedMessage {

@@ -4,8 +4,8 @@ use crate::io::WireType;
 use crate::descriptor::*;
 use std::collections::HashMap;
 use std::convert::AsRef;
-use std::ops::Deref;
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
+use std::ops::Deref;
 
 macro_rules! validate {
     ($e:expr, $n:expr) => ($e.expect("invalid descriptor: missing field '$n'"));
