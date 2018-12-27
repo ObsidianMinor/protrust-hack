@@ -15,7 +15,7 @@ impl crate::CodedMessage for self::SourceContext {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.file_name = input.read_string()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -27,6 +27,7 @@ impl crate::CodedMessage for self::SourceContext {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(file_name)?)?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -35,6 +36,7 @@ impl crate::CodedMessage for self::SourceContext {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(file_name)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -47,6 +49,7 @@ impl crate::LiteMessage for self::SourceContext {
     }
     fn merge(&mut self, other: &Self) {
         self.file_name = other.file_name.clone();
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::SourceContext {

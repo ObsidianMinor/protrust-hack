@@ -18,7 +18,7 @@ impl crate::CodedMessage for self::Duration {
             match tag.get() {
                 8 => self.seconds = input.read_int64()?,
                 16 => self.nanos = input.read_int32()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -35,6 +35,7 @@ impl crate::CodedMessage for self::Duration {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::int32(nanos))?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -48,6 +49,7 @@ impl crate::CodedMessage for self::Duration {
             output.write_raw_tag_bytes(&[16])?;
             output.write_int32(nanos)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -62,6 +64,7 @@ impl crate::LiteMessage for self::Duration {
     fn merge(&mut self, other: &Self) {
         self.seconds = other.seconds;
         self.nanos = other.nanos;
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Duration {

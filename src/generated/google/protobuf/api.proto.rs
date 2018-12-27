@@ -32,7 +32,7 @@ impl crate::CodedMessage for self::Api {
                 42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
                 50 => self.mixins.add_entries(tag.get(), input, &API_MIXINS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -62,6 +62,7 @@ impl crate::CodedMessage for self::Api {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -88,6 +89,7 @@ impl crate::CodedMessage for self::Api {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -114,6 +116,7 @@ impl crate::LiteMessage for self::Api {
         }
         self.mixins.merge(&other.mixins);
         self.syntax = other.syntax;
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Api {
@@ -166,7 +169,7 @@ impl crate::CodedMessage for self::Method {
                 40 => self.response_streaming = input.read_bool()?,
                 50 => self.options.add_entries(tag.get(), input, &METHOD_OPTIONS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -204,6 +207,7 @@ impl crate::CodedMessage for self::Method {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -238,6 +242,7 @@ impl crate::CodedMessage for self::Method {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -262,6 +267,7 @@ impl crate::LiteMessage for self::Method {
         self.response_streaming = other.response_streaming;
         self.options.merge(&other.options);
         self.syntax = other.syntax;
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Method {
@@ -299,7 +305,7 @@ impl crate::CodedMessage for self::Mixin {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.root = input.read_string()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -316,6 +322,7 @@ impl crate::CodedMessage for self::Mixin {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(root)?)?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -329,6 +336,7 @@ impl crate::CodedMessage for self::Mixin {
             output.write_raw_tag_bytes(&[18])?;
             output.write_string(root)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -343,6 +351,7 @@ impl crate::LiteMessage for self::Mixin {
     fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.root = other.root.clone();
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Mixin {

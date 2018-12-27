@@ -15,7 +15,7 @@ impl crate::CodedMessage for self::FieldMask {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.paths.add_entries(tag.get(), input, &FIELD_MASK_PATHS_CODEC)?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -23,10 +23,12 @@ impl crate::CodedMessage for self::FieldMask {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.paths.calculate_size(&FIELD_MASK_PATHS_CODEC)?)?;
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.paths.write_to(output, &FIELD_MASK_PATHS_CODEC)?;
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -39,6 +41,7 @@ impl crate::LiteMessage for self::FieldMask {
     }
     fn merge(&mut self, other: &Self) {
         self.paths.merge(&other.paths);
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::FieldMask {

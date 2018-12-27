@@ -12,16 +12,18 @@ impl crate::CodedMessage for self::Empty {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -32,6 +34,7 @@ impl crate::LiteMessage for self::Empty {
         }
     }
     fn merge(&mut self, other: &Self) {
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Empty {

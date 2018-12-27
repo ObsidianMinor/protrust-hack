@@ -29,7 +29,7 @@ impl crate::CodedMessage for self::Type {
                 34 => self.options.add_entries(tag.get(), input, &TYPE_OPTIONS_CODEC)?,
                 42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
                 48 => self.syntax = input.read_enum_value()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -54,6 +54,7 @@ impl crate::CodedMessage for self::Type {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -75,6 +76,7 @@ impl crate::CodedMessage for self::Type {
             output.write_raw_tag_bytes(&[48])?;
             output.write_enum_value(syntax)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -99,6 +101,7 @@ impl crate::LiteMessage for self::Type {
             self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
         }
         self.syntax = other.syntax;
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Type {
@@ -158,7 +161,7 @@ impl crate::CodedMessage for self::Field {
                 74 => self.options.add_entries(tag.get(), input, &FIELD_OPTIONS_CODEC)?,
                 82 => self.json_name = input.read_string()?,
                 90 => self.default_value = input.read_string()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -211,6 +214,7 @@ impl crate::CodedMessage for self::Field {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(default_value)?)?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -260,6 +264,7 @@ impl crate::CodedMessage for self::Field {
             output.write_raw_tag_bytes(&[90])?;
             output.write_string(default_value)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -290,6 +295,7 @@ impl crate::LiteMessage for self::Field {
         self.options.merge(&other.options);
         self.json_name = other.json_name.clone();
         self.default_value = other.default_value.clone();
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Field {
@@ -421,7 +427,7 @@ impl crate::CodedMessage for self::Enum {
                 26 => self.options.add_entries(tag.get(), input, &ENUM_OPTIONS_CODEC)?,
                 34 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
                 40 => self.syntax = input.read_enum_value()?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -445,6 +451,7 @@ impl crate::CodedMessage for self::Enum {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -465,6 +472,7 @@ impl crate::CodedMessage for self::Enum {
             output.write_raw_tag_bytes(&[40])?;
             output.write_enum_value(syntax)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -487,6 +495,7 @@ impl crate::LiteMessage for self::Enum {
             self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
         }
         self.syntax = other.syntax;
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Enum {
@@ -523,7 +532,7 @@ impl crate::CodedMessage for self::EnumValue {
                 10 => self.name = input.read_string()?,
                 16 => self.number = input.read_int32()?,
                 26 => self.options.add_entries(tag.get(), input, &ENUM_VALUE_OPTIONS_CODEC)?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -541,6 +550,7 @@ impl crate::CodedMessage for self::EnumValue {
             size = size.checked_add(crate::io::sizes::int32(number))?;
         }
         size = size.checked_add(self.options.calculate_size(&ENUM_VALUE_OPTIONS_CODEC)?)?;
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -555,6 +565,7 @@ impl crate::CodedMessage for self::EnumValue {
             output.write_int32(number)?;
         }
         self.options.write_to(output, &ENUM_VALUE_OPTIONS_CODEC)?;
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -571,6 +582,7 @@ impl crate::LiteMessage for self::EnumValue {
         self.name = other.name.clone();
         self.number = other.number;
         self.options.merge(&other.options);
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::EnumValue {
@@ -599,7 +611,7 @@ impl crate::CodedMessage for self::Option {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => input.read_message(self.value.get_or_insert_with(crate::LiteMessage::new))?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -616,6 +628,7 @@ impl crate::CodedMessage for self::Option {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(value)?)?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -629,6 +642,7 @@ impl crate::CodedMessage for self::Option {
             output.write_raw_tag_bytes(&[18])?;
             output.write_message(value)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -645,6 +659,7 @@ impl crate::LiteMessage for self::Option {
         if let std::option::Option::Some(value) = &other.value {
             self.value.get_or_insert_with(crate::LiteMessage::new).merge(value);
         }
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Option {

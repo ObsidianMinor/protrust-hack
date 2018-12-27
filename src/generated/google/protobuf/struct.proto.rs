@@ -15,7 +15,7 @@ impl crate::CodedMessage for self::Struct {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.fields.add_entries(tag.get(), input, &STRUCT_FIELDS_CODEC)?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -23,10 +23,12 @@ impl crate::CodedMessage for self::Struct {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.fields.calculate_size(&STRUCT_FIELDS_CODEC)?)?;
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.fields.write_to(output, &STRUCT_FIELDS_CODEC)?;
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -39,6 +41,7 @@ impl crate::LiteMessage for self::Struct {
     }
     fn merge(&mut self, other: &Self) {
         self.fields.merge(&other.fields);
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Struct {
@@ -94,7 +97,7 @@ impl crate::CodedMessage for self::Value {
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::ListValue(kind)
                     },
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -125,6 +128,7 @@ impl crate::CodedMessage for self::Value {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(kind)?)?;
         }
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -152,6 +156,7 @@ impl crate::CodedMessage for self::Value {
             output.write_raw_tag_bytes(&[50])?;
             output.write_message(kind)?;
         }
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -189,6 +194,7 @@ impl crate::LiteMessage for self::Value {
                 self.kind = self::Value_Kind::ListValue(kind.clone());
             }
         }
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Value {
@@ -221,7 +227,7 @@ impl crate::CodedMessage for self::ListValue {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.values.add_entries(tag.get(), input, &LIST_VALUE_VALUES_CODEC)?,
-                _ => { }
+                tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -229,10 +235,12 @@ impl crate::CodedMessage for self::ListValue {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.values.calculate_size(&LIST_VALUE_VALUES_CODEC)?)?;
+        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.values.write_to(output, &LIST_VALUE_VALUES_CODEC)?;
+        self._unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -245,6 +253,7 @@ impl crate::LiteMessage for self::ListValue {
     }
     fn merge(&mut self, other: &Self) {
         self.values.merge(&other.values);
+        self._unknown_fields.merge(&other._unknown_fields);
     }
 }
 impl crate::Message for self::ListValue {
