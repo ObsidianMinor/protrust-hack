@@ -14,7 +14,7 @@ impl crate::CodedMessage for self::Struct {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                10 => self.fields.add_entries(tag.get(), input, &STRUCT_FIELDS_CODEC)?,
+                10 => self.fields.add_entries(input, &STRUCT_FIELDS_CODEC)?,
                 tag => self._unknown_fields.merge_from(tag, input)?
             }
         }
