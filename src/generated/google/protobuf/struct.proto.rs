@@ -9,7 +9,7 @@ pub struct Struct {
     pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static STRUCT_FIELDS_CODEC: (crate::Codec<std::string::String>, crate::Codec<std::boxed::Box<self::Value>>) = (crate::Codec::string(10), crate::Codec::message(18));
+static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<std::string::String, std::boxed::Box<self::Value>> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
 impl crate::CodedMessage for self::Struct {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
