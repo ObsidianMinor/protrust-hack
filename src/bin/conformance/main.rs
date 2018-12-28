@@ -2,6 +2,4 @@
 
 mod gen;
 
-fn main() {
-
-}
+fn main() {}

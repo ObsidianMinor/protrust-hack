@@ -1,25 +1,25 @@
-use std::fmt::Write;
-use std::collections::HashMap;
+use super::names;
+use super::printer;
+use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::WireType;
 use protrust::prelude::*;
 use protrust::reflect::*;
-use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
-use super::printer;
-use super::names;
+use std::collections::HashMap;
+use std::fmt::Write;
 
 pub struct Options {
     /// Allows users to change the name of the crate for referencing the codegen modules.
-    /// 
+    ///
     /// The default is 'protrust'
     pub crate_name: String,
     /// Allows users to make the compiler not generate JSON trait implementations, even for proto3 files
     pub no_json: bool,
     /// Sets all generated fields to public and doesn't generate accessors
-    /// 
+    ///
     /// Static default values will also be set to public
     pub pub_fields: bool,
     /// Uses checked addition in CodedMessage::calculate_size
-    pub size_checks: bool
+    pub size_checks: bool,
 }
 
 impl Default for Options {
@@ -28,19 +28,21 @@ impl Default for Options {
             crate_name: "protrust".to_string(),
             no_json: false,
             pub_fields: false,
-            size_checks: false
+            size_checks: false,
         }
     }
 }
 
 macro_rules! var {
     ($target:expr, $var:expr) => {
-        $target.get(stringify!($var)).ok_or_else(|| Error::MissingVariable(stringify!($var)))?
+        $target
+            .get(stringify!($var))
+            .ok_or_else(|| Error::MissingVariable(stringify!($var)))?
     };
 }
 
 macro_rules! gen {
-    ($target:expr; $vars:expr => $fmt:expr, $($arg:ident),*) 
+    ($target:expr; $vars:expr => $fmt:expr, $($arg:ident),*)
         => (write!($target, $fmt, $($arg = var!($vars, $arg)),*)?);
     ($dst:expr, $($arg:tt)*) => (write!($dst, $($arg)*)?);
 }
@@ -74,7 +76,7 @@ pub type Result = std::result::Result<(), Error>;
 #[derive(Debug)]
 pub enum Error {
     FormatError,
-    MissingVariable(&'static str)
+    MissingVariable(&'static str),
 }
 
 impl From<std::fmt::Error> for Error {
@@ -87,7 +89,7 @@ pub struct Generator<'a, T, W> {
     vars: HashMap<&'static str, String>,
     printer: &'a mut printer::Printer<W>,
     proto: &'a T,
-    options: &'a Options
+    options: &'a Options,
 }
 
 generator_new!(FileDescriptor, proto, options; 
@@ -137,7 +139,12 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 pub struct {type_name} {{", type_name);
         self.printer.indent();
 
-        for field in self.proto.fields().iter().filter(|f| message_scope(f.scope())) {
+        for field in self
+            .proto
+            .fields()
+            .iter()
+            .filter(|f| message_scope(f.scope()))
+        {
             writeln!(self.printer)?;
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_struct_field()?;
         }
@@ -165,7 +172,10 @@ pub struct {type_name} {{", type_name);
         self.generate_coded_message_impl()?;
         self.generate_lite_message_impl()?;
 
-        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| o.optimize_for.unwrap_or(EnumValue::Defined(OptimizeMode::Speed))) {
+        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| {
+            o.optimize_for
+                .unwrap_or(EnumValue::Defined(OptimizeMode::Speed))
+        }) {
             if o != OptimizeMode::LiteRuntime {
                 self.generate_message_impl()?;
             }
@@ -191,7 +201,10 @@ pub struct {type_name} {{", type_name);
         gen!(self.printer; self.vars => "\nfn merge_from(&mut self, input: &mut {crate_name}::io::CodedInput) -> {crate_name}::io::InputResult<()> {{", crate_name);
         self.printer.indent();
 
-        gen!(self.printer, "\nwhile let std::option::Option::Some(tag) = input.read_tag()? {{");
+        gen!(
+            self.printer,
+            "\nwhile let std::option::Option::Some(tag) = input.read_tag()? {{"
+        );
         self.printer.indent();
         gen!(self.printer, "\nmatch tag.get() {{");
         self.printer.indent();
@@ -201,7 +214,10 @@ pub struct {type_name} {{", type_name);
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_merge_arm()?;
         }
 
-        gen!(self.printer, "\ntag => self._unknown_fields.merge_from(tag, input)?");
+        gen!(
+            self.printer,
+            "\ntag => self._unknown_fields.merge_from(tag, input)?"
+        );
         self.printer.unindent();
         gen!(self.printer, "\n}}");
         self.printer.unindent();
@@ -211,7 +227,10 @@ pub struct {type_name} {{", type_name);
         gen!(self.printer, "\n}}");
 
         if self.options.size_checks {
-            gen!(self.printer, "\nfn calculate_size(&self) -> std::option::Option<i32> {{");
+            gen!(
+                self.printer,
+                "\nfn calculate_size(&self) -> std::option::Option<i32> {{"
+            );
         } else {
             gen!(self.printer, "\nfn calculate_size(&self) -> i32 {{");
         }
@@ -223,10 +242,16 @@ pub struct {type_name} {{", type_name);
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_size_calculator()?;
         }
         if self.options.size_checks {
-            gen!(self.printer, "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;");
+            gen!(
+                self.printer,
+                "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;"
+            );
             gen!(self.printer, "\nstd::option::Option::Some(size)");
         } else {
-            gen!(self.printer, "\nsize += self._unknown_fields.calculate_size();");
+            gen!(
+                self.printer,
+                "\nsize += self._unknown_fields.calculate_size();"
+            );
             gen!(self.printer, "\nsize");
         }
         self.printer.unindent();
@@ -260,7 +285,12 @@ pub struct {type_name} {{", type_name);
         write!(self.printer, "\nSelf {{")?;
         self.printer.indent();
 
-        for field in self.proto.fields().iter().filter(|p| message_scope(p.scope())) {
+        for field in self
+            .proto
+            .fields()
+            .iter()
+            .filter(|p| message_scope(p.scope()))
+        {
             writeln!(self.printer)?;
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_new()?;
         }
@@ -270,7 +300,11 @@ pub struct {type_name} {{", type_name);
             Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_new()?;
         }
 
-        write!(self.printer, "\n_unknown_fields: {}::UnknownFieldSet::new()", self.options.crate_name)?;
+        write!(
+            self.printer,
+            "\n_unknown_fields: {}::UnknownFieldSet::new()",
+            self.options.crate_name
+        )?;
 
         self.printer.unindent();
         write!(self.printer, "\n}}")?;
@@ -283,7 +317,10 @@ pub struct {type_name} {{", type_name);
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_field_merge()?;
         }
 
-        gen!(self.printer, "\nself._unknown_fields.merge(&other._unknown_fields);");
+        gen!(
+            self.printer,
+            "\nself._unknown_fields.merge(&other._unknown_fields);"
+        );
 
         self.printer.unindent();
         write!(self.printer, "\n}}")?;
@@ -329,7 +366,7 @@ pub struct {type_name} {{", type_name);
 fn message_scope(s: &FieldScope) -> bool {
     match s {
         FieldScope::Message(_) => true,
-        _ => false
+        _ => false,
     }
 }
 
@@ -498,10 +535,10 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
                         self.printer.unindent();
                         gen!(self.printer, "\n}}");
-                    },
+                    }
                     FieldType::Bytes | FieldType::String => {
                         gen!(self.printer; self.vars => "\nself.{field_name} = self::{oneof}::{name}({field_name}.clone());", field_name, name, oneof);
-                    },
+                    }
                     _ => {
                         gen!(self.printer; self.vars => "\nself.{field_name} = self::{oneof}::{name}({field_name});", field_name, name, oneof);
                     }
@@ -511,32 +548,28 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     self.printer.unindent();
                     gen!(self.printer, "\n}}");
                 }
-            },
-            FieldScope::Message(_) => {
-                match self.proto.label() {
-                    FieldLabel::Optional | FieldLabel::Required => {
-                        match self.proto.field_type() {
-                            FieldType::Message(_) | FieldType::Group(_) => {
-                                gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = &other.{field_name} {{", field_name);
-                                self.printer.indent();
-                                gen!(self.printer; self.vars => "\nself.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).merge({field_name});", crate_name, field_name);
-                                self.printer.unindent();
-                                gen!(self.printer, "\n}}");
-                            },
-                            FieldType::Bytes | FieldType::String => {
-                                gen!(self.printer; self.vars => "\nself.{field_name} = other.{field_name}.clone();", field_name);
-                            },
-                            _ => {
-                                gen!(self.printer; self.vars => "\nself.{field_name} = other.{field_name};", field_name);
-                            }
-                        }
-                    },
-                    FieldLabel::Repeated => {
-                        gen!(self.printer; self.vars => "\nself.{field_name}.merge(&other.{field_name});", field_name);
+            }
+            FieldScope::Message(_) => match self.proto.label() {
+                FieldLabel::Optional | FieldLabel::Required => match self.proto.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = &other.{field_name} {{", field_name);
+                        self.printer.indent();
+                        gen!(self.printer; self.vars => "\nself.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).merge({field_name});", crate_name, field_name);
+                        self.printer.unindent();
+                        gen!(self.printer, "\n}}");
                     }
+                    FieldType::Bytes | FieldType::String => {
+                        gen!(self.printer; self.vars => "\nself.{field_name} = other.{field_name}.clone();", field_name);
+                    }
+                    _ => {
+                        gen!(self.printer; self.vars => "\nself.{field_name} = other.{field_name};", field_name);
+                    }
+                },
+                FieldLabel::Repeated => {
+                    gen!(self.printer; self.vars => "\nself.{field_name}.merge(&other.{field_name});", field_name);
                 }
             },
-            _ => { }
+            _ => {}
         }
 
         Ok(())
@@ -546,59 +579,58 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
         gen!(self.printer; self.vars => "{tags} => ", tags);
 
         match self.proto.label() {
-            FieldLabel::Repeated => {
-                match self.proto.field_type() {
-                    FieldType::Message(m) if m.map_entry()
-                        => gen!(self.printer; self.vars => "self.{field_name}.add_entries(input, &{codec})?", field_name, codec),
-                    _   => gen!(self.printer; self.vars => "self.{field_name}.add_entries(tag.get(), input, &{codec})?", field_name, codec)
+            FieldLabel::Repeated => match self.proto.field_type() {
+                FieldType::Message(m) if m.map_entry() => {
+                    gen!(self.printer; self.vars => "self.{field_name}.add_entries(input, &{codec})?", field_name, codec)
+                }
+                _ => {
+                    gen!(self.printer; self.vars => "self.{field_name}.add_entries(tag.get(), input, &{codec})?", field_name, codec)
                 }
             },
-            _ => {
-                match self.proto.scope() {
-                    FieldScope::Message(_) => {
-                        match self.proto.field_type() {
-                            FieldType::Message(_) | FieldType::Group(_) => gen!(self.printer; self.vars => "input.read_message(self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new))?", field_name, crate_name),
-                            _ => {
-                                gen!(self.printer; self.vars => "self.{field_name} = ", field_name);
-                                if self.proto.file().syntax() == Syntax::Proto2 {
-                                    gen!(self.printer, "std::option::Option::Some(");
-                                }
-
-                                gen!(self.printer; self.vars => "input.read_{proto_type}()?", proto_type);
-
-                                if self.proto.file().syntax() == Syntax::Proto2 {
-                                    gen!(self.printer, ")");
-                                }
-                            }
+            _ => match self.proto.scope() {
+                FieldScope::Message(_) => match self.proto.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        gen!(self.printer; self.vars => "input.read_message(self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new))?", field_name, crate_name)
+                    }
+                    _ => {
+                        gen!(self.printer; self.vars => "self.{field_name} = ", field_name);
+                        if self.proto.file().syntax() == Syntax::Proto2 {
+                            gen!(self.printer, "std::option::Option::Some(");
                         }
-                    },
-                    FieldScope::Oneof(_) => {
-                        match self.proto.field_type() {
-                            FieldType::Message(_) | FieldType::Group(_) => {
-                                self.printer.indent();
-                                gen!(self.printer; self.vars => "\nif let self::{oneof}::{name}({field_name}) = &mut self.{field_name} {{", oneof, name, field_name);
-                                self.printer.indent();
-                                gen!(self.printer; self.vars => 
+
+                        gen!(self.printer; self.vars => "input.read_{proto_type}()?", proto_type);
+
+                        if self.proto.file().syntax() == Syntax::Proto2 {
+                            gen!(self.printer, ")");
+                        }
+                    }
+                },
+                FieldScope::Oneof(_) => match self.proto.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        self.printer.indent();
+                        gen!(self.printer; self.vars => "\nif let self::{oneof}::{name}({field_name}) = &mut self.{field_name} {{", oneof, name, field_name);
+                        self.printer.indent();
+                        gen!(self.printer; self.vars => 
 "
 {field_name}.merge_from(input)?;", field_name);
-                                self.printer.unindent();
-                                gen!(self.printer, "\n}} else {{");
-                                self.printer.indent();
-                                gen!(self.printer; self.vars => 
+                        self.printer.unindent();
+                        gen!(self.printer, "\n}} else {{");
+                        self.printer.indent();
+                        gen!(self.printer; self.vars => 
 "
 let mut {field_name} = std::boxed::Box::new(<{base_type} as {crate_name}::LiteMessage>::new());
 {field_name}.merge_from(input)?;
 self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name, crate_name, oneof, name);
-                                self.printer.unindent();
-                                gen!(self.printer, "\n}}");
-                                self.printer.unindent();
-                            }
-                            _ => gen!(self.printer; self.vars => "self.{field_name} = self::{oneof}::{name}(input.read_{proto_type}()?)", field_name, oneof, name, proto_type)
-                        }
-                    },
-                    _ => unreachable!()
-                }
-            }
+                        self.printer.unindent();
+                        gen!(self.printer, "\n}}");
+                        self.printer.unindent();
+                    }
+                    _ => {
+                        gen!(self.printer; self.vars => "self.{field_name} = self::{oneof}::{name}(input.read_{proto_type}()?)", field_name, oneof, name, proto_type)
+                    }
+                },
+                _ => unreachable!(),
+            },
         }
 
         gen!(self.printer, ",");
@@ -632,17 +664,19 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
                     FieldType::Message(_) | FieldType::Group(_) => {
                         gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                         self.printer.indent();
-                    },
+                    }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
                             gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                             self.printer.indent();
                         }
                         match self.proto.field_type() {
-                            FieldType::Bytes => 
-                                gen!(self.printer; self.vars => "\nif {field_name}.as_slice() != {default} {{", field_name, default),
-                            _ => 
+                            FieldType::Bytes => {
+                                gen!(self.printer; self.vars => "\nif {field_name}.as_slice() != {default} {{", field_name, default)
+                            }
+                            _ => {
                                 gen!(self.printer; self.vars => "\nif {field_name} != {default} {{", field_name, default)
+                            }
                         }
                         self.printer.indent();
                     }
@@ -675,7 +709,7 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
                     FieldType::Message(_) | FieldType::Group(_) => {
                         self.printer.unindent();
                         gen!(self.printer, "\n}}");
-                    },
+                    }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
                             self.printer.unindent();
@@ -713,17 +747,19 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
                     FieldType::Message(_) | FieldType::Group(_) => {
                         gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                         self.printer.indent();
-                    },
+                    }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
                             gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                             self.printer.indent();
                         }
                         match self.proto.field_type() {
-                            FieldType::Bytes => 
-                                gen!(self.printer; self.vars => "\nif {field_name}.as_slice() != {default} {{", field_name, default),
-                            _ => 
+                            FieldType::Bytes => {
+                                gen!(self.printer; self.vars => "\nif {field_name}.as_slice() != {default} {{", field_name, default)
+                            }
+                            _ => {
                                 gen!(self.printer; self.vars => "\nif {field_name} != {default} {{", field_name, default)
+                            }
                         }
                         self.printer.indent();
                     }
@@ -745,7 +781,7 @@ self.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name,
                     FieldType::Message(_) | FieldType::Group(_) => {
                         self.printer.unindent();
                         gen!(self.printer, "\n}}");
-                    },
+                    }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
                             self.printer.unindent();
@@ -772,7 +808,7 @@ pub const {field_number_const}: i32 = {number};", proto_name, field_number_const
     pub fn generate_default_value(&mut self) -> Result {
         if self.proto.label() != FieldLabel::Repeated {
             match self.proto.field_type() {
-                FieldType::Message(_) | FieldType::Group(_) => { },
+                FieldType::Message(_) | FieldType::Group(_) => {}
                 _ => {
                     gen!(self.printer; self.vars => "\nstatic {default}: {default_type} = {default_value};", default, default_type, default_value);
                 }
@@ -787,17 +823,21 @@ pub const {field_number_const}: i32 = {number};", proto_name, field_number_const
             match self.proto.field_type() {
                 FieldType::Message(m) if m.map_entry() => {
                     gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::collections::MapCodec<", codec, crate_name);
-                    let generator = Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]);
+                    let generator =
+                        Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]);
                     gen!(generator.printer; generator.vars => "{indirected_type}, ", indirected_type);
-                    let generator = Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]);
+                    let generator =
+                        Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]);
                     gen!(generator.printer; generator.vars => "{indirected_type}", indirected_type);
                     gen!(self.printer; self.vars => "> = {crate_name}::collections::MapCodec::new(", crate_name);
 
-                    Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]).generate_codec_new()?;
+                    Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0])
+                        .generate_codec_new()?;
                     gen!(self.printer, ", ");
-                    Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]).generate_codec_new()?;
+                    Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1])
+                        .generate_codec_new()?;
                     gen!(self.printer; self.vars => ", {tag});", tag);
-                },
+                }
                 _ => {
                     gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::Codec<{indirected_type}> = ", codec, crate_name, indirected_type);
                     self.generate_codec_new()?;
@@ -811,8 +851,12 @@ pub const {field_number_const}: i32 = {number};", proto_name, field_number_const
 
     pub fn generate_codec_new(&mut self) -> Result {
         match self.proto.field_type() {
-            FieldType::Group(_) => gen!(self.printer; self.vars => "{crate_name}::Codec::group({tag}, {end_tag})", crate_name, tag, end_tag),
-            _ => gen!(self.printer; self.vars => "{crate_name}::Codec::{proto_type}({tag})", crate_name, proto_type, tag)
+            FieldType::Group(_) => {
+                gen!(self.printer; self.vars => "{crate_name}::Codec::group({tag}, {end_tag})", crate_name, tag, end_tag)
+            }
+            _ => {
+                gen!(self.printer; self.vars => "{crate_name}::Codec::{proto_type}({tag})", crate_name, proto_type, tag)
+            }
         }
         Ok(())
     }
@@ -829,17 +873,19 @@ fn default_field_value(field: &FieldDescriptor, crate_name: &str) -> String {
                 format!("std::option::Option::None")
             } else {
                 match field.field_type() {
-                    FieldType::Message(_) | FieldType::Group(_) => format!("std::option::Option::None"),
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        format!("std::option::Option::None")
+                    }
                     FieldType::String => format!("std::string::String::new()"),
                     FieldType::Bytes => format!("std::vec::Vec::new()"),
-                    _ => names::get_field_default_value_name(field)
+                    _ => names::get_field_default_value_name(field),
                 }
             }
-        },
+        }
         FieldLabel::Repeated => {
             if let FieldType::Message(m) = field.field_type() {
                 if m.map_entry() {
-                    return format!("{}::collections::MapField::new()", crate_name)
+                    return format!("{}::collections::MapField::new()", crate_name);
                 }
             }
 
@@ -850,11 +896,8 @@ fn default_field_value(field: &FieldDescriptor, crate_name: &str) -> String {
 
 fn is_copy_type(ft: &FieldType) -> bool {
     match ft {
-        FieldType::Message(_) |
-        FieldType::Group(_)   |
-        FieldType::Bytes      |
-        FieldType::String => false,
-        _ => true
+        FieldType::Message(_) | FieldType::Group(_) | FieldType::Bytes | FieldType::String => false,
+        _ => true,
     }
 }
 
