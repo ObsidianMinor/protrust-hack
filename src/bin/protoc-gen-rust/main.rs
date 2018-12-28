@@ -1,10 +1,38 @@
-mod generator;
+mod generators;
+mod names;
+mod printer;
 
 use protrust::plugin;
 use protrust::prelude::*;
 use protrust::reflect;
 use std::fmt::Write;
 use std::io::{stdin, stdout};
+
+pub struct Options {
+    /// Allows users to change the name of the crate for referencing the codegen modules.
+    ///
+    /// The default is 'protrust'
+    pub crate_name: String,
+    /// Allows users to make the compiler not generate JSON trait implementations, even for proto3 files
+    pub no_json: bool,
+    /// Sets all generated fields to public and doesn't generate accessors
+    ///
+    /// Static default values will also be set to public
+    pub pub_fields: bool,
+    /// Uses checked addition in CodedMessage::calculate_size. Must be used with the checked_size feature
+    pub size_checks: bool,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Options {
+            crate_name: "protrust".to_string(),
+            no_json: false,
+            pub_fields: false,
+            size_checks: false,
+        }
+    }
+}
 
 fn main() {
     match plugin::CodeGeneratorRequest::read_new(&mut stdin()) {
@@ -39,8 +67,8 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
             .find_file_by_name(file)
             .expect("proto_file did not contain file to generate");
 
-        let mut printer = generator::printer::Printer::new(String::new());
-        let mut generator = generator::Generator::<reflect::FileDescriptor, _>::new(
+        let mut printer = printer::Printer::new(String::new());
+        let mut generator = generators::Generator::<reflect::FileDescriptor, _>::new(
             &mut printer,
             descriptor,
             &options,
@@ -48,7 +76,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
         match generator.generate() {
             Ok(()) => {
                 let mut gen_file = plugin::CodeGeneratorResponse_File::new();
-                gen_file.name = Some(generator::names::get_rust_file_name(descriptor));
+                gen_file.name = Some(names::get_rust_file_name(descriptor));
                 gen_file.content = Some(printer.into_inner());
 
                 response.file.push(Box::new(gen_file));
@@ -59,13 +87,13 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
         writeln!(
             mod_file_content,
             "#[path = \"{}\"]",
-            generator::names::get_rust_file_name(descriptor)
+            names::get_rust_file_name(descriptor)
         )
         .expect("Could not format generated mod file"); // write the path override
         writeln!(
             mod_file_content,
             "pub mod {};",
-            generator::names::get_rust_file_mod_name(descriptor)
+            names::get_rust_file_mod_name(descriptor)
         )
         .expect("Could not format generated mod file"); // write the mod definition
     }
@@ -78,8 +106,8 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
     response
 }
 
-fn parse_options(params: Option<&String>) -> Result<generator::Options, String> {
-    let mut options = generator::Options::default();
+fn parse_options(params: Option<&String>) -> Result<Options, String> {
+    let mut options = Options::default();
 
     if let Some(params) = params {
         for option in params.split(',') {

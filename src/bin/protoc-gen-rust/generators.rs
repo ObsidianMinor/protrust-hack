@@ -1,37 +1,12 @@
-use super::names;
-use super::printer;
+use crate::names;
+use crate::printer;
+use crate::Options;
 use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::WireType;
 use protrust::prelude::*;
 use protrust::reflect::*;
 use std::collections::HashMap;
 use std::fmt::Write;
-
-pub struct Options {
-    /// Allows users to change the name of the crate for referencing the codegen modules.
-    ///
-    /// The default is 'protrust'
-    pub crate_name: String,
-    /// Allows users to make the compiler not generate JSON trait implementations, even for proto3 files
-    pub no_json: bool,
-    /// Sets all generated fields to public and doesn't generate accessors
-    ///
-    /// Static default values will also be set to public
-    pub pub_fields: bool,
-    /// Uses checked addition in CodedMessage::calculate_size
-    pub size_checks: bool,
-}
-
-impl Default for Options {
-    fn default() -> Self {
-        Options {
-            crate_name: "protrust".to_string(),
-            no_json: false,
-            pub_fields: false,
-            size_checks: false,
-        }
-    }
-}
 
 macro_rules! var {
     ($target:expr, $var:expr) => {
