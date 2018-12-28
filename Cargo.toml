@@ -3,7 +3,6 @@ name = "protrust"
 version = "0.1.0"
 authors = ["Sydney Acksman <obsidianminor@gmail.com>"]
 edition = "2018"
-autobins = false
 
 [features]
 default = ["reflection", "json"]
@@ -18,7 +17,3 @@ checked_size = []
 
 [dependencies]
 base64 = { version = "0.10.*", optional = true }
-
-[[bin]]
-name = "protoc-gen-rust"
-path = "src/main.rs"
