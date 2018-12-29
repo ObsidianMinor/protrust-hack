@@ -103,7 +103,7 @@ if [ ! -d $UnpackPath ]
         mkdir $UnpackPath
 fi
 
-if [ ! -f '$UnpackPath'"/bin/protoc" ] 
+if [ ! -f "$UnpackPath"'/bin/protoc' ] 
     then
         curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
         unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip' -d $UnpackPath
@@ -126,7 +126,7 @@ if [ ! -d $UnpackPath ]
         mkdir $UnpackPath
 fi
 
-if [ ! -f '$UnpackPath'"/bin/protoc" ] 
+if [ ! -f "$UnpackPath"'/bin/protoc' ] 
     then
         curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
         unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip' -d $UnpackPath
@@ -136,7 +136,7 @@ fi
 ]
 
 [tasks.gen-move-included-checked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
     'mv "src/generated/checked" "src/generated/checked.old"',
@@ -153,7 +153,7 @@ script = [
 ]
 
 [tasks.gen-move-included-unchecked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
     'mv "src/generated/unchecked" "src/generated/unchecked.old"',
@@ -170,7 +170,7 @@ script = [
 ]
 
 [tasks.gen-move-sample]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
     'mv "samples/addressbook/gen" "samples/addressbook/gen.old"',
@@ -187,7 +187,7 @@ script = [
 ]
 
 [tasks.gen-move-conformance]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
     'mv "src/bin/conformance/gen" "src/bin/conformance/gen.old"',
@@ -231,7 +231,7 @@ dependencies = [
 env = { PATH = '${PATH};${CARGO_MAKE_WORKING_DIRECTORY}\build\protoc\windows\bin;${CARGO_MAKE_WORKING_DIRECTORY}\target\debug' }
 
 [tasks.gen.mac]
-env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/mac/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
+env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/osx/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
 
 [tasks.gen.linux]
 env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/linux/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
@@ -251,10 +251,10 @@ dependencies = [
 ]
 
 [tasks.gen-revert-included-checked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'rm src/generated/checked',
+    'rm -rf src/generated/checked',
     'mv src/generated/checked.old src/generated/checked'
 ]
 
@@ -268,10 +268,10 @@ script = [
 ]
 
 [tasks.gen-revert-included-unchecked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'rm "src/generated/unchecked"',
+    'rm -rf "src/generated/unchecked"',
     'mv "src/generated/unchecked.old" "src/generated/unchecked"'
 ]
 
@@ -285,15 +285,15 @@ script = [
 ]
 
 [tasks.gen-revert-sample]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'rm "samples/addressbook/gen"',
+    'rm -rf "samples/addressbook/gen"',
     'mv "samples/addressbook/gen.old" "samples/addressbook/gen"'
 ]
 
 [tasks.gen-revert-sample.windows]
-script_runner = "powershell"
+script_runner = "/bin/powershell"
 script_extension = "ps1"
 script = [
     'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
@@ -302,15 +302,15 @@ script = [
 ]
 
 [tasks.gen-revert-conformance]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'rm "src/bin/conformance/gen"',
+    'rm -rf "src/bin/conformance/gen"',
     'mv "src/bin/conformance/gen.old" "src/bin/conformance/gen"'
 ]
 
 [tasks.gen-revert-conformance.windows]
-script_runner = "powershell"
+script_runner = "/bin/powershell"
 script_extension = "ps1"
 script = [
     'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
@@ -327,9 +327,9 @@ dependencies = [
 ]
 
 [tasks.gen-commit-included-checked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm "src/generated/checked"' ]
+script = [ 'rm -rf "src/generated/checked"' ]
 
 [tasks.gen-commit-included-checked.windows]
 script_runner = "powershell"
@@ -340,9 +340,9 @@ script = [
 ]
 
 [tasks.gen-commit-included-unchecked]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm "src/generated/unchecked"' ]
+script = [ 'rm -rf "src/generated/unchecked"' ]
 
 [tasks.gen-commit-included-unchecked.windows]
 script_runner = "powershell"
@@ -353,9 +353,9 @@ script = [
 ]
 
 [tasks.gen-commit-sample]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm "samples/addressbook/gen"' ]
+script = [ 'rm -rf "samples/addressbook/gen"' ]
 
 [tasks.gen-commit-sample.windows]
 script_runner = "powershell"
@@ -366,9 +366,9 @@ script = [
 ]
 
 [tasks.gen-commit-conformance]
-script_runner = "bash"
+script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm "src/bin/conformance/gen"' ]
+script = [ 'rm -rf "src/bin/conformance/gen"' ]
 
 [tasks.gen-commit-conformance.windows]
 script_runner = "powershell"
