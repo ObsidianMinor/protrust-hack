@@ -58,10 +58,7 @@ pub fn get_struct_field_name(field: &FieldDescriptor) -> String {
 }
 
 pub fn get_field_default_value_name(field: &FieldDescriptor) -> String {
-    pascal_to_shouty_case(&get_message_type_name(field.message()))
-        + "_"
-        + &field.name().to_ascii_uppercase()
-        + "_DEFAULT_VALUE"
+        field.name().to_ascii_uppercase() + "_DEFAULT_VALUE"
 }
 
 pub fn get_field_codec_name(field: &FieldDescriptor) -> String {
