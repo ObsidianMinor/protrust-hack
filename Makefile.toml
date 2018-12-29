@@ -29,7 +29,7 @@ args = [
 [tasks.gen-included-unchecked]
 command = "protoc"
 args = [
-    "--rust_out=src/generated/checked",
+    "--rust_out=src/generated/unchecked",
     "--rust_opt=pub_fields,crate_name=crate",
     "google/protobuf/any.proto",
     "google/protobuf/api.proto",
