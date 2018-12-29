@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/api.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Api {
     pub name: std::string::String,
@@ -15,12 +14,9 @@ pub struct Api {
     pub syntax: crate::EnumValue<super::google_protobuf_type_proto::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static API_NAME_DEFAULT_VALUE: &'static str = "";
 static API_METHODS_CODEC: crate::Codec<std::boxed::Box<self::Method>> = crate::Codec::message(18);
 static API_OPTIONS_CODEC: crate::Codec<std::boxed::Box<super::google_protobuf_type_proto::Option>> = crate::Codec::message(26);
-static API_VERSION_DEFAULT_VALUE: &'static str = "";
 static API_MIXINS_CODEC: crate::Codec<std::boxed::Box<self::Mixin>> = crate::Codec::message(50);
-static API_SYNTAX_DEFAULT_VALUE: crate::EnumValue<super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(super::google_protobuf_type_proto::Syntax::Proto2);
 impl crate::CodedMessage for self::Api {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -40,14 +36,14 @@ impl crate::CodedMessage for self::Api {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
-        if name != API_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(name)?)?;
         }
         size = size.checked_add(self.methods.calculate_size(&API_METHODS_CODEC)?)?;
         size = size.checked_add(self.options.calculate_size(&API_OPTIONS_CODEC)?)?;
         let version = &self.version;
-        if version != API_VERSION_DEFAULT_VALUE {
+        if version != Self::VERSION_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(version)?)?;
         }
@@ -58,7 +54,7 @@ impl crate::CodedMessage for self::Api {
         }
         size = size.checked_add(self.mixins.calculate_size(&API_MIXINS_CODEC)?)?;
         let syntax = self.syntax;
-        if syntax != API_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
@@ -67,14 +63,14 @@ impl crate::CodedMessage for self::Api {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != API_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
         self.methods.write_to(output, &API_METHODS_CODEC)?;
         self.options.write_to(output, &API_OPTIONS_CODEC)?;
         let version = &self.version;
-        if version != API_VERSION_DEFAULT_VALUE {
+        if version != Self::VERSION_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[34])?;
             output.write_string(version)?;
         }
@@ -85,7 +81,7 @@ impl crate::CodedMessage for self::Api {
         }
         self.mixins.write_to(output, &API_MIXINS_CODEC)?;
         let syntax = self.syntax;
-        if syntax != API_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
@@ -102,7 +98,7 @@ impl crate::LiteMessage for self::Api {
             version: std::string::String::new(),
             source_context: std::option::Option::None,
             mixins: crate::collections::RepeatedField::new(),
-            syntax: API_SYNTAX_DEFAULT_VALUE,
+            syntax: Self::SYNTAX_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -127,18 +123,63 @@ impl crate::Message for self::Api {
 impl self::Api {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'methods' field
     pub const METHODS_FIELD_NUMBER: i32 = 2;
+    pub fn methods(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Method>> {
+        &self.methods
+    }
+    pub fn methods_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Method>> {
+        &mut self.methods
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<super::google_protobuf_type_proto::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<super::google_protobuf_type_proto::Option>> {
+        &mut self.options
+    }
     /// Gets the field number of the 'version' field
     pub const VERSION_FIELD_NUMBER: i32 = 4;
+    pub const VERSION_DEFAULT_VALUE: &'static str = "";
+    pub fn version(&self) -> &std::string::String {
+        &self.version
+    }
+    pub fn version_mut(&mut self) -> &mut std::string::String {
+        &mut self.version
+    }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
+    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &self.source_context
+    }
+    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &mut self.source_context
+    }
     /// Gets the field number of the 'mixins' field
     pub const MIXINS_FIELD_NUMBER: i32 = 6;
+    pub fn mixins(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Mixin>> {
+        &self.mixins
+    }
+    pub fn mixins_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Mixin>> {
+        &mut self.mixins
+    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 7;
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(super::google_protobuf_type_proto::Syntax::Proto2);
+    pub fn syntax(&self) -> &crate::EnumValue<super::google_protobuf_type_proto::Syntax> {
+        &self.syntax
+    }
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<super::google_protobuf_type_proto::Syntax> {
+        &mut self.syntax
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Method {
@@ -151,13 +192,7 @@ pub struct Method {
     pub syntax: crate::EnumValue<super::google_protobuf_type_proto::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static METHOD_NAME_DEFAULT_VALUE: &'static str = "";
-static METHOD_REQUEST_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-static METHOD_REQUEST_STREAMING_DEFAULT_VALUE: bool = false;
-static METHOD_RESPONSE_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-static METHOD_RESPONSE_STREAMING_DEFAULT_VALUE: bool = false;
 static METHOD_OPTIONS_CODEC: crate::Codec<std::boxed::Box<super::google_protobuf_type_proto::Option>> = crate::Codec::message(50);
-static METHOD_SYNTAX_DEFAULT_VALUE: crate::EnumValue<super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(super::google_protobuf_type_proto::Syntax::Proto2);
 impl crate::CodedMessage for self::Method {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -177,33 +212,33 @@ impl crate::CodedMessage for self::Method {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
-        if name != METHOD_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(name)?)?;
         }
         let request_type_url = &self.request_type_url;
-        if request_type_url != METHOD_REQUEST_TYPE_URL_DEFAULT_VALUE {
+        if request_type_url != Self::REQUEST_TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(request_type_url)?)?;
         }
         let request_streaming = self.request_streaming;
-        if request_streaming != METHOD_REQUEST_STREAMING_DEFAULT_VALUE {
+        if request_streaming != Self::REQUEST_STREAMING_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::bool(request_streaming))?;
         }
         let response_type_url = &self.response_type_url;
-        if response_type_url != METHOD_RESPONSE_TYPE_URL_DEFAULT_VALUE {
+        if response_type_url != Self::RESPONSE_TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(response_type_url)?)?;
         }
         let response_streaming = self.response_streaming;
-        if response_streaming != METHOD_RESPONSE_STREAMING_DEFAULT_VALUE {
+        if response_streaming != Self::RESPONSE_STREAMING_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::bool(response_streaming))?;
         }
         size = size.checked_add(self.options.calculate_size(&METHOD_OPTIONS_CODEC)?)?;
         let syntax = self.syntax;
-        if syntax != METHOD_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
@@ -212,33 +247,33 @@ impl crate::CodedMessage for self::Method {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != METHOD_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
         let request_type_url = &self.request_type_url;
-        if request_type_url != METHOD_REQUEST_TYPE_URL_DEFAULT_VALUE {
+        if request_type_url != Self::REQUEST_TYPE_URL_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[18])?;
             output.write_string(request_type_url)?;
         }
         let request_streaming = self.request_streaming;
-        if request_streaming != METHOD_REQUEST_STREAMING_DEFAULT_VALUE {
+        if request_streaming != Self::REQUEST_STREAMING_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[24])?;
             output.write_bool(request_streaming)?;
         }
         let response_type_url = &self.response_type_url;
-        if response_type_url != METHOD_RESPONSE_TYPE_URL_DEFAULT_VALUE {
+        if response_type_url != Self::RESPONSE_TYPE_URL_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[34])?;
             output.write_string(response_type_url)?;
         }
         let response_streaming = self.response_streaming;
-        if response_streaming != METHOD_RESPONSE_STREAMING_DEFAULT_VALUE {
+        if response_streaming != Self::RESPONSE_STREAMING_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[40])?;
             output.write_bool(response_streaming)?;
         }
         self.options.write_to(output, &METHOD_OPTIONS_CODEC)?;
         let syntax = self.syntax;
-        if syntax != METHOD_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
@@ -251,11 +286,11 @@ impl crate::LiteMessage for self::Method {
         Self {
             name: std::string::String::new(),
             request_type_url: std::string::String::new(),
-            request_streaming: METHOD_REQUEST_STREAMING_DEFAULT_VALUE,
+            request_streaming: Self::REQUEST_STREAMING_DEFAULT_VALUE,
             response_type_url: std::string::String::new(),
-            response_streaming: METHOD_RESPONSE_STREAMING_DEFAULT_VALUE,
+            response_streaming: Self::RESPONSE_STREAMING_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
-            syntax: METHOD_SYNTAX_DEFAULT_VALUE,
+            syntax: Self::SYNTAX_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -278,18 +313,66 @@ impl crate::Message for self::Method {
 impl self::Method {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'request_type_url' field
     pub const REQUEST_TYPE_URL_FIELD_NUMBER: i32 = 2;
+    pub const REQUEST_TYPE_URL_DEFAULT_VALUE: &'static str = "";
+    pub fn request_type_url(&self) -> &std::string::String {
+        &self.request_type_url
+    }
+    pub fn request_type_url_mut(&mut self) -> &mut std::string::String {
+        &mut self.request_type_url
+    }
     /// Gets the field number of the 'request_streaming' field
     pub const REQUEST_STREAMING_FIELD_NUMBER: i32 = 3;
+    pub const REQUEST_STREAMING_DEFAULT_VALUE: bool = false;
+    pub fn request_streaming(&self) -> &bool {
+        &self.request_streaming
+    }
+    pub fn request_streaming_mut(&mut self) -> &mut bool {
+        &mut self.request_streaming
+    }
     /// Gets the field number of the 'response_type_url' field
     pub const RESPONSE_TYPE_URL_FIELD_NUMBER: i32 = 4;
+    pub const RESPONSE_TYPE_URL_DEFAULT_VALUE: &'static str = "";
+    pub fn response_type_url(&self) -> &std::string::String {
+        &self.response_type_url
+    }
+    pub fn response_type_url_mut(&mut self) -> &mut std::string::String {
+        &mut self.response_type_url
+    }
     /// Gets the field number of the 'response_streaming' field
     pub const RESPONSE_STREAMING_FIELD_NUMBER: i32 = 5;
+    pub const RESPONSE_STREAMING_DEFAULT_VALUE: bool = false;
+    pub fn response_streaming(&self) -> &bool {
+        &self.response_streaming
+    }
+    pub fn response_streaming_mut(&mut self) -> &mut bool {
+        &mut self.response_streaming
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 6;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<super::google_protobuf_type_proto::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<super::google_protobuf_type_proto::Option>> {
+        &mut self.options
+    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 7;
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(super::google_protobuf_type_proto::Syntax::Proto2);
+    pub fn syntax(&self) -> &crate::EnumValue<super::google_protobuf_type_proto::Syntax> {
+        &self.syntax
+    }
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<super::google_protobuf_type_proto::Syntax> {
+        &mut self.syntax
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Mixin {
@@ -297,8 +380,6 @@ pub struct Mixin {
     pub root: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
 }
-static MIXIN_NAME_DEFAULT_VALUE: &'static str = "";
-static MIXIN_ROOT_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::Mixin {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -313,12 +394,12 @@ impl crate::CodedMessage for self::Mixin {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
-        if name != MIXIN_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(name)?)?;
         }
         let root = &self.root;
-        if root != MIXIN_ROOT_DEFAULT_VALUE {
+        if root != Self::ROOT_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(root)?)?;
         }
@@ -327,12 +408,12 @@ impl crate::CodedMessage for self::Mixin {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != MIXIN_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
         let root = &self.root;
-        if root != MIXIN_ROOT_DEFAULT_VALUE {
+        if root != Self::ROOT_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[18])?;
             output.write_string(root)?;
         }
@@ -362,6 +443,20 @@ impl crate::Message for self::Mixin {
 impl self::Mixin {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'root' field
     pub const ROOT_FIELD_NUMBER: i32 = 2;
+    pub const ROOT_DEFAULT_VALUE: &'static str = "";
+    pub fn root(&self) -> &std::string::String {
+        &self.root
+    }
+    pub fn root_mut(&mut self) -> &mut std::string::String {
+        &mut self.root
+    }
 }

@@ -3,15 +3,12 @@
 //! 
 //! Source: google/protobuf/timestamp.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,
     _unknown_fields: crate::UnknownFieldSet
 }
-static TIMESTAMP_SECONDS_DEFAULT_VALUE: i64 = 0;
-static TIMESTAMP_NANOS_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::Timestamp {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -26,12 +23,12 @@ impl crate::CodedMessage for self::Timestamp {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let seconds = self.seconds;
-        if seconds != TIMESTAMP_SECONDS_DEFAULT_VALUE {
+        if seconds != Self::SECONDS_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int64(seconds);
         }
         let nanos = self.nanos;
-        if nanos != TIMESTAMP_NANOS_DEFAULT_VALUE {
+        if nanos != Self::NANOS_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int32(nanos);
         }
@@ -40,12 +37,12 @@ impl crate::CodedMessage for self::Timestamp {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let seconds = self.seconds;
-        if seconds != TIMESTAMP_SECONDS_DEFAULT_VALUE {
+        if seconds != Self::SECONDS_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_int64(seconds)?;
         }
         let nanos = self.nanos;
-        if nanos != TIMESTAMP_NANOS_DEFAULT_VALUE {
+        if nanos != Self::NANOS_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[16])?;
             output.write_int32(nanos)?;
         }
@@ -56,8 +53,8 @@ impl crate::CodedMessage for self::Timestamp {
 impl crate::LiteMessage for self::Timestamp {
     fn new() -> Self {
         Self {
-            seconds: TIMESTAMP_SECONDS_DEFAULT_VALUE,
-            nanos: TIMESTAMP_NANOS_DEFAULT_VALUE,
+            seconds: Self::SECONDS_DEFAULT_VALUE,
+            nanos: Self::NANOS_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -75,6 +72,20 @@ impl crate::Message for self::Timestamp {
 impl self::Timestamp {
     /// Gets the field number of the 'seconds' field
     pub const SECONDS_FIELD_NUMBER: i32 = 1;
+    pub const SECONDS_DEFAULT_VALUE: i64 = 0;
+    pub fn seconds(&self) -> &i64 {
+        &self.seconds
+    }
+    pub fn seconds_mut(&mut self) -> &mut i64 {
+        &mut self.seconds
+    }
     /// Gets the field number of the 'nanos' field
     pub const NANOS_FIELD_NUMBER: i32 = 2;
+    pub const NANOS_DEFAULT_VALUE: i32 = 0;
+    pub fn nanos(&self) -> &i32 {
+        &self.nanos
+    }
+    pub fn nanos_mut(&mut self) -> &mut i32 {
+        &mut self.nanos
+    }
 }

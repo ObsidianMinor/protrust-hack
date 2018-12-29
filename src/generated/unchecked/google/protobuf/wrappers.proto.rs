@@ -3,13 +3,11 @@
 //! 
 //! Source: google/protobuf/wrappers.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct DoubleValue {
     pub value: f64,
     _unknown_fields: crate::UnknownFieldSet
 }
-static DOUBLE_VALUE_VALUE_DEFAULT_VALUE: f64 = 0.0;
 impl crate::CodedMessage for self::DoubleValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -23,7 +21,7 @@ impl crate::CodedMessage for self::DoubleValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != DOUBLE_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::double(value);
         }
@@ -32,7 +30,7 @@ impl crate::CodedMessage for self::DoubleValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != DOUBLE_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[9])?;
             output.write_double(value)?;
         }
@@ -43,7 +41,7 @@ impl crate::CodedMessage for self::DoubleValue {
 impl crate::LiteMessage for self::DoubleValue {
     fn new() -> Self {
         Self {
-            value: DOUBLE_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -60,13 +58,19 @@ impl crate::Message for self::DoubleValue {
 impl self::DoubleValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: f64 = 0.0;
+    pub fn value(&self) -> &f64 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut f64 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct FloatValue {
     pub value: f32,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FLOAT_VALUE_VALUE_DEFAULT_VALUE: f32 = 0.0;
 impl crate::CodedMessage for self::FloatValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -80,7 +84,7 @@ impl crate::CodedMessage for self::FloatValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != FLOAT_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::float(value);
         }
@@ -89,7 +93,7 @@ impl crate::CodedMessage for self::FloatValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != FLOAT_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[13])?;
             output.write_float(value)?;
         }
@@ -100,7 +104,7 @@ impl crate::CodedMessage for self::FloatValue {
 impl crate::LiteMessage for self::FloatValue {
     fn new() -> Self {
         Self {
-            value: FLOAT_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -117,13 +121,19 @@ impl crate::Message for self::FloatValue {
 impl self::FloatValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: f32 = 0.0;
+    pub fn value(&self) -> &f32 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut f32 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Int64Value {
     pub value: i64,
     _unknown_fields: crate::UnknownFieldSet
 }
-static INT64_VALUE_VALUE_DEFAULT_VALUE: i64 = 0;
 impl crate::CodedMessage for self::Int64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -137,7 +147,7 @@ impl crate::CodedMessage for self::Int64Value {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != INT64_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int64(value);
         }
@@ -146,7 +156,7 @@ impl crate::CodedMessage for self::Int64Value {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != INT64_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_int64(value)?;
         }
@@ -157,7 +167,7 @@ impl crate::CodedMessage for self::Int64Value {
 impl crate::LiteMessage for self::Int64Value {
     fn new() -> Self {
         Self {
-            value: INT64_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -174,13 +184,19 @@ impl crate::Message for self::Int64Value {
 impl self::Int64Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: i64 = 0;
+    pub fn value(&self) -> &i64 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut i64 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct UInt64Value {
     pub value: u64,
     _unknown_fields: crate::UnknownFieldSet
 }
-static U_INT64_VALUE_VALUE_DEFAULT_VALUE: u64 = 0;
 impl crate::CodedMessage for self::UInt64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -194,7 +210,7 @@ impl crate::CodedMessage for self::UInt64Value {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != U_INT64_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::uint64(value);
         }
@@ -203,7 +219,7 @@ impl crate::CodedMessage for self::UInt64Value {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != U_INT64_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_uint64(value)?;
         }
@@ -214,7 +230,7 @@ impl crate::CodedMessage for self::UInt64Value {
 impl crate::LiteMessage for self::UInt64Value {
     fn new() -> Self {
         Self {
-            value: U_INT64_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -231,13 +247,19 @@ impl crate::Message for self::UInt64Value {
 impl self::UInt64Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: u64 = 0;
+    pub fn value(&self) -> &u64 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut u64 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Int32Value {
     pub value: i32,
     _unknown_fields: crate::UnknownFieldSet
 }
-static INT32_VALUE_VALUE_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::Int32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -251,7 +273,7 @@ impl crate::CodedMessage for self::Int32Value {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != INT32_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int32(value);
         }
@@ -260,7 +282,7 @@ impl crate::CodedMessage for self::Int32Value {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != INT32_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_int32(value)?;
         }
@@ -271,7 +293,7 @@ impl crate::CodedMessage for self::Int32Value {
 impl crate::LiteMessage for self::Int32Value {
     fn new() -> Self {
         Self {
-            value: INT32_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -288,13 +310,19 @@ impl crate::Message for self::Int32Value {
 impl self::Int32Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: i32 = 0;
+    pub fn value(&self) -> &i32 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut i32 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct UInt32Value {
     pub value: u32,
     _unknown_fields: crate::UnknownFieldSet
 }
-static U_INT32_VALUE_VALUE_DEFAULT_VALUE: u32 = 0;
 impl crate::CodedMessage for self::UInt32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -308,7 +336,7 @@ impl crate::CodedMessage for self::UInt32Value {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != U_INT32_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::uint32(value);
         }
@@ -317,7 +345,7 @@ impl crate::CodedMessage for self::UInt32Value {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != U_INT32_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_uint32(value)?;
         }
@@ -328,7 +356,7 @@ impl crate::CodedMessage for self::UInt32Value {
 impl crate::LiteMessage for self::UInt32Value {
     fn new() -> Self {
         Self {
-            value: U_INT32_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -345,13 +373,19 @@ impl crate::Message for self::UInt32Value {
 impl self::UInt32Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: u32 = 0;
+    pub fn value(&self) -> &u32 {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut u32 {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct BoolValue {
     pub value: bool,
     _unknown_fields: crate::UnknownFieldSet
 }
-static BOOL_VALUE_VALUE_DEFAULT_VALUE: bool = false;
 impl crate::CodedMessage for self::BoolValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -365,7 +399,7 @@ impl crate::CodedMessage for self::BoolValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = self.value;
-        if value != BOOL_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::bool(value);
         }
@@ -374,7 +408,7 @@ impl crate::CodedMessage for self::BoolValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
-        if value != BOOL_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_bool(value)?;
         }
@@ -385,7 +419,7 @@ impl crate::CodedMessage for self::BoolValue {
 impl crate::LiteMessage for self::BoolValue {
     fn new() -> Self {
         Self {
-            value: BOOL_VALUE_VALUE_DEFAULT_VALUE,
+            value: Self::VALUE_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -402,13 +436,19 @@ impl crate::Message for self::BoolValue {
 impl self::BoolValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: bool = false;
+    pub fn value(&self) -> &bool {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut bool {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct StringValue {
     pub value: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
 }
-static STRING_VALUE_VALUE_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::StringValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -422,7 +462,7 @@ impl crate::CodedMessage for self::StringValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = &self.value;
-        if value != STRING_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(value);
         }
@@ -431,7 +471,7 @@ impl crate::CodedMessage for self::StringValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = &self.value;
-        if value != STRING_VALUE_VALUE_DEFAULT_VALUE {
+        if value != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(value)?;
         }
@@ -459,13 +499,19 @@ impl crate::Message for self::StringValue {
 impl self::StringValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: &'static str = "";
+    pub fn value(&self) -> &std::string::String {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut std::string::String {
+        &mut self.value
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct BytesValue {
     pub value: std::vec::Vec<u8>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static BYTES_VALUE_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
 impl crate::CodedMessage for self::BytesValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -479,7 +525,7 @@ impl crate::CodedMessage for self::BytesValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let value = &self.value;
-        if value.as_slice() != BYTES_VALUE_VALUE_DEFAULT_VALUE {
+        if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::bytes(value);
         }
@@ -488,7 +534,7 @@ impl crate::CodedMessage for self::BytesValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = &self.value;
-        if value.as_slice() != BYTES_VALUE_VALUE_DEFAULT_VALUE {
+        if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_bytes(value)?;
         }
@@ -516,4 +562,11 @@ impl crate::Message for self::BytesValue {
 impl self::BytesValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
+    pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn value(&self) -> &std::vec::Vec<u8> {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut std::vec::Vec<u8> {
+        &mut self.value
+    }
 }

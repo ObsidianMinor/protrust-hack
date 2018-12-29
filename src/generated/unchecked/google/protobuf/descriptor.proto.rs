@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/descriptor.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct FileDescriptorSet {
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::FileDescriptorProto>>,
@@ -69,8 +68,6 @@ pub struct FileDescriptorProto {
     pub syntax: std::option::Option<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FILE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
-static FILE_DESCRIPTOR_PROTO_PACKAGE_DEFAULT_VALUE: &'static str = "";
 static FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
 static FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(80);
 static FILE_DESCRIPTOR_PROTO_WEAK_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(88);
@@ -78,7 +75,6 @@ static FILE_DESCRIPTOR_PROTO_MESSAGE_TYPE_CODEC: crate::Codec<std::boxed::Box<se
 static FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto>> = crate::Codec::message(42);
 static FILE_DESCRIPTOR_PROTO_SERVICE_CODEC: crate::Codec<std::boxed::Box<self::ServiceDescriptorProto>> = crate::Codec::message(50);
 static FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(58);
-static FILE_DESCRIPTOR_PROTO_SYNTAX_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::FileDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -104,14 +100,14 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != FILE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
         }
         let package = &self.package;
         if let std::option::Option::Some(package) = package {
-            if package != FILE_DESCRIPTOR_PROTO_PACKAGE_DEFAULT_VALUE {
+            if package != Self::PACKAGE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(package);
             }
@@ -135,7 +131,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         }
         let syntax = &self.syntax;
         if let std::option::Option::Some(syntax) = syntax {
-            if syntax != FILE_DESCRIPTOR_PROTO_SYNTAX_DEFAULT_VALUE {
+            if syntax != Self::SYNTAX_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(syntax);
             }
@@ -146,14 +142,14 @@ impl crate::CodedMessage for self::FileDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != FILE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
         }
         let package = &self.package;
         if let std::option::Option::Some(package) = package {
-            if package != FILE_DESCRIPTOR_PROTO_PACKAGE_DEFAULT_VALUE {
+            if package != Self::PACKAGE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(package)?;
             }
@@ -177,7 +173,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         }
         let syntax = &self.syntax;
         if let std::option::Option::Some(syntax) = syntax {
-            if syntax != FILE_DESCRIPTOR_PROTO_SYNTAX_DEFAULT_VALUE {
+            if syntax != Self::SYNTAX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[98])?;
                 output.write_string(syntax)?;
             }
@@ -232,8 +228,10 @@ impl crate::Message for self::FileDescriptorProto {
 impl self::FileDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'package' field
     pub const PACKAGE_FIELD_NUMBER: i32 = 2;
+    pub const PACKAGE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'dependency' field
     pub const DEPENDENCY_FIELD_NUMBER: i32 = 3;
     /// Gets the field number of the 'public_dependency' field
@@ -254,6 +252,7 @@ impl self::FileDescriptorProto {
     pub const SOURCE_CODE_INFO_FIELD_NUMBER: i32 = 9;
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 12;
+    pub const SYNTAX_DEFAULT_VALUE: &'static str = "";
 }
 #[derive(Clone, PartialEq)]
 pub struct DescriptorProto {
@@ -269,7 +268,6 @@ pub struct DescriptorProto {
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
 static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(18);
 static DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(50);
 static DESCRIPTOR_PROTO_NESTED_TYPE_CODEC: crate::Codec<std::boxed::Box<self::DescriptorProto>> = crate::Codec::message(26);
@@ -301,7 +299,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
@@ -325,7 +323,7 @@ impl crate::CodedMessage for self::DescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
@@ -387,6 +385,7 @@ impl crate::Message for self::DescriptorProto {
 impl self::DescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'field' field
     pub const FIELD_FIELD_NUMBER: i32 = 2;
     /// Gets the field number of the 'extension' field
@@ -413,8 +412,6 @@ pub struct DescriptorProto_ExtensionRange {
     pub options: std::option::Option<std::boxed::Box<self::ExtensionRangeOptions>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static DESCRIPTOR_PROTO__EXTENSION_RANGE_START_DEFAULT_VALUE: i32 = 0;
-static DESCRIPTOR_PROTO__EXTENSION_RANGE_END_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -431,14 +428,14 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         let mut size = 0i32;
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != DESCRIPTOR_PROTO__EXTENSION_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(start);
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != DESCRIPTOR_PROTO__EXTENSION_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(end);
             }
@@ -454,14 +451,14 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != DESCRIPTOR_PROTO__EXTENSION_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_int32(start)?;
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != DESCRIPTOR_PROTO__EXTENSION_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_int32(end)?;
             }
@@ -501,8 +498,10 @@ impl crate::Message for self::DescriptorProto_ExtensionRange {
 impl self::DescriptorProto_ExtensionRange {
     /// Gets the field number of the 'start' field
     pub const START_FIELD_NUMBER: i32 = 1;
+    pub const START_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'end' field
     pub const END_FIELD_NUMBER: i32 = 2;
+    pub const END_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
 }
@@ -512,8 +511,6 @@ pub struct DescriptorProto_ReservedRange {
     pub end: std::option::Option<i32>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static DESCRIPTOR_PROTO__RESERVED_RANGE_START_DEFAULT_VALUE: i32 = 0;
-static DESCRIPTOR_PROTO__RESERVED_RANGE_END_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -529,14 +526,14 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
         let mut size = 0i32;
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != DESCRIPTOR_PROTO__RESERVED_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(start);
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != DESCRIPTOR_PROTO__RESERVED_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(end);
             }
@@ -547,14 +544,14 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != DESCRIPTOR_PROTO__RESERVED_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_int32(start)?;
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != DESCRIPTOR_PROTO__RESERVED_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_int32(end)?;
             }
@@ -585,8 +582,10 @@ impl crate::Message for self::DescriptorProto_ReservedRange {
 impl self::DescriptorProto_ReservedRange {
     /// Gets the field number of the 'start' field
     pub const START_FIELD_NUMBER: i32 = 1;
+    pub const START_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'end' field
     pub const END_FIELD_NUMBER: i32 = 2;
+    pub const END_DEFAULT_VALUE: i32 = 0;
 }
 #[derive(Clone, PartialEq)]
 pub struct ExtensionRangeOptions {
@@ -651,15 +650,6 @@ pub struct FieldDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::FieldOptions>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FIELD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
-static FIELD_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE: i32 = 0;
-static FIELD_DESCRIPTOR_PROTO_LABEL_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Label> = crate::EnumValue::Undefined(0);
-static FIELD_DESCRIPTOR_PROTO_TYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Type> = crate::EnumValue::Undefined(0);
-static FIELD_DESCRIPTOR_PROTO_TYPE_NAME_DEFAULT_VALUE: &'static str = "";
-static FIELD_DESCRIPTOR_PROTO_EXTENDEE_DEFAULT_VALUE: &'static str = "";
-static FIELD_DESCRIPTOR_PROTO_DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-static FIELD_DESCRIPTOR_PROTO_ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-static FIELD_DESCRIPTOR_PROTO_JSON_NAME_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::FieldDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -683,63 +673,63 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != FIELD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
         }
         let number = self.number;
         if let std::option::Option::Some(number) = number {
-            if number != FIELD_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE {
+            if number != Self::NUMBER_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(number);
             }
         }
         let label = self.label;
         if let std::option::Option::Some(label) = label {
-            if label != FIELD_DESCRIPTOR_PROTO_LABEL_DEFAULT_VALUE {
+            if label != Self::LABEL_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::enum_value(label);
             }
         }
         let r#type = self.r#type;
         if let std::option::Option::Some(r#type) = r#type {
-            if r#type != FIELD_DESCRIPTOR_PROTO_TYPE_DEFAULT_VALUE {
+            if r#type != Self::TYPE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::enum_value(r#type);
             }
         }
         let type_name = &self.type_name;
         if let std::option::Option::Some(type_name) = type_name {
-            if type_name != FIELD_DESCRIPTOR_PROTO_TYPE_NAME_DEFAULT_VALUE {
+            if type_name != Self::TYPE_NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(type_name);
             }
         }
         let extendee = &self.extendee;
         if let std::option::Option::Some(extendee) = extendee {
-            if extendee != FIELD_DESCRIPTOR_PROTO_EXTENDEE_DEFAULT_VALUE {
+            if extendee != Self::EXTENDEE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(extendee);
             }
         }
         let default_value = &self.default_value;
         if let std::option::Option::Some(default_value) = default_value {
-            if default_value != FIELD_DESCRIPTOR_PROTO_DEFAULT_VALUE_DEFAULT_VALUE {
+            if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(default_value);
             }
         }
         let oneof_index = self.oneof_index;
         if let std::option::Option::Some(oneof_index) = oneof_index {
-            if oneof_index != FIELD_DESCRIPTOR_PROTO_ONEOF_INDEX_DEFAULT_VALUE {
+            if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(oneof_index);
             }
         }
         let json_name = &self.json_name;
         if let std::option::Option::Some(json_name) = json_name {
-            if json_name != FIELD_DESCRIPTOR_PROTO_JSON_NAME_DEFAULT_VALUE {
+            if json_name != Self::JSON_NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(json_name);
             }
@@ -755,63 +745,63 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != FIELD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
         }
         let number = self.number;
         if let std::option::Option::Some(number) = number {
-            if number != FIELD_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE {
+            if number != Self::NUMBER_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_int32(number)?;
             }
         }
         let label = self.label;
         if let std::option::Option::Some(label) = label {
-            if label != FIELD_DESCRIPTOR_PROTO_LABEL_DEFAULT_VALUE {
+            if label != Self::LABEL_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[32])?;
                 output.write_enum_value(label)?;
             }
         }
         let r#type = self.r#type;
         if let std::option::Option::Some(r#type) = r#type {
-            if r#type != FIELD_DESCRIPTOR_PROTO_TYPE_DEFAULT_VALUE {
+            if r#type != Self::TYPE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[40])?;
                 output.write_enum_value(r#type)?;
             }
         }
         let type_name = &self.type_name;
         if let std::option::Option::Some(type_name) = type_name {
-            if type_name != FIELD_DESCRIPTOR_PROTO_TYPE_NAME_DEFAULT_VALUE {
+            if type_name != Self::TYPE_NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[50])?;
                 output.write_string(type_name)?;
             }
         }
         let extendee = &self.extendee;
         if let std::option::Option::Some(extendee) = extendee {
-            if extendee != FIELD_DESCRIPTOR_PROTO_EXTENDEE_DEFAULT_VALUE {
+            if extendee != Self::EXTENDEE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(extendee)?;
             }
         }
         let default_value = &self.default_value;
         if let std::option::Option::Some(default_value) = default_value {
-            if default_value != FIELD_DESCRIPTOR_PROTO_DEFAULT_VALUE_DEFAULT_VALUE {
+            if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[58])?;
                 output.write_string(default_value)?;
             }
         }
         let oneof_index = self.oneof_index;
         if let std::option::Option::Some(oneof_index) = oneof_index {
-            if oneof_index != FIELD_DESCRIPTOR_PROTO_ONEOF_INDEX_DEFAULT_VALUE {
+            if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[72])?;
                 output.write_int32(oneof_index)?;
             }
         }
         let json_name = &self.json_name;
         if let std::option::Option::Some(json_name) = json_name {
-            if json_name != FIELD_DESCRIPTOR_PROTO_JSON_NAME_DEFAULT_VALUE {
+            if json_name != Self::JSON_NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[82])?;
                 output.write_string(json_name)?;
             }
@@ -865,22 +855,31 @@ impl crate::Message for self::FieldDescriptorProto {
 impl self::FieldDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 3;
+    pub const NUMBER_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'label' field
     pub const LABEL_FIELD_NUMBER: i32 = 4;
+    pub const LABEL_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Label> = crate::EnumValue::Undefined(0);
     /// Gets the field number of the 'type' field
     pub const TYPE_FIELD_NUMBER: i32 = 5;
+    pub const TYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Type> = crate::EnumValue::Undefined(0);
     /// Gets the field number of the 'type_name' field
     pub const TYPE_NAME_FIELD_NUMBER: i32 = 6;
+    pub const TYPE_NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'extendee' field
     pub const EXTENDEE_FIELD_NUMBER: i32 = 2;
+    pub const EXTENDEE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'default_value' field
     pub const DEFAULT_VALUE_FIELD_NUMBER: i32 = 7;
+    pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'oneof_index' field
     pub const ONEOF_INDEX_FIELD_NUMBER: i32 = 9;
+    pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'json_name' field
     pub const JSON_NAME_FIELD_NUMBER: i32 = 10;
+    pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
 }
@@ -966,7 +965,6 @@ pub struct OneofDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::OneofOptions>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ONEOF_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::OneofDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -982,7 +980,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ONEOF_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
@@ -998,7 +996,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ONEOF_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
@@ -1036,6 +1034,7 @@ impl crate::Message for self::OneofDescriptorProto {
 impl self::OneofDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 2;
 }
@@ -1048,7 +1047,6 @@ pub struct EnumDescriptorProto {
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
 static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<std::boxed::Box<self::EnumValueDescriptorProto>> = crate::Codec::message(18);
 static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto_EnumReservedRange>> = crate::Codec::message(34);
 static ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC: crate::Codec<std::string::String> = crate::Codec::string(42);
@@ -1070,7 +1068,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ENUM_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
@@ -1089,7 +1087,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ENUM_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
@@ -1136,6 +1134,7 @@ impl crate::Message for self::EnumDescriptorProto {
 impl self::EnumDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
     /// Gets the field number of the 'options' field
@@ -1151,8 +1150,6 @@ pub struct EnumDescriptorProto_EnumReservedRange {
     pub end: std::option::Option<i32>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_START_DEFAULT_VALUE: i32 = 0;
-static ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_END_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -1168,14 +1165,14 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
         let mut size = 0i32;
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(start);
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(end);
             }
@@ -1186,14 +1183,14 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let start = self.start;
         if let std::option::Option::Some(start) = start {
-            if start != ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_START_DEFAULT_VALUE {
+            if start != Self::START_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_int32(start)?;
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != ENUM_DESCRIPTOR_PROTO__ENUM_RESERVED_RANGE_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_int32(end)?;
             }
@@ -1224,8 +1221,10 @@ impl crate::Message for self::EnumDescriptorProto_EnumReservedRange {
 impl self::EnumDescriptorProto_EnumReservedRange {
     /// Gets the field number of the 'start' field
     pub const START_FIELD_NUMBER: i32 = 1;
+    pub const START_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'end' field
     pub const END_FIELD_NUMBER: i32 = 2;
+    pub const END_DEFAULT_VALUE: i32 = 0;
 }
 #[derive(Clone, PartialEq)]
 pub struct EnumValueDescriptorProto {
@@ -1234,8 +1233,6 @@ pub struct EnumValueDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::EnumValueOptions>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_VALUE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
-static ENUM_VALUE_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::EnumValueDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -1252,14 +1249,14 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ENUM_VALUE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
         }
         let number = self.number;
         if let std::option::Option::Some(number) = number {
-            if number != ENUM_VALUE_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE {
+            if number != Self::NUMBER_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(number);
             }
@@ -1275,14 +1272,14 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != ENUM_VALUE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
         }
         let number = self.number;
         if let std::option::Option::Some(number) = number {
-            if number != ENUM_VALUE_DESCRIPTOR_PROTO_NUMBER_DEFAULT_VALUE {
+            if number != Self::NUMBER_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_int32(number)?;
             }
@@ -1322,8 +1319,10 @@ impl crate::Message for self::EnumValueDescriptorProto {
 impl self::EnumValueDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 2;
+    pub const NUMBER_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
 }
@@ -1334,7 +1333,6 @@ pub struct ServiceDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::ServiceOptions>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static SERVICE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
 static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<std::boxed::Box<self::MethodDescriptorProto>> = crate::Codec::message(18);
 impl crate::CodedMessage for self::ServiceDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1352,7 +1350,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != SERVICE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
@@ -1369,7 +1367,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != SERVICE_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
@@ -1410,6 +1408,7 @@ impl crate::Message for self::ServiceDescriptorProto {
 impl self::ServiceDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'method' field
     pub const METHOD_FIELD_NUMBER: i32 = 2;
     /// Gets the field number of the 'options' field
@@ -1425,11 +1424,6 @@ pub struct MethodDescriptorProto {
     pub server_streaming: std::option::Option<bool>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static METHOD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE: &'static str = "";
-static METHOD_DESCRIPTOR_PROTO_INPUT_TYPE_DEFAULT_VALUE: &'static str = "";
-static METHOD_DESCRIPTOR_PROTO_OUTPUT_TYPE_DEFAULT_VALUE: &'static str = "";
-static METHOD_DESCRIPTOR_PROTO_CLIENT_STREAMING_DEFAULT_VALUE: bool = false;
-static METHOD_DESCRIPTOR_PROTO_SERVER_STREAMING_DEFAULT_VALUE: bool = false;
 impl crate::CodedMessage for self::MethodDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -1449,21 +1443,21 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != METHOD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
         }
         let input_type = &self.input_type;
         if let std::option::Option::Some(input_type) = input_type {
-            if input_type != METHOD_DESCRIPTOR_PROTO_INPUT_TYPE_DEFAULT_VALUE {
+            if input_type != Self::INPUT_TYPE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(input_type);
             }
         }
         let output_type = &self.output_type;
         if let std::option::Option::Some(output_type) = output_type {
-            if output_type != METHOD_DESCRIPTOR_PROTO_OUTPUT_TYPE_DEFAULT_VALUE {
+            if output_type != Self::OUTPUT_TYPE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(output_type);
             }
@@ -1475,14 +1469,14 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         }
         let client_streaming = self.client_streaming;
         if let std::option::Option::Some(client_streaming) = client_streaming {
-            if client_streaming != METHOD_DESCRIPTOR_PROTO_CLIENT_STREAMING_DEFAULT_VALUE {
+            if client_streaming != Self::CLIENT_STREAMING_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(client_streaming);
             }
         }
         let server_streaming = self.server_streaming;
         if let std::option::Option::Some(server_streaming) = server_streaming {
-            if server_streaming != METHOD_DESCRIPTOR_PROTO_SERVER_STREAMING_DEFAULT_VALUE {
+            if server_streaming != Self::SERVER_STREAMING_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(server_streaming);
             }
@@ -1493,21 +1487,21 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != METHOD_DESCRIPTOR_PROTO_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
         }
         let input_type = &self.input_type;
         if let std::option::Option::Some(input_type) = input_type {
-            if input_type != METHOD_DESCRIPTOR_PROTO_INPUT_TYPE_DEFAULT_VALUE {
+            if input_type != Self::INPUT_TYPE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(input_type)?;
             }
         }
         let output_type = &self.output_type;
         if let std::option::Option::Some(output_type) = output_type {
-            if output_type != METHOD_DESCRIPTOR_PROTO_OUTPUT_TYPE_DEFAULT_VALUE {
+            if output_type != Self::OUTPUT_TYPE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[26])?;
                 output.write_string(output_type)?;
             }
@@ -1519,14 +1513,14 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         }
         let client_streaming = self.client_streaming;
         if let std::option::Option::Some(client_streaming) = client_streaming {
-            if client_streaming != METHOD_DESCRIPTOR_PROTO_CLIENT_STREAMING_DEFAULT_VALUE {
+            if client_streaming != Self::CLIENT_STREAMING_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[40])?;
                 output.write_bool(client_streaming)?;
             }
         }
         let server_streaming = self.server_streaming;
         if let std::option::Option::Some(server_streaming) = server_streaming {
-            if server_streaming != METHOD_DESCRIPTOR_PROTO_SERVER_STREAMING_DEFAULT_VALUE {
+            if server_streaming != Self::SERVER_STREAMING_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[48])?;
                 output.write_bool(server_streaming)?;
             }
@@ -1567,16 +1561,21 @@ impl crate::Message for self::MethodDescriptorProto {
 impl self::MethodDescriptorProto {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'input_type' field
     pub const INPUT_TYPE_FIELD_NUMBER: i32 = 2;
+    pub const INPUT_TYPE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'output_type' field
     pub const OUTPUT_TYPE_FIELD_NUMBER: i32 = 3;
+    pub const OUTPUT_TYPE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
     /// Gets the field number of the 'client_streaming' field
     pub const CLIENT_STREAMING_FIELD_NUMBER: i32 = 5;
+    pub const CLIENT_STREAMING_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'server_streaming' field
     pub const SERVER_STREAMING_FIELD_NUMBER: i32 = 6;
+    pub const SERVER_STREAMING_DEFAULT_VALUE: bool = false;
 }
 #[derive(Clone, PartialEq)]
 pub struct FileOptions {
@@ -1603,26 +1602,6 @@ pub struct FileOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FILE_OPTIONS_JAVA_PACKAGE_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_JAVA_OUTER_CLASSNAME_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_JAVA_MULTIPLE_FILES_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::FileOptions_OptimizeMode> = crate::EnumValue::Defined(self::FileOptions_OptimizeMode::Speed);
-static FILE_OPTIONS_GO_PACKAGE_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_CC_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_JAVA_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_PY_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_PHP_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_CC_ENABLE_ARENAS_DEFAULT_VALUE: bool = false;
-static FILE_OPTIONS_OBJC_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_CSHARP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_SWIFT_PREFIX_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_PHP_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_PHP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_PHP_METADATA_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-static FILE_OPTIONS_RUBY_PACKAGE_DEFAULT_VALUE: &'static str = "";
 static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FileOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1658,140 +1637,140 @@ impl crate::CodedMessage for self::FileOptions {
         let mut size = 0i32;
         let java_package = &self.java_package;
         if let std::option::Option::Some(java_package) = java_package {
-            if java_package != FILE_OPTIONS_JAVA_PACKAGE_DEFAULT_VALUE {
+            if java_package != Self::JAVA_PACKAGE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(java_package);
             }
         }
         let java_outer_classname = &self.java_outer_classname;
         if let std::option::Option::Some(java_outer_classname) = java_outer_classname {
-            if java_outer_classname != FILE_OPTIONS_JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
+            if java_outer_classname != Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(java_outer_classname);
             }
         }
         let java_multiple_files = self.java_multiple_files;
         if let std::option::Option::Some(java_multiple_files) = java_multiple_files {
-            if java_multiple_files != FILE_OPTIONS_JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
+            if java_multiple_files != Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(java_multiple_files);
             }
         }
         let java_generate_equals_and_hash = self.java_generate_equals_and_hash;
         if let std::option::Option::Some(java_generate_equals_and_hash) = java_generate_equals_and_hash {
-            if java_generate_equals_and_hash != FILE_OPTIONS_JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
+            if java_generate_equals_and_hash != Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(java_generate_equals_and_hash);
             }
         }
         let java_string_check_utf8 = self.java_string_check_utf8;
         if let std::option::Option::Some(java_string_check_utf8) = java_string_check_utf8 {
-            if java_string_check_utf8 != FILE_OPTIONS_JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
+            if java_string_check_utf8 != Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(java_string_check_utf8);
             }
         }
         let optimize_for = self.optimize_for;
         if let std::option::Option::Some(optimize_for) = optimize_for {
-            if optimize_for != FILE_OPTIONS_OPTIMIZE_FOR_DEFAULT_VALUE {
+            if optimize_for != Self::OPTIMIZE_FOR_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::enum_value(optimize_for);
             }
         }
         let go_package = &self.go_package;
         if let std::option::Option::Some(go_package) = go_package {
-            if go_package != FILE_OPTIONS_GO_PACKAGE_DEFAULT_VALUE {
+            if go_package != Self::GO_PACKAGE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(go_package);
             }
         }
         let cc_generic_services = self.cc_generic_services;
         if let std::option::Option::Some(cc_generic_services) = cc_generic_services {
-            if cc_generic_services != FILE_OPTIONS_CC_GENERIC_SERVICES_DEFAULT_VALUE {
+            if cc_generic_services != Self::CC_GENERIC_SERVICES_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(cc_generic_services);
             }
         }
         let java_generic_services = self.java_generic_services;
         if let std::option::Option::Some(java_generic_services) = java_generic_services {
-            if java_generic_services != FILE_OPTIONS_JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
+            if java_generic_services != Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(java_generic_services);
             }
         }
         let py_generic_services = self.py_generic_services;
         if let std::option::Option::Some(py_generic_services) = py_generic_services {
-            if py_generic_services != FILE_OPTIONS_PY_GENERIC_SERVICES_DEFAULT_VALUE {
+            if py_generic_services != Self::PY_GENERIC_SERVICES_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(py_generic_services);
             }
         }
         let php_generic_services = self.php_generic_services;
         if let std::option::Option::Some(php_generic_services) = php_generic_services {
-            if php_generic_services != FILE_OPTIONS_PHP_GENERIC_SERVICES_DEFAULT_VALUE {
+            if php_generic_services != Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(php_generic_services);
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != FILE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(deprecated);
             }
         }
         let cc_enable_arenas = self.cc_enable_arenas;
         if let std::option::Option::Some(cc_enable_arenas) = cc_enable_arenas {
-            if cc_enable_arenas != FILE_OPTIONS_CC_ENABLE_ARENAS_DEFAULT_VALUE {
+            if cc_enable_arenas != Self::CC_ENABLE_ARENAS_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(cc_enable_arenas);
             }
         }
         let objc_class_prefix = &self.objc_class_prefix;
         if let std::option::Option::Some(objc_class_prefix) = objc_class_prefix {
-            if objc_class_prefix != FILE_OPTIONS_OBJC_CLASS_PREFIX_DEFAULT_VALUE {
+            if objc_class_prefix != Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(objc_class_prefix);
             }
         }
         let csharp_namespace = &self.csharp_namespace;
         if let std::option::Option::Some(csharp_namespace) = csharp_namespace {
-            if csharp_namespace != FILE_OPTIONS_CSHARP_NAMESPACE_DEFAULT_VALUE {
+            if csharp_namespace != Self::CSHARP_NAMESPACE_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(csharp_namespace);
             }
         }
         let swift_prefix = &self.swift_prefix;
         if let std::option::Option::Some(swift_prefix) = swift_prefix {
-            if swift_prefix != FILE_OPTIONS_SWIFT_PREFIX_DEFAULT_VALUE {
+            if swift_prefix != Self::SWIFT_PREFIX_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(swift_prefix);
             }
         }
         let php_class_prefix = &self.php_class_prefix;
         if let std::option::Option::Some(php_class_prefix) = php_class_prefix {
-            if php_class_prefix != FILE_OPTIONS_PHP_CLASS_PREFIX_DEFAULT_VALUE {
+            if php_class_prefix != Self::PHP_CLASS_PREFIX_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(php_class_prefix);
             }
         }
         let php_namespace = &self.php_namespace;
         if let std::option::Option::Some(php_namespace) = php_namespace {
-            if php_namespace != FILE_OPTIONS_PHP_NAMESPACE_DEFAULT_VALUE {
+            if php_namespace != Self::PHP_NAMESPACE_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(php_namespace);
             }
         }
         let php_metadata_namespace = &self.php_metadata_namespace;
         if let std::option::Option::Some(php_metadata_namespace) = php_metadata_namespace {
-            if php_metadata_namespace != FILE_OPTIONS_PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
+            if php_metadata_namespace != Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(php_metadata_namespace);
             }
         }
         let ruby_package = &self.ruby_package;
         if let std::option::Option::Some(ruby_package) = ruby_package {
-            if ruby_package != FILE_OPTIONS_RUBY_PACKAGE_DEFAULT_VALUE {
+            if ruby_package != Self::RUBY_PACKAGE_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::string(ruby_package);
             }
@@ -1803,140 +1782,140 @@ impl crate::CodedMessage for self::FileOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let java_package = &self.java_package;
         if let std::option::Option::Some(java_package) = java_package {
-            if java_package != FILE_OPTIONS_JAVA_PACKAGE_DEFAULT_VALUE {
+            if java_package != Self::JAVA_PACKAGE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(java_package)?;
             }
         }
         let java_outer_classname = &self.java_outer_classname;
         if let std::option::Option::Some(java_outer_classname) = java_outer_classname {
-            if java_outer_classname != FILE_OPTIONS_JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
+            if java_outer_classname != Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[66])?;
                 output.write_string(java_outer_classname)?;
             }
         }
         let java_multiple_files = self.java_multiple_files;
         if let std::option::Option::Some(java_multiple_files) = java_multiple_files {
-            if java_multiple_files != FILE_OPTIONS_JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
+            if java_multiple_files != Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[80])?;
                 output.write_bool(java_multiple_files)?;
             }
         }
         let java_generate_equals_and_hash = self.java_generate_equals_and_hash;
         if let std::option::Option::Some(java_generate_equals_and_hash) = java_generate_equals_and_hash {
-            if java_generate_equals_and_hash != FILE_OPTIONS_JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
+            if java_generate_equals_and_hash != Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[160, 1])?;
                 output.write_bool(java_generate_equals_and_hash)?;
             }
         }
         let java_string_check_utf8 = self.java_string_check_utf8;
         if let std::option::Option::Some(java_string_check_utf8) = java_string_check_utf8 {
-            if java_string_check_utf8 != FILE_OPTIONS_JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
+            if java_string_check_utf8 != Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[216, 1])?;
                 output.write_bool(java_string_check_utf8)?;
             }
         }
         let optimize_for = self.optimize_for;
         if let std::option::Option::Some(optimize_for) = optimize_for {
-            if optimize_for != FILE_OPTIONS_OPTIMIZE_FOR_DEFAULT_VALUE {
+            if optimize_for != Self::OPTIMIZE_FOR_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[72])?;
                 output.write_enum_value(optimize_for)?;
             }
         }
         let go_package = &self.go_package;
         if let std::option::Option::Some(go_package) = go_package {
-            if go_package != FILE_OPTIONS_GO_PACKAGE_DEFAULT_VALUE {
+            if go_package != Self::GO_PACKAGE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[90])?;
                 output.write_string(go_package)?;
             }
         }
         let cc_generic_services = self.cc_generic_services;
         if let std::option::Option::Some(cc_generic_services) = cc_generic_services {
-            if cc_generic_services != FILE_OPTIONS_CC_GENERIC_SERVICES_DEFAULT_VALUE {
+            if cc_generic_services != Self::CC_GENERIC_SERVICES_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[128, 1])?;
                 output.write_bool(cc_generic_services)?;
             }
         }
         let java_generic_services = self.java_generic_services;
         if let std::option::Option::Some(java_generic_services) = java_generic_services {
-            if java_generic_services != FILE_OPTIONS_JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
+            if java_generic_services != Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[136, 1])?;
                 output.write_bool(java_generic_services)?;
             }
         }
         let py_generic_services = self.py_generic_services;
         if let std::option::Option::Some(py_generic_services) = py_generic_services {
-            if py_generic_services != FILE_OPTIONS_PY_GENERIC_SERVICES_DEFAULT_VALUE {
+            if py_generic_services != Self::PY_GENERIC_SERVICES_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[144, 1])?;
                 output.write_bool(py_generic_services)?;
             }
         }
         let php_generic_services = self.php_generic_services;
         if let std::option::Option::Some(php_generic_services) = php_generic_services {
-            if php_generic_services != FILE_OPTIONS_PHP_GENERIC_SERVICES_DEFAULT_VALUE {
+            if php_generic_services != Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[208, 2])?;
                 output.write_bool(php_generic_services)?;
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != FILE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[184, 1])?;
                 output.write_bool(deprecated)?;
             }
         }
         let cc_enable_arenas = self.cc_enable_arenas;
         if let std::option::Option::Some(cc_enable_arenas) = cc_enable_arenas {
-            if cc_enable_arenas != FILE_OPTIONS_CC_ENABLE_ARENAS_DEFAULT_VALUE {
+            if cc_enable_arenas != Self::CC_ENABLE_ARENAS_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[248, 1])?;
                 output.write_bool(cc_enable_arenas)?;
             }
         }
         let objc_class_prefix = &self.objc_class_prefix;
         if let std::option::Option::Some(objc_class_prefix) = objc_class_prefix {
-            if objc_class_prefix != FILE_OPTIONS_OBJC_CLASS_PREFIX_DEFAULT_VALUE {
+            if objc_class_prefix != Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[162, 2])?;
                 output.write_string(objc_class_prefix)?;
             }
         }
         let csharp_namespace = &self.csharp_namespace;
         if let std::option::Option::Some(csharp_namespace) = csharp_namespace {
-            if csharp_namespace != FILE_OPTIONS_CSHARP_NAMESPACE_DEFAULT_VALUE {
+            if csharp_namespace != Self::CSHARP_NAMESPACE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[170, 2])?;
                 output.write_string(csharp_namespace)?;
             }
         }
         let swift_prefix = &self.swift_prefix;
         if let std::option::Option::Some(swift_prefix) = swift_prefix {
-            if swift_prefix != FILE_OPTIONS_SWIFT_PREFIX_DEFAULT_VALUE {
+            if swift_prefix != Self::SWIFT_PREFIX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[186, 2])?;
                 output.write_string(swift_prefix)?;
             }
         }
         let php_class_prefix = &self.php_class_prefix;
         if let std::option::Option::Some(php_class_prefix) = php_class_prefix {
-            if php_class_prefix != FILE_OPTIONS_PHP_CLASS_PREFIX_DEFAULT_VALUE {
+            if php_class_prefix != Self::PHP_CLASS_PREFIX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[194, 2])?;
                 output.write_string(php_class_prefix)?;
             }
         }
         let php_namespace = &self.php_namespace;
         if let std::option::Option::Some(php_namespace) = php_namespace {
-            if php_namespace != FILE_OPTIONS_PHP_NAMESPACE_DEFAULT_VALUE {
+            if php_namespace != Self::PHP_NAMESPACE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[202, 2])?;
                 output.write_string(php_namespace)?;
             }
         }
         let php_metadata_namespace = &self.php_metadata_namespace;
         if let std::option::Option::Some(php_metadata_namespace) = php_metadata_namespace {
-            if php_metadata_namespace != FILE_OPTIONS_PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
+            if php_metadata_namespace != Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[226, 2])?;
                 output.write_string(php_metadata_namespace)?;
             }
         }
         let ruby_package = &self.ruby_package;
         if let std::option::Option::Some(ruby_package) = ruby_package {
-            if ruby_package != FILE_OPTIONS_RUBY_PACKAGE_DEFAULT_VALUE {
+            if ruby_package != Self::RUBY_PACKAGE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[234, 2])?;
                 output.write_string(ruby_package)?;
             }
@@ -2006,44 +1985,64 @@ impl crate::Message for self::FileOptions {
 impl self::FileOptions {
     /// Gets the field number of the 'java_package' field
     pub const JAVA_PACKAGE_FIELD_NUMBER: i32 = 1;
+    pub const JAVA_PACKAGE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'java_outer_classname' field
     pub const JAVA_OUTER_CLASSNAME_FIELD_NUMBER: i32 = 8;
+    pub const JAVA_OUTER_CLASSNAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'java_multiple_files' field
     pub const JAVA_MULTIPLE_FILES_FIELD_NUMBER: i32 = 10;
+    pub const JAVA_MULTIPLE_FILES_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'java_generate_equals_and_hash' field
     pub const JAVA_GENERATE_EQUALS_AND_HASH_FIELD_NUMBER: i32 = 20;
+    pub const JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'java_string_check_utf8' field
     pub const JAVA_STRING_CHECK_UTF8_FIELD_NUMBER: i32 = 27;
+    pub const JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'optimize_for' field
     pub const OPTIMIZE_FOR_FIELD_NUMBER: i32 = 9;
+    pub const OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::FileOptions_OptimizeMode> = crate::EnumValue::Defined(self::FileOptions_OptimizeMode::Speed);
     /// Gets the field number of the 'go_package' field
     pub const GO_PACKAGE_FIELD_NUMBER: i32 = 11;
+    pub const GO_PACKAGE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'cc_generic_services' field
     pub const CC_GENERIC_SERVICES_FIELD_NUMBER: i32 = 16;
+    pub const CC_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'java_generic_services' field
     pub const JAVA_GENERIC_SERVICES_FIELD_NUMBER: i32 = 17;
+    pub const JAVA_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'py_generic_services' field
     pub const PY_GENERIC_SERVICES_FIELD_NUMBER: i32 = 18;
+    pub const PY_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'php_generic_services' field
     pub const PHP_GENERIC_SERVICES_FIELD_NUMBER: i32 = 42;
+    pub const PHP_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 23;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'cc_enable_arenas' field
     pub const CC_ENABLE_ARENAS_FIELD_NUMBER: i32 = 31;
+    pub const CC_ENABLE_ARENAS_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'objc_class_prefix' field
     pub const OBJC_CLASS_PREFIX_FIELD_NUMBER: i32 = 36;
+    pub const OBJC_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'csharp_namespace' field
     pub const CSHARP_NAMESPACE_FIELD_NUMBER: i32 = 37;
+    pub const CSHARP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'swift_prefix' field
     pub const SWIFT_PREFIX_FIELD_NUMBER: i32 = 39;
+    pub const SWIFT_PREFIX_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'php_class_prefix' field
     pub const PHP_CLASS_PREFIX_FIELD_NUMBER: i32 = 40;
+    pub const PHP_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'php_namespace' field
     pub const PHP_NAMESPACE_FIELD_NUMBER: i32 = 41;
+    pub const PHP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'php_metadata_namespace' field
     pub const PHP_METADATA_NAMESPACE_FIELD_NUMBER: i32 = 44;
+    pub const PHP_METADATA_NAMESPACE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'ruby_package' field
     pub const RUBY_PACKAGE_FIELD_NUMBER: i32 = 45;
+    pub const RUBY_PACKAGE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2079,10 +2078,6 @@ pub struct MessageOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static MESSAGE_OPTIONS_MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE: bool = false;
-static MESSAGE_OPTIONS_NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE: bool = false;
-static MESSAGE_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
-static MESSAGE_OPTIONS_MAP_ENTRY_DEFAULT_VALUE: bool = false;
 static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MessageOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2102,28 +2097,28 @@ impl crate::CodedMessage for self::MessageOptions {
         let mut size = 0i32;
         let message_set_wire_format = self.message_set_wire_format;
         if let std::option::Option::Some(message_set_wire_format) = message_set_wire_format {
-            if message_set_wire_format != MESSAGE_OPTIONS_MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
+            if message_set_wire_format != Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(message_set_wire_format);
             }
         }
         let no_standard_descriptor_accessor = self.no_standard_descriptor_accessor;
         if let std::option::Option::Some(no_standard_descriptor_accessor) = no_standard_descriptor_accessor {
-            if no_standard_descriptor_accessor != MESSAGE_OPTIONS_NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
+            if no_standard_descriptor_accessor != Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(no_standard_descriptor_accessor);
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != MESSAGE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(deprecated);
             }
         }
         let map_entry = self.map_entry;
         if let std::option::Option::Some(map_entry) = map_entry {
-            if map_entry != MESSAGE_OPTIONS_MAP_ENTRY_DEFAULT_VALUE {
+            if map_entry != Self::MAP_ENTRY_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(map_entry);
             }
@@ -2135,28 +2130,28 @@ impl crate::CodedMessage for self::MessageOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let message_set_wire_format = self.message_set_wire_format;
         if let std::option::Option::Some(message_set_wire_format) = message_set_wire_format {
-            if message_set_wire_format != MESSAGE_OPTIONS_MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
+            if message_set_wire_format != Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_bool(message_set_wire_format)?;
             }
         }
         let no_standard_descriptor_accessor = self.no_standard_descriptor_accessor;
         if let std::option::Option::Some(no_standard_descriptor_accessor) = no_standard_descriptor_accessor {
-            if no_standard_descriptor_accessor != MESSAGE_OPTIONS_NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
+            if no_standard_descriptor_accessor != Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_bool(no_standard_descriptor_accessor)?;
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != MESSAGE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_bool(deprecated)?;
             }
         }
         let map_entry = self.map_entry;
         if let std::option::Option::Some(map_entry) = map_entry {
-            if map_entry != MESSAGE_OPTIONS_MAP_ENTRY_DEFAULT_VALUE {
+            if map_entry != Self::MAP_ENTRY_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[56])?;
                 output.write_bool(map_entry)?;
             }
@@ -2194,12 +2189,16 @@ impl crate::Message for self::MessageOptions {
 impl self::MessageOptions {
     /// Gets the field number of the 'message_set_wire_format' field
     pub const MESSAGE_SET_WIRE_FORMAT_FIELD_NUMBER: i32 = 1;
+    pub const MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'no_standard_descriptor_accessor' field
     pub const NO_STANDARD_DESCRIPTOR_ACCESSOR_FIELD_NUMBER: i32 = 2;
+    pub const NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'map_entry' field
     pub const MAP_ENTRY_FIELD_NUMBER: i32 = 7;
+    pub const MAP_ENTRY_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2214,12 +2213,6 @@ pub struct FieldOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FIELD_OPTIONS_CTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_CType> = crate::EnumValue::Defined(self::FieldOptions_CType::String);
-static FIELD_OPTIONS_PACKED_DEFAULT_VALUE: bool = false;
-static FIELD_OPTIONS_JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_JSType> = crate::EnumValue::Defined(self::FieldOptions_JSType::Normal);
-static FIELD_OPTIONS_LAZY_DEFAULT_VALUE: bool = false;
-static FIELD_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
-static FIELD_OPTIONS_WEAK_DEFAULT_VALUE: bool = false;
 static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FieldOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2241,42 +2234,42 @@ impl crate::CodedMessage for self::FieldOptions {
         let mut size = 0i32;
         let ctype = self.ctype;
         if let std::option::Option::Some(ctype) = ctype {
-            if ctype != FIELD_OPTIONS_CTYPE_DEFAULT_VALUE {
+            if ctype != Self::CTYPE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::enum_value(ctype);
             }
         }
         let packed = self.packed;
         if let std::option::Option::Some(packed) = packed {
-            if packed != FIELD_OPTIONS_PACKED_DEFAULT_VALUE {
+            if packed != Self::PACKED_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(packed);
             }
         }
         let jstype = self.jstype;
         if let std::option::Option::Some(jstype) = jstype {
-            if jstype != FIELD_OPTIONS_JSTYPE_DEFAULT_VALUE {
+            if jstype != Self::JSTYPE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::enum_value(jstype);
             }
         }
         let lazy = self.lazy;
         if let std::option::Option::Some(lazy) = lazy {
-            if lazy != FIELD_OPTIONS_LAZY_DEFAULT_VALUE {
+            if lazy != Self::LAZY_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(lazy);
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != FIELD_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(deprecated);
             }
         }
         let weak = self.weak;
         if let std::option::Option::Some(weak) = weak {
-            if weak != FIELD_OPTIONS_WEAK_DEFAULT_VALUE {
+            if weak != Self::WEAK_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(weak);
             }
@@ -2288,42 +2281,42 @@ impl crate::CodedMessage for self::FieldOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let ctype = self.ctype;
         if let std::option::Option::Some(ctype) = ctype {
-            if ctype != FIELD_OPTIONS_CTYPE_DEFAULT_VALUE {
+            if ctype != Self::CTYPE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_enum_value(ctype)?;
             }
         }
         let packed = self.packed;
         if let std::option::Option::Some(packed) = packed {
-            if packed != FIELD_OPTIONS_PACKED_DEFAULT_VALUE {
+            if packed != Self::PACKED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_bool(packed)?;
             }
         }
         let jstype = self.jstype;
         if let std::option::Option::Some(jstype) = jstype {
-            if jstype != FIELD_OPTIONS_JSTYPE_DEFAULT_VALUE {
+            if jstype != Self::JSTYPE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[48])?;
                 output.write_enum_value(jstype)?;
             }
         }
         let lazy = self.lazy;
         if let std::option::Option::Some(lazy) = lazy {
-            if lazy != FIELD_OPTIONS_LAZY_DEFAULT_VALUE {
+            if lazy != Self::LAZY_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[40])?;
                 output.write_bool(lazy)?;
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != FIELD_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_bool(deprecated)?;
             }
         }
         let weak = self.weak;
         if let std::option::Option::Some(weak) = weak {
-            if weak != FIELD_OPTIONS_WEAK_DEFAULT_VALUE {
+            if weak != Self::WEAK_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[80])?;
                 output.write_bool(weak)?;
             }
@@ -2365,16 +2358,22 @@ impl crate::Message for self::FieldOptions {
 impl self::FieldOptions {
     /// Gets the field number of the 'ctype' field
     pub const CTYPE_FIELD_NUMBER: i32 = 1;
+    pub const CTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_CType> = crate::EnumValue::Defined(self::FieldOptions_CType::String);
     /// Gets the field number of the 'packed' field
     pub const PACKED_FIELD_NUMBER: i32 = 2;
+    pub const PACKED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'jstype' field
     pub const JSTYPE_FIELD_NUMBER: i32 = 6;
+    pub const JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_JSType> = crate::EnumValue::Defined(self::FieldOptions_JSType::Normal);
     /// Gets the field number of the 'lazy' field
     pub const LAZY_FIELD_NUMBER: i32 = 5;
+    pub const LAZY_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'weak' field
     pub const WEAK_FIELD_NUMBER: i32 = 10;
+    pub const WEAK_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2480,8 +2479,6 @@ pub struct EnumOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_OPTIONS_ALLOW_ALIAS_DEFAULT_VALUE: bool = false;
-static ENUM_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
 static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2499,14 +2496,14 @@ impl crate::CodedMessage for self::EnumOptions {
         let mut size = 0i32;
         let allow_alias = self.allow_alias;
         if let std::option::Option::Some(allow_alias) = allow_alias {
-            if allow_alias != ENUM_OPTIONS_ALLOW_ALIAS_DEFAULT_VALUE {
+            if allow_alias != Self::ALLOW_ALIAS_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(allow_alias);
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != ENUM_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(deprecated);
             }
@@ -2518,14 +2515,14 @@ impl crate::CodedMessage for self::EnumOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let allow_alias = self.allow_alias;
         if let std::option::Option::Some(allow_alias) = allow_alias {
-            if allow_alias != ENUM_OPTIONS_ALLOW_ALIAS_DEFAULT_VALUE {
+            if allow_alias != Self::ALLOW_ALIAS_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_bool(allow_alias)?;
             }
         }
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != ENUM_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_bool(deprecated)?;
             }
@@ -2559,8 +2556,10 @@ impl crate::Message for self::EnumOptions {
 impl self::EnumOptions {
     /// Gets the field number of the 'allow_alias' field
     pub const ALLOW_ALIAS_FIELD_NUMBER: i32 = 2;
+    pub const ALLOW_ALIAS_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2570,7 +2569,6 @@ pub struct EnumValueOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_VALUE_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
 static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumValueOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2587,7 +2585,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != ENUM_VALUE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(deprecated);
             }
@@ -2599,7 +2597,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != ENUM_VALUE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_bool(deprecated)?;
             }
@@ -2631,6 +2629,7 @@ impl crate::Message for self::EnumValueOptions {
 impl self::EnumValueOptions {
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 1;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2640,7 +2639,6 @@ pub struct ServiceOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static SERVICE_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
 static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ServiceOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2657,7 +2655,7 @@ impl crate::CodedMessage for self::ServiceOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != SERVICE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(deprecated);
             }
@@ -2669,7 +2667,7 @@ impl crate::CodedMessage for self::ServiceOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != SERVICE_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[136, 2])?;
                 output.write_bool(deprecated)?;
             }
@@ -2701,6 +2699,7 @@ impl crate::Message for self::ServiceOptions {
 impl self::ServiceOptions {
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 33;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2711,8 +2710,6 @@ pub struct MethodOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static METHOD_OPTIONS_DEPRECATED_DEFAULT_VALUE: bool = false;
-static METHOD_OPTIONS_IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<self::MethodOptions_IdempotencyLevel> = crate::EnumValue::Defined(self::MethodOptions_IdempotencyLevel::Unknown);
 static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MethodOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2730,14 +2727,14 @@ impl crate::CodedMessage for self::MethodOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != METHOD_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::bool(deprecated);
             }
         }
         let idempotency_level = self.idempotency_level;
         if let std::option::Option::Some(idempotency_level) = idempotency_level {
-            if idempotency_level != METHOD_OPTIONS_IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
+            if idempotency_level != Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
                 size += 2;
                 size += crate::io::sizes::enum_value(idempotency_level);
             }
@@ -2749,14 +2746,14 @@ impl crate::CodedMessage for self::MethodOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != METHOD_OPTIONS_DEPRECATED_DEFAULT_VALUE {
+            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[136, 2])?;
                 output.write_bool(deprecated)?;
             }
         }
         let idempotency_level = self.idempotency_level;
         if let std::option::Option::Some(idempotency_level) = idempotency_level {
-            if idempotency_level != METHOD_OPTIONS_IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
+            if idempotency_level != Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[144, 2])?;
                 output.write_enum_value(idempotency_level)?;
             }
@@ -2790,8 +2787,10 @@ impl crate::Message for self::MethodOptions {
 impl self::MethodOptions {
     /// Gets the field number of the 'deprecated' field
     pub const DEPRECATED_FIELD_NUMBER: i32 = 33;
+    pub const DEPRECATED_DEFAULT_VALUE: bool = false;
     /// Gets the field number of the 'idempotency_level' field
     pub const IDEMPOTENCY_LEVEL_FIELD_NUMBER: i32 = 34;
+    pub const IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<self::MethodOptions_IdempotencyLevel> = crate::EnumValue::Defined(self::MethodOptions_IdempotencyLevel::Unknown);
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
@@ -2830,12 +2829,6 @@ pub struct UninterpretedOption {
     _unknown_fields: crate::UnknownFieldSet
 }
 static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption_NamePart>> = crate::Codec::message(18);
-static UNINTERPRETED_OPTION_IDENTIFIER_VALUE_DEFAULT_VALUE: &'static str = "";
-static UNINTERPRETED_OPTION_POSITIVE_INT_VALUE_DEFAULT_VALUE: u64 = 0;
-static UNINTERPRETED_OPTION_NEGATIVE_INT_VALUE_DEFAULT_VALUE: i64 = 0;
-static UNINTERPRETED_OPTION_DOUBLE_VALUE_DEFAULT_VALUE: f64 = 0.0;
-static UNINTERPRETED_OPTION_STRING_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-static UNINTERPRETED_OPTION_AGGREGATE_VALUE_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::UninterpretedOption {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2857,42 +2850,42 @@ impl crate::CodedMessage for self::UninterpretedOption {
         size += self.name.calculate_size(&UNINTERPRETED_OPTION_NAME_CODEC);
         let identifier_value = &self.identifier_value;
         if let std::option::Option::Some(identifier_value) = identifier_value {
-            if identifier_value != UNINTERPRETED_OPTION_IDENTIFIER_VALUE_DEFAULT_VALUE {
+            if identifier_value != Self::IDENTIFIER_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(identifier_value);
             }
         }
         let positive_int_value = self.positive_int_value;
         if let std::option::Option::Some(positive_int_value) = positive_int_value {
-            if positive_int_value != UNINTERPRETED_OPTION_POSITIVE_INT_VALUE_DEFAULT_VALUE {
+            if positive_int_value != Self::POSITIVE_INT_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::uint64(positive_int_value);
             }
         }
         let negative_int_value = self.negative_int_value;
         if let std::option::Option::Some(negative_int_value) = negative_int_value {
-            if negative_int_value != UNINTERPRETED_OPTION_NEGATIVE_INT_VALUE_DEFAULT_VALUE {
+            if negative_int_value != Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int64(negative_int_value);
             }
         }
         let double_value = self.double_value;
         if let std::option::Option::Some(double_value) = double_value {
-            if double_value != UNINTERPRETED_OPTION_DOUBLE_VALUE_DEFAULT_VALUE {
+            if double_value != Self::DOUBLE_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::double(double_value);
             }
         }
         let string_value = &self.string_value;
         if let std::option::Option::Some(string_value) = string_value {
-            if string_value.as_slice() != UNINTERPRETED_OPTION_STRING_VALUE_DEFAULT_VALUE {
+            if string_value.as_slice() != Self::STRING_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bytes(string_value);
             }
         }
         let aggregate_value = &self.aggregate_value;
         if let std::option::Option::Some(aggregate_value) = aggregate_value {
-            if aggregate_value != UNINTERPRETED_OPTION_AGGREGATE_VALUE_DEFAULT_VALUE {
+            if aggregate_value != Self::AGGREGATE_VALUE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(aggregate_value);
             }
@@ -2904,42 +2897,42 @@ impl crate::CodedMessage for self::UninterpretedOption {
         self.name.write_to(output, &UNINTERPRETED_OPTION_NAME_CODEC)?;
         let identifier_value = &self.identifier_value;
         if let std::option::Option::Some(identifier_value) = identifier_value {
-            if identifier_value != UNINTERPRETED_OPTION_IDENTIFIER_VALUE_DEFAULT_VALUE {
+            if identifier_value != Self::IDENTIFIER_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[26])?;
                 output.write_string(identifier_value)?;
             }
         }
         let positive_int_value = self.positive_int_value;
         if let std::option::Option::Some(positive_int_value) = positive_int_value {
-            if positive_int_value != UNINTERPRETED_OPTION_POSITIVE_INT_VALUE_DEFAULT_VALUE {
+            if positive_int_value != Self::POSITIVE_INT_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[32])?;
                 output.write_uint64(positive_int_value)?;
             }
         }
         let negative_int_value = self.negative_int_value;
         if let std::option::Option::Some(negative_int_value) = negative_int_value {
-            if negative_int_value != UNINTERPRETED_OPTION_NEGATIVE_INT_VALUE_DEFAULT_VALUE {
+            if negative_int_value != Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[40])?;
                 output.write_int64(negative_int_value)?;
             }
         }
         let double_value = self.double_value;
         if let std::option::Option::Some(double_value) = double_value {
-            if double_value != UNINTERPRETED_OPTION_DOUBLE_VALUE_DEFAULT_VALUE {
+            if double_value != Self::DOUBLE_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[49])?;
                 output.write_double(double_value)?;
             }
         }
         let string_value = &self.string_value;
         if let std::option::Option::Some(string_value) = string_value {
-            if string_value.as_slice() != UNINTERPRETED_OPTION_STRING_VALUE_DEFAULT_VALUE {
+            if string_value.as_slice() != Self::STRING_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[58])?;
                 output.write_bytes(string_value)?;
             }
         }
         let aggregate_value = &self.aggregate_value;
         if let std::option::Option::Some(aggregate_value) = aggregate_value {
-            if aggregate_value != UNINTERPRETED_OPTION_AGGREGATE_VALUE_DEFAULT_VALUE {
+            if aggregate_value != Self::AGGREGATE_VALUE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[66])?;
                 output.write_string(aggregate_value)?;
             }
@@ -2982,16 +2975,22 @@ impl self::UninterpretedOption {
     pub const NAME_FIELD_NUMBER: i32 = 2;
     /// Gets the field number of the 'identifier_value' field
     pub const IDENTIFIER_VALUE_FIELD_NUMBER: i32 = 3;
+    pub const IDENTIFIER_VALUE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'positive_int_value' field
     pub const POSITIVE_INT_VALUE_FIELD_NUMBER: i32 = 4;
+    pub const POSITIVE_INT_VALUE_DEFAULT_VALUE: u64 = 0;
     /// Gets the field number of the 'negative_int_value' field
     pub const NEGATIVE_INT_VALUE_FIELD_NUMBER: i32 = 5;
+    pub const NEGATIVE_INT_VALUE_DEFAULT_VALUE: i64 = 0;
     /// Gets the field number of the 'double_value' field
     pub const DOUBLE_VALUE_FIELD_NUMBER: i32 = 6;
+    pub const DOUBLE_VALUE_DEFAULT_VALUE: f64 = 0.0;
     /// Gets the field number of the 'string_value' field
     pub const STRING_VALUE_FIELD_NUMBER: i32 = 7;
+    pub const STRING_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
     /// Gets the field number of the 'aggregate_value' field
     pub const AGGREGATE_VALUE_FIELD_NUMBER: i32 = 8;
+    pub const AGGREGATE_VALUE_DEFAULT_VALUE: &'static str = "";
 }
 #[derive(Clone, PartialEq)]
 pub struct UninterpretedOption_NamePart {
@@ -2999,8 +2998,6 @@ pub struct UninterpretedOption_NamePart {
     pub is_extension: std::option::Option<bool>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static UNINTERPRETED_OPTION__NAME_PART_NAME_PART_DEFAULT_VALUE: &'static str = "";
-static UNINTERPRETED_OPTION__NAME_PART_IS_EXTENSION_DEFAULT_VALUE: bool = false;
 impl crate::CodedMessage for self::UninterpretedOption_NamePart {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -3016,14 +3013,14 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
         let mut size = 0i32;
         let name_part = &self.name_part;
         if let std::option::Option::Some(name_part) = name_part {
-            if name_part != UNINTERPRETED_OPTION__NAME_PART_NAME_PART_DEFAULT_VALUE {
+            if name_part != Self::NAME_PART_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name_part);
             }
         }
         let is_extension = self.is_extension;
         if let std::option::Option::Some(is_extension) = is_extension {
-            if is_extension != UNINTERPRETED_OPTION__NAME_PART_IS_EXTENSION_DEFAULT_VALUE {
+            if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::bool(is_extension);
             }
@@ -3034,14 +3031,14 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name_part = &self.name_part;
         if let std::option::Option::Some(name_part) = name_part {
-            if name_part != UNINTERPRETED_OPTION__NAME_PART_NAME_PART_DEFAULT_VALUE {
+            if name_part != Self::NAME_PART_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name_part)?;
             }
         }
         let is_extension = self.is_extension;
         if let std::option::Option::Some(is_extension) = is_extension {
-            if is_extension != UNINTERPRETED_OPTION__NAME_PART_IS_EXTENSION_DEFAULT_VALUE {
+            if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_bool(is_extension)?;
             }
@@ -3072,8 +3069,10 @@ impl crate::Message for self::UninterpretedOption_NamePart {
 impl self::UninterpretedOption_NamePart {
     /// Gets the field number of the 'name_part' field
     pub const NAME_PART_FIELD_NUMBER: i32 = 1;
+    pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'is_extension' field
     pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
+    pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
 }
 #[derive(Clone, PartialEq)]
 pub struct SourceCodeInfo {
@@ -3135,8 +3134,6 @@ pub struct SourceCodeInfo_Location {
 }
 static SOURCE_CODE_INFO__LOCATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
 static SOURCE_CODE_INFO__LOCATION_SPAN_CODEC: crate::Codec<i32> = crate::Codec::int32(18);
-static SOURCE_CODE_INFO__LOCATION_LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
-static SOURCE_CODE_INFO__LOCATION_TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
 static SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC: crate::Codec<std::string::String> = crate::Codec::string(50);
 impl crate::CodedMessage for self::SourceCodeInfo_Location {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -3158,14 +3155,14 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
         size += self.span.calculate_size(&SOURCE_CODE_INFO__LOCATION_SPAN_CODEC);
         let leading_comments = &self.leading_comments;
         if let std::option::Option::Some(leading_comments) = leading_comments {
-            if leading_comments != SOURCE_CODE_INFO__LOCATION_LEADING_COMMENTS_DEFAULT_VALUE {
+            if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(leading_comments);
             }
         }
         let trailing_comments = &self.trailing_comments;
         if let std::option::Option::Some(trailing_comments) = trailing_comments {
-            if trailing_comments != SOURCE_CODE_INFO__LOCATION_TRAILING_COMMENTS_DEFAULT_VALUE {
+            if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(trailing_comments);
             }
@@ -3179,14 +3176,14 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
         self.span.write_to(output, &SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?;
         let leading_comments = &self.leading_comments;
         if let std::option::Option::Some(leading_comments) = leading_comments {
-            if leading_comments != SOURCE_CODE_INFO__LOCATION_LEADING_COMMENTS_DEFAULT_VALUE {
+            if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[26])?;
                 output.write_string(leading_comments)?;
             }
         }
         let trailing_comments = &self.trailing_comments;
         if let std::option::Option::Some(trailing_comments) = trailing_comments {
-            if trailing_comments != SOURCE_CODE_INFO__LOCATION_TRAILING_COMMENTS_DEFAULT_VALUE {
+            if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[34])?;
                 output.write_string(trailing_comments)?;
             }
@@ -3228,8 +3225,10 @@ impl self::SourceCodeInfo_Location {
     pub const SPAN_FIELD_NUMBER: i32 = 2;
     /// Gets the field number of the 'leading_comments' field
     pub const LEADING_COMMENTS_FIELD_NUMBER: i32 = 3;
+    pub const LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'trailing_comments' field
     pub const TRAILING_COMMENTS_FIELD_NUMBER: i32 = 4;
+    pub const TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'leading_detached_comments' field
     pub const LEADING_DETACHED_COMMENTS_FIELD_NUMBER: i32 = 6;
 }
@@ -3291,9 +3290,6 @@ pub struct GeneratedCodeInfo_Annotation {
     _unknown_fields: crate::UnknownFieldSet
 }
 static GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
-static GENERATED_CODE_INFO__ANNOTATION_SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
-static GENERATED_CODE_INFO__ANNOTATION_BEGIN_DEFAULT_VALUE: i32 = 0;
-static GENERATED_CODE_INFO__ANNOTATION_END_DEFAULT_VALUE: i32 = 0;
 impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -3312,21 +3308,21 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
         size += self.path.calculate_size(&GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC);
         let source_file = &self.source_file;
         if let std::option::Option::Some(source_file) = source_file {
-            if source_file != GENERATED_CODE_INFO__ANNOTATION_SOURCE_FILE_DEFAULT_VALUE {
+            if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(source_file);
             }
         }
         let begin = self.begin;
         if let std::option::Option::Some(begin) = begin {
-            if begin != GENERATED_CODE_INFO__ANNOTATION_BEGIN_DEFAULT_VALUE {
+            if begin != Self::BEGIN_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(begin);
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != GENERATED_CODE_INFO__ANNOTATION_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(end);
             }
@@ -3338,21 +3334,21 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
         self.path.write_to(output, &GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?;
         let source_file = &self.source_file;
         if let std::option::Option::Some(source_file) = source_file {
-            if source_file != GENERATED_CODE_INFO__ANNOTATION_SOURCE_FILE_DEFAULT_VALUE {
+            if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(source_file)?;
             }
         }
         let begin = self.begin;
         if let std::option::Option::Some(begin) = begin {
-            if begin != GENERATED_CODE_INFO__ANNOTATION_BEGIN_DEFAULT_VALUE {
+            if begin != Self::BEGIN_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_int32(begin)?;
             }
         }
         let end = self.end;
         if let std::option::Option::Some(end) = end {
-            if end != GENERATED_CODE_INFO__ANNOTATION_END_DEFAULT_VALUE {
+            if end != Self::END_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[32])?;
                 output.write_int32(end)?;
             }
@@ -3389,8 +3385,11 @@ impl self::GeneratedCodeInfo_Annotation {
     pub const PATH_FIELD_NUMBER: i32 = 1;
     /// Gets the field number of the 'source_file' field
     pub const SOURCE_FILE_FIELD_NUMBER: i32 = 2;
+    pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'begin' field
     pub const BEGIN_FIELD_NUMBER: i32 = 3;
+    pub const BEGIN_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'end' field
     pub const END_FIELD_NUMBER: i32 = 4;
+    pub const END_DEFAULT_VALUE: i32 = 0;
 }

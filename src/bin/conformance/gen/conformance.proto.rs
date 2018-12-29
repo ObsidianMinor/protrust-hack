@@ -3,7 +3,6 @@
 //! 
 //! Source: conformance.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct ConformanceRequest {
     requested_output_format: protrust::EnumValue<self::WireFormat>,
@@ -13,12 +12,6 @@ pub struct ConformanceRequest {
     payload: ConformanceRequest_Payload,
     _unknown_fields: protrust::UnknownFieldSet
 }
-static CONFORMANCE_REQUEST_PROTOBUF_PAYLOAD_DEFAULT_VALUE: &'static [u8] = &[];
-static CONFORMANCE_REQUEST_JSON_PAYLOAD_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_REQUEST_JSPB_PAYLOAD_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_REQUEST_REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE: protrust::EnumValue<self::WireFormat> = protrust::EnumValue::Defined(self::WireFormat::Unspecified);
-static CONFORMANCE_REQUEST_MESSAGE_TYPE_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_REQUEST_TEST_CATEGORY_DEFAULT_VALUE: protrust::EnumValue<self::TestCategory> = protrust::EnumValue::Defined(self::TestCategory::UnspecifiedTest);
 #[derive(Clone, PartialEq)]
 pub enum ConformanceRequest_Payload {
     None,
@@ -58,17 +51,17 @@ impl protrust::CodedMessage for self::ConformanceRequest {
             size += protrust::io::sizes::string(payload);
         }
         let requested_output_format = self.requested_output_format;
-        if requested_output_format != CONFORMANCE_REQUEST_REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE {
+        if requested_output_format != Self::REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::enum_value(requested_output_format);
         }
         let message_type = &self.message_type;
-        if message_type != CONFORMANCE_REQUEST_MESSAGE_TYPE_DEFAULT_VALUE {
+        if message_type != Self::MESSAGE_TYPE_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::string(message_type);
         }
         let test_category = self.test_category;
-        if test_category != CONFORMANCE_REQUEST_TEST_CATEGORY_DEFAULT_VALUE {
+        if test_category != Self::TEST_CATEGORY_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::enum_value(test_category);
         }
@@ -94,17 +87,17 @@ impl protrust::CodedMessage for self::ConformanceRequest {
             output.write_string(payload)?;
         }
         let requested_output_format = self.requested_output_format;
-        if requested_output_format != CONFORMANCE_REQUEST_REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE {
+        if requested_output_format != Self::REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[24])?;
             output.write_enum_value(requested_output_format)?;
         }
         let message_type = &self.message_type;
-        if message_type != CONFORMANCE_REQUEST_MESSAGE_TYPE_DEFAULT_VALUE {
+        if message_type != Self::MESSAGE_TYPE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[34])?;
             output.write_string(message_type)?;
         }
         let test_category = self.test_category;
-        if test_category != CONFORMANCE_REQUEST_TEST_CATEGORY_DEFAULT_VALUE {
+        if test_category != Self::TEST_CATEGORY_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[40])?;
             output.write_enum_value(test_category)?;
         }
@@ -120,9 +113,9 @@ impl protrust::CodedMessage for self::ConformanceRequest {
 impl protrust::LiteMessage for self::ConformanceRequest {
     fn new() -> Self {
         Self {
-            requested_output_format: CONFORMANCE_REQUEST_REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE,
+            requested_output_format: Self::REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE,
             message_type: std::string::String::new(),
-            test_category: CONFORMANCE_REQUEST_TEST_CATEGORY_DEFAULT_VALUE,
+            test_category: Self::TEST_CATEGORY_DEFAULT_VALUE,
             jspb_encoding_options: std::option::Option::None,
             payload: self::ConformanceRequest_Payload::None,
             _unknown_fields: protrust::UnknownFieldSet::new()
@@ -153,33 +146,53 @@ impl protrust::Message for self::ConformanceRequest {
     }
 }
 impl self::ConformanceRequest {
-    /// Gets the field number of the 'protobuf_payload' field
-    pub const PROTOBUF_PAYLOAD_FIELD_NUMBER: i32 = 1;
-    /// Gets the field number of the 'json_payload' field
-    pub const JSON_PAYLOAD_FIELD_NUMBER: i32 = 2;
-    /// Gets the field number of the 'jspb_payload' field
-    pub const JSPB_PAYLOAD_FIELD_NUMBER: i32 = 7;
     /// Gets the field number of the 'requested_output_format' field
     pub const REQUESTED_OUTPUT_FORMAT_FIELD_NUMBER: i32 = 3;
+    pub const REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE: protrust::EnumValue<self::WireFormat> = protrust::EnumValue::Defined(self::WireFormat::Unspecified);
+    pub fn requested_output_format(&self) -> &protrust::EnumValue<self::WireFormat> {
+        &self.requested_output_format
+    }
+    pub fn requested_output_format_mut(&mut self) -> &mut protrust::EnumValue<self::WireFormat> {
+        &mut self.requested_output_format
+    }
     /// Gets the field number of the 'message_type' field
     pub const MESSAGE_TYPE_FIELD_NUMBER: i32 = 4;
+    pub const MESSAGE_TYPE_DEFAULT_VALUE: &'static str = "";
+    pub fn message_type(&self) -> &std::string::String {
+        &self.message_type
+    }
+    pub fn message_type_mut(&mut self) -> &mut std::string::String {
+        &mut self.message_type
+    }
     /// Gets the field number of the 'test_category' field
     pub const TEST_CATEGORY_FIELD_NUMBER: i32 = 5;
+    pub const TEST_CATEGORY_DEFAULT_VALUE: protrust::EnumValue<self::TestCategory> = protrust::EnumValue::Defined(self::TestCategory::UnspecifiedTest);
+    pub fn test_category(&self) -> &protrust::EnumValue<self::TestCategory> {
+        &self.test_category
+    }
+    pub fn test_category_mut(&mut self) -> &mut protrust::EnumValue<self::TestCategory> {
+        &mut self.test_category
+    }
     /// Gets the field number of the 'jspb_encoding_options' field
     pub const JSPB_ENCODING_OPTIONS_FIELD_NUMBER: i32 = 6;
+    pub fn jspb_encoding_options(&self) -> &std::option::Option<std::boxed::Box<self::JspbEncodingConfig>> {
+        &self.jspb_encoding_options
+    }
+    pub fn jspb_encoding_options_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<self::JspbEncodingConfig>> {
+        &mut self.jspb_encoding_options
+    }
+    pub fn payload(&self) -> &ConformanceRequest_Payload {
+        &self.payload
+    }
+    pub fn payload_mut(&mut self) -> &mut ConformanceRequest_Payload {
+        &mut self.payload
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct ConformanceResponse {
     result: ConformanceResponse_Result,
     _unknown_fields: protrust::UnknownFieldSet
 }
-static CONFORMANCE_RESPONSE_PARSE_ERROR_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_RESPONSE_SERIALIZE_ERROR_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_RESPONSE_RUNTIME_ERROR_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_RESPONSE_PROTOBUF_PAYLOAD_DEFAULT_VALUE: &'static [u8] = &[];
-static CONFORMANCE_RESPONSE_JSON_PAYLOAD_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_RESPONSE_SKIPPED_DEFAULT_VALUE: &'static str = "";
-static CONFORMANCE_RESPONSE_JSPB_PAYLOAD_DEFAULT_VALUE: &'static str = "";
 #[derive(Clone, PartialEq)]
 pub enum ConformanceResponse_Result {
     None,
@@ -312,27 +325,18 @@ impl protrust::Message for self::ConformanceResponse {
     }
 }
 impl self::ConformanceResponse {
-    /// Gets the field number of the 'parse_error' field
-    pub const PARSE_ERROR_FIELD_NUMBER: i32 = 1;
-    /// Gets the field number of the 'serialize_error' field
-    pub const SERIALIZE_ERROR_FIELD_NUMBER: i32 = 6;
-    /// Gets the field number of the 'runtime_error' field
-    pub const RUNTIME_ERROR_FIELD_NUMBER: i32 = 2;
-    /// Gets the field number of the 'protobuf_payload' field
-    pub const PROTOBUF_PAYLOAD_FIELD_NUMBER: i32 = 3;
-    /// Gets the field number of the 'json_payload' field
-    pub const JSON_PAYLOAD_FIELD_NUMBER: i32 = 4;
-    /// Gets the field number of the 'skipped' field
-    pub const SKIPPED_FIELD_NUMBER: i32 = 5;
-    /// Gets the field number of the 'jspb_payload' field
-    pub const JSPB_PAYLOAD_FIELD_NUMBER: i32 = 7;
+    pub fn result(&self) -> &ConformanceResponse_Result {
+        &self.result
+    }
+    pub fn result_mut(&mut self) -> &mut ConformanceResponse_Result {
+        &mut self.result
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct JspbEncodingConfig {
     use_jspb_array_any_format: bool,
     _unknown_fields: protrust::UnknownFieldSet
 }
-static JSPB_ENCODING_CONFIG_USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE: bool = false;
 impl protrust::CodedMessage for self::JspbEncodingConfig {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -346,7 +350,7 @@ impl protrust::CodedMessage for self::JspbEncodingConfig {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let use_jspb_array_any_format = self.use_jspb_array_any_format;
-        if use_jspb_array_any_format != JSPB_ENCODING_CONFIG_USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE {
+        if use_jspb_array_any_format != Self::USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::bool(use_jspb_array_any_format);
         }
@@ -355,7 +359,7 @@ impl protrust::CodedMessage for self::JspbEncodingConfig {
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
         let use_jspb_array_any_format = self.use_jspb_array_any_format;
-        if use_jspb_array_any_format != JSPB_ENCODING_CONFIG_USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE {
+        if use_jspb_array_any_format != Self::USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_bool(use_jspb_array_any_format)?;
         }
@@ -366,7 +370,7 @@ impl protrust::CodedMessage for self::JspbEncodingConfig {
 impl protrust::LiteMessage for self::JspbEncodingConfig {
     fn new() -> Self {
         Self {
-            use_jspb_array_any_format: JSPB_ENCODING_CONFIG_USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE,
+            use_jspb_array_any_format: Self::USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE,
             _unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
@@ -383,6 +387,13 @@ impl protrust::Message for self::JspbEncodingConfig {
 impl self::JspbEncodingConfig {
     /// Gets the field number of the 'use_jspb_array_any_format' field
     pub const USE_JSPB_ARRAY_ANY_FORMAT_FIELD_NUMBER: i32 = 1;
+    pub const USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE: bool = false;
+    pub fn use_jspb_array_any_format(&self) -> &bool {
+        &self.use_jspb_array_any_format
+    }
+    pub fn use_jspb_array_any_format_mut(&mut self) -> &mut bool {
+        &mut self.use_jspb_array_any_format
+    }
 }
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum WireFormat {

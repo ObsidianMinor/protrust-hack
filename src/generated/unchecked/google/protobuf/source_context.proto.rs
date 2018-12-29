@@ -3,13 +3,11 @@
 //! 
 //! Source: google/protobuf/source_context.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct SourceContext {
     pub file_name: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
 }
-static SOURCE_CONTEXT_FILE_NAME_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::SourceContext {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -23,7 +21,7 @@ impl crate::CodedMessage for self::SourceContext {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let file_name = &self.file_name;
-        if file_name != SOURCE_CONTEXT_FILE_NAME_DEFAULT_VALUE {
+        if file_name != Self::FILE_NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(file_name);
         }
@@ -32,7 +30,7 @@ impl crate::CodedMessage for self::SourceContext {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let file_name = &self.file_name;
-        if file_name != SOURCE_CONTEXT_FILE_NAME_DEFAULT_VALUE {
+        if file_name != Self::FILE_NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(file_name)?;
         }
@@ -60,4 +58,11 @@ impl crate::Message for self::SourceContext {
 impl self::SourceContext {
     /// Gets the field number of the 'file_name' field
     pub const FILE_NAME_FIELD_NUMBER: i32 = 1;
+    pub const FILE_NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn file_name(&self) -> &std::string::String {
+        &self.file_name
+    }
+    pub fn file_name_mut(&mut self) -> &mut std::string::String {
+        &mut self.file_name
+    }
 }

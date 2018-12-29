@@ -3,7 +3,6 @@
 //! 
 //! Source: addressbook.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Person {
     name: std::string::String,
@@ -13,9 +12,6 @@ pub struct Person {
     last_updated: std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>>,
     _unknown_fields: protrust::UnknownFieldSet
 }
-static PERSON_NAME_DEFAULT_VALUE: &'static str = "";
-static PERSON_ID_DEFAULT_VALUE: i32 = 0;
-static PERSON_EMAIL_DEFAULT_VALUE: &'static str = "";
 static PERSON_PHONES_CODEC: protrust::Codec<std::boxed::Box<self::Person_PhoneNumber>> = protrust::Codec::message(34);
 impl protrust::CodedMessage for self::Person {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
@@ -34,17 +30,17 @@ impl protrust::CodedMessage for self::Person {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let name = &self.name;
-        if name != PERSON_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::string(name);
         }
         let id = self.id;
-        if id != PERSON_ID_DEFAULT_VALUE {
+        if id != Self::ID_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::int32(id);
         }
         let email = &self.email;
-        if email != PERSON_EMAIL_DEFAULT_VALUE {
+        if email != Self::EMAIL_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::string(email);
         }
@@ -59,17 +55,17 @@ impl protrust::CodedMessage for self::Person {
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
         let name = &self.name;
-        if name != PERSON_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
         let id = self.id;
-        if id != PERSON_ID_DEFAULT_VALUE {
+        if id != Self::ID_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[16])?;
             output.write_int32(id)?;
         }
         let email = &self.email;
-        if email != PERSON_EMAIL_DEFAULT_VALUE {
+        if email != Self::EMAIL_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[26])?;
             output.write_string(email)?;
         }
@@ -87,7 +83,7 @@ impl protrust::LiteMessage for self::Person {
     fn new() -> Self {
         Self {
             name: std::string::String::new(),
-            id: PERSON_ID_DEFAULT_VALUE,
+            id: Self::ID_DEFAULT_VALUE,
             email: std::string::String::new(),
             phones: protrust::collections::RepeatedField::new(),
             last_updated: std::option::Option::None,
@@ -113,14 +109,47 @@ impl protrust::Message for self::Person {
 impl self::Person {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'id' field
     pub const ID_FIELD_NUMBER: i32 = 2;
+    pub const ID_DEFAULT_VALUE: i32 = 0;
+    pub fn id(&self) -> &i32 {
+        &self.id
+    }
+    pub fn id_mut(&mut self) -> &mut i32 {
+        &mut self.id
+    }
     /// Gets the field number of the 'email' field
     pub const EMAIL_FIELD_NUMBER: i32 = 3;
+    pub const EMAIL_DEFAULT_VALUE: &'static str = "";
+    pub fn email(&self) -> &std::string::String {
+        &self.email
+    }
+    pub fn email_mut(&mut self) -> &mut std::string::String {
+        &mut self.email
+    }
     /// Gets the field number of the 'phones' field
     pub const PHONES_FIELD_NUMBER: i32 = 4;
+    pub fn phones(&self) -> &protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>> {
+        &self.phones
+    }
+    pub fn phones_mut(&mut self) -> &mut protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>> {
+        &mut self.phones
+    }
     /// Gets the field number of the 'last_updated' field
     pub const LAST_UPDATED_FIELD_NUMBER: i32 = 5;
+    pub fn last_updated(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>> {
+        &self.last_updated
+    }
+    pub fn last_updated_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>> {
+        &mut self.last_updated
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Person_PhoneNumber {
@@ -128,8 +157,6 @@ pub struct Person_PhoneNumber {
     r#type: protrust::EnumValue<self::Person_PhoneType>,
     _unknown_fields: protrust::UnknownFieldSet
 }
-static PERSON__PHONE_NUMBER_NUMBER_DEFAULT_VALUE: &'static str = "";
-static PERSON__PHONE_NUMBER_TYPE_DEFAULT_VALUE: protrust::EnumValue<self::Person_PhoneType> = protrust::EnumValue::Defined(self::Person_PhoneType::Mobile);
 impl protrust::CodedMessage for self::Person_PhoneNumber {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -144,12 +171,12 @@ impl protrust::CodedMessage for self::Person_PhoneNumber {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let number = &self.number;
-        if number != PERSON__PHONE_NUMBER_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::string(number);
         }
         let r#type = self.r#type;
-        if r#type != PERSON__PHONE_NUMBER_TYPE_DEFAULT_VALUE {
+        if r#type != Self::TYPE_DEFAULT_VALUE {
             size += 1;
             size += protrust::io::sizes::enum_value(r#type);
         }
@@ -158,12 +185,12 @@ impl protrust::CodedMessage for self::Person_PhoneNumber {
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
         let number = &self.number;
-        if number != PERSON__PHONE_NUMBER_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(number)?;
         }
         let r#type = self.r#type;
-        if r#type != PERSON__PHONE_NUMBER_TYPE_DEFAULT_VALUE {
+        if r#type != Self::TYPE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[16])?;
             output.write_enum_value(r#type)?;
         }
@@ -175,7 +202,7 @@ impl protrust::LiteMessage for self::Person_PhoneNumber {
     fn new() -> Self {
         Self {
             number: std::string::String::new(),
-            r#type: PERSON__PHONE_NUMBER_TYPE_DEFAULT_VALUE,
+            r#type: Self::TYPE_DEFAULT_VALUE,
             _unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
@@ -193,8 +220,22 @@ impl protrust::Message for self::Person_PhoneNumber {
 impl self::Person_PhoneNumber {
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 1;
+    pub const NUMBER_DEFAULT_VALUE: &'static str = "";
+    pub fn number(&self) -> &std::string::String {
+        &self.number
+    }
+    pub fn number_mut(&mut self) -> &mut std::string::String {
+        &mut self.number
+    }
     /// Gets the field number of the 'type' field
     pub const TYPE_FIELD_NUMBER: i32 = 2;
+    pub const TYPE_DEFAULT_VALUE: protrust::EnumValue<self::Person_PhoneType> = protrust::EnumValue::Defined(self::Person_PhoneType::Mobile);
+    pub fn r#type(&self) -> &protrust::EnumValue<self::Person_PhoneType> {
+        &self.r#type
+    }
+    pub fn r#type_mut(&mut self) -> &mut protrust::EnumValue<self::Person_PhoneType> {
+        &mut self.r#type
+    }
 }
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Person_PhoneType {
@@ -267,4 +308,10 @@ impl protrust::Message for self::AddressBook {
 impl self::AddressBook {
     /// Gets the field number of the 'people' field
     pub const PEOPLE_FIELD_NUMBER: i32 = 1;
+    pub fn people(&self) -> &protrust::collections::RepeatedField<std::boxed::Box<self::Person>> {
+        &self.people
+    }
+    pub fn people_mut(&mut self) -> &mut protrust::collections::RepeatedField<std::boxed::Box<self::Person>> {
+        &mut self.people
+    }
 }

@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/field_mask.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct FieldMask {
     pub paths: crate::collections::RepeatedField<std::string::String>,
@@ -52,4 +51,10 @@ impl crate::Message for self::FieldMask {
 impl self::FieldMask {
     /// Gets the field number of the 'paths' field
     pub const PATHS_FIELD_NUMBER: i32 = 1;
+    pub fn paths(&self) -> &crate::collections::RepeatedField<std::string::String> {
+        &self.paths
+    }
+    pub fn paths_mut(&mut self) -> &mut crate::collections::RepeatedField<std::string::String> {
+        &mut self.paths
+    }
 }

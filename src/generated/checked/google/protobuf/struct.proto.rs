@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/struct.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Struct {
     pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
@@ -52,16 +51,18 @@ impl crate::Message for self::Struct {
 impl self::Struct {
     /// Gets the field number of the 'fields' field
     pub const FIELDS_FIELD_NUMBER: i32 = 1;
+    pub fn fields(&self) -> &crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>> {
+        &self.fields
+    }
+    pub fn fields_mut(&mut self) -> &mut crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>> {
+        &mut self.fields
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Value {
     pub kind: Value_Kind,
     _unknown_fields: crate::UnknownFieldSet
 }
-static VALUE_NULL_VALUE_DEFAULT_VALUE: crate::EnumValue<self::NullValue> = crate::EnumValue::Defined(self::NullValue::NullValue);
-static VALUE_NUMBER_VALUE_DEFAULT_VALUE: f64 = 0.0;
-static VALUE_STRING_VALUE_DEFAULT_VALUE: &'static str = "";
-static VALUE_BOOL_VALUE_DEFAULT_VALUE: bool = false;
 #[derive(Clone, PartialEq)]
 pub enum Value_Kind {
     None,
@@ -85,6 +86,7 @@ impl crate::CodedMessage for self::Value {
                     if let self::Value_Kind::StructValue(kind) = &mut self.kind {
                         kind.merge_from(input)?;
                     } else {
+                        
                         let mut kind = std::boxed::Box::new(<self::Struct as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::StructValue(kind)
@@ -93,6 +95,7 @@ impl crate::CodedMessage for self::Value {
                     if let self::Value_Kind::ListValue(kind) = &mut self.kind {
                         kind.merge_from(input)?;
                     } else {
+                        
                         let mut kind = std::boxed::Box::new(<self::ListValue as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::ListValue(kind)
@@ -203,18 +206,12 @@ impl crate::Message for self::Value {
     }
 }
 impl self::Value {
-    /// Gets the field number of the 'null_value' field
-    pub const NULL_VALUE_FIELD_NUMBER: i32 = 1;
-    /// Gets the field number of the 'number_value' field
-    pub const NUMBER_VALUE_FIELD_NUMBER: i32 = 2;
-    /// Gets the field number of the 'string_value' field
-    pub const STRING_VALUE_FIELD_NUMBER: i32 = 3;
-    /// Gets the field number of the 'bool_value' field
-    pub const BOOL_VALUE_FIELD_NUMBER: i32 = 4;
-    /// Gets the field number of the 'struct_value' field
-    pub const STRUCT_VALUE_FIELD_NUMBER: i32 = 5;
-    /// Gets the field number of the 'list_value' field
-    pub const LIST_VALUE_FIELD_NUMBER: i32 = 6;
+    pub fn kind(&self) -> &Value_Kind {
+        &self.kind
+    }
+    pub fn kind_mut(&mut self) -> &mut Value_Kind {
+        &mut self.kind
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct ListValue {
@@ -264,6 +261,12 @@ impl crate::Message for self::ListValue {
 impl self::ListValue {
     /// Gets the field number of the 'values' field
     pub const VALUES_FIELD_NUMBER: i32 = 1;
+    pub fn values(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Value>> {
+        &self.values
+    }
+    pub fn values_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Value>> {
+        &mut self.values
+    }
 }
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum NullValue {

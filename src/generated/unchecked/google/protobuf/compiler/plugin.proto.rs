@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/compiler/plugin.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Version {
     pub major: std::option::Option<i32>,
@@ -12,10 +11,6 @@ pub struct Version {
     pub suffix: std::option::Option<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static VERSION_MAJOR_DEFAULT_VALUE: i32 = 0;
-static VERSION_MINOR_DEFAULT_VALUE: i32 = 0;
-static VERSION_PATCH_DEFAULT_VALUE: i32 = 0;
-static VERSION_SUFFIX_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::Version {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -33,28 +28,28 @@ impl crate::CodedMessage for self::Version {
         let mut size = 0i32;
         let major = self.major;
         if let std::option::Option::Some(major) = major {
-            if major != VERSION_MAJOR_DEFAULT_VALUE {
+            if major != Self::MAJOR_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(major);
             }
         }
         let minor = self.minor;
         if let std::option::Option::Some(minor) = minor {
-            if minor != VERSION_MINOR_DEFAULT_VALUE {
+            if minor != Self::MINOR_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(minor);
             }
         }
         let patch = self.patch;
         if let std::option::Option::Some(patch) = patch {
-            if patch != VERSION_PATCH_DEFAULT_VALUE {
+            if patch != Self::PATCH_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::int32(patch);
             }
         }
         let suffix = &self.suffix;
         if let std::option::Option::Some(suffix) = suffix {
-            if suffix != VERSION_SUFFIX_DEFAULT_VALUE {
+            if suffix != Self::SUFFIX_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(suffix);
             }
@@ -65,28 +60,28 @@ impl crate::CodedMessage for self::Version {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let major = self.major;
         if let std::option::Option::Some(major) = major {
-            if major != VERSION_MAJOR_DEFAULT_VALUE {
+            if major != Self::MAJOR_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[8])?;
                 output.write_int32(major)?;
             }
         }
         let minor = self.minor;
         if let std::option::Option::Some(minor) = minor {
-            if minor != VERSION_MINOR_DEFAULT_VALUE {
+            if minor != Self::MINOR_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[16])?;
                 output.write_int32(minor)?;
             }
         }
         let patch = self.patch;
         if let std::option::Option::Some(patch) = patch {
-            if patch != VERSION_PATCH_DEFAULT_VALUE {
+            if patch != Self::PATCH_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[24])?;
                 output.write_int32(patch)?;
             }
         }
         let suffix = &self.suffix;
         if let std::option::Option::Some(suffix) = suffix {
-            if suffix != VERSION_SUFFIX_DEFAULT_VALUE {
+            if suffix != Self::SUFFIX_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[34])?;
                 output.write_string(suffix)?;
             }
@@ -121,12 +116,16 @@ impl crate::Message for self::Version {
 impl self::Version {
     /// Gets the field number of the 'major' field
     pub const MAJOR_FIELD_NUMBER: i32 = 1;
+    pub const MAJOR_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'minor' field
     pub const MINOR_FIELD_NUMBER: i32 = 2;
+    pub const MINOR_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'patch' field
     pub const PATCH_FIELD_NUMBER: i32 = 3;
+    pub const PATCH_DEFAULT_VALUE: i32 = 0;
     /// Gets the field number of the 'suffix' field
     pub const SUFFIX_FIELD_NUMBER: i32 = 4;
+    pub const SUFFIX_DEFAULT_VALUE: &'static str = "";
 }
 #[derive(Clone, PartialEq)]
 pub struct CodeGeneratorRequest {
@@ -137,7 +136,6 @@ pub struct CodeGeneratorRequest {
     _unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC: crate::Codec<std::string::String> = crate::Codec::string(10);
-static CODE_GENERATOR_REQUEST_PARAMETER_DEFAULT_VALUE: &'static str = "";
 static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<std::boxed::Box<super::google_protobuf_descriptor_proto::FileDescriptorProto>> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorRequest {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -157,7 +155,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         size += self.file_to_generate.calculate_size(&CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC);
         let parameter = &self.parameter;
         if let std::option::Option::Some(parameter) = parameter {
-            if parameter != CODE_GENERATOR_REQUEST_PARAMETER_DEFAULT_VALUE {
+            if parameter != Self::PARAMETER_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(parameter);
             }
@@ -175,7 +173,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         self.file_to_generate.write_to(output, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?;
         let parameter = &self.parameter;
         if let std::option::Option::Some(parameter) = parameter {
-            if parameter != CODE_GENERATOR_REQUEST_PARAMETER_DEFAULT_VALUE {
+            if parameter != Self::PARAMETER_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(parameter)?;
             }
@@ -220,6 +218,7 @@ impl self::CodeGeneratorRequest {
     pub const FILE_TO_GENERATE_FIELD_NUMBER: i32 = 1;
     /// Gets the field number of the 'parameter' field
     pub const PARAMETER_FIELD_NUMBER: i32 = 2;
+    pub const PARAMETER_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'proto_file' field
     pub const PROTO_FILE_FIELD_NUMBER: i32 = 15;
     /// Gets the field number of the 'compiler_version' field
@@ -231,7 +230,6 @@ pub struct CodeGeneratorResponse {
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::CodeGeneratorResponse_File>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static CODE_GENERATOR_RESPONSE_ERROR_DEFAULT_VALUE: &'static str = "";
 static CODE_GENERATOR_RESPONSE_FILE_CODEC: crate::Codec<std::boxed::Box<self::CodeGeneratorResponse_File>> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorResponse {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -248,7 +246,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
         let mut size = 0i32;
         let error = &self.error;
         if let std::option::Option::Some(error) = error {
-            if error != CODE_GENERATOR_RESPONSE_ERROR_DEFAULT_VALUE {
+            if error != Self::ERROR_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(error);
             }
@@ -260,7 +258,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let error = &self.error;
         if let std::option::Option::Some(error) = error {
-            if error != CODE_GENERATOR_RESPONSE_ERROR_DEFAULT_VALUE {
+            if error != Self::ERROR_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(error)?;
             }
@@ -292,6 +290,7 @@ impl crate::Message for self::CodeGeneratorResponse {
 impl self::CodeGeneratorResponse {
     /// Gets the field number of the 'error' field
     pub const ERROR_FIELD_NUMBER: i32 = 1;
+    pub const ERROR_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'file' field
     pub const FILE_FIELD_NUMBER: i32 = 15;
 }
@@ -302,9 +301,6 @@ pub struct CodeGeneratorResponse_File {
     pub content: std::option::Option<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static CODE_GENERATOR_RESPONSE__FILE_NAME_DEFAULT_VALUE: &'static str = "";
-static CODE_GENERATOR_RESPONSE__FILE_INSERTION_POINT_DEFAULT_VALUE: &'static str = "";
-static CODE_GENERATOR_RESPONSE__FILE_CONTENT_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::CodeGeneratorResponse_File {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -321,21 +317,21 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
         let mut size = 0i32;
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != CODE_GENERATOR_RESPONSE__FILE_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(name);
             }
         }
         let insertion_point = &self.insertion_point;
         if let std::option::Option::Some(insertion_point) = insertion_point {
-            if insertion_point != CODE_GENERATOR_RESPONSE__FILE_INSERTION_POINT_DEFAULT_VALUE {
+            if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(insertion_point);
             }
         }
         let content = &self.content;
         if let std::option::Option::Some(content) = content {
-            if content != CODE_GENERATOR_RESPONSE__FILE_CONTENT_DEFAULT_VALUE {
+            if content != Self::CONTENT_DEFAULT_VALUE {
                 size += 1;
                 size += crate::io::sizes::string(content);
             }
@@ -346,21 +342,21 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let std::option::Option::Some(name) = name {
-            if name != CODE_GENERATOR_RESPONSE__FILE_NAME_DEFAULT_VALUE {
+            if name != Self::NAME_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[10])?;
                 output.write_string(name)?;
             }
         }
         let insertion_point = &self.insertion_point;
         if let std::option::Option::Some(insertion_point) = insertion_point {
-            if insertion_point != CODE_GENERATOR_RESPONSE__FILE_INSERTION_POINT_DEFAULT_VALUE {
+            if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[18])?;
                 output.write_string(insertion_point)?;
             }
         }
         let content = &self.content;
         if let std::option::Option::Some(content) = content {
-            if content != CODE_GENERATOR_RESPONSE__FILE_CONTENT_DEFAULT_VALUE {
+            if content != Self::CONTENT_DEFAULT_VALUE {
                 output.write_raw_tag_bytes(&[122])?;
                 output.write_string(content)?;
             }
@@ -393,8 +389,11 @@ impl crate::Message for self::CodeGeneratorResponse_File {
 impl self::CodeGeneratorResponse_File {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'insertion_point' field
     pub const INSERTION_POINT_FIELD_NUMBER: i32 = 2;
+    pub const INSERTION_POINT_DEFAULT_VALUE: &'static str = "";
     /// Gets the field number of the 'content' field
     pub const CONTENT_FIELD_NUMBER: i32 = 15;
+    pub const CONTENT_DEFAULT_VALUE: &'static str = "";
 }

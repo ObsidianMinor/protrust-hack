@@ -3,7 +3,6 @@
 //! 
 //! Source: google/protobuf/type.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Type {
     pub name: std::string::String,
@@ -14,11 +13,9 @@ pub struct Type {
     pub syntax: crate::EnumValue<self::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static TYPE_NAME_DEFAULT_VALUE: &'static str = "";
 static TYPE_FIELDS_CODEC: crate::Codec<std::boxed::Box<self::Field>> = crate::Codec::message(18);
 static TYPE_ONEOFS_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
 static TYPE_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(34);
-static TYPE_SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
 impl crate::CodedMessage for self::Type {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -37,7 +34,7 @@ impl crate::CodedMessage for self::Type {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let name = &self.name;
-        if name != TYPE_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(name);
         }
@@ -50,7 +47,7 @@ impl crate::CodedMessage for self::Type {
             size += crate::io::sizes::message(source_context);
         }
         let syntax = self.syntax;
-        if syntax != TYPE_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::enum_value(syntax);
         }
@@ -59,7 +56,7 @@ impl crate::CodedMessage for self::Type {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != TYPE_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
@@ -72,7 +69,7 @@ impl crate::CodedMessage for self::Type {
             output.write_message(source_context)?;
         }
         let syntax = self.syntax;
-        if syntax != TYPE_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[48])?;
             output.write_enum_value(syntax)?;
         }
@@ -88,7 +85,7 @@ impl crate::LiteMessage for self::Type {
             oneofs: crate::collections::RepeatedField::new(),
             options: crate::collections::RepeatedField::new(),
             source_context: std::option::Option::None,
-            syntax: TYPE_SYNTAX_DEFAULT_VALUE,
+            syntax: Self::SYNTAX_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -112,16 +109,54 @@ impl crate::Message for self::Type {
 impl self::Type {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'fields' field
     pub const FIELDS_FIELD_NUMBER: i32 = 2;
+    pub fn fields(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Field>> {
+        &self.fields
+    }
+    pub fn fields_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Field>> {
+        &mut self.fields
+    }
     /// Gets the field number of the 'oneofs' field
     pub const ONEOFS_FIELD_NUMBER: i32 = 3;
+    pub fn oneofs(&self) -> &crate::collections::RepeatedField<std::string::String> {
+        &self.oneofs
+    }
+    pub fn oneofs_mut(&mut self) -> &mut crate::collections::RepeatedField<std::string::String> {
+        &mut self.oneofs
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &mut self.options
+    }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
+    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &self.source_context
+    }
+    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &mut self.source_context
+    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 6;
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
+    pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
+        &self.syntax
+    }
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
+        &mut self.syntax
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Field {
@@ -137,16 +172,7 @@ pub struct Field {
     pub default_value: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
 }
-static FIELD_KIND_DEFAULT_VALUE: crate::EnumValue<self::Field_Kind> = crate::EnumValue::Defined(self::Field_Kind::TypeUnknown);
-static FIELD_CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::Field_Cardinality> = crate::EnumValue::Defined(self::Field_Cardinality::Unknown);
-static FIELD_NUMBER_DEFAULT_VALUE: i32 = 0;
-static FIELD_NAME_DEFAULT_VALUE: &'static str = "";
-static FIELD_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-static FIELD_ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-static FIELD_PACKED_DEFAULT_VALUE: bool = false;
 static FIELD_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(74);
-static FIELD_JSON_NAME_DEFAULT_VALUE: &'static str = "";
-static FIELD_DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::Field {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -169,48 +195,48 @@ impl crate::CodedMessage for self::Field {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let kind = self.kind;
-        if kind != FIELD_KIND_DEFAULT_VALUE {
+        if kind != Self::KIND_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::enum_value(kind);
         }
         let cardinality = self.cardinality;
-        if cardinality != FIELD_CARDINALITY_DEFAULT_VALUE {
+        if cardinality != Self::CARDINALITY_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::enum_value(cardinality);
         }
         let number = self.number;
-        if number != FIELD_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int32(number);
         }
         let name = &self.name;
-        if name != FIELD_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(name);
         }
         let type_url = &self.type_url;
-        if type_url != FIELD_TYPE_URL_DEFAULT_VALUE {
+        if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(type_url);
         }
         let oneof_index = self.oneof_index;
-        if oneof_index != FIELD_ONEOF_INDEX_DEFAULT_VALUE {
+        if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int32(oneof_index);
         }
         let packed = self.packed;
-        if packed != FIELD_PACKED_DEFAULT_VALUE {
+        if packed != Self::PACKED_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::bool(packed);
         }
         size += self.options.calculate_size(&FIELD_OPTIONS_CODEC);
         let json_name = &self.json_name;
-        if json_name != FIELD_JSON_NAME_DEFAULT_VALUE {
+        if json_name != Self::JSON_NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(json_name);
         }
         let default_value = &self.default_value;
-        if default_value != FIELD_DEFAULT_VALUE_DEFAULT_VALUE {
+        if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(default_value);
         }
@@ -219,48 +245,48 @@ impl crate::CodedMessage for self::Field {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let kind = self.kind;
-        if kind != FIELD_KIND_DEFAULT_VALUE {
+        if kind != Self::KIND_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[8])?;
             output.write_enum_value(kind)?;
         }
         let cardinality = self.cardinality;
-        if cardinality != FIELD_CARDINALITY_DEFAULT_VALUE {
+        if cardinality != Self::CARDINALITY_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[16])?;
             output.write_enum_value(cardinality)?;
         }
         let number = self.number;
-        if number != FIELD_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[24])?;
             output.write_int32(number)?;
         }
         let name = &self.name;
-        if name != FIELD_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[34])?;
             output.write_string(name)?;
         }
         let type_url = &self.type_url;
-        if type_url != FIELD_TYPE_URL_DEFAULT_VALUE {
+        if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[50])?;
             output.write_string(type_url)?;
         }
         let oneof_index = self.oneof_index;
-        if oneof_index != FIELD_ONEOF_INDEX_DEFAULT_VALUE {
+        if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[56])?;
             output.write_int32(oneof_index)?;
         }
         let packed = self.packed;
-        if packed != FIELD_PACKED_DEFAULT_VALUE {
+        if packed != Self::PACKED_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[64])?;
             output.write_bool(packed)?;
         }
         self.options.write_to(output, &FIELD_OPTIONS_CODEC)?;
         let json_name = &self.json_name;
-        if json_name != FIELD_JSON_NAME_DEFAULT_VALUE {
+        if json_name != Self::JSON_NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[82])?;
             output.write_string(json_name)?;
         }
         let default_value = &self.default_value;
-        if default_value != FIELD_DEFAULT_VALUE_DEFAULT_VALUE {
+        if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[90])?;
             output.write_string(default_value)?;
         }
@@ -271,13 +297,13 @@ impl crate::CodedMessage for self::Field {
 impl crate::LiteMessage for self::Field {
     fn new() -> Self {
         Self {
-            kind: FIELD_KIND_DEFAULT_VALUE,
-            cardinality: FIELD_CARDINALITY_DEFAULT_VALUE,
-            number: FIELD_NUMBER_DEFAULT_VALUE,
+            kind: Self::KIND_DEFAULT_VALUE,
+            cardinality: Self::CARDINALITY_DEFAULT_VALUE,
+            number: Self::NUMBER_DEFAULT_VALUE,
             name: std::string::String::new(),
             type_url: std::string::String::new(),
-            oneof_index: FIELD_ONEOF_INDEX_DEFAULT_VALUE,
-            packed: FIELD_PACKED_DEFAULT_VALUE,
+            oneof_index: Self::ONEOF_INDEX_DEFAULT_VALUE,
+            packed: Self::PACKED_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             json_name: std::string::String::new(),
             default_value: std::string::String::new(),
@@ -306,24 +332,93 @@ impl crate::Message for self::Field {
 impl self::Field {
     /// Gets the field number of the 'kind' field
     pub const KIND_FIELD_NUMBER: i32 = 1;
+    pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::Field_Kind> = crate::EnumValue::Defined(self::Field_Kind::TypeUnknown);
+    pub fn kind(&self) -> &crate::EnumValue<self::Field_Kind> {
+        &self.kind
+    }
+    pub fn kind_mut(&mut self) -> &mut crate::EnumValue<self::Field_Kind> {
+        &mut self.kind
+    }
     /// Gets the field number of the 'cardinality' field
     pub const CARDINALITY_FIELD_NUMBER: i32 = 2;
+    pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::Field_Cardinality> = crate::EnumValue::Defined(self::Field_Cardinality::Unknown);
+    pub fn cardinality(&self) -> &crate::EnumValue<self::Field_Cardinality> {
+        &self.cardinality
+    }
+    pub fn cardinality_mut(&mut self) -> &mut crate::EnumValue<self::Field_Cardinality> {
+        &mut self.cardinality
+    }
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 3;
+    pub const NUMBER_DEFAULT_VALUE: i32 = 0;
+    pub fn number(&self) -> &i32 {
+        &self.number
+    }
+    pub fn number_mut(&mut self) -> &mut i32 {
+        &mut self.number
+    }
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 4;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'type_url' field
     pub const TYPE_URL_FIELD_NUMBER: i32 = 6;
+    pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
+    pub fn type_url(&self) -> &std::string::String {
+        &self.type_url
+    }
+    pub fn type_url_mut(&mut self) -> &mut std::string::String {
+        &mut self.type_url
+    }
     /// Gets the field number of the 'oneof_index' field
     pub const ONEOF_INDEX_FIELD_NUMBER: i32 = 7;
+    pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
+    pub fn oneof_index(&self) -> &i32 {
+        &self.oneof_index
+    }
+    pub fn oneof_index_mut(&mut self) -> &mut i32 {
+        &mut self.oneof_index
+    }
     /// Gets the field number of the 'packed' field
     pub const PACKED_FIELD_NUMBER: i32 = 8;
+    pub const PACKED_DEFAULT_VALUE: bool = false;
+    pub fn packed(&self) -> &bool {
+        &self.packed
+    }
+    pub fn packed_mut(&mut self) -> &mut bool {
+        &mut self.packed
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 9;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &mut self.options
+    }
     /// Gets the field number of the 'json_name' field
     pub const JSON_NAME_FIELD_NUMBER: i32 = 10;
+    pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn json_name(&self) -> &std::string::String {
+        &self.json_name
+    }
+    pub fn json_name_mut(&mut self) -> &mut std::string::String {
+        &mut self.json_name
+    }
     /// Gets the field number of the 'default_value' field
     pub const DEFAULT_VALUE_FIELD_NUMBER: i32 = 11;
+    pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
+    pub fn default_value(&self) -> &std::string::String {
+        &self.default_value
+    }
+    pub fn default_value_mut(&mut self) -> &mut std::string::String {
+        &mut self.default_value
+    }
 }
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Field_Kind {
@@ -414,10 +509,8 @@ pub struct Enum {
     pub syntax: crate::EnumValue<self::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_NAME_DEFAULT_VALUE: &'static str = "";
 static ENUM_ENUMVALUE_CODEC: crate::Codec<std::boxed::Box<self::EnumValue>> = crate::Codec::message(18);
 static ENUM_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(26);
-static ENUM_SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
 impl crate::CodedMessage for self::Enum {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -435,7 +528,7 @@ impl crate::CodedMessage for self::Enum {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let name = &self.name;
-        if name != ENUM_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(name);
         }
@@ -447,7 +540,7 @@ impl crate::CodedMessage for self::Enum {
             size += crate::io::sizes::message(source_context);
         }
         let syntax = self.syntax;
-        if syntax != ENUM_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::enum_value(syntax);
         }
@@ -456,7 +549,7 @@ impl crate::CodedMessage for self::Enum {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != ENUM_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
@@ -468,7 +561,7 @@ impl crate::CodedMessage for self::Enum {
             output.write_message(source_context)?;
         }
         let syntax = self.syntax;
-        if syntax != ENUM_SYNTAX_DEFAULT_VALUE {
+        if syntax != Self::SYNTAX_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[40])?;
             output.write_enum_value(syntax)?;
         }
@@ -483,7 +576,7 @@ impl crate::LiteMessage for self::Enum {
             enumvalue: crate::collections::RepeatedField::new(),
             options: crate::collections::RepeatedField::new(),
             source_context: std::option::Option::None,
-            syntax: ENUM_SYNTAX_DEFAULT_VALUE,
+            syntax: Self::SYNTAX_DEFAULT_VALUE,
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
@@ -506,14 +599,46 @@ impl crate::Message for self::Enum {
 impl self::Enum {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'enumvalue' field
     pub const ENUMVALUE_FIELD_NUMBER: i32 = 2;
+    pub fn enumvalue(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>> {
+        &self.enumvalue
+    }
+    pub fn enumvalue_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>> {
+        &mut self.enumvalue
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &mut self.options
+    }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
+    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &self.source_context
+    }
+    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+        &mut self.source_context
+    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 5;
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
+    pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
+        &self.syntax
+    }
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
+        &mut self.syntax
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct EnumValue {
@@ -522,8 +647,6 @@ pub struct EnumValue {
     pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_VALUE_NAME_DEFAULT_VALUE: &'static str = "";
-static ENUM_VALUE_NUMBER_DEFAULT_VALUE: i32 = 0;
 static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(26);
 impl crate::CodedMessage for self::EnumValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -540,12 +663,12 @@ impl crate::CodedMessage for self::EnumValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let name = &self.name;
-        if name != ENUM_VALUE_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(name);
         }
         let number = self.number;
-        if number != ENUM_VALUE_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::int32(number);
         }
@@ -555,12 +678,12 @@ impl crate::CodedMessage for self::EnumValue {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != ENUM_VALUE_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
         let number = self.number;
-        if number != ENUM_VALUE_NUMBER_DEFAULT_VALUE {
+        if number != Self::NUMBER_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[16])?;
             output.write_int32(number)?;
         }
@@ -573,7 +696,7 @@ impl crate::LiteMessage for self::EnumValue {
     fn new() -> Self {
         Self {
             name: std::string::String::new(),
-            number: ENUM_VALUE_NUMBER_DEFAULT_VALUE,
+            number: Self::NUMBER_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             _unknown_fields: crate::UnknownFieldSet::new()
         }
@@ -593,10 +716,30 @@ impl crate::Message for self::EnumValue {
 impl self::EnumValue {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 2;
+    pub const NUMBER_DEFAULT_VALUE: i32 = 0;
+    pub fn number(&self) -> &i32 {
+        &self.number
+    }
+    pub fn number_mut(&mut self) -> &mut i32 {
+        &mut self.number
+    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
+    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
+        &mut self.options
+    }
 }
 #[derive(Clone, PartialEq)]
 pub struct Option {
@@ -604,7 +747,6 @@ pub struct Option {
     pub value: std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static OPTION_NAME_DEFAULT_VALUE: &'static str = "";
 impl crate::CodedMessage for self::Option {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -619,7 +761,7 @@ impl crate::CodedMessage for self::Option {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         let name = &self.name;
-        if name != OPTION_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             size += 1;
             size += crate::io::sizes::string(name);
         }
@@ -633,7 +775,7 @@ impl crate::CodedMessage for self::Option {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
-        if name != OPTION_NAME_DEFAULT_VALUE {
+        if name != Self::NAME_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(name)?;
         }
@@ -670,8 +812,21 @@ impl crate::Message for self::Option {
 impl self::Option {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
+    pub const NAME_DEFAULT_VALUE: &'static str = "";
+    pub fn name(&self) -> &std::string::String {
+        &self.name
+    }
+    pub fn name_mut(&mut self) -> &mut std::string::String {
+        &mut self.name
+    }
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
+    pub fn value(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>> {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>> {
+        &mut self.value
+    }
 }
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Syntax {

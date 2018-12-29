@@ -3,15 +3,12 @@
 //! 
 //! Source: google/protobuf/any.proto
 
-
 #[derive(Clone, PartialEq)]
 pub struct Any {
     pub type_url: std::string::String,
     pub value: std::vec::Vec<u8>,
     _unknown_fields: crate::UnknownFieldSet
 }
-static ANY_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-static ANY_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
 impl crate::CodedMessage for self::Any {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -26,12 +23,12 @@ impl crate::CodedMessage for self::Any {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         let type_url = &self.type_url;
-        if type_url != ANY_TYPE_URL_DEFAULT_VALUE {
+        if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(type_url)?)?;
         }
         let value = &self.value;
-        if value.as_slice() != ANY_VALUE_DEFAULT_VALUE {
+        if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::bytes(value)?)?;
         }
@@ -40,12 +37,12 @@ impl crate::CodedMessage for self::Any {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let type_url = &self.type_url;
-        if type_url != ANY_TYPE_URL_DEFAULT_VALUE {
+        if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(type_url)?;
         }
         let value = &self.value;
-        if value.as_slice() != ANY_VALUE_DEFAULT_VALUE {
+        if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             output.write_raw_tag_bytes(&[18])?;
             output.write_bytes(value)?;
         }
@@ -75,6 +72,20 @@ impl crate::Message for self::Any {
 impl self::Any {
     /// Gets the field number of the 'type_url' field
     pub const TYPE_URL_FIELD_NUMBER: i32 = 1;
+    pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
+    pub fn type_url(&self) -> &std::string::String {
+        &self.type_url
+    }
+    pub fn type_url_mut(&mut self) -> &mut std::string::String {
+        &mut self.type_url
+    }
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
+    pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn value(&self) -> &std::vec::Vec<u8> {
+        &self.value
+    }
+    pub fn value_mut(&mut self) -> &mut std::vec::Vec<u8> {
+        &mut self.value
+    }
 }
