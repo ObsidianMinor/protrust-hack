@@ -1,0 +1,379 @@
+[env]
+"PROTOC_VER" = "3.6.1"
+
+[tasks.build]
+args = ["build"]
+
+[tasks.test]
+args = ["test"]
+
+[tasks.gen-included-checked]
+command = "protoc"
+args = [
+    "--rust_out=src/generated/checked",
+    "--rust_opt=pub_fields,crate_name=crate,checked_size",
+    "google/protobuf/any.proto",
+    "google/protobuf/api.proto",
+    "google/protobuf/descriptor.proto",
+    "google/protobuf/duration.proto",
+    "google/protobuf/empty.proto",
+    "google/protobuf/field_mask.proto",
+    "google/protobuf/source_context.proto",
+    "google/protobuf/struct.proto",
+    "google/protobuf/timestamp.proto",
+    "google/protobuf/type.proto",
+    "google/protobuf/wrappers.proto",
+    "google/protobuf/compiler/plugin.proto"
+]
+
+[tasks.gen-included-unchecked]
+command = "protoc"
+args = [
+    "--rust_out=src/generated/checked",
+    "--rust_opt=pub_fields,crate_name=crate",
+    "google/protobuf/any.proto",
+    "google/protobuf/api.proto",
+    "google/protobuf/descriptor.proto",
+    "google/protobuf/duration.proto",
+    "google/protobuf/empty.proto",
+    "google/protobuf/field_mask.proto",
+    "google/protobuf/source_context.proto",
+    "google/protobuf/struct.proto",
+    "google/protobuf/timestamp.proto",
+    "google/protobuf/type.proto",
+    "google/protobuf/wrappers.proto",
+    "google/protobuf/compiler/plugin.proto"
+]
+
+[tasks.gen-sample]
+command = "protoc"
+args = [
+    "--proto_path=protos",
+    "--rust_out=samples/addressbook/gen",
+    "addressbook.proto"
+]
+
+[tasks.gen-conformance]
+command = "protoc"
+args = [
+    "--proto_path=protos",
+    "--rust_out=src/bin/conformance/gen",
+    "conformance.proto"
+]
+
+[tasks.protoc-check.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+'''
+$ErrorActionPreference='Stop'
+if ($PSVersionTable.PSVersion.Major -lt 5) {
+    Write-Host 'PowerShell version 5 or higher required for automatic protoc downloading and unpacking'
+    exit 1
+}
+
+$ProtocUri = "https://github.com/protocolbuffers/protobuf/releases/download/v$($env:PROTOC_VER)/protoc-$($env:PROTOC_VER)-win32.zip"
+$DownloadPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build\protoc"
+$UnpackPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build\protoc\windows"
+
+if (!(Test-Path -Path $UnpackPath)) {
+    New-Item -Path $UnpackPath -ItemType "directory" | Out-Null
+}
+
+if (!(Test-Path -Path "$($UnpackPath)\bin\protoc.exe")) {
+    Write-Host "Downloading $($ProtocUri) to $($DownloadPath)"
+    Invoke-WebRequest -OutFile "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip" -Uri $ProtocUri
+    Expand-Archive -LiteralPath "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip" -DestinationPath $UnpackPath -Force
+    Remove-Item "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip"
+}
+'''
+]
+
+[tasks.protoc-check.mac]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+'''
+ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
+UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/osx'
+
+if [ ! -d $UnpackPath ] 
+    then
+        mkdir $UnpackPath
+fi
+
+if [ ! -f '$UnpackPath'"/bin/protoc" ] 
+    then
+        curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+        unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip' -d $UnpackPath
+        rm "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+fi
+'''
+]
+
+[tasks.protoc-check.linux]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+'''
+ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
+UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/linux'
+
+if [ ! -d $UnpackPath ] 
+    then
+        mkdir $UnpackPath
+fi
+
+if [ ! -f '$UnpackPath'"/bin/protoc" ] 
+    then
+        curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+        unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip' -d $UnpackPath
+        rm "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+fi
+'''
+]
+
+[tasks.gen-move-included-checked]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'mv "src/generated/checked" "src/generated/checked.old"',
+    'mkdir "src/generated/checked"'
+]
+
+[tasks.gen-move-included-checked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Rename-Item "src/generated/checked" "checked.old"',
+    'New-Item "src/generated/checked" -ItemType "directory" | Out-Null'
+]
+
+[tasks.gen-move-included-unchecked]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'mv "src/generated/unchecked" "src/generated/unchecked.old"',
+    'mkdir "src/generated/unchecked"'
+]
+
+[tasks.gen-move-included-unchecked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Rename-Item "src/generated/unchecked" "unchecked.old"',
+    'New-Item "src/generated/unchecked" -ItemType "directory" | Out-Null'
+]
+
+[tasks.gen-move-sample]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'mv "samples/addressbook/gen" "samples/addressbook/gen.old"',
+    'mkdir "samples/addressbook/gen"'
+]
+
+[tasks.gen-move-sample.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Rename-Item "samples/addressbook/gen" "gen.old"',
+    'New-Item "samples/addressbook/gen" -ItemType "directory" | Out-Null'
+]
+
+[tasks.gen-move-conformance]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'mv "src/bin/conformance/gen" "src/bin/conformance/gen.old"',
+    'mkdir "src/bin/conformance/gen"'
+]
+
+[tasks.gen-move-conformance.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Rename-Item "src/bin/conformance/gen" "gen.old"',
+    'New-Item "src/bin/conformance/gen" -ItemType "directory" | Out-Null'
+]
+
+[tasks.pre-gen]
+description = "Moves old generated code to .old directories to be reverted or commited later"
+dependencies = [
+    "gen-move-included-checked",
+    "gen-move-included-unchecked",
+    "gen-move-sample",
+    "gen-move-conformance"
+]
+
+[tasks.gen]
+dependencies = [
+    "protoc-check",
+    "pre-gen"
+]
+run_task = "gen-flow"
+
+[tasks.gen-flow]
+dependencies = [
+    "gen-included-checked",
+    "gen-included-unchecked",
+    "gen-sample",
+    "gen-conformance"
+]
+
+[tasks.gen.windows]
+env = { PATH = '${PATH};${CARGO_MAKE_WORKING_DIRECTORY}\build\protoc\windows\bin;${CARGO_MAKE_WORKING_DIRECTORY}\target\debug' }
+
+[tasks.gen.mac]
+env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/mac/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
+
+[tasks.gen.linux]
+env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/linux/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
+
+[tasks.build-gen]
+dependencies = [
+    "build",
+    "gen"
+]
+
+[tasks.gen-revert]
+dependencies = [
+    "gen-revert-included-checked",
+    "gen-revert-included-unchecked",
+    "gen-revert-sample",
+    "gen-revert-conformance"
+]
+
+[tasks.gen-revert-included-checked]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'rm src/generated/checked',
+    'mv src/generated/checked.old src/generated/checked'
+]
+
+[tasks.gen-revert-included-checked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item -Force -Recurse "src\generated\checked"',
+    'Rename-Item "src\generated\checked.old" "checked"'
+]
+
+[tasks.gen-revert-included-unchecked]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'rm "src/generated/unchecked"',
+    'mv "src/generated/unchecked.old" "src/generated/unchecked"'
+]
+
+[tasks.gen-revert-included-unchecked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item -Force -Recurse "src\generated\unchecked"',
+    'Rename-Item "src\generated\unchecked.old" "unchecked"'
+]
+
+[tasks.gen-revert-sample]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'rm "samples/addressbook/gen"',
+    'mv "samples/addressbook/gen.old" "samples/addressbook/gen"'
+]
+
+[tasks.gen-revert-sample.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item -Force -Recurse "samples\addressbook\gen"',
+    'Rename-Item "samples\addressbook\gen.old" "gen"'
+]
+
+[tasks.gen-revert-conformance]
+script_runner = "bash"
+script_extension = "sh"
+script = [
+    'rm "src/bin/conformance/gen"',
+    'mv "src/bin/conformance/gen.old" "src/bin/conformance/gen"'
+]
+
+[tasks.gen-revert-conformance.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item -Force -Recurse "src\bin\conformance\gen"',
+    'Rename-Item "src\bin\conformance\gen.old" "gen"'
+]
+
+[tasks.gen-commit]
+dependencies = [
+    "gen-commit-included-checked",
+    "gen-commit-included-unchecked",
+    "gen-commit-sample",
+    "gen-commit-conformance"
+]
+
+[tasks.gen-commit-included-checked]
+script_runner = "bash"
+script_extension = "sh"
+script = [ 'rm "src/generated/checked"' ]
+
+[tasks.gen-commit-included-checked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item "src/generated/checked"',
+]
+
+[tasks.gen-commit-included-unchecked]
+script_runner = "bash"
+script_extension = "sh"
+script = [ 'rm "src/generated/unchecked"' ]
+
+[tasks.gen-commit-included-unchecked.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item "src/generated/unchecked"',
+]
+
+[tasks.gen-commit-sample]
+script_runner = "bash"
+script_extension = "sh"
+script = [ 'rm "samples/addressbook/gen"' ]
+
+[tasks.gen-commit-sample.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item "samples/addressbook/gen"',
+]
+
+[tasks.gen-commit-conformance]
+script_runner = "bash"
+script_extension = "sh"
+script = [ 'rm "src/bin/conformance/gen"' ]
+
+[tasks.gen-commit-conformance.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
+    'Remove-Item "src/bin/conformance/gen"',
+]
