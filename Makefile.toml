@@ -147,7 +147,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Rename-Item "src\generated\checked" "checked.old"',
     'New-Item "src\generated\checked" -ItemType "directory" | Out-Null'
 ]
@@ -164,7 +163,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Rename-Item "src\generated\unchecked" "unchecked.old"',
     'New-Item "src\generated\unchecked" -ItemType "directory" | Out-Null'
 ]
@@ -181,7 +179,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Rename-Item "samples\addressbook\gen" "gen.old"',
     'New-Item "samples\addressbook\gen" -ItemType "directory" | Out-Null'
 ]
@@ -198,7 +195,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Rename-Item "src\bin\conformance\gen" "gen.old"',
     'New-Item "src\bin\conformance\gen" -ItemType "directory" | Out-Null'
 ]
@@ -262,7 +258,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Remove-Item -Force -Recurse "src\generated\checked"',
     'Rename-Item "src\generated\checked.old" "checked"'
 ]
@@ -279,7 +274,6 @@ script = [
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Remove-Item -Force -Recurse "src\generated\unchecked"',
     'Rename-Item "src\generated\unchecked.old" "unchecked"'
 ]
@@ -293,10 +287,9 @@ script = [
 ]
 
 [tasks.gen-revert-sample.windows]
-script_runner = "/bin/powershell"
+script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Remove-Item -Force -Recurse "samples\addressbook\gen"',
     'Rename-Item "samples\addressbook\gen.old" "gen"'
 ]
@@ -310,10 +303,9 @@ script = [
 ]
 
 [tasks.gen-revert-conformance.windows]
-script_runner = "/bin/powershell"
+script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
     'Remove-Item -Force -Recurse "src\bin\conformance\gen"',
     'Rename-Item "src\bin\conformance\gen.old" "gen"'
 ]
@@ -329,51 +321,63 @@ dependencies = [
 [tasks.gen-commit-included-checked]
 script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm -rf "src/generated/checked"' ]
+script = [ 'rm -rf "src/generated/checked.old"' ]
 
 [tasks.gen-commit-included-checked.windows]
 script_runner = "powershell"
 script_extension = "ps1"
-script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
-    'Remove-Item -Recursive -Force "src\generated\checked"',
-]
+script = [ 'Remove-Item -Recurse -Force "src\generated\checked.old"' ]
 
 [tasks.gen-commit-included-unchecked]
 script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm -rf "src/generated/unchecked"' ]
+script = [ 'rm -rf "src/generated/unchecked.old"' ]
 
 [tasks.gen-commit-included-unchecked.windows]
 script_runner = "powershell"
 script_extension = "ps1"
-script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
-    'Remove-Item -Recursive -Force "src\generated\unchecked"',
-]
+script = [ 'Remove-Item -Recurse -Force "src\generated\unchecked.old"' ]
 
 [tasks.gen-commit-sample]
 script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm -rf "samples/addressbook/gen"' ]
+script = [ 'rm -rf "samples/addressbook/gen.old"' ]
 
 [tasks.gen-commit-sample.windows]
 script_runner = "powershell"
 script_extension = "ps1"
-script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
-    'Remove-Item -Recursive -Force "samples\addressbook\gen"',
-]
+script = [ 'Remove-Item -Recurse -Force "samples\addressbook\gen.old"' ]
 
 [tasks.gen-commit-conformance]
 script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm -rf "src/bin/conformance/gen"' ]
+script = [ 'rm -rf "src/bin/conformance/gen.old"' ]
 
 [tasks.gen-commit-conformance.windows]
 script_runner = "powershell"
 script_extension = "ps1"
-script = [
-    'Set-Location $env:CARGO_MAKE_WORKING_DIRECTORY',
-    'Remove-Item -Recursive -Force "src\bin\conformance\gen"',
+script = [ 'Remove-Item -Recurse -Force "src\bin\conformance\gen.old"' ]
+
+[tasks.gen-git-add-included-checked]
+command = "git"
+args = [ "add", "src/generated/checked" ]
+
+[tasks.gen-git-add-included-unchecked]
+command = "git"
+args = [ "add", "src/generated/unchecked" ]
+
+[tasks.gen-git-add-sample]
+command = "git"
+args = [ "add", "samples/addressbook/gen" ]
+
+[tasks.gen-git-add-conformance]
+command = "git"
+args = [ "add", "src/bin/conformance/gen" ]
+
+[tasks.gen-git-add]
+dependencies = [
+    "gen-git-add-included-checked",
+    "gen-git-add-included-unchecked",
+    "gen-git-add-sample",
+    "gen-git-add-conformance"
 ]
