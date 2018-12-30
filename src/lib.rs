@@ -119,7 +119,6 @@ pub trait LiteMessage: CodedMessage + Clone + PartialEq {
         instance.merge_from(input)?;
         Ok(instance)
     }
-
 }
 
 /// A Protocol Buffers message

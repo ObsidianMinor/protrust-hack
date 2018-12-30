@@ -305,10 +305,12 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         gen!(self.printer, "\nSelf {{");
         self.printer.indent();
 
-        for field in self.proto
+        for field in self
+            .proto
             .fields()
             .iter()
-            .filter(|f| message_scope(f.scope())) {
+            .filter(|f| message_scope(f.scope()))
+        {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_clone()?;
         }
 
@@ -316,7 +318,10 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
             Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_clone()?;
         }
 
-        gen!(self.printer, "\n_unknown_fields: self._unknown_fields.clone()");
+        gen!(
+            self.printer,
+            "\n_unknown_fields: self._unknown_fields.clone()"
+        );
 
         self.printer.unindent();
         gen!(self.printer, "\n}}");
@@ -345,10 +350,12 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         gen!(self.printer; self.vars => "\nimpl {full_type_name} {{", full_type_name);
         self.printer.indent();
 
-        for field in self.proto
+        for field in self
+            .proto
             .fields()
             .iter()
-            .filter(|p| message_scope(p.scope())) {
+            .filter(|p| message_scope(p.scope()))
+        {
             let mut generator = Generator::<FieldDescriptor, _>::from_other(self, field);
 
             generator.generate_field_number_constant()?;
@@ -863,9 +870,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
     pub fn generate_accessors(&mut self) -> Result {
         match self.proto.file().syntax() {
-            Syntax::Proto2 => {
-
-            },
+            Syntax::Proto2 => {}
             Syntax::Proto3 => {
                 gen!(self.printer; self.vars => "\npub fn {field_name}(&self) -> &{field_type} {{", field_name, field_type);
                 self.printer.indent();
@@ -878,8 +883,8 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                 gen!(self.printer; self.vars => "\n&mut self.{field_name}", field_name);
                 self.printer.unindent();
                 gen!(self.printer, "\n}}");
-            },
-            _ => panic!("Unknown syntax")
+            }
+            _ => panic!("Unknown syntax"),
         }
 
         Ok(())

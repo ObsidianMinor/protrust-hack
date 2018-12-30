@@ -13,7 +13,11 @@ pub fn get_message_type_name(message: &MessageDescriptor) -> String {
     get_type_name(message.name(), message.scope())
 }
 
-pub fn get_full_message_type_name(message: &MessageDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
+pub fn get_full_message_type_name(
+    message: &MessageDescriptor,
+    file: &FileDescriptor,
+    crate_name: &str,
+) -> String {
     get_full_type_name(message.name(), message.scope(), file, crate_name)
 }
 
@@ -21,7 +25,11 @@ pub fn get_enum_type_name(enum_type: &EnumDescriptor) -> String {
     get_type_name(enum_type.name(), enum_type.scope())
 }
 
-pub fn get_full_enum_type_name(enum_type: &EnumDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
+pub fn get_full_enum_type_name(
+    enum_type: &EnumDescriptor,
+    file: &FileDescriptor,
+    crate_name: &str,
+) -> String {
     get_full_type_name(enum_type.name(), enum_type.scope(), file, crate_name)
 }
 
@@ -33,7 +41,11 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
     result
 }
 
-pub fn get_full_enum_variant_name(value: &EnumValueDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
+pub fn get_full_enum_variant_name(
+    value: &EnumValueDescriptor,
+    file: &FileDescriptor,
+    crate_name: &str,
+) -> String {
     format!(
         "{}::{}",
         get_full_enum_type_name(value.enum_type(), file, crate_name),
@@ -58,7 +70,7 @@ pub fn get_struct_field_name(field: &FieldDescriptor) -> String {
 }
 
 pub fn get_field_default_value_name(field: &FieldDescriptor) -> String {
-        field.name().to_ascii_uppercase() + "_DEFAULT_VALUE"
+    field.name().to_ascii_uppercase() + "_DEFAULT_VALUE"
 }
 
 pub fn get_field_codec_name(field: &FieldDescriptor) -> String {
@@ -219,7 +231,12 @@ fn get_type_name(name: &str, mut scope: &CompositeScope) -> String {
     type_name
 }
 
-fn get_full_type_name(name: &str, scope: &CompositeScope, file: &FileDescriptor, crate_name: &str) -> String {
+fn get_full_type_name(
+    name: &str,
+    scope: &CompositeScope,
+    file: &FileDescriptor,
+    crate_name: &str,
+) -> String {
     let mut full = get_type_name(name, scope);
 
     if scope.file() == file {
@@ -339,6 +356,6 @@ fn well_known_file(file: &FileDescriptor) -> Option<&'static str> {
         "google/protobuf/timestamp.proto" => Some("wkt::timestamp"),
         "google/protobuf/type.proto" => Some("wkt::r#type"),
         "google/protobuf/wrappers.proto" => Some("wkt::wrappers"),
-        _ => None
+        _ => None,
     }
 }
