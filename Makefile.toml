@@ -49,7 +49,7 @@ args = [
 command = "protoc"
 args = [
     "--proto_path=protos",
-    "--rust_out=samples/addressbook/gen",
+    "--rust_out=examples/gen",
     "addressbook.proto"
 ]
 
@@ -171,16 +171,16 @@ script = [
 script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'mv "samples/addressbook/gen" "samples/addressbook/gen.old"',
-    'mkdir "samples/addressbook/gen"'
+    'mv "examples/gen" "examples/gen.old"',
+    'mkdir "examples/gen"'
 ]
 
 [tasks.gen-move-sample.windows]
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Rename-Item "samples\addressbook\gen" "gen.old"',
-    'New-Item "samples\addressbook\gen" -ItemType "directory" | Out-Null'
+    'Rename-Item "examples\gen" "gen.old"',
+    'New-Item "examples\gen" -ItemType "directory" | Out-Null'
 ]
 
 [tasks.gen-move-conformance]
@@ -282,16 +282,16 @@ script = [
 script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
-    'rm -rf "samples/addressbook/gen"',
-    'mv "samples/addressbook/gen.old" "samples/addressbook/gen"'
+    'rm -rf "examples/gen"',
+    'mv "examples/gen.old" "examples/gen"'
 ]
 
 [tasks.gen-revert-sample.windows]
 script_runner = "powershell"
 script_extension = "ps1"
 script = [
-    'Remove-Item -Force -Recurse "samples\addressbook\gen"',
-    'Rename-Item "samples\addressbook\gen.old" "gen"'
+    'Remove-Item -Force -Recurse "examples\gen"',
+    'Rename-Item "examples\gen.old" "gen"'
 ]
 
 [tasks.gen-revert-conformance]
@@ -341,12 +341,12 @@ script = [ 'Remove-Item -Recurse -Force "src\generated\unchecked.old"' ]
 [tasks.gen-commit-sample]
 script_runner = "/bin/bash"
 script_extension = "sh"
-script = [ 'rm -rf "samples/addressbook/gen.old"' ]
+script = [ 'rm -rf "examples/gen.old"' ]
 
 [tasks.gen-commit-sample.windows]
 script_runner = "powershell"
 script_extension = "ps1"
-script = [ 'Remove-Item -Recurse -Force "samples\addressbook\gen.old"' ]
+script = [ 'Remove-Item -Recurse -Force "examples\gen.old"' ]
 
 [tasks.gen-commit-conformance]
 script_runner = "/bin/bash"
@@ -368,7 +368,7 @@ args = [ "add", "src/generated/unchecked" ]
 
 [tasks.gen-git-add-sample]
 command = "git"
-args = [ "add", "samples/addressbook/gen" ]
+args = [ "add", "examples/gen" ]
 
 [tasks.gen-git-add-conformance]
 command = "git"

@@ -9,7 +9,7 @@ pub struct Person {
     id: i32,
     email: std::string::String,
     phones: protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>>,
-    last_updated: std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>>,
+    last_updated: std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>>,
     _unknown_fields: protrust::UnknownFieldSet
 }
 static PERSON_PHONES_CODEC: protrust::Codec<std::boxed::Box<self::Person_PhoneNumber>> = protrust::Codec::message(34);
@@ -144,10 +144,10 @@ impl self::Person {
     }
     /// Gets the field number of the 'last_updated' field
     pub const LAST_UPDATED_FIELD_NUMBER: i32 = 5;
-    pub fn last_updated(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>> {
+    pub fn last_updated(&self) -> &std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>> {
         &self.last_updated
     }
-    pub fn last_updated_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_timestamp_proto::Timestamp>> {
+    pub fn last_updated_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>> {
         &mut self.last_updated
     }
 }
