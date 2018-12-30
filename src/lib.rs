@@ -54,6 +54,12 @@ pub trait CodedMessage {
     /// Merges fields from the coded input into this message
     fn merge_from(&mut self, input: &mut io::CodedInput) -> io::InputResult<()>;
 
+    /// Merges an instance of self from a Read instance
+    fn merge_from_read(&mut self, read: &mut std::io::Read) -> io::InputResult<()> {
+        let mut reader = io::CodedInput::new(read);
+        self.merge_from(&mut reader)
+    }
+
     /// Calculates the size of the message and returns it as an 32-bit integer or None if the message is larger than `i32::MAX`
     #[cfg(checked_size)]
     fn calculate_size(&self) -> Option<i32>;
@@ -64,6 +70,31 @@ pub trait CodedMessage {
 
     /// Writes the fields of this message to the coded output
     fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult;
+
+    /// Writes the message to a Write instance
+    fn write(&self, write: &mut std::io::Write) -> io::OutputResult {
+        let mut writer = io::CodedOutput::new(write);
+        self.write_to(&mut writer)
+    }
+
+    /// Writes the message to a new Vec<u8> or Err(io::OutputError::ValueTooLarge) if the message is too large
+    #[cfg(checked_size)]
+    fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
+        if let Some(size) = self.calculate_size() {
+            let mut out = Vec::with_capacity(size as usize);
+            self.write(&mut out)?;
+            Ok(out)
+        } else {
+            Err(io::OutputError::ValueTooLarge)
+        }
+    }
+
+    #[cfg(not(checked_size))]
+    fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
+        let mut out = Vec::with_capacity(self.calculate_size() as usize);
+        self.write(&mut out)?;
+        Ok(out)
+    }
 
     /// Gets whether all the required fields and messages are initialized
     fn is_initialized(&self) -> bool {
@@ -81,45 +112,16 @@ pub trait LiteMessage: CodedMessage + Clone + PartialEq {
     /// Reads a new instance of Self from the specified Read using a CodedInputReader
     fn read_new(read: &mut std::io::Read) -> io::InputResult<Self> {
         let mut reader = io::CodedInput::new(read);
-        Self::read_input(&mut reader)
+        Self::read_new_from_input(&mut reader)
     }
 
     /// Reads a new instance of Self from the specified CodedInput
-    fn read_input(input: &mut io::CodedInput) -> io::InputResult<Self> {
+    fn read_new_from_input(input: &mut io::CodedInput) -> io::InputResult<Self> {
         let mut instance = Self::new();
         instance.merge_from(input)?;
         Ok(instance)
     }
 
-    /// Merges an instance of self from a Read instance
-    fn merge_from_read(&mut self, read: &mut std::io::Read) -> io::InputResult<()> {
-        let mut reader = io::CodedInput::new(read);
-        self.merge_from(&mut reader)
-    }
-
-    /// Writes the message to a new Vec<u8> or Err(io::OutputError::ValueTooLarge) if the message is too large
-    #[cfg(checked_size)]
-    fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
-        if let Some(size) = self.calculate_size() {
-            let mut out = Vec::with_capacity(size as usize);
-            self.write(&mut out)?;
-            Ok(out)
-        } else {
-            Err(io::OutputError::ValueTooLarge)
-        }
-    }
-    #[cfg(not(checked_size))]
-    fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
-        let mut out = Vec::with_capacity(self.calculate_size() as usize);
-        self.write(&mut out)?;
-        Ok(out)
-    }
-
-    /// Writes the message to a Write instance
-    fn write(&self, write: &mut std::io::Write) -> io::OutputResult {
-        let mut writer = io::CodedOutput::new(write);
-        self.write_to(&mut writer)
-    }
 }
 
 /// A Protocol Buffers message
