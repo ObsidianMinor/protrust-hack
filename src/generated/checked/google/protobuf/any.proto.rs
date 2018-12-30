@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/any.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Any {
     pub type_url: std::string::String,
     pub value: std::vec::Vec<u8>,
@@ -58,10 +58,19 @@ impl crate::LiteMessage for self::Any {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Any {
+    fn clone(&self) -> Self {
+        Self {
+            type_url: self.type_url.clone(),
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.type_url = other.type_url.clone();
         self.value = other.value.clone();
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Any {

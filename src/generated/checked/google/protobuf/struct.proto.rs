@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/struct.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Struct {
     pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -38,9 +38,17 @@ impl crate::LiteMessage for self::Struct {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.fields.merge(&other.fields);
-        self._unknown_fields.merge(&other._unknown_fields);
+}
+impl std::clone::Clone for self::Struct {
+    fn clone(&self) -> Self {
+        Self {
+            fields: self.fields.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self.fields.clone_from(&other.fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Struct {
@@ -58,7 +66,7 @@ impl self::Struct {
         &mut self.fields
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Value {
     pub kind: Value_Kind,
     _unknown_fields: crate::UnknownFieldSet
@@ -170,7 +178,15 @@ impl crate::LiteMessage for self::Value {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Value {
+    fn clone(&self) -> Self {
+        Self {
+            kind: self.kind.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         if let self::Value_Kind::NullValue(kind) = other.kind {
             self.kind = self::Value_Kind::NullValue(kind);
         }
@@ -185,19 +201,19 @@ impl crate::LiteMessage for self::Value {
         }
         if let self::Value_Kind::StructValue(kind) = &other.kind {
             if let self::Value_Kind::StructValue(existing) = &mut self.kind {
-                existing.merge(kind);
+                existing.clone_from(kind);
             } else {
                 self.kind = self::Value_Kind::StructValue(kind.clone());
             }
         }
         if let self::Value_Kind::ListValue(kind) = &other.kind {
             if let self::Value_Kind::ListValue(existing) = &mut self.kind {
-                existing.merge(kind);
+                existing.clone_from(kind);
             } else {
                 self.kind = self::Value_Kind::ListValue(kind.clone());
             }
         }
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Value {
@@ -213,7 +229,7 @@ impl self::Value {
         &mut self.kind
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct ListValue {
     pub values: crate::collections::RepeatedField<std::boxed::Box<self::Value>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -248,9 +264,17 @@ impl crate::LiteMessage for self::ListValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.values.merge(&other.values);
-        self._unknown_fields.merge(&other._unknown_fields);
+}
+impl std::clone::Clone for self::ListValue {
+    fn clone(&self) -> Self {
+        Self {
+            values: self.values.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self.values.clone_from(&other.values);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::ListValue {

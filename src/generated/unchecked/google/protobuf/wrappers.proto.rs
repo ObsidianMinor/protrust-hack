@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/wrappers.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct DoubleValue {
     pub value: f64,
     _unknown_fields: crate::UnknownFieldSet
@@ -45,9 +45,17 @@ impl crate::LiteMessage for self::DoubleValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::DoubleValue {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::DoubleValue {
@@ -66,7 +74,7 @@ impl self::DoubleValue {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct FloatValue {
     pub value: f32,
     _unknown_fields: crate::UnknownFieldSet
@@ -108,9 +116,17 @@ impl crate::LiteMessage for self::FloatValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::FloatValue {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::FloatValue {
@@ -129,7 +145,7 @@ impl self::FloatValue {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Int64Value {
     pub value: i64,
     _unknown_fields: crate::UnknownFieldSet
@@ -171,9 +187,17 @@ impl crate::LiteMessage for self::Int64Value {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Int64Value {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Int64Value {
@@ -192,7 +216,7 @@ impl self::Int64Value {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct UInt64Value {
     pub value: u64,
     _unknown_fields: crate::UnknownFieldSet
@@ -234,9 +258,17 @@ impl crate::LiteMessage for self::UInt64Value {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::UInt64Value {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::UInt64Value {
@@ -255,7 +287,7 @@ impl self::UInt64Value {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Int32Value {
     pub value: i32,
     _unknown_fields: crate::UnknownFieldSet
@@ -297,9 +329,17 @@ impl crate::LiteMessage for self::Int32Value {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Int32Value {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Int32Value {
@@ -318,7 +358,7 @@ impl self::Int32Value {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct UInt32Value {
     pub value: u32,
     _unknown_fields: crate::UnknownFieldSet
@@ -360,9 +400,17 @@ impl crate::LiteMessage for self::UInt32Value {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::UInt32Value {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::UInt32Value {
@@ -381,7 +429,7 @@ impl self::UInt32Value {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct BoolValue {
     pub value: bool,
     _unknown_fields: crate::UnknownFieldSet
@@ -423,9 +471,17 @@ impl crate::LiteMessage for self::BoolValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::BoolValue {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::BoolValue {
@@ -444,7 +500,7 @@ impl self::BoolValue {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct StringValue {
     pub value: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
@@ -486,9 +542,17 @@ impl crate::LiteMessage for self::StringValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::StringValue {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value.clone();
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::StringValue {
@@ -507,7 +571,7 @@ impl self::StringValue {
         &mut self.value
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct BytesValue {
     pub value: std::vec::Vec<u8>,
     _unknown_fields: crate::UnknownFieldSet
@@ -549,9 +613,17 @@ impl crate::LiteMessage for self::BytesValue {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::BytesValue {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.value = other.value.clone();
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::BytesValue {

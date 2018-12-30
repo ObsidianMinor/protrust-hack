@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/empty.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Empty {
     _unknown_fields: crate::UnknownFieldSet
 }
@@ -32,8 +32,15 @@ impl crate::LiteMessage for self::Empty {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self._unknown_fields.merge(&other._unknown_fields);
+}
+impl std::clone::Clone for self::Empty {
+    fn clone(&self) -> Self {
+        Self {
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Empty {

@@ -3,7 +3,7 @@
 //! 
 //! Source: addressbook.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Person {
     name: std::string::String,
     id: i32,
@@ -90,15 +90,27 @@ impl protrust::LiteMessage for self::Person {
             _unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Person {
+    fn clone(&self) -> Self {
+        Self {
+            name: self.name.clone(),
+            id: self.id.clone(),
+            email: self.email.clone(),
+            phones: self.phones.clone(),
+            last_updated: self.last_updated.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.id = other.id;
         self.email = other.email.clone();
-        self.phones.merge(&other.phones);
+        self.phones.clone_from(&other.phones);
         if let std::option::Option::Some(last_updated) = &other.last_updated {
-            self.last_updated.get_or_insert_with(protrust::LiteMessage::new).merge(last_updated);
+            self.last_updated.get_or_insert_with(protrust::LiteMessage::new).clone_from(last_updated);
         }
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl protrust::Message for self::Person {
@@ -151,7 +163,7 @@ impl self::Person {
         &mut self.last_updated
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Person_PhoneNumber {
     number: std::string::String,
     r#type: protrust::EnumValue<self::Person_PhoneType>,
@@ -206,10 +218,19 @@ impl protrust::LiteMessage for self::Person_PhoneNumber {
             _unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Person_PhoneNumber {
+    fn clone(&self) -> Self {
+        Self {
+            number: self.number.clone(),
+            r#type: self.r#type.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.number = other.number.clone();
         self.r#type = other.r#type;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl protrust::Message for self::Person_PhoneNumber {
@@ -260,7 +281,7 @@ impl std::convert::From<self::Person_PhoneType> for i32 {
         value as i32
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct AddressBook {
     people: protrust::collections::RepeatedField<std::boxed::Box<self::Person>>,
     _unknown_fields: protrust::UnknownFieldSet
@@ -295,9 +316,17 @@ impl protrust::LiteMessage for self::AddressBook {
             _unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.people.merge(&other.people);
-        self._unknown_fields.merge(&other._unknown_fields);
+}
+impl std::clone::Clone for self::AddressBook {
+    fn clone(&self) -> Self {
+        Self {
+            people: self.people.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self.people.clone_from(&other.people);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl protrust::Message for self::AddressBook {

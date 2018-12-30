@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/timestamp.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,
@@ -58,10 +58,19 @@ impl crate::LiteMessage for self::Timestamp {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::Timestamp {
+    fn clone(&self) -> Self {
+        Self {
+            seconds: self.seconds.clone(),
+            nanos: self.nanos.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.seconds = other.seconds;
         self.nanos = other.nanos;
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::Timestamp {

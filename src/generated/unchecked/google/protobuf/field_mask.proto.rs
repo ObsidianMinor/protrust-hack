@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/field_mask.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct FieldMask {
     pub paths: crate::collections::RepeatedField<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet
@@ -38,9 +38,17 @@ impl crate::LiteMessage for self::FieldMask {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.paths.merge(&other.paths);
-        self._unknown_fields.merge(&other._unknown_fields);
+}
+impl std::clone::Clone for self::FieldMask {
+    fn clone(&self) -> Self {
+        Self {
+            paths: self.paths.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self.paths.clone_from(&other.paths);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::FieldMask {

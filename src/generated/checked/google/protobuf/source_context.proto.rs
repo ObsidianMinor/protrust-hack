@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/source_context.proto
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct SourceContext {
     pub file_name: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
@@ -45,9 +45,17 @@ impl crate::LiteMessage for self::SourceContext {
             _unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-    fn merge(&mut self, other: &Self) {
+}
+impl std::clone::Clone for self::SourceContext {
+    fn clone(&self) -> Self {
+        Self {
+            file_name: self.file_name.clone(),
+            _unknown_fields: self._unknown_fields.clone()
+        }
+    }
+    fn clone_from(&mut self, other: &Self) {
         self.file_name = other.file_name.clone();
-        self._unknown_fields.merge(&other._unknown_fields);
+        self._unknown_fields.clone_from(&other._unknown_fields);
     }
 }
 impl crate::Message for self::SourceContext {

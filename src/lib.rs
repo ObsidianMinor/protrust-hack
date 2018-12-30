@@ -106,8 +106,6 @@ pub trait CodedMessage {
 pub trait LiteMessage: CodedMessage + Clone + PartialEq {
     /// Creates a new instance of the message
     fn new() -> Self;
-    /// Merges another instance of the message
-    fn merge(&mut self, other: &Self);
 
     /// Reads a new instance of Self from the specified Read using a CodedInputReader
     fn read_new(read: &mut std::io::Read) -> io::InputResult<Self> {
@@ -156,9 +154,6 @@ impl<T: CodedMessage> CodedMessage for Box<T> {
 impl<T: LiteMessage> LiteMessage for Box<T> {
     fn new() -> Box<T> {
         Box::new(T::new())
-    }
-    fn merge(&mut self, other: &Self) {
-        self.as_mut().merge(other)
     }
 }
 
