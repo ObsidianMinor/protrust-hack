@@ -7,7 +7,7 @@
 pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Timestamp {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -15,7 +15,7 @@ impl crate::CodedMessage for self::Timestamp {
             match tag.get() {
                 8 => self.seconds = input.read_int64()?,
                 16 => self.nanos = input.read_int32()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -32,7 +32,7 @@ impl crate::CodedMessage for self::Timestamp {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::int32(nanos))?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -46,7 +46,7 @@ impl crate::CodedMessage for self::Timestamp {
             output.write_raw_tag_bytes(&[16])?;
             output.write_int32(nanos)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -55,7 +55,7 @@ impl crate::LiteMessage for self::Timestamp {
         Self {
             seconds: Self::SECONDS_DEFAULT_VALUE,
             nanos: Self::NANOS_DEFAULT_VALUE,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -64,13 +64,13 @@ impl std::clone::Clone for self::Timestamp {
         Self {
             seconds: self.seconds.clone(),
             nanos: self.nanos.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.seconds = other.seconds;
         self.nanos = other.nanos;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Timestamp {

@@ -6,7 +6,7 @@
 #[derive(Debug, PartialEq)]
 pub struct FieldMask {
     pub paths: crate::collections::RepeatedField<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_MASK_PATHS_CODEC: crate::Codec<std::string::String> = crate::Codec::string(10);
 impl crate::CodedMessage for self::FieldMask {
@@ -14,7 +14,7 @@ impl crate::CodedMessage for self::FieldMask {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.paths.add_entries(tag.get(), input, &FIELD_MASK_PATHS_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -22,12 +22,12 @@ impl crate::CodedMessage for self::FieldMask {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         size += self.paths.calculate_size(&FIELD_MASK_PATHS_CODEC);
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.paths.write_to(output, &FIELD_MASK_PATHS_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -35,7 +35,7 @@ impl crate::LiteMessage for self::FieldMask {
     fn new() -> Self {
         Self {
             paths: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -43,12 +43,12 @@ impl std::clone::Clone for self::FieldMask {
     fn clone(&self) -> Self {
         Self {
             paths: self.paths.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.paths.clone_from(&other.paths);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FieldMask {

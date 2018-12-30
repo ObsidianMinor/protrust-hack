@@ -12,7 +12,7 @@ pub struct Api {
     pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub mixins: crate::collections::RepeatedField<std::boxed::Box<self::Mixin>>,
     pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static API_METHODS_CODEC: crate::Codec<std::boxed::Box<self::Method>> = crate::Codec::message(18);
 static API_OPTIONS_CODEC: crate::Codec<std::boxed::Box<crate::wkt::r#type::Option>> = crate::Codec::message(26);
@@ -28,7 +28,7 @@ impl crate::CodedMessage for self::Api {
                 42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
                 50 => self.mixins.add_entries(tag.get(), input, &API_MIXINS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -58,7 +58,7 @@ impl crate::CodedMessage for self::Api {
             size += 1;
             size += crate::io::sizes::enum_value(syntax);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -85,7 +85,7 @@ impl crate::CodedMessage for self::Api {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -99,7 +99,7 @@ impl crate::LiteMessage for self::Api {
             source_context: std::option::Option::None,
             mixins: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -113,7 +113,7 @@ impl std::clone::Clone for self::Api {
             source_context: self.source_context.clone(),
             mixins: self.mixins.clone(),
             syntax: self.syntax.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -126,7 +126,7 @@ impl std::clone::Clone for self::Api {
         }
         self.mixins.clone_from(&other.mixins);
         self.syntax = other.syntax;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Api {
@@ -204,7 +204,7 @@ pub struct Method {
     pub response_streaming: bool,
     pub options: crate::collections::RepeatedField<std::boxed::Box<crate::wkt::r#type::Option>>,
     pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static METHOD_OPTIONS_CODEC: crate::Codec<std::boxed::Box<crate::wkt::r#type::Option>> = crate::Codec::message(50);
 impl crate::CodedMessage for self::Method {
@@ -218,7 +218,7 @@ impl crate::CodedMessage for self::Method {
                 40 => self.response_streaming = input.read_bool()?,
                 50 => self.options.add_entries(tag.get(), input, &METHOD_OPTIONS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -256,7 +256,7 @@ impl crate::CodedMessage for self::Method {
             size += 1;
             size += crate::io::sizes::enum_value(syntax);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -291,7 +291,7 @@ impl crate::CodedMessage for self::Method {
             output.write_raw_tag_bytes(&[56])?;
             output.write_enum_value(syntax)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -305,7 +305,7 @@ impl crate::LiteMessage for self::Method {
             response_streaming: Self::RESPONSE_STREAMING_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -319,7 +319,7 @@ impl std::clone::Clone for self::Method {
             response_streaming: self.response_streaming.clone(),
             options: self.options.clone(),
             syntax: self.syntax.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -330,7 +330,7 @@ impl std::clone::Clone for self::Method {
         self.response_streaming = other.response_streaming;
         self.options.clone_from(&other.options);
         self.syntax = other.syntax;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Method {
@@ -406,7 +406,7 @@ impl self::Method {
 pub struct Mixin {
     pub name: std::string::String,
     pub root: std::string::String,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Mixin {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -414,7 +414,7 @@ impl crate::CodedMessage for self::Mixin {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.root = input.read_string()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -431,7 +431,7 @@ impl crate::CodedMessage for self::Mixin {
             size += 1;
             size += crate::io::sizes::string(root);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -445,7 +445,7 @@ impl crate::CodedMessage for self::Mixin {
             output.write_raw_tag_bytes(&[18])?;
             output.write_string(root)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -454,7 +454,7 @@ impl crate::LiteMessage for self::Mixin {
         Self {
             name: std::string::String::new(),
             root: std::string::String::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -463,13 +463,13 @@ impl std::clone::Clone for self::Mixin {
         Self {
             name: self.name.clone(),
             root: self.root.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.root = other.root.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Mixin {

@@ -6,14 +6,14 @@
 #[derive(Debug, PartialEq)]
 pub struct SourceContext {
     pub file_name: std::string::String,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::SourceContext {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.file_name = input.read_string()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -25,7 +25,7 @@ impl crate::CodedMessage for self::SourceContext {
             size += 1;
             size += crate::io::sizes::string(file_name);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -34,7 +34,7 @@ impl crate::CodedMessage for self::SourceContext {
             output.write_raw_tag_bytes(&[10])?;
             output.write_string(file_name)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -42,7 +42,7 @@ impl crate::LiteMessage for self::SourceContext {
     fn new() -> Self {
         Self {
             file_name: std::string::String::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -50,12 +50,12 @@ impl std::clone::Clone for self::SourceContext {
     fn clone(&self) -> Self {
         Self {
             file_name: self.file_name.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.file_name = other.file_name.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::SourceContext {

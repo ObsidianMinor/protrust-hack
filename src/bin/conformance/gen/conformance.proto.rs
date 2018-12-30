@@ -10,7 +10,7 @@ pub struct ConformanceRequest {
     test_category: protrust::EnumValue<self::TestCategory>,
     jspb_encoding_options: std::option::Option<std::boxed::Box<self::JspbEncodingConfig>>,
     payload: ConformanceRequest_Payload,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 #[derive(Clone, Debug, PartialEq)]
 pub enum ConformanceRequest_Payload {
@@ -31,7 +31,7 @@ impl protrust::CodedMessage for self::ConformanceRequest {
                 34 => self.message_type = input.read_string()?,
                 40 => self.test_category = input.read_enum_value()?,
                 50 => input.read_message(self.jspb_encoding_options.get_or_insert_with(protrust::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -70,7 +70,7 @@ impl protrust::CodedMessage for self::ConformanceRequest {
             size += 1;
             size += protrust::io::sizes::message(jspb_encoding_options);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
@@ -106,7 +106,7 @@ impl protrust::CodedMessage for self::ConformanceRequest {
             output.write_raw_tag_bytes(&[50])?;
             output.write_message(jspb_encoding_options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -118,7 +118,7 @@ impl protrust::LiteMessage for self::ConformanceRequest {
             test_category: Self::TEST_CATEGORY_DEFAULT_VALUE,
             jspb_encoding_options: std::option::Option::None,
             payload: self::ConformanceRequest_Payload::None,
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -130,7 +130,7 @@ impl std::clone::Clone for self::ConformanceRequest {
             test_category: self.test_category.clone(),
             jspb_encoding_options: self.jspb_encoding_options.clone(),
             payload: self.payload.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -149,7 +149,7 @@ impl std::clone::Clone for self::ConformanceRequest {
         if let std::option::Option::Some(jspb_encoding_options) = &other.jspb_encoding_options {
             self.jspb_encoding_options.get_or_insert_with(protrust::LiteMessage::new).clone_from(jspb_encoding_options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::ConformanceRequest {
@@ -203,7 +203,7 @@ impl self::ConformanceRequest {
 #[derive(Debug, PartialEq)]
 pub struct ConformanceResponse {
     result: ConformanceResponse_Result,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 #[derive(Clone, Debug, PartialEq)]
 pub enum ConformanceResponse_Result {
@@ -228,7 +228,7 @@ impl protrust::CodedMessage for self::ConformanceResponse {
                 34 => self.result = self::ConformanceResponse_Result::JsonPayload(input.read_string()?),
                 42 => self.result = self::ConformanceResponse_Result::Skipped(input.read_string()?),
                 58 => self.result = self::ConformanceResponse_Result::JspbPayload(input.read_string()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -263,7 +263,7 @@ impl protrust::CodedMessage for self::ConformanceResponse {
             size += 1;
             size += protrust::io::sizes::string(result);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
@@ -295,7 +295,7 @@ impl protrust::CodedMessage for self::ConformanceResponse {
             output.write_raw_tag_bytes(&[58])?;
             output.write_string(result)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -303,7 +303,7 @@ impl protrust::LiteMessage for self::ConformanceResponse {
     fn new() -> Self {
         Self {
             result: self::ConformanceResponse_Result::None,
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -311,7 +311,7 @@ impl std::clone::Clone for self::ConformanceResponse {
     fn clone(&self) -> Self {
         Self {
             result: self.result.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -336,7 +336,7 @@ impl std::clone::Clone for self::ConformanceResponse {
         if let self::ConformanceResponse_Result::JspbPayload(result) = &other.result {
             self.result = self::ConformanceResponse_Result::JspbPayload(result.clone());
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::ConformanceResponse {
@@ -355,14 +355,14 @@ impl self::ConformanceResponse {
 #[derive(Debug, PartialEq)]
 pub struct JspbEncodingConfig {
     use_jspb_array_any_format: bool,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 impl protrust::CodedMessage for self::JspbEncodingConfig {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.use_jspb_array_any_format = input.read_bool()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -374,7 +374,7 @@ impl protrust::CodedMessage for self::JspbEncodingConfig {
             size += 1;
             size += protrust::io::sizes::bool(use_jspb_array_any_format);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
@@ -383,7 +383,7 @@ impl protrust::CodedMessage for self::JspbEncodingConfig {
             output.write_raw_tag_bytes(&[8])?;
             output.write_bool(use_jspb_array_any_format)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -391,7 +391,7 @@ impl protrust::LiteMessage for self::JspbEncodingConfig {
     fn new() -> Self {
         Self {
             use_jspb_array_any_format: Self::USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE,
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -399,12 +399,12 @@ impl std::clone::Clone for self::JspbEncodingConfig {
     fn clone(&self) -> Self {
         Self {
             use_jspb_array_any_format: self.use_jspb_array_any_format.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.use_jspb_array_any_format = other.use_jspb_array_any_format;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::JspbEncodingConfig {

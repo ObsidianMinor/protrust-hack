@@ -9,7 +9,7 @@ pub struct Version {
     pub minor: std::option::Option<i32>,
     pub patch: std::option::Option<i32>,
     pub suffix: std::option::Option<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Version {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -19,7 +19,7 @@ impl crate::CodedMessage for self::Version {
                 16 => self.minor = std::option::Option::Some(input.read_int32()?),
                 24 => self.patch = std::option::Option::Some(input.read_int32()?),
                 34 => self.suffix = std::option::Option::Some(input.read_string()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -54,7 +54,7 @@ impl crate::CodedMessage for self::Version {
                 size = size.checked_add(crate::io::sizes::string(suffix)?)?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -86,7 +86,7 @@ impl crate::CodedMessage for self::Version {
                 output.write_string(suffix)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -97,7 +97,7 @@ impl crate::LiteMessage for self::Version {
             minor: std::option::Option::None,
             patch: std::option::Option::None,
             suffix: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -108,7 +108,7 @@ impl std::clone::Clone for self::Version {
             minor: self.minor.clone(),
             patch: self.patch.clone(),
             suffix: self.suffix.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -116,7 +116,7 @@ impl std::clone::Clone for self::Version {
         self.minor = other.minor;
         self.patch = other.patch;
         self.suffix = other.suffix.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Version {
@@ -144,7 +144,7 @@ pub struct CodeGeneratorRequest {
     pub parameter: std::option::Option<std::string::String>,
     pub proto_file: crate::collections::RepeatedField<std::boxed::Box<crate::descriptor::FileDescriptorProto>>,
     pub compiler_version: std::option::Option<std::boxed::Box<self::Version>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC: crate::Codec<std::string::String> = crate::Codec::string(10);
 static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<std::boxed::Box<crate::descriptor::FileDescriptorProto>> = crate::Codec::message(122);
@@ -156,7 +156,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
                 18 => self.parameter = std::option::Option::Some(input.read_string()?),
                 122 => self.proto_file.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
                 26 => input.read_message(self.compiler_version.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -177,7 +177,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(compiler_version)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -195,7 +195,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
             output.write_raw_tag_bytes(&[26])?;
             output.write_message(compiler_version)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -206,7 +206,7 @@ impl crate::LiteMessage for self::CodeGeneratorRequest {
             parameter: std::option::Option::None,
             proto_file: crate::collections::RepeatedField::new(),
             compiler_version: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -217,7 +217,7 @@ impl std::clone::Clone for self::CodeGeneratorRequest {
             parameter: self.parameter.clone(),
             proto_file: self.proto_file.clone(),
             compiler_version: self.compiler_version.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -227,7 +227,7 @@ impl std::clone::Clone for self::CodeGeneratorRequest {
         if let std::option::Option::Some(compiler_version) = &other.compiler_version {
             self.compiler_version.get_or_insert_with(crate::LiteMessage::new).clone_from(compiler_version);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorRequest {
@@ -250,7 +250,7 @@ impl self::CodeGeneratorRequest {
 pub struct CodeGeneratorResponse {
     pub error: std::option::Option<std::string::String>,
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::CodeGeneratorResponse_File>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_RESPONSE_FILE_CODEC: crate::Codec<std::boxed::Box<self::CodeGeneratorResponse_File>> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorResponse {
@@ -259,7 +259,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
             match tag.get() {
                 10 => self.error = std::option::Option::Some(input.read_string()?),
                 122 => self.file.add_entries(tag.get(), input, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -274,7 +274,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
             }
         }
         size = size.checked_add(self.file.calculate_size(&CODE_GENERATOR_RESPONSE_FILE_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -286,7 +286,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
             }
         }
         self.file.write_to(output, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -295,7 +295,7 @@ impl crate::LiteMessage for self::CodeGeneratorResponse {
         Self {
             error: std::option::Option::None,
             file: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -304,13 +304,13 @@ impl std::clone::Clone for self::CodeGeneratorResponse {
         Self {
             error: self.error.clone(),
             file: self.file.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.error = other.error.clone();
         self.file.clone_from(&other.file);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorResponse {
@@ -330,7 +330,7 @@ pub struct CodeGeneratorResponse_File {
     pub name: std::option::Option<std::string::String>,
     pub insertion_point: std::option::Option<std::string::String>,
     pub content: std::option::Option<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::CodeGeneratorResponse_File {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -339,7 +339,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
                 10 => self.name = std::option::Option::Some(input.read_string()?),
                 18 => self.insertion_point = std::option::Option::Some(input.read_string()?),
                 122 => self.content = std::option::Option::Some(input.read_string()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -367,7 +367,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
                 size = size.checked_add(crate::io::sizes::string(content)?)?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -392,7 +392,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
                 output.write_string(content)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -402,7 +402,7 @@ impl crate::LiteMessage for self::CodeGeneratorResponse_File {
             name: std::option::Option::None,
             insertion_point: std::option::Option::None,
             content: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -412,14 +412,14 @@ impl std::clone::Clone for self::CodeGeneratorResponse_File {
             name: self.name.clone(),
             insertion_point: self.insertion_point.clone(),
             content: self.content.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.insertion_point = other.insertion_point.clone();
         self.content = other.content.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorResponse_File {

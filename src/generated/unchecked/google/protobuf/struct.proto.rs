@@ -6,7 +6,7 @@
 #[derive(Debug, PartialEq)]
 pub struct Struct {
     pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<std::string::String, std::boxed::Box<self::Value>> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
 impl crate::CodedMessage for self::Struct {
@@ -14,7 +14,7 @@ impl crate::CodedMessage for self::Struct {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.fields.add_entries(input, &STRUCT_FIELDS_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -22,12 +22,12 @@ impl crate::CodedMessage for self::Struct {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         size += self.fields.calculate_size(&STRUCT_FIELDS_CODEC);
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.fields.write_to(output, &STRUCT_FIELDS_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -35,7 +35,7 @@ impl crate::LiteMessage for self::Struct {
     fn new() -> Self {
         Self {
             fields: crate::collections::MapField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -43,12 +43,12 @@ impl std::clone::Clone for self::Struct {
     fn clone(&self) -> Self {
         Self {
             fields: self.fields.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.fields.clone_from(&other.fields);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Struct {
@@ -69,7 +69,7 @@ impl self::Struct {
 #[derive(Debug, PartialEq)]
 pub struct Value {
     pub kind: Value_Kind,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 #[derive(Clone, Debug, PartialEq)]
 pub enum Value_Kind {
@@ -108,7 +108,7 @@ impl crate::CodedMessage for self::Value {
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::ListValue(kind)
                     },
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -139,7 +139,7 @@ impl crate::CodedMessage for self::Value {
             size += 1;
             size += crate::io::sizes::message(kind);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -167,7 +167,7 @@ impl crate::CodedMessage for self::Value {
             output.write_raw_tag_bytes(&[50])?;
             output.write_message(kind)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -175,7 +175,7 @@ impl crate::LiteMessage for self::Value {
     fn new() -> Self {
         Self {
             kind: self::Value_Kind::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -183,7 +183,7 @@ impl std::clone::Clone for self::Value {
     fn clone(&self) -> Self {
         Self {
             kind: self.kind.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -213,7 +213,7 @@ impl std::clone::Clone for self::Value {
                 self.kind = self::Value_Kind::ListValue(kind.clone());
             }
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Value {
@@ -232,7 +232,7 @@ impl self::Value {
 #[derive(Debug, PartialEq)]
 pub struct ListValue {
     pub values: crate::collections::RepeatedField<std::boxed::Box<self::Value>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static LIST_VALUE_VALUES_CODEC: crate::Codec<std::boxed::Box<self::Value>> = crate::Codec::message(10);
 impl crate::CodedMessage for self::ListValue {
@@ -240,7 +240,7 @@ impl crate::CodedMessage for self::ListValue {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.values.add_entries(tag.get(), input, &LIST_VALUE_VALUES_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -248,12 +248,12 @@ impl crate::CodedMessage for self::ListValue {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         size += self.values.calculate_size(&LIST_VALUE_VALUES_CODEC);
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.values.write_to(output, &LIST_VALUE_VALUES_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -261,7 +261,7 @@ impl crate::LiteMessage for self::ListValue {
     fn new() -> Self {
         Self {
             values: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -269,12 +269,12 @@ impl std::clone::Clone for self::ListValue {
     fn clone(&self) -> Self {
         Self {
             values: self.values.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.values.clone_from(&other.values);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::ListValue {

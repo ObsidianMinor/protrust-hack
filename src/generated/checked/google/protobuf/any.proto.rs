@@ -7,7 +7,7 @@
 pub struct Any {
     pub type_url: std::string::String,
     pub value: std::vec::Vec<u8>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Any {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -15,7 +15,7 @@ impl crate::CodedMessage for self::Any {
             match tag.get() {
                 10 => self.type_url = input.read_string()?,
                 18 => self.value = input.read_bytes()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -32,7 +32,7 @@ impl crate::CodedMessage for self::Any {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::bytes(value)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -46,7 +46,7 @@ impl crate::CodedMessage for self::Any {
             output.write_raw_tag_bytes(&[18])?;
             output.write_bytes(value)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -55,7 +55,7 @@ impl crate::LiteMessage for self::Any {
         Self {
             type_url: std::string::String::new(),
             value: std::vec::Vec::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -64,13 +64,13 @@ impl std::clone::Clone for self::Any {
         Self {
             type_url: self.type_url.clone(),
             value: self.value.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.type_url = other.type_url.clone();
         self.value = other.value.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Any {

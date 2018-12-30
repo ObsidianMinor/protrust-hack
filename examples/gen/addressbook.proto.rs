@@ -10,7 +10,7 @@ pub struct Person {
     email: std::string::String,
     phones: protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>>,
     last_updated: std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>>,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 static PERSON_PHONES_CODEC: protrust::Codec<std::boxed::Box<self::Person_PhoneNumber>> = protrust::Codec::message(34);
 impl protrust::CodedMessage for self::Person {
@@ -22,7 +22,7 @@ impl protrust::CodedMessage for self::Person {
                 26 => self.email = input.read_string()?,
                 34 => self.phones.add_entries(tag.get(), input, &PERSON_PHONES_CODEC)?,
                 42 => input.read_message(self.last_updated.get_or_insert_with(protrust::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -50,7 +50,7 @@ impl protrust::CodedMessage for self::Person {
             size += 1;
             size += protrust::io::sizes::message(last_updated);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
@@ -75,7 +75,7 @@ impl protrust::CodedMessage for self::Person {
             output.write_raw_tag_bytes(&[42])?;
             output.write_message(last_updated)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -87,7 +87,7 @@ impl protrust::LiteMessage for self::Person {
             email: std::string::String::new(),
             phones: protrust::collections::RepeatedField::new(),
             last_updated: std::option::Option::None,
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -99,7 +99,7 @@ impl std::clone::Clone for self::Person {
             email: self.email.clone(),
             phones: self.phones.clone(),
             last_updated: self.last_updated.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -110,7 +110,7 @@ impl std::clone::Clone for self::Person {
         if let std::option::Option::Some(last_updated) = &other.last_updated {
             self.last_updated.get_or_insert_with(protrust::LiteMessage::new).clone_from(last_updated);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::Person {
@@ -167,7 +167,7 @@ impl self::Person {
 pub struct Person_PhoneNumber {
     number: std::string::String,
     r#type: protrust::EnumValue<self::Person_PhoneType>,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 impl protrust::CodedMessage for self::Person_PhoneNumber {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
@@ -175,7 +175,7 @@ impl protrust::CodedMessage for self::Person_PhoneNumber {
             match tag.get() {
                 10 => self.number = input.read_string()?,
                 16 => self.r#type = input.read_enum_value()?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -192,7 +192,7 @@ impl protrust::CodedMessage for self::Person_PhoneNumber {
             size += 1;
             size += protrust::io::sizes::enum_value(r#type);
         }
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
@@ -206,7 +206,7 @@ impl protrust::CodedMessage for self::Person_PhoneNumber {
             output.write_raw_tag_bytes(&[16])?;
             output.write_enum_value(r#type)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -215,7 +215,7 @@ impl protrust::LiteMessage for self::Person_PhoneNumber {
         Self {
             number: std::string::String::new(),
             r#type: Self::TYPE_DEFAULT_VALUE,
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -224,13 +224,13 @@ impl std::clone::Clone for self::Person_PhoneNumber {
         Self {
             number: self.number.clone(),
             r#type: self.r#type.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.number = other.number.clone();
         self.r#type = other.r#type;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::Person_PhoneNumber {
@@ -284,7 +284,7 @@ impl std::convert::From<self::Person_PhoneType> for i32 {
 #[derive(Debug, PartialEq)]
 pub struct AddressBook {
     people: protrust::collections::RepeatedField<std::boxed::Box<self::Person>>,
-    _unknown_fields: protrust::UnknownFieldSet
+    unknown_fields: protrust::UnknownFieldSet
 }
 static ADDRESS_BOOK_PEOPLE_CODEC: protrust::Codec<std::boxed::Box<self::Person>> = protrust::Codec::message(10);
 impl protrust::CodedMessage for self::AddressBook {
@@ -292,7 +292,7 @@ impl protrust::CodedMessage for self::AddressBook {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.people.add_entries(tag.get(), input, &ADDRESS_BOOK_PEOPLE_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -300,12 +300,12 @@ impl protrust::CodedMessage for self::AddressBook {
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         size += self.people.calculate_size(&ADDRESS_BOOK_PEOPLE_CODEC);
-        size += self._unknown_fields.calculate_size();
+        size += self.unknown_fields.calculate_size();
         size
     }
     fn write_to(&self, output: &mut protrust::io::CodedOutput) -> protrust::io::OutputResult {
         self.people.write_to(output, &ADDRESS_BOOK_PEOPLE_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -313,7 +313,7 @@ impl protrust::LiteMessage for self::AddressBook {
     fn new() -> Self {
         Self {
             people: protrust::collections::RepeatedField::new(),
-            _unknown_fields: protrust::UnknownFieldSet::new()
+            unknown_fields: protrust::UnknownFieldSet::new()
         }
     }
 }
@@ -321,12 +321,12 @@ impl std::clone::Clone for self::AddressBook {
     fn clone(&self) -> Self {
         Self {
             people: self.people.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.people.clone_from(&other.people);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl protrust::Message for self::AddressBook {

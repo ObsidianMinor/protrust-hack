@@ -6,7 +6,7 @@
 #[derive(Debug, PartialEq)]
 pub struct FileDescriptorSet {
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::FileDescriptorProto>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static FILE_DESCRIPTOR_SET_FILE_CODEC: crate::Codec<std::boxed::Box<self::FileDescriptorProto>> = crate::Codec::message(10);
 impl crate::CodedMessage for self::FileDescriptorSet {
@@ -14,7 +14,7 @@ impl crate::CodedMessage for self::FileDescriptorSet {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.file.add_entries(tag.get(), input, &FILE_DESCRIPTOR_SET_FILE_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -22,12 +22,12 @@ impl crate::CodedMessage for self::FileDescriptorSet {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.file.calculate_size(&FILE_DESCRIPTOR_SET_FILE_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.file.write_to(output, &FILE_DESCRIPTOR_SET_FILE_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -35,7 +35,7 @@ impl crate::LiteMessage for self::FileDescriptorSet {
     fn new() -> Self {
         Self {
             file: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -43,12 +43,12 @@ impl std::clone::Clone for self::FileDescriptorSet {
     fn clone(&self) -> Self {
         Self {
             file: self.file.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.file.clone_from(&other.file);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FileDescriptorSet {
@@ -74,7 +74,7 @@ pub struct FileDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::FileOptions>>,
     pub source_code_info: std::option::Option<std::boxed::Box<self::SourceCodeInfo>>,
     pub syntax: std::option::Option<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
 static FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(80);
@@ -99,7 +99,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
                 74 => input.read_message(self.source_code_info.get_or_insert_with(crate::LiteMessage::new))?,
                 98 => self.syntax = std::option::Option::Some(input.read_string()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -144,7 +144,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 size = size.checked_add(crate::io::sizes::string(syntax)?)?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -186,7 +186,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 output.write_string(syntax)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -205,7 +205,7 @@ impl crate::LiteMessage for self::FileDescriptorProto {
             options: std::option::Option::None,
             source_code_info: std::option::Option::None,
             syntax: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -224,7 +224,7 @@ impl std::clone::Clone for self::FileDescriptorProto {
             options: self.options.clone(),
             source_code_info: self.source_code_info.clone(),
             syntax: self.syntax.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -244,7 +244,7 @@ impl std::clone::Clone for self::FileDescriptorProto {
             self.source_code_info.get_or_insert_with(crate::LiteMessage::new).clone_from(source_code_info);
         }
         self.syntax = other.syntax.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FileDescriptorProto {
@@ -293,7 +293,7 @@ pub struct DescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::MessageOptions>>,
     pub reserved_range: crate::collections::RepeatedField<std::boxed::Box<self::DescriptorProto_ReservedRange>>,
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(18);
 static DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(50);
@@ -317,7 +317,7 @@ impl crate::CodedMessage for self::DescriptorProto {
                 58 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
                 74 => self.reserved_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 82 => self.reserved_name.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -344,7 +344,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         }
         size = size.checked_add(self.reserved_range.calculate_size(&DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -368,7 +368,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         }
         self.reserved_range.write_to(output, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -385,7 +385,7 @@ impl crate::LiteMessage for self::DescriptorProto {
             options: std::option::Option::None,
             reserved_range: crate::collections::RepeatedField::new(),
             reserved_name: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -402,7 +402,7 @@ impl std::clone::Clone for self::DescriptorProto {
             options: self.options.clone(),
             reserved_range: self.reserved_range.clone(),
             reserved_name: self.reserved_name.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -418,7 +418,7 @@ impl std::clone::Clone for self::DescriptorProto {
         }
         self.reserved_range.clone_from(&other.reserved_range);
         self.reserved_name.clone_from(&other.reserved_name);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::DescriptorProto {
@@ -454,7 +454,7 @@ pub struct DescriptorProto_ExtensionRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
     pub options: std::option::Option<std::boxed::Box<self::ExtensionRangeOptions>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -463,7 +463,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
                 8 => self.start = std::option::Option::Some(input.read_int32()?),
                 16 => self.end = std::option::Option::Some(input.read_int32()?),
                 26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -489,7 +489,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(options)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -512,7 +512,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
             output.write_raw_tag_bytes(&[26])?;
             output.write_message(options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -522,7 +522,7 @@ impl crate::LiteMessage for self::DescriptorProto_ExtensionRange {
             start: std::option::Option::None,
             end: std::option::Option::None,
             options: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -532,7 +532,7 @@ impl std::clone::Clone for self::DescriptorProto_ExtensionRange {
             start: self.start.clone(),
             end: self.end.clone(),
             options: self.options.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -541,7 +541,7 @@ impl std::clone::Clone for self::DescriptorProto_ExtensionRange {
         if let std::option::Option::Some(options) = &other.options {
             self.options.get_or_insert_with(crate::LiteMessage::new).clone_from(options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::DescriptorProto_ExtensionRange {
@@ -563,7 +563,7 @@ impl self::DescriptorProto_ExtensionRange {
 pub struct DescriptorProto_ReservedRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -571,7 +571,7 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
             match tag.get() {
                 8 => self.start = std::option::Option::Some(input.read_int32()?),
                 16 => self.end = std::option::Option::Some(input.read_int32()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -592,7 +592,7 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
                 size = size.checked_add(crate::io::sizes::int32(end))?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -610,7 +610,7 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
                 output.write_int32(end)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -619,7 +619,7 @@ impl crate::LiteMessage for self::DescriptorProto_ReservedRange {
         Self {
             start: std::option::Option::None,
             end: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -628,13 +628,13 @@ impl std::clone::Clone for self::DescriptorProto_ReservedRange {
         Self {
             start: self.start.clone(),
             end: self.end.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.start = other.start;
         self.end = other.end;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::DescriptorProto_ReservedRange {
@@ -653,7 +653,7 @@ impl self::DescriptorProto_ReservedRange {
 #[derive(Debug, PartialEq)]
 pub struct ExtensionRangeOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ExtensionRangeOptions {
@@ -661,7 +661,7 @@ impl crate::CodedMessage for self::ExtensionRangeOptions {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -669,12 +669,12 @@ impl crate::CodedMessage for self::ExtensionRangeOptions {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.uninterpreted_option.calculate_size(&EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.uninterpreted_option.write_to(output, &EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -682,7 +682,7 @@ impl crate::LiteMessage for self::ExtensionRangeOptions {
     fn new() -> Self {
         Self {
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -690,12 +690,12 @@ impl std::clone::Clone for self::ExtensionRangeOptions {
     fn clone(&self) -> Self {
         Self {
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::ExtensionRangeOptions {
@@ -719,7 +719,7 @@ pub struct FieldDescriptorProto {
     pub oneof_index: std::option::Option<i32>,
     pub json_name: std::option::Option<std::string::String>,
     pub options: std::option::Option<std::boxed::Box<self::FieldOptions>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::FieldDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -735,7 +735,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
                 72 => self.oneof_index = std::option::Option::Some(input.read_int32()?),
                 82 => self.json_name = std::option::Option::Some(input.read_string()?),
                 66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -810,7 +810,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(options)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -882,7 +882,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
             output.write_raw_tag_bytes(&[66])?;
             output.write_message(options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -899,7 +899,7 @@ impl crate::LiteMessage for self::FieldDescriptorProto {
             oneof_index: std::option::Option::None,
             json_name: std::option::Option::None,
             options: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -916,7 +916,7 @@ impl std::clone::Clone for self::FieldDescriptorProto {
             oneof_index: self.oneof_index.clone(),
             json_name: self.json_name.clone(),
             options: self.options.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -932,7 +932,7 @@ impl std::clone::Clone for self::FieldDescriptorProto {
         if let std::option::Option::Some(options) = &other.options {
             self.options.get_or_insert_with(crate::LiteMessage::new).clone_from(options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FieldDescriptorProto {
@@ -1051,7 +1051,7 @@ impl std::convert::From<self::FieldDescriptorProto_Label> for i32 {
 pub struct OneofDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub options: std::option::Option<std::boxed::Box<self::OneofOptions>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::OneofDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1059,7 +1059,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
             match tag.get() {
                 10 => self.name = std::option::Option::Some(input.read_string()?),
                 18 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1078,7 +1078,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(options)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1094,7 +1094,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
             output.write_raw_tag_bytes(&[18])?;
             output.write_message(options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1103,7 +1103,7 @@ impl crate::LiteMessage for self::OneofDescriptorProto {
         Self {
             name: std::option::Option::None,
             options: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1112,7 +1112,7 @@ impl std::clone::Clone for self::OneofDescriptorProto {
         Self {
             name: self.name.clone(),
             options: self.options.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -1120,7 +1120,7 @@ impl std::clone::Clone for self::OneofDescriptorProto {
         if let std::option::Option::Some(options) = &other.options {
             self.options.get_or_insert_with(crate::LiteMessage::new).clone_from(options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::OneofDescriptorProto {
@@ -1142,7 +1142,7 @@ pub struct EnumDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::EnumOptions>>,
     pub reserved_range: crate::collections::RepeatedField<std::boxed::Box<self::EnumDescriptorProto_EnumReservedRange>>,
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<std::boxed::Box<self::EnumValueDescriptorProto>> = crate::Codec::message(18);
 static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto_EnumReservedRange>> = crate::Codec::message(34);
@@ -1156,7 +1156,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
                 26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
                 34 => self.reserved_range.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 42 => self.reserved_name.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1178,7 +1178,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         }
         size = size.checked_add(self.reserved_range.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1197,7 +1197,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         }
         self.reserved_range.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1209,7 +1209,7 @@ impl crate::LiteMessage for self::EnumDescriptorProto {
             options: std::option::Option::None,
             reserved_range: crate::collections::RepeatedField::new(),
             reserved_name: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1221,7 +1221,7 @@ impl std::clone::Clone for self::EnumDescriptorProto {
             options: self.options.clone(),
             reserved_range: self.reserved_range.clone(),
             reserved_name: self.reserved_name.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -1232,7 +1232,7 @@ impl std::clone::Clone for self::EnumDescriptorProto {
         }
         self.reserved_range.clone_from(&other.reserved_range);
         self.reserved_name.clone_from(&other.reserved_name);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumDescriptorProto {
@@ -1257,7 +1257,7 @@ impl self::EnumDescriptorProto {
 pub struct EnumDescriptorProto_EnumReservedRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1265,7 +1265,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
             match tag.get() {
                 8 => self.start = std::option::Option::Some(input.read_int32()?),
                 16 => self.end = std::option::Option::Some(input.read_int32()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1286,7 +1286,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
                 size = size.checked_add(crate::io::sizes::int32(end))?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1304,7 +1304,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
                 output.write_int32(end)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1313,7 +1313,7 @@ impl crate::LiteMessage for self::EnumDescriptorProto_EnumReservedRange {
         Self {
             start: std::option::Option::None,
             end: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1322,13 +1322,13 @@ impl std::clone::Clone for self::EnumDescriptorProto_EnumReservedRange {
         Self {
             start: self.start.clone(),
             end: self.end.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.start = other.start;
         self.end = other.end;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumDescriptorProto_EnumReservedRange {
@@ -1349,7 +1349,7 @@ pub struct EnumValueDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub number: std::option::Option<i32>,
     pub options: std::option::Option<std::boxed::Box<self::EnumValueOptions>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::EnumValueDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1358,7 +1358,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
                 10 => self.name = std::option::Option::Some(input.read_string()?),
                 16 => self.number = std::option::Option::Some(input.read_int32()?),
                 26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1384,7 +1384,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(options)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1407,7 +1407,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
             output.write_raw_tag_bytes(&[26])?;
             output.write_message(options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1417,7 +1417,7 @@ impl crate::LiteMessage for self::EnumValueDescriptorProto {
             name: std::option::Option::None,
             number: std::option::Option::None,
             options: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1427,7 +1427,7 @@ impl std::clone::Clone for self::EnumValueDescriptorProto {
             name: self.name.clone(),
             number: self.number.clone(),
             options: self.options.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -1436,7 +1436,7 @@ impl std::clone::Clone for self::EnumValueDescriptorProto {
         if let std::option::Option::Some(options) = &other.options {
             self.options.get_or_insert_with(crate::LiteMessage::new).clone_from(options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumValueDescriptorProto {
@@ -1459,7 +1459,7 @@ pub struct ServiceDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub method: crate::collections::RepeatedField<std::boxed::Box<self::MethodDescriptorProto>>,
     pub options: std::option::Option<std::boxed::Box<self::ServiceOptions>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<std::boxed::Box<self::MethodDescriptorProto>> = crate::Codec::message(18);
 impl crate::CodedMessage for self::ServiceDescriptorProto {
@@ -1469,7 +1469,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
                 10 => self.name = std::option::Option::Some(input.read_string()?),
                 18 => self.method.add_entries(tag.get(), input, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?,
                 26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1489,7 +1489,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(options)?)?;
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1506,7 +1506,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
             output.write_raw_tag_bytes(&[26])?;
             output.write_message(options)?;
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1516,7 +1516,7 @@ impl crate::LiteMessage for self::ServiceDescriptorProto {
             name: std::option::Option::None,
             method: crate::collections::RepeatedField::new(),
             options: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1526,7 +1526,7 @@ impl std::clone::Clone for self::ServiceDescriptorProto {
             name: self.name.clone(),
             method: self.method.clone(),
             options: self.options.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -1535,7 +1535,7 @@ impl std::clone::Clone for self::ServiceDescriptorProto {
         if let std::option::Option::Some(options) = &other.options {
             self.options.get_or_insert_with(crate::LiteMessage::new).clone_from(options);
         }
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::ServiceDescriptorProto {
@@ -1560,7 +1560,7 @@ pub struct MethodDescriptorProto {
     pub options: std::option::Option<std::boxed::Box<self::MethodOptions>>,
     pub client_streaming: std::option::Option<bool>,
     pub server_streaming: std::option::Option<bool>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::MethodDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1572,7 +1572,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 34 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
                 40 => self.client_streaming = std::option::Option::Some(input.read_bool()?),
                 48 => self.server_streaming = std::option::Option::Some(input.read_bool()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1619,7 +1619,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 size = size.checked_add(crate::io::sizes::bool(server_streaming))?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -1663,7 +1663,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 output.write_bool(server_streaming)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -1676,7 +1676,7 @@ impl crate::LiteMessage for self::MethodDescriptorProto {
             options: std::option::Option::None,
             client_streaming: std::option::Option::None,
             server_streaming: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -1689,7 +1689,7 @@ impl std::clone::Clone for self::MethodDescriptorProto {
             options: self.options.clone(),
             client_streaming: self.client_streaming.clone(),
             server_streaming: self.server_streaming.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -1701,7 +1701,7 @@ impl std::clone::Clone for self::MethodDescriptorProto {
         }
         self.client_streaming = other.client_streaming;
         self.server_streaming = other.server_streaming;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::MethodDescriptorProto {
@@ -1751,7 +1751,7 @@ pub struct FileOptions {
     pub php_metadata_namespace: std::option::Option<std::string::String>,
     pub ruby_package: std::option::Option<std::string::String>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FileOptions {
@@ -1779,7 +1779,7 @@ impl crate::CodedMessage for self::FileOptions {
                 354 => self.php_metadata_namespace = std::option::Option::Some(input.read_string()?),
                 362 => self.ruby_package = std::option::Option::Some(input.read_string()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -1927,7 +1927,7 @@ impl crate::CodedMessage for self::FileOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2072,7 +2072,7 @@ impl crate::CodedMessage for self::FileOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2100,7 +2100,7 @@ impl crate::LiteMessage for self::FileOptions {
             php_metadata_namespace: std::option::Option::None,
             ruby_package: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2128,7 +2128,7 @@ impl std::clone::Clone for self::FileOptions {
             php_metadata_namespace: self.php_metadata_namespace.clone(),
             ruby_package: self.ruby_package.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -2153,7 +2153,7 @@ impl std::clone::Clone for self::FileOptions {
         self.php_metadata_namespace = other.php_metadata_namespace.clone();
         self.ruby_package = other.ruby_package.clone();
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FileOptions {
@@ -2255,7 +2255,7 @@ pub struct MessageOptions {
     pub deprecated: std::option::Option<bool>,
     pub map_entry: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MessageOptions {
@@ -2267,7 +2267,7 @@ impl crate::CodedMessage for self::MessageOptions {
                 24 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 56 => self.map_entry = std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2303,7 +2303,7 @@ impl crate::CodedMessage for self::MessageOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2336,7 +2336,7 @@ impl crate::CodedMessage for self::MessageOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2348,7 +2348,7 @@ impl crate::LiteMessage for self::MessageOptions {
             deprecated: std::option::Option::None,
             map_entry: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2360,7 +2360,7 @@ impl std::clone::Clone for self::MessageOptions {
             deprecated: self.deprecated.clone(),
             map_entry: self.map_entry.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -2369,7 +2369,7 @@ impl std::clone::Clone for self::MessageOptions {
         self.deprecated = other.deprecated;
         self.map_entry = other.map_entry;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::MessageOptions {
@@ -2402,7 +2402,7 @@ pub struct FieldOptions {
     pub deprecated: std::option::Option<bool>,
     pub weak: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FieldOptions {
@@ -2416,7 +2416,7 @@ impl crate::CodedMessage for self::FieldOptions {
                 24 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 80 => self.weak = std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2466,7 +2466,7 @@ impl crate::CodedMessage for self::FieldOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2513,7 +2513,7 @@ impl crate::CodedMessage for self::FieldOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2527,7 +2527,7 @@ impl crate::LiteMessage for self::FieldOptions {
             deprecated: std::option::Option::None,
             weak: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2541,7 +2541,7 @@ impl std::clone::Clone for self::FieldOptions {
             deprecated: self.deprecated.clone(),
             weak: self.weak.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -2552,7 +2552,7 @@ impl std::clone::Clone for self::FieldOptions {
         self.deprecated = other.deprecated;
         self.weak = other.weak;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FieldOptions {
@@ -2631,7 +2631,7 @@ impl std::convert::From<self::FieldOptions_JSType> for i32 {
 #[derive(Debug, PartialEq)]
 pub struct OneofOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::OneofOptions {
@@ -2639,7 +2639,7 @@ impl crate::CodedMessage for self::OneofOptions {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2647,12 +2647,12 @@ impl crate::CodedMessage for self::OneofOptions {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.uninterpreted_option.calculate_size(&ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.uninterpreted_option.write_to(output, &ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2660,7 +2660,7 @@ impl crate::LiteMessage for self::OneofOptions {
     fn new() -> Self {
         Self {
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2668,12 +2668,12 @@ impl std::clone::Clone for self::OneofOptions {
     fn clone(&self) -> Self {
         Self {
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::OneofOptions {
@@ -2690,7 +2690,7 @@ pub struct EnumOptions {
     pub allow_alias: std::option::Option<bool>,
     pub deprecated: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumOptions {
@@ -2700,7 +2700,7 @@ impl crate::CodedMessage for self::EnumOptions {
                 16 => self.allow_alias = std::option::Option::Some(input.read_bool()?),
                 24 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2722,7 +2722,7 @@ impl crate::CodedMessage for self::EnumOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2741,7 +2741,7 @@ impl crate::CodedMessage for self::EnumOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2751,7 +2751,7 @@ impl crate::LiteMessage for self::EnumOptions {
             allow_alias: std::option::Option::None,
             deprecated: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2761,14 +2761,14 @@ impl std::clone::Clone for self::EnumOptions {
             allow_alias: self.allow_alias.clone(),
             deprecated: self.deprecated.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.allow_alias = other.allow_alias;
         self.deprecated = other.deprecated;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumOptions {
@@ -2790,7 +2790,7 @@ impl self::EnumOptions {
 pub struct EnumValueOptions {
     pub deprecated: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumValueOptions {
@@ -2799,7 +2799,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
             match tag.get() {
                 8 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2814,7 +2814,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2826,7 +2826,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2835,7 +2835,7 @@ impl crate::LiteMessage for self::EnumValueOptions {
         Self {
             deprecated: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2844,13 +2844,13 @@ impl std::clone::Clone for self::EnumValueOptions {
         Self {
             deprecated: self.deprecated.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.deprecated = other.deprecated;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumValueOptions {
@@ -2869,7 +2869,7 @@ impl self::EnumValueOptions {
 pub struct ServiceOptions {
     pub deprecated: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ServiceOptions {
@@ -2878,7 +2878,7 @@ impl crate::CodedMessage for self::ServiceOptions {
             match tag.get() {
                 264 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2893,7 +2893,7 @@ impl crate::CodedMessage for self::ServiceOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -2905,7 +2905,7 @@ impl crate::CodedMessage for self::ServiceOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -2914,7 +2914,7 @@ impl crate::LiteMessage for self::ServiceOptions {
         Self {
             deprecated: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -2923,13 +2923,13 @@ impl std::clone::Clone for self::ServiceOptions {
         Self {
             deprecated: self.deprecated.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.deprecated = other.deprecated;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::ServiceOptions {
@@ -2949,7 +2949,7 @@ pub struct MethodOptions {
     pub deprecated: std::option::Option<bool>,
     pub idempotency_level: std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MethodOptions {
@@ -2959,7 +2959,7 @@ impl crate::CodedMessage for self::MethodOptions {
                 264 => self.deprecated = std::option::Option::Some(input.read_bool()?),
                 272 => self.idempotency_level = std::option::Option::Some(input.read_enum_value()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -2981,7 +2981,7 @@ impl crate::CodedMessage for self::MethodOptions {
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -3000,7 +3000,7 @@ impl crate::CodedMessage for self::MethodOptions {
             }
         }
         self.uninterpreted_option.write_to(output, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3010,7 +3010,7 @@ impl crate::LiteMessage for self::MethodOptions {
             deprecated: std::option::Option::None,
             idempotency_level: std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3020,14 +3020,14 @@ impl std::clone::Clone for self::MethodOptions {
             deprecated: self.deprecated.clone(),
             idempotency_level: self.idempotency_level.clone(),
             uninterpreted_option: self.uninterpreted_option.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.deprecated = other.deprecated;
         self.idempotency_level = other.idempotency_level;
         self.uninterpreted_option.clone_from(&other.uninterpreted_option);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::MethodOptions {
@@ -3077,7 +3077,7 @@ pub struct UninterpretedOption {
     pub double_value: std::option::Option<f64>,
     pub string_value: std::option::Option<std::vec::Vec<u8>>,
     pub aggregate_value: std::option::Option<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption_NamePart>> = crate::Codec::message(18);
 impl crate::CodedMessage for self::UninterpretedOption {
@@ -3091,7 +3091,7 @@ impl crate::CodedMessage for self::UninterpretedOption {
                 49 => self.double_value = std::option::Option::Some(input.read_double()?),
                 58 => self.string_value = std::option::Option::Some(input.read_bytes()?),
                 66 => self.aggregate_value = std::option::Option::Some(input.read_string()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3141,7 +3141,7 @@ impl crate::CodedMessage for self::UninterpretedOption {
                 size = size.checked_add(crate::io::sizes::string(aggregate_value)?)?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -3188,7 +3188,7 @@ impl crate::CodedMessage for self::UninterpretedOption {
                 output.write_string(aggregate_value)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3202,7 +3202,7 @@ impl crate::LiteMessage for self::UninterpretedOption {
             double_value: std::option::Option::None,
             string_value: std::option::Option::None,
             aggregate_value: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3216,7 +3216,7 @@ impl std::clone::Clone for self::UninterpretedOption {
             double_value: self.double_value.clone(),
             string_value: self.string_value.clone(),
             aggregate_value: self.aggregate_value.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -3227,7 +3227,7 @@ impl std::clone::Clone for self::UninterpretedOption {
         self.double_value = other.double_value;
         self.string_value = other.string_value.clone();
         self.aggregate_value = other.aggregate_value.clone();
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::UninterpretedOption {
@@ -3261,7 +3261,7 @@ impl self::UninterpretedOption {
 pub struct UninterpretedOption_NamePart {
     pub name_part: std::option::Option<std::string::String>,
     pub is_extension: std::option::Option<bool>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::UninterpretedOption_NamePart {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -3269,7 +3269,7 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
             match tag.get() {
                 10 => self.name_part = std::option::Option::Some(input.read_string()?),
                 16 => self.is_extension = std::option::Option::Some(input.read_bool()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3290,7 +3290,7 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
                 size = size.checked_add(crate::io::sizes::bool(is_extension))?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -3308,7 +3308,7 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
                 output.write_bool(is_extension)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3317,7 +3317,7 @@ impl crate::LiteMessage for self::UninterpretedOption_NamePart {
         Self {
             name_part: std::option::Option::None,
             is_extension: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3326,13 +3326,13 @@ impl std::clone::Clone for self::UninterpretedOption_NamePart {
         Self {
             name_part: self.name_part.clone(),
             is_extension: self.is_extension.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.name_part = other.name_part.clone();
         self.is_extension = other.is_extension;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::UninterpretedOption_NamePart {
@@ -3351,7 +3351,7 @@ impl self::UninterpretedOption_NamePart {
 #[derive(Debug, PartialEq)]
 pub struct SourceCodeInfo {
     pub location: crate::collections::RepeatedField<std::boxed::Box<self::SourceCodeInfo_Location>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<std::boxed::Box<self::SourceCodeInfo_Location>> = crate::Codec::message(10);
 impl crate::CodedMessage for self::SourceCodeInfo {
@@ -3359,7 +3359,7 @@ impl crate::CodedMessage for self::SourceCodeInfo {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.location.add_entries(tag.get(), input, &SOURCE_CODE_INFO_LOCATION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3367,12 +3367,12 @@ impl crate::CodedMessage for self::SourceCodeInfo {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.location.calculate_size(&SOURCE_CODE_INFO_LOCATION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.location.write_to(output, &SOURCE_CODE_INFO_LOCATION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3380,7 +3380,7 @@ impl crate::LiteMessage for self::SourceCodeInfo {
     fn new() -> Self {
         Self {
             location: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3388,12 +3388,12 @@ impl std::clone::Clone for self::SourceCodeInfo {
     fn clone(&self) -> Self {
         Self {
             location: self.location.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.location.clone_from(&other.location);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::SourceCodeInfo {
@@ -3412,7 +3412,7 @@ pub struct SourceCodeInfo_Location {
     pub leading_comments: std::option::Option<std::string::String>,
     pub trailing_comments: std::option::Option<std::string::String>,
     pub leading_detached_comments: crate::collections::RepeatedField<std::string::String>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static SOURCE_CODE_INFO__LOCATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
 static SOURCE_CODE_INFO__LOCATION_SPAN_CODEC: crate::Codec<i32> = crate::Codec::int32(18);
@@ -3426,7 +3426,7 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
                 26 => self.leading_comments = std::option::Option::Some(input.read_string()?),
                 34 => self.trailing_comments = std::option::Option::Some(input.read_string()?),
                 50 => self.leading_detached_comments.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3450,7 +3450,7 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
             }
         }
         size = size.checked_add(self.leading_detached_comments.calculate_size(&SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -3471,7 +3471,7 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
             }
         }
         self.leading_detached_comments.write_to(output, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3483,7 +3483,7 @@ impl crate::LiteMessage for self::SourceCodeInfo_Location {
             leading_comments: std::option::Option::None,
             trailing_comments: std::option::Option::None,
             leading_detached_comments: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3495,7 +3495,7 @@ impl std::clone::Clone for self::SourceCodeInfo_Location {
             leading_comments: self.leading_comments.clone(),
             trailing_comments: self.trailing_comments.clone(),
             leading_detached_comments: self.leading_detached_comments.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -3504,7 +3504,7 @@ impl std::clone::Clone for self::SourceCodeInfo_Location {
         self.leading_comments = other.leading_comments.clone();
         self.trailing_comments = other.trailing_comments.clone();
         self.leading_detached_comments.clone_from(&other.leading_detached_comments);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::SourceCodeInfo_Location {
@@ -3529,7 +3529,7 @@ impl self::SourceCodeInfo_Location {
 #[derive(Debug, PartialEq)]
 pub struct GeneratedCodeInfo {
     pub annotation: crate::collections::RepeatedField<std::boxed::Box<self::GeneratedCodeInfo_Annotation>>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<std::boxed::Box<self::GeneratedCodeInfo_Annotation>> = crate::Codec::message(10);
 impl crate::CodedMessage for self::GeneratedCodeInfo {
@@ -3537,7 +3537,7 @@ impl crate::CodedMessage for self::GeneratedCodeInfo {
         while let std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.annotation.add_entries(tag.get(), input, &GENERATED_CODE_INFO_ANNOTATION_CODEC)?,
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3545,12 +3545,12 @@ impl crate::CodedMessage for self::GeneratedCodeInfo {
     fn calculate_size(&self) -> std::option::Option<i32> {
         let mut size = 0i32;
         size = size.checked_add(self.annotation.calculate_size(&GENERATED_CODE_INFO_ANNOTATION_CODEC)?)?;
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.annotation.write_to(output, &GENERATED_CODE_INFO_ANNOTATION_CODEC)?;
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3558,7 +3558,7 @@ impl crate::LiteMessage for self::GeneratedCodeInfo {
     fn new() -> Self {
         Self {
             annotation: crate::collections::RepeatedField::new(),
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3566,12 +3566,12 @@ impl std::clone::Clone for self::GeneratedCodeInfo {
     fn clone(&self) -> Self {
         Self {
             annotation: self.annotation.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
         self.annotation.clone_from(&other.annotation);
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::GeneratedCodeInfo {
@@ -3589,7 +3589,7 @@ pub struct GeneratedCodeInfo_Annotation {
     pub source_file: std::option::Option<std::string::String>,
     pub begin: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
-    _unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet
 }
 static GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
 impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
@@ -3600,7 +3600,7 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
                 18 => self.source_file = std::option::Option::Some(input.read_string()?),
                 24 => self.begin = std::option::Option::Some(input.read_int32()?),
                 32 => self.end = std::option::Option::Some(input.read_int32()?),
-                tag => self._unknown_fields.merge_from(tag, input)?
+                tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
         std::result::Result::Ok(())
@@ -3629,7 +3629,7 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
                 size = size.checked_add(crate::io::sizes::int32(end))?;
             }
         }
-        size = size.checked_add(self._unknown_fields.calculate_size()?)?;
+        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
@@ -3655,7 +3655,7 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
                 output.write_int32(end)?;
             }
         }
-        self._unknown_fields.write_to(output)?;
+        self.unknown_fields.write_to(output)?;
         std::result::Result::Ok(())
     }
 }
@@ -3666,7 +3666,7 @@ impl crate::LiteMessage for self::GeneratedCodeInfo_Annotation {
             source_file: std::option::Option::None,
             begin: std::option::Option::None,
             end: std::option::Option::None,
-            _unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
@@ -3677,7 +3677,7 @@ impl std::clone::Clone for self::GeneratedCodeInfo_Annotation {
             source_file: self.source_file.clone(),
             begin: self.begin.clone(),
             end: self.end.clone(),
-            _unknown_fields: self._unknown_fields.clone()
+            unknown_fields: self.unknown_fields.clone()
         }
     }
     fn clone_from(&mut self, other: &Self) {
@@ -3685,7 +3685,7 @@ impl std::clone::Clone for self::GeneratedCodeInfo_Annotation {
         self.source_file = other.source_file.clone();
         self.begin = other.begin;
         self.end = other.end;
-        self._unknown_fields.clone_from(&other._unknown_fields);
+        self.unknown_fields.clone_from(&other.unknown_fields);
     }
 }
 impl crate::Message for self::GeneratedCodeInfo_Annotation {

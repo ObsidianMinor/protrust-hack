@@ -120,7 +120,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
             Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_struct_field()?;
         }
 
-        gen!(self.printer; self.vars => "\n_unknown_fields: {crate_name}::UnknownFieldSet", crate_name);
+        gen!(self.printer; self.vars => "\nunknown_fields: {crate_name}::UnknownFieldSet", crate_name);
 
         self.printer.unindent();
         gen!(self.printer, "\n}}");
@@ -182,7 +182,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         gen!(
             self.printer,
-            "\ntag => self._unknown_fields.merge_from(tag, input)?"
+            "\ntag => self.unknown_fields.merge_from(tag, input)?"
         );
         self.printer.unindent();
         gen!(self.printer, "\n}}");
@@ -210,13 +210,13 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         if self.options.size_checks {
             gen!(
                 self.printer,
-                "\nsize = size.checked_add(self._unknown_fields.calculate_size()?)?;"
+                "\nsize = size.checked_add(self.unknown_fields.calculate_size()?)?;"
             );
             gen!(self.printer, "\nstd::option::Option::Some(size)");
         } else {
             gen!(
                 self.printer,
-                "\nsize += self._unknown_fields.calculate_size();"
+                "\nsize += self.unknown_fields.calculate_size();"
             );
             gen!(self.printer, "\nsize");
         }
@@ -230,7 +230,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_writer()?;
         }
 
-        gen!(self.printer, "\nself._unknown_fields.write_to(output)?;");
+        gen!(self.printer, "\nself.unknown_fields.write_to(output)?;");
         gen!(self.printer, "\nstd::result::Result::Ok(())");
 
         self.printer.unindent();
@@ -268,7 +268,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         write!(
             self.printer,
-            "\n_unknown_fields: {}::UnknownFieldSet::new()",
+            "\nunknown_fields: {}::UnknownFieldSet::new()",
             self.options.crate_name
         )?;
 
@@ -320,7 +320,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         gen!(
             self.printer,
-            "\n_unknown_fields: self._unknown_fields.clone()"
+            "\nunknown_fields: self.unknown_fields.clone()"
         );
 
         self.printer.unindent();
@@ -336,7 +336,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         gen!(
             self.printer,
-            "\nself._unknown_fields.clone_from(&other._unknown_fields);"
+            "\nself.unknown_fields.clone_from(&other.unknown_fields);"
         );
 
         self.printer.unindent();
