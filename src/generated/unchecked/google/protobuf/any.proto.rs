@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/any.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Any {
     pub type_url: std::string::String,
     pub value: std::vec::Vec<u8>,

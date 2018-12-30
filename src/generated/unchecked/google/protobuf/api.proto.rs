@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/api.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Api {
     pub name: std::string::String,
     pub methods: crate::collections::RepeatedField<std::boxed::Box<self::Method>>,
@@ -181,7 +181,7 @@ impl self::Api {
         &mut self.syntax
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Method {
     pub name: std::string::String,
     pub request_type_url: std::string::String,
@@ -374,7 +374,7 @@ impl self::Method {
         &mut self.syntax
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Mixin {
     pub name: std::string::String,
     pub root: std::string::String,

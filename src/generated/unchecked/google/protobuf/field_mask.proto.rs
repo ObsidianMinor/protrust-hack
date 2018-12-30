@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/field_mask.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldMask {
     pub paths: crate::collections::RepeatedField<std::string::String>,
     _unknown_fields: crate::UnknownFieldSet

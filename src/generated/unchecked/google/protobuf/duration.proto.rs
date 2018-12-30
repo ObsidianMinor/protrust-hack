@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/duration.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Duration {
     pub seconds: i64,
     pub nanos: i32,

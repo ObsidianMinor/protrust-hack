@@ -3,7 +3,7 @@
 //! 
 //! Source: conformance.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ConformanceRequest {
     requested_output_format: protrust::EnumValue<self::WireFormat>,
     message_type: std::string::String,
@@ -12,7 +12,7 @@ pub struct ConformanceRequest {
     payload: ConformanceRequest_Payload,
     _unknown_fields: protrust::UnknownFieldSet
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ConformanceRequest_Payload {
     None,
     ProtobufPayload(std::vec::Vec<u8>),
@@ -188,12 +188,12 @@ impl self::ConformanceRequest {
         &mut self.payload
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ConformanceResponse {
     result: ConformanceResponse_Result,
     _unknown_fields: protrust::UnknownFieldSet
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ConformanceResponse_Result {
     None,
     ParseError(std::string::String),
@@ -332,7 +332,7 @@ impl self::ConformanceResponse {
         &mut self.result
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct JspbEncodingConfig {
     use_jspb_array_any_format: bool,
     _unknown_fields: protrust::UnknownFieldSet
@@ -395,7 +395,7 @@ impl self::JspbEncodingConfig {
         &mut self.use_jspb_array_any_format
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum WireFormat {
     Unspecified = 0,
     Protobuf = 1,
@@ -420,7 +420,7 @@ impl std::convert::From<self::WireFormat> for i32 {
         value as i32
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TestCategory {
     UnspecifiedTest = 0,
     BinaryTest = 1,

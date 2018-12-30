@@ -2,9 +2,10 @@ use crate::io::{CodedInput, CodedOutput, InputError, InputResult, OutputResult};
 use crate::Codec;
 use crate::ValueSize;
 use std::collections::HashMap;
+use std::fmt::Debug;
 use std::hash::Hash;
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct RepeatedField<T>(Vec<T>);
 
 impl<T> std::ops::Deref for RepeatedField<T> {
@@ -125,6 +126,12 @@ impl<K: Eq + Hash, V: PartialEq> MapField<K, V> {
 impl<K: Eq + Hash, V: PartialEq> PartialEq for MapField<K, V> {
     fn eq(&self, other: &Self) -> bool {
         self.0 == other.0
+    }
+}
+
+impl<K: Eq + Hash + Debug, V: PartialEq + Debug> Debug for MapField<K, V> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        self.0.fmt(f)
     }
 }
 

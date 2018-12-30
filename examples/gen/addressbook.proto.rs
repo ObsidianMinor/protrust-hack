@@ -3,7 +3,7 @@
 //! 
 //! Source: addressbook.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Person {
     name: std::string::String,
     id: i32,
@@ -151,7 +151,7 @@ impl self::Person {
         &mut self.last_updated
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Person_PhoneNumber {
     number: std::string::String,
     r#type: protrust::EnumValue<self::Person_PhoneType>,
@@ -237,7 +237,7 @@ impl self::Person_PhoneNumber {
         &mut self.r#type
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Person_PhoneType {
     Mobile = 0,
     Home = 1,
@@ -260,7 +260,7 @@ impl std::convert::From<self::Person_PhoneType> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct AddressBook {
     people: protrust::collections::RepeatedField<std::boxed::Box<self::Person>>,
     _unknown_fields: protrust::UnknownFieldSet

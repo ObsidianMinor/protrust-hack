@@ -168,7 +168,7 @@ pub struct VariantUndefinedError;
 /// In Rust, enums with values without discriminants is considered undefined behaviour.
 /// In Protocol Buffers, there is no guarantee that an enum value will be valid.
 /// Thus, this union is introduced to allow for both undefined enum values and defined enum values.
-#[derive(Copy, Clone)]
+#[derive(Copy, Debug, Clone)]
 pub enum EnumValue<E> {
     /// A defined enum value
     Defined(E),
@@ -657,10 +657,10 @@ impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> Codec<E
     }
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UnknownFieldSet(HashMap<i32, UnknownField>);
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 enum UnknownField {
     Varint(u64),
     Bit64(u64),

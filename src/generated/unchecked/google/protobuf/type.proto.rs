@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/type.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Type {
     pub name: std::string::String,
     pub fields: crate::collections::RepeatedField<std::boxed::Box<self::Field>>,
@@ -158,7 +158,7 @@ impl self::Type {
         &mut self.syntax
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Field {
     pub kind: crate::EnumValue<self::Field_Kind>,
     pub cardinality: crate::EnumValue<self::Field_Cardinality>,
@@ -420,7 +420,7 @@ impl self::Field {
         &mut self.default_value
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Kind {
     TypeUnknown = 0,
     TypeDouble = 1,
@@ -475,7 +475,7 @@ impl std::convert::From<self::Field_Kind> for i32 {
         value as i32
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Cardinality {
     Unknown = 0,
     Optional = 1,
@@ -500,7 +500,7 @@ impl std::convert::From<self::Field_Cardinality> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Enum {
     pub name: std::string::String,
     pub enumvalue: crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>>,
@@ -640,7 +640,7 @@ impl self::Enum {
         &mut self.syntax
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumValue {
     pub name: std::string::String,
     pub number: i32,
@@ -741,7 +741,7 @@ impl self::EnumValue {
         &mut self.options
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Option {
     pub name: std::string::String,
     pub value: std::option::Option<std::boxed::Box<crate::wkt::any::Any>>,
@@ -828,7 +828,7 @@ impl self::Option {
         &mut self.value
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Syntax {
     Proto2 = 0,
     Proto3 = 1,

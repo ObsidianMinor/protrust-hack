@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/wrappers.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DoubleValue {
     pub value: f64,
     _unknown_fields: crate::UnknownFieldSet
@@ -66,7 +66,7 @@ impl self::DoubleValue {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FloatValue {
     pub value: f32,
     _unknown_fields: crate::UnknownFieldSet
@@ -129,7 +129,7 @@ impl self::FloatValue {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Int64Value {
     pub value: i64,
     _unknown_fields: crate::UnknownFieldSet
@@ -192,7 +192,7 @@ impl self::Int64Value {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UInt64Value {
     pub value: u64,
     _unknown_fields: crate::UnknownFieldSet
@@ -255,7 +255,7 @@ impl self::UInt64Value {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Int32Value {
     pub value: i32,
     _unknown_fields: crate::UnknownFieldSet
@@ -318,7 +318,7 @@ impl self::Int32Value {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UInt32Value {
     pub value: u32,
     _unknown_fields: crate::UnknownFieldSet
@@ -381,7 +381,7 @@ impl self::UInt32Value {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BoolValue {
     pub value: bool,
     _unknown_fields: crate::UnknownFieldSet
@@ -444,7 +444,7 @@ impl self::BoolValue {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct StringValue {
     pub value: std::string::String,
     _unknown_fields: crate::UnknownFieldSet
@@ -507,7 +507,7 @@ impl self::StringValue {
         &mut self.value
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BytesValue {
     pub value: std::vec::Vec<u8>,
     _unknown_fields: crate::UnknownFieldSet

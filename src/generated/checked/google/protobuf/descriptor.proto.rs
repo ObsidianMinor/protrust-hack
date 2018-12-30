@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/descriptor.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FileDescriptorSet {
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::FileDescriptorProto>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -52,7 +52,7 @@ impl self::FileDescriptorSet {
     /// Gets the field number of the 'file' field
     pub const FILE_FIELD_NUMBER: i32 = 1;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FileDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub package: std::option::Option<std::string::String>,
@@ -254,7 +254,7 @@ impl self::FileDescriptorProto {
     pub const SYNTAX_FIELD_NUMBER: i32 = 12;
     pub const SYNTAX_DEFAULT_VALUE: &'static str = "";
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub field: crate::collections::RepeatedField<std::boxed::Box<self::FieldDescriptorProto>>,
@@ -405,7 +405,7 @@ impl self::DescriptorProto {
     /// Gets the field number of the 'reserved_name' field
     pub const RESERVED_NAME_FIELD_NUMBER: i32 = 10;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto_ExtensionRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
@@ -505,7 +505,7 @@ impl self::DescriptorProto_ExtensionRange {
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto_ReservedRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
@@ -587,7 +587,7 @@ impl self::DescriptorProto_ReservedRange {
     pub const END_FIELD_NUMBER: i32 = 2;
     pub const END_DEFAULT_VALUE: i32 = 0;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ExtensionRangeOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -636,7 +636,7 @@ impl self::ExtensionRangeOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub number: std::option::Option<i32>,
@@ -883,7 +883,7 @@ impl self::FieldDescriptorProto {
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldDescriptorProto_Type {
     Double = 1,
     Float = 2,
@@ -936,7 +936,7 @@ impl std::convert::From<self::FieldDescriptorProto_Type> for i32 {
         value as i32
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldDescriptorProto_Label {
     Optional = 1,
     Required = 2,
@@ -959,7 +959,7 @@ impl std::convert::From<self::FieldDescriptorProto_Label> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct OneofDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub options: std::option::Option<std::boxed::Box<self::OneofOptions>>,
@@ -1038,7 +1038,7 @@ impl self::OneofDescriptorProto {
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 2;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub value: crate::collections::RepeatedField<std::boxed::Box<self::EnumValueDescriptorProto>>,
@@ -1144,7 +1144,7 @@ impl self::EnumDescriptorProto {
     /// Gets the field number of the 'reserved_name' field
     pub const RESERVED_NAME_FIELD_NUMBER: i32 = 5;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumDescriptorProto_EnumReservedRange {
     pub start: std::option::Option<i32>,
     pub end: std::option::Option<i32>,
@@ -1226,7 +1226,7 @@ impl self::EnumDescriptorProto_EnumReservedRange {
     pub const END_FIELD_NUMBER: i32 = 2;
     pub const END_DEFAULT_VALUE: i32 = 0;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumValueDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub number: std::option::Option<i32>,
@@ -1326,7 +1326,7 @@ impl self::EnumValueDescriptorProto {
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ServiceDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub method: crate::collections::RepeatedField<std::boxed::Box<self::MethodDescriptorProto>>,
@@ -1414,7 +1414,7 @@ impl self::ServiceDescriptorProto {
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct MethodDescriptorProto {
     pub name: std::option::Option<std::string::String>,
     pub input_type: std::option::Option<std::string::String>,
@@ -1577,7 +1577,7 @@ impl self::MethodDescriptorProto {
     pub const SERVER_STREAMING_FIELD_NUMBER: i32 = 6;
     pub const SERVER_STREAMING_DEFAULT_VALUE: bool = false;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FileOptions {
     pub java_package: std::option::Option<std::string::String>,
     pub java_outer_classname: std::option::Option<std::string::String>,
@@ -2046,7 +2046,7 @@ impl self::FileOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FileOptions_OptimizeMode {
     Speed = 1,
     CodeSize = 2,
@@ -2069,7 +2069,7 @@ impl std::convert::From<self::FileOptions_OptimizeMode> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct MessageOptions {
     pub message_set_wire_format: std::option::Option<bool>,
     pub no_standard_descriptor_accessor: std::option::Option<bool>,
@@ -2202,7 +2202,7 @@ impl self::MessageOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldOptions {
     pub ctype: std::option::Option<crate::EnumValue<self::FieldOptions_CType>>,
     pub packed: std::option::Option<bool>,
@@ -2377,7 +2377,7 @@ impl self::FieldOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldOptions_CType {
     String = 0,
     Ord = 1,
@@ -2400,7 +2400,7 @@ impl std::convert::From<self::FieldOptions_CType> for i32 {
         value as i32
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldOptions_JSType {
     Normal = 0,
     String = 1,
@@ -2423,7 +2423,7 @@ impl std::convert::From<self::FieldOptions_JSType> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct OneofOptions {
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -2472,7 +2472,7 @@ impl self::OneofOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumOptions {
     pub allow_alias: std::option::Option<bool>,
     pub deprecated: std::option::Option<bool>,
@@ -2563,7 +2563,7 @@ impl self::EnumOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumValueOptions {
     pub deprecated: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
@@ -2633,7 +2633,7 @@ impl self::EnumValueOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ServiceOptions {
     pub deprecated: std::option::Option<bool>,
     pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
@@ -2703,7 +2703,7 @@ impl self::ServiceOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct MethodOptions {
     pub deprecated: std::option::Option<bool>,
     pub idempotency_level: std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
@@ -2794,7 +2794,7 @@ impl self::MethodOptions {
     /// Gets the field number of the 'uninterpreted_option' field
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum MethodOptions_IdempotencyLevel {
     Unknown = 0,
     NoSideEffects = 1,
@@ -2817,7 +2817,7 @@ impl std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
         value as i32
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UninterpretedOption {
     pub name: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption_NamePart>>,
     pub identifier_value: std::option::Option<std::string::String>,
@@ -2992,7 +2992,7 @@ impl self::UninterpretedOption {
     pub const AGGREGATE_VALUE_FIELD_NUMBER: i32 = 8;
     pub const AGGREGATE_VALUE_DEFAULT_VALUE: &'static str = "";
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UninterpretedOption_NamePart {
     pub name_part: std::option::Option<std::string::String>,
     pub is_extension: std::option::Option<bool>,
@@ -3074,7 +3074,7 @@ impl self::UninterpretedOption_NamePart {
     pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
     pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SourceCodeInfo {
     pub location: crate::collections::RepeatedField<std::boxed::Box<self::SourceCodeInfo_Location>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -3123,7 +3123,7 @@ impl self::SourceCodeInfo {
     /// Gets the field number of the 'location' field
     pub const LOCATION_FIELD_NUMBER: i32 = 1;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SourceCodeInfo_Location {
     pub path: crate::collections::RepeatedField<i32>,
     pub span: crate::collections::RepeatedField<i32>,
@@ -3232,7 +3232,7 @@ impl self::SourceCodeInfo_Location {
     /// Gets the field number of the 'leading_detached_comments' field
     pub const LEADING_DETACHED_COMMENTS_FIELD_NUMBER: i32 = 6;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GeneratedCodeInfo {
     pub annotation: crate::collections::RepeatedField<std::boxed::Box<self::GeneratedCodeInfo_Annotation>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -3281,7 +3281,7 @@ impl self::GeneratedCodeInfo {
     /// Gets the field number of the 'annotation' field
     pub const ANNOTATION_FIELD_NUMBER: i32 = 1;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GeneratedCodeInfo_Annotation {
     pub path: crate::collections::RepeatedField<i32>,
     pub source_file: std::option::Option<std::string::String>,

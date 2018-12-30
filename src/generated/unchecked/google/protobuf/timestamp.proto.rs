@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/timestamp.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,

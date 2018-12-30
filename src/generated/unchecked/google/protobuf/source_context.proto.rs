@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/source_context.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SourceContext {
     pub file_name: std::string::String,
     _unknown_fields: crate::UnknownFieldSet

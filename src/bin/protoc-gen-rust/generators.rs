@@ -102,7 +102,7 @@ generator_new!(MessageDescriptor, proto, options;
 
 impl<W: Write> Generator<'_, MessageDescriptor, W> {
     pub fn generate(&mut self) -> Result {
-        gen!(self.printer; self.vars => "\n#[derive(Clone, PartialEq)]\npub struct {type_name} {{", type_name);
+        gen!(self.printer; self.vars => "\n#[derive(Clone, Debug, PartialEq)]\npub struct {type_name} {{", type_name);
         self.printer.indent();
 
         for field in self
@@ -892,7 +892,7 @@ generator_new!(EnumDescriptor, proto, options;
 
 impl<W: Write> Generator<'_, EnumDescriptor, W> {
     pub fn generate(&mut self) -> Result {
-        gen!(self.printer; self.vars => "\n#[derive(Copy, Clone, PartialEq, Eq, Hash)]\npub enum {type_name} {{", type_name);
+        gen!(self.printer; self.vars => "\n#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]\npub enum {type_name} {{", type_name);
         self.printer.indent();
 
         for value in self.proto.values() {
@@ -962,7 +962,7 @@ generator_new!(OneofDescriptor, proto, options;
 
 impl<W: Write> Generator<'_, OneofDescriptor, W> {
     pub fn generate_type(&mut self) -> Result {
-        gen!(self.printer; self.vars => "\n#[derive(Clone, PartialEq)]\npub enum {type_name} {{", type_name);
+        gen!(self.printer; self.vars => "\n#[derive(Clone, Debug, PartialEq)]\npub enum {type_name} {{", type_name);
         self.printer.indent();
 
         gen!(self.printer, "\nNone,");

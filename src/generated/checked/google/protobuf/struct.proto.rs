@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/struct.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Struct {
     pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -58,12 +58,12 @@ impl self::Struct {
         &mut self.fields
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Value {
     pub kind: Value_Kind,
     _unknown_fields: crate::UnknownFieldSet
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Value_Kind {
     None,
     NullValue(crate::EnumValue<self::NullValue>),
@@ -213,7 +213,7 @@ impl self::Value {
         &mut self.kind
     }
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ListValue {
     pub values: crate::collections::RepeatedField<std::boxed::Box<self::Value>>,
     _unknown_fields: crate::UnknownFieldSet
@@ -268,7 +268,7 @@ impl self::ListValue {
         &mut self.values
     }
 }
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum NullValue {
     NullValue = 0,
 }

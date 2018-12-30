@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/compiler/plugin.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Version {
     pub major: std::option::Option<i32>,
     pub minor: std::option::Option<i32>,
@@ -127,7 +127,7 @@ impl self::Version {
     pub const SUFFIX_FIELD_NUMBER: i32 = 4;
     pub const SUFFIX_DEFAULT_VALUE: &'static str = "";
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorRequest {
     pub file_to_generate: crate::collections::RepeatedField<std::string::String>,
     pub parameter: std::option::Option<std::string::String>,
@@ -224,7 +224,7 @@ impl self::CodeGeneratorRequest {
     /// Gets the field number of the 'compiler_version' field
     pub const COMPILER_VERSION_FIELD_NUMBER: i32 = 3;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse {
     pub error: std::option::Option<std::string::String>,
     pub file: crate::collections::RepeatedField<std::boxed::Box<self::CodeGeneratorResponse_File>>,
@@ -294,7 +294,7 @@ impl self::CodeGeneratorResponse {
     /// Gets the field number of the 'file' field
     pub const FILE_FIELD_NUMBER: i32 = 15;
 }
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse_File {
     pub name: std::option::Option<std::string::String>,
     pub insertion_point: std::option::Option<std::string::String>,

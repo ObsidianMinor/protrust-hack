@@ -3,7 +3,7 @@
 //! 
 //! Source: google/protobuf/empty.proto
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Empty {
     _unknown_fields: crate::UnknownFieldSet
 }
