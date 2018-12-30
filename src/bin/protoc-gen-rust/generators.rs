@@ -97,7 +97,7 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
 
 generator_new!(MessageDescriptor, proto, options;
     "type_name", names::get_message_type_name(proto),
-    "full_type_name", names::get_full_message_type_name(proto, proto.file()),
+    "full_type_name", names::get_full_message_type_name(proto, proto.file(), &options.crate_name),
     "crate_name", options.crate_name.clone());
 
 impl<W: Write> Generator<'_, MessageDescriptor, W> {
@@ -369,7 +369,7 @@ generator_new!(FieldDescriptor, proto, options;
                     FieldType::Enum(e) => {
                         match e.values().iter().find(|f| f.number() == 0) {
                             Some(defined) => {
-                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, proto.file()))
+                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, proto.file(), &options.crate_name))
                             },
                             None => {
                                 format!("{}::EnumValue::Undefined(0)", options.crate_name)
@@ -388,7 +388,7 @@ generator_new!(FieldDescriptor, proto, options;
             DefaultValue::Double(d) => d.to_string(),
             DefaultValue::SignedInt(s) => s.to_string(),
             DefaultValue::UnsignedInt(u) => u.to_string(),
-            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, proto.file())),
+            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, proto.file(), &options.crate_name)),
             DefaultValue::Bytes(b) => format!("&{:?}", b)
         }
     },
@@ -888,7 +888,7 @@ fn is_copy_type(ft: &FieldType) -> bool {
 generator_new!(EnumDescriptor, proto, options;
     "type_name", names::get_enum_type_name(proto),
     "crate_name", options.crate_name.clone(),
-    "full_type_name", names::get_full_enum_type_name(proto, proto.file()));
+    "full_type_name", names::get_full_enum_type_name(proto, proto.file(), &options.crate_name));
 
 impl<W: Write> Generator<'_, EnumDescriptor, W> {
     pub fn generate(&mut self) -> Result {
@@ -939,7 +939,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, W> {
 }
 
 generator_new!(EnumValueDescriptor, proto, options;
-    "full_variant", names::get_full_enum_variant_name(proto, proto.file()),
+    "full_variant", names::get_full_enum_variant_name(proto, proto.file(), &options.crate_name),
     "variant", names::get_enum_variant_name(proto),
     "number", proto.number().to_string());
 

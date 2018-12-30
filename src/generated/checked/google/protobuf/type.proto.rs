@@ -9,7 +9,7 @@ pub struct Type {
     pub fields: crate::collections::RepeatedField<std::boxed::Box<self::Field>>,
     pub oneofs: crate::collections::RepeatedField<std::string::String>,
     pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
-    pub source_context: std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>>,
+    pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
@@ -142,10 +142,10 @@ impl self::Type {
     }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &self.source_context
     }
-    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &mut self.source_context
     }
     /// Gets the field number of the 'syntax' field
@@ -505,7 +505,7 @@ pub struct Enum {
     pub name: std::string::String,
     pub enumvalue: crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>>,
     pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
-    pub source_context: std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>>,
+    pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     _unknown_fields: crate::UnknownFieldSet
 }
@@ -624,10 +624,10 @@ impl self::Enum {
     }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
-    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &self.source_context
     }
-    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_source_context_proto::SourceContext>> {
+    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &mut self.source_context
     }
     /// Gets the field number of the 'syntax' field
@@ -744,7 +744,7 @@ impl self::EnumValue {
 #[derive(Clone, PartialEq)]
 pub struct Option {
     pub name: std::string::String,
-    pub value: std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>>,
+    pub value: std::option::Option<std::boxed::Box<crate::wkt::any::Any>>,
     _unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Option {
@@ -821,10 +821,10 @@ impl self::Option {
     }
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
-    pub fn value(&self) -> &std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>> {
+    pub fn value(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::any::Any>> {
         &self.value
     }
-    pub fn value_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<super::google_protobuf_any_proto::Any>> {
+    pub fn value_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::any::Any>> {
         &mut self.value
     }
 }

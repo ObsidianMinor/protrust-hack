@@ -13,16 +13,16 @@ pub fn get_message_type_name(message: &MessageDescriptor) -> String {
     get_type_name(message.name(), message.scope())
 }
 
-pub fn get_full_message_type_name(message: &MessageDescriptor, file: &FileDescriptor) -> String {
-    get_full_type_name(message.name(), message.scope(), file)
+pub fn get_full_message_type_name(message: &MessageDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
+    get_full_type_name(message.name(), message.scope(), file, crate_name)
 }
 
 pub fn get_enum_type_name(enum_type: &EnumDescriptor) -> String {
     get_type_name(enum_type.name(), enum_type.scope())
 }
 
-pub fn get_full_enum_type_name(enum_type: &EnumDescriptor, file: &FileDescriptor) -> String {
-    get_full_type_name(enum_type.name(), enum_type.scope(), file)
+pub fn get_full_enum_type_name(enum_type: &EnumDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
+    get_full_type_name(enum_type.name(), enum_type.scope(), file, crate_name)
 }
 
 // ported from https://github.com/protocolbuffers/protobuf/blob/704037f23a9ede00ec4fcf40d568712ce6200934/src/google/protobuf/compiler/csharp/csharp_helpers.cc
@@ -33,10 +33,10 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
     result
 }
 
-pub fn get_full_enum_variant_name(value: &EnumValueDescriptor, file: &FileDescriptor) -> String {
+pub fn get_full_enum_variant_name(value: &EnumValueDescriptor, file: &FileDescriptor, crate_name: &str) -> String {
     format!(
         "{}::{}",
-        get_full_enum_type_name(value.enum_type(), file),
+        get_full_enum_type_name(value.enum_type(), file, crate_name),
         get_enum_variant_name(value)
     )
 }
@@ -103,8 +103,8 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
     use protrust::reflect::FieldType::*;
     match res {
         TypeResolution::Base => match field.field_type() {
-            Message(m) | Group(m) => get_full_message_type_name(m, field.file()),
-            Enum(e) => get_full_enum_type_name(e, field.file()),
+            Message(m) | Group(m) => get_full_message_type_name(m, field.file(), crate_name),
+            Enum(e) => get_full_enum_type_name(e, field.file(), crate_name),
             Bytes => format!("std::vec::Vec<u8>"),
             String => format!("std::string::String"),
             Bool => format!("bool"),
@@ -219,15 +219,23 @@ fn get_type_name(name: &str, mut scope: &CompositeScope) -> String {
     type_name
 }
 
-fn get_full_type_name(name: &str, scope: &CompositeScope, file: &FileDescriptor) -> String {
+fn get_full_type_name(name: &str, scope: &CompositeScope, file: &FileDescriptor, crate_name: &str) -> String {
     let mut full = get_type_name(name, scope);
 
     if scope.file() == file {
         full.insert_str(0, "self::");
     } else {
-        full.insert_str(0, "::");
-        full.insert_str(0, &get_rust_file_mod_name(scope.file()));
-        full.insert_str(0, "super::");
+        let file = scope.file();
+        if let Some(file) = well_known_file(file) {
+            full.insert_str(0, "::");
+            full.insert_str(0, file);
+            full.insert_str(0, "::");
+            full.insert_str(0, crate_name);
+        } else {
+            full.insert_str(0, "::");
+            full.insert_str(0, &get_rust_file_mod_name(file));
+            full.insert_str(0, "super::");
+        }
     }
 
     full
@@ -315,4 +323,22 @@ fn underscores_to_camel_case(input: &str, mut cap_next: bool, preserve_dot: bool
 
 fn underscores_to_pascal_case(input: &str, preserve_dot: bool) -> String {
     underscores_to_camel_case(input, true, preserve_dot)
+}
+
+fn well_known_file(file: &FileDescriptor) -> Option<&'static str> {
+    match &**file.name() {
+        "google/protobuf/descriptor.proto" => Some("descriptor"),
+        "google/protobuf/compiler/plugin.proto" => Some("plugin"),
+        "google/protobuf/any.proto" => Some("wkt::any"),
+        "google/protobuf/api.proto" => Some("wkt::api"),
+        "google/protobuf/duration.proto" => Some("wkt::duration"),
+        "google/protobuf/empty.proto" => Some("wkt::empty"),
+        "google/protobuf/field_mask.proto" => Some("wkt::field_mask"),
+        "google/protobuf/source_context.proto" => Some("wkt::source_context"),
+        "google/protobuf/struct.proto" => Some("wkt::r#struct"),
+        "google/protobuf/timestamp.proto" => Some("wkt::timestamp"),
+        "google/protobuf/type.proto" => Some("wkt::r#type"),
+        "google/protobuf/wrappers.proto" => Some("wkt::wrappers"),
+        _ => None
+    }
 }

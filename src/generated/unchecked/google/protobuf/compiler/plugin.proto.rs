@@ -131,12 +131,12 @@ impl self::Version {
 pub struct CodeGeneratorRequest {
     pub file_to_generate: crate::collections::RepeatedField<std::string::String>,
     pub parameter: std::option::Option<std::string::String>,
-    pub proto_file: crate::collections::RepeatedField<std::boxed::Box<super::google_protobuf_descriptor_proto::FileDescriptorProto>>,
+    pub proto_file: crate::collections::RepeatedField<std::boxed::Box<crate::descriptor::FileDescriptorProto>>,
     pub compiler_version: std::option::Option<std::boxed::Box<self::Version>>,
     _unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC: crate::Codec<std::string::String> = crate::Codec::string(10);
-static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<std::boxed::Box<super::google_protobuf_descriptor_proto::FileDescriptorProto>> = crate::Codec::message(122);
+static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<std::boxed::Box<crate::descriptor::FileDescriptorProto>> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorRequest {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
