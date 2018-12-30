@@ -61,7 +61,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
 
     let mut mod_file_content =
         "#![allow(unused_variables, dead_code, non_camel_case_types)]\n\n".to_string();
-    let pool = reflect::DescriptorPool::build_from_files(&request.proto_file[..]);
+    let pool = reflect::DescriptorPool::build_from_files(request.proto_file.as_slice());
     for file in request.file_to_generate.iter() {
         let descriptor: &reflect::FileDescriptor = pool
             .find_file_by_name(file)
@@ -79,7 +79,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
                 gen_file.name = Some(names::get_rust_file_name(descriptor));
                 gen_file.content = Some(printer.into_inner());
 
-                response.file.push(Box::new(gen_file));
+                response.file.push(gen_file);
             }
             Err(err) => return error(response, format!("{:?}", err)),
         }
@@ -102,7 +102,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
     mod_file.content = Some(mod_file_content);
     mod_file.name = Some("mod.rs".to_string());
 
-    response.file.push(Box::new(mod_file));
+    response.file.push(mod_file);
     response
 }
 

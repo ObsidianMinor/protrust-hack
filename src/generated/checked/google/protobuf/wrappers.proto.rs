@@ -67,12 +67,6 @@ impl self::DoubleValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: f64 = 0.0;
-    pub fn value(&self) -> &f64 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut f64 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct FloatValue {
@@ -138,12 +132,6 @@ impl self::FloatValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: f32 = 0.0;
-    pub fn value(&self) -> &f32 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut f32 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Int64Value {
@@ -209,12 +197,6 @@ impl self::Int64Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: i64 = 0;
-    pub fn value(&self) -> &i64 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut i64 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct UInt64Value {
@@ -280,12 +262,6 @@ impl self::UInt64Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: u64 = 0;
-    pub fn value(&self) -> &u64 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut u64 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Int32Value {
@@ -351,12 +327,6 @@ impl self::Int32Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: i32 = 0;
-    pub fn value(&self) -> &i32 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut i32 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct UInt32Value {
@@ -422,12 +392,6 @@ impl self::UInt32Value {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: u32 = 0;
-    pub fn value(&self) -> &u32 {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut u32 {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct BoolValue {
@@ -493,12 +457,6 @@ impl self::BoolValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: bool = false;
-    pub fn value(&self) -> &bool {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut bool {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct StringValue {
@@ -564,12 +522,6 @@ impl self::StringValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: &'static str = "";
-    pub fn value(&self) -> &std::string::String {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut std::string::String {
-        &mut self.value
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct BytesValue {
@@ -635,10 +587,4 @@ impl self::BytesValue {
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 1;
     pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-    pub fn value(&self) -> &std::vec::Vec<u8> {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut std::vec::Vec<u8> {
-        &mut self.value
-    }
 }

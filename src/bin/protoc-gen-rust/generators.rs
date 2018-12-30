@@ -495,8 +495,8 @@ generator_new!(FieldDescriptor, proto, options;
 impl<W: Write> Generator<'_, FieldDescriptor, W> {
     pub fn generate_struct_field(&mut self) -> Result {
         if let FieldScope::Message(_) = self.proto.scope() {
-            if self.options.pub_fields {
-                write!(self.printer, "pub ")?;
+            if self.options.pub_fields || self.proto.file().syntax() == Syntax::Proto3 {
+                gen!(self.printer, "pub ");
             }
 
             gen!(self.printer; self.vars => "{field_name}: {field_type},", field_name, field_type);
@@ -832,10 +832,10 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::collections::MapCodec<", codec, crate_name);
                     let generator =
                         Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]);
-                    gen!(generator.printer; generator.vars => "{indirected_type}, ", indirected_type);
+                    gen!(generator.printer; generator.vars => "{base_type}, ", base_type);
                     let generator =
                         Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]);
-                    gen!(generator.printer; generator.vars => "{indirected_type}", indirected_type);
+                    gen!(generator.printer; generator.vars => "{base_type}", base_type);
                     gen!(self.printer; self.vars => "> = {crate_name}::collections::MapCodec::new(", crate_name);
 
                     Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0])
@@ -846,7 +846,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     gen!(self.printer; self.vars => ", {tag});", tag);
                 }
                 _ => {
-                    gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::Codec<{indirected_type}> = ", codec, crate_name, indirected_type);
+                    gen!(self.printer; self.vars => "\nstatic {codec}: {crate_name}::Codec<{base_type}> = ", codec, crate_name, base_type);
                     self.generate_codec_new()?;
                     gen!(self.printer, ";");
                 }
@@ -871,19 +871,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
     pub fn generate_accessors(&mut self) -> Result {
         match self.proto.file().syntax() {
             Syntax::Proto2 => {}
-            Syntax::Proto3 => {
-                gen!(self.printer; self.vars => "\npub fn {field_name}(&self) -> &{field_type} {{", field_name, field_type);
-                self.printer.indent();
-                gen!(self.printer; self.vars => "\n&self.{field_name}", field_name);
-                self.printer.unindent();
-                gen!(self.printer, "\n}}");
-
-                gen!(self.printer; self.vars => "\npub fn {field_name}_mut(&mut self) -> &mut {field_type} {{", field_name, field_type);
-                self.printer.indent();
-                gen!(self.printer; self.vars => "\n&mut self.{field_name}", field_name);
-                self.printer.unindent();
-                gen!(self.printer, "\n}}");
-            }
+            Syntax::Proto3 => {}
             _ => panic!("Unknown syntax"),
         }
 
@@ -1025,8 +1013,8 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
     }
 
     pub fn generate_struct_field(&mut self) -> Result {
-        if self.options.pub_fields {
-            write!(self.printer, "pub ")?;
+        if self.options.pub_fields || self.proto.file().syntax() == Syntax::Proto3 {
+            gen!(self.printer, "pub ");
         }
 
         gen!(self.printer; self.vars => "{field_name}: {type_name},", field_name, type_name);
@@ -1041,17 +1029,19 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
     }
 
     pub fn generate_accessor(&mut self) -> Result {
-        gen!(self.printer; self.vars => "\npub fn {field_name}(&self) -> &{type_name} {{", field_name, type_name);
-        self.printer.indent();
-        gen!(self.printer; self.vars => "\n&self.{field_name}", field_name);
-        self.printer.unindent();
-        gen!(self.printer, "\n}}");
+        if self.proto.file().syntax() == Syntax::Proto2 {
+            gen!(self.printer; self.vars => "\npub fn {field_name}(&self) -> &{type_name} {{", field_name, type_name);
+            self.printer.indent();
+            gen!(self.printer; self.vars => "\n&self.{field_name}", field_name);
+            self.printer.unindent();
+            gen!(self.printer, "\n}}");
 
-        gen!(self.printer; self.vars => "\npub fn {field_name}_mut(&mut self) -> &mut {type_name} {{", field_name, type_name);
-        self.printer.indent();
-        gen!(self.printer; self.vars => "\n&mut self.{field_name}", field_name);
-        self.printer.unindent();
-        gen!(self.printer, "\n}}");
+            gen!(self.printer; self.vars => "\npub fn {field_name}_mut(&mut self) -> &mut {type_name} {{", field_name, type_name);
+            self.printer.indent();
+            gen!(self.printer; self.vars => "\n&mut self.{field_name}", field_name);
+            self.printer.unindent();
+            gen!(self.printer, "\n}}");
+        }
 
         Ok(())
     }

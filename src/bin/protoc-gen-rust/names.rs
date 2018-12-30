@@ -116,7 +116,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
     match res {
         TypeResolution::Base => match field.field_type() {
             Message(m) | Group(m) => get_full_message_type_name(m, field.file(), crate_name),
-            Enum(e) => get_full_enum_type_name(e, field.file(), crate_name),
+            Enum(e) => format!("{}::EnumValue<{}>", crate_name, get_full_enum_type_name(e, field.file(), crate_name)),
             Bytes => format!("std::vec::Vec<u8>"),
             String => format!("std::string::String"),
             Bool => format!("bool"),
@@ -131,7 +131,6 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
             let base = get_rust_type(TypeResolution::Base, field, crate_name);
             match field.field_type() {
                 Message(_) | Group(_) => format!("std::boxed::Box<{}>", base),
-                Enum(_) => format!("{}::EnumValue<{}>", crate_name, base),
                 _ => base,
             }
         }
@@ -159,8 +158,8 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
                         return format!(
                             "{}::collections::MapField<{}, {}>",
                             crate_name,
-                            get_rust_type(TypeResolution::Indirection, &m.fields()[0], crate_name),
-                            get_rust_type(TypeResolution::Indirection, &m.fields()[1], crate_name)
+                            get_rust_type(TypeResolution::Base, &m.fields()[0], crate_name),
+                            get_rust_type(TypeResolution::Base, &m.fields()[1], crate_name)
                         );
                     }
                 }
@@ -168,7 +167,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
                 format!(
                     "{}::collections::RepeatedField<{}>",
                     crate_name,
-                    get_rust_type(TypeResolution::Indirection, field, crate_name)
+                    get_rust_type(TypeResolution::Base, field, crate_name)
                 )
             }
         },

@@ -82,19 +82,7 @@ impl self::Any {
     /// Gets the field number of the 'type_url' field
     pub const TYPE_URL_FIELD_NUMBER: i32 = 1;
     pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
-    pub fn type_url(&self) -> &std::string::String {
-        &self.type_url
-    }
-    pub fn type_url_mut(&mut self) -> &mut std::string::String {
-        &mut self.type_url
-    }
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
     pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-    pub fn value(&self) -> &std::vec::Vec<u8> {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut std::vec::Vec<u8> {
-        &mut self.value
-    }
 }

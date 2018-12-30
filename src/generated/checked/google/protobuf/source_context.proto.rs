@@ -67,10 +67,4 @@ impl self::SourceContext {
     /// Gets the field number of the 'file_name' field
     pub const FILE_NAME_FIELD_NUMBER: i32 = 1;
     pub const FILE_NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn file_name(&self) -> &std::string::String {
-        &self.file_name
-    }
-    pub fn file_name_mut(&mut self) -> &mut std::string::String {
-        &mut self.file_name
-    }
 }

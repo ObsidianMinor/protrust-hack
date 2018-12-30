@@ -5,10 +5,10 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Struct {
-    pub fields: crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>>,
+    pub fields: crate::collections::MapField<std::string::String, self::Value>,
     unknown_fields: crate::UnknownFieldSet
 }
-static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<std::string::String, std::boxed::Box<self::Value>> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
+static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<std::string::String, self::Value> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
 impl crate::CodedMessage for self::Struct {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -59,12 +59,6 @@ impl crate::Message for self::Struct {
 impl self::Struct {
     /// Gets the field number of the 'fields' field
     pub const FIELDS_FIELD_NUMBER: i32 = 1;
-    pub fn fields(&self) -> &crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>> {
-        &self.fields
-    }
-    pub fn fields_mut(&mut self) -> &mut crate::collections::MapField<std::string::String, std::boxed::Box<self::Value>> {
-        &mut self.fields
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Value {
@@ -222,19 +216,13 @@ impl crate::Message for self::Value {
     }
 }
 impl self::Value {
-    pub fn kind(&self) -> &Value_Kind {
-        &self.kind
-    }
-    pub fn kind_mut(&mut self) -> &mut Value_Kind {
-        &mut self.kind
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct ListValue {
-    pub values: crate::collections::RepeatedField<std::boxed::Box<self::Value>>,
+    pub values: crate::collections::RepeatedField<self::Value>,
     unknown_fields: crate::UnknownFieldSet
 }
-static LIST_VALUE_VALUES_CODEC: crate::Codec<std::boxed::Box<self::Value>> = crate::Codec::message(10);
+static LIST_VALUE_VALUES_CODEC: crate::Codec<self::Value> = crate::Codec::message(10);
 impl crate::CodedMessage for self::ListValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -285,12 +273,6 @@ impl crate::Message for self::ListValue {
 impl self::ListValue {
     /// Gets the field number of the 'values' field
     pub const VALUES_FIELD_NUMBER: i32 = 1;
-    pub fn values(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Value>> {
-        &self.values
-    }
-    pub fn values_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Value>> {
-        &mut self.values
-    }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum NullValue {

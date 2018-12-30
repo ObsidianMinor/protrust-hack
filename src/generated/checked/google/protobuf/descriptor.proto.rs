@@ -5,10 +5,10 @@
 
 #[derive(Debug, PartialEq)]
 pub struct FileDescriptorSet {
-    pub file: crate::collections::RepeatedField<std::boxed::Box<self::FileDescriptorProto>>,
+    pub file: crate::collections::RepeatedField<self::FileDescriptorProto>,
     unknown_fields: crate::UnknownFieldSet
 }
-static FILE_DESCRIPTOR_SET_FILE_CODEC: crate::Codec<std::boxed::Box<self::FileDescriptorProto>> = crate::Codec::message(10);
+static FILE_DESCRIPTOR_SET_FILE_CODEC: crate::Codec<self::FileDescriptorProto> = crate::Codec::message(10);
 impl crate::CodedMessage for self::FileDescriptorSet {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -67,10 +67,10 @@ pub struct FileDescriptorProto {
     pub dependency: crate::collections::RepeatedField<std::string::String>,
     pub public_dependency: crate::collections::RepeatedField<i32>,
     pub weak_dependency: crate::collections::RepeatedField<i32>,
-    pub message_type: crate::collections::RepeatedField<std::boxed::Box<self::DescriptorProto>>,
-    pub enum_type: crate::collections::RepeatedField<std::boxed::Box<self::EnumDescriptorProto>>,
-    pub service: crate::collections::RepeatedField<std::boxed::Box<self::ServiceDescriptorProto>>,
-    pub extension: crate::collections::RepeatedField<std::boxed::Box<self::FieldDescriptorProto>>,
+    pub message_type: crate::collections::RepeatedField<self::DescriptorProto>,
+    pub enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
+    pub service: crate::collections::RepeatedField<self::ServiceDescriptorProto>,
+    pub extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
     pub options: std::option::Option<std::boxed::Box<self::FileOptions>>,
     pub source_code_info: std::option::Option<std::boxed::Box<self::SourceCodeInfo>>,
     pub syntax: std::option::Option<std::string::String>,
@@ -79,10 +79,10 @@ pub struct FileDescriptorProto {
 static FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
 static FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(80);
 static FILE_DESCRIPTOR_PROTO_WEAK_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(88);
-static FILE_DESCRIPTOR_PROTO_MESSAGE_TYPE_CODEC: crate::Codec<std::boxed::Box<self::DescriptorProto>> = crate::Codec::message(34);
-static FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto>> = crate::Codec::message(42);
-static FILE_DESCRIPTOR_PROTO_SERVICE_CODEC: crate::Codec<std::boxed::Box<self::ServiceDescriptorProto>> = crate::Codec::message(50);
-static FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(58);
+static FILE_DESCRIPTOR_PROTO_MESSAGE_TYPE_CODEC: crate::Codec<self::DescriptorProto> = crate::Codec::message(34);
+static FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<self::EnumDescriptorProto> = crate::Codec::message(42);
+static FILE_DESCRIPTOR_PROTO_SERVICE_CODEC: crate::Codec<self::ServiceDescriptorProto> = crate::Codec::message(50);
+static FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(58);
 impl crate::CodedMessage for self::FileDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -284,24 +284,24 @@ impl self::FileDescriptorProto {
 #[derive(Debug, PartialEq)]
 pub struct DescriptorProto {
     pub name: std::option::Option<std::string::String>,
-    pub field: crate::collections::RepeatedField<std::boxed::Box<self::FieldDescriptorProto>>,
-    pub extension: crate::collections::RepeatedField<std::boxed::Box<self::FieldDescriptorProto>>,
-    pub nested_type: crate::collections::RepeatedField<std::boxed::Box<self::DescriptorProto>>,
-    pub enum_type: crate::collections::RepeatedField<std::boxed::Box<self::EnumDescriptorProto>>,
-    pub extension_range: crate::collections::RepeatedField<std::boxed::Box<self::DescriptorProto_ExtensionRange>>,
-    pub oneof_decl: crate::collections::RepeatedField<std::boxed::Box<self::OneofDescriptorProto>>,
+    pub field: crate::collections::RepeatedField<self::FieldDescriptorProto>,
+    pub extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
+    pub nested_type: crate::collections::RepeatedField<self::DescriptorProto>,
+    pub enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
+    pub extension_range: crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange>,
+    pub oneof_decl: crate::collections::RepeatedField<self::OneofDescriptorProto>,
     pub options: std::option::Option<std::boxed::Box<self::MessageOptions>>,
-    pub reserved_range: crate::collections::RepeatedField<std::boxed::Box<self::DescriptorProto_ReservedRange>>,
+    pub reserved_range: crate::collections::RepeatedField<self::DescriptorProto_ReservedRange>,
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
-static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(18);
-static DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<std::boxed::Box<self::FieldDescriptorProto>> = crate::Codec::message(50);
-static DESCRIPTOR_PROTO_NESTED_TYPE_CODEC: crate::Codec<std::boxed::Box<self::DescriptorProto>> = crate::Codec::message(26);
-static DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto>> = crate::Codec::message(34);
-static DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC: crate::Codec<std::boxed::Box<self::DescriptorProto_ExtensionRange>> = crate::Codec::message(42);
-static DESCRIPTOR_PROTO_ONEOF_DECL_CODEC: crate::Codec<std::boxed::Box<self::OneofDescriptorProto>> = crate::Codec::message(66);
-static DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<std::boxed::Box<self::DescriptorProto_ReservedRange>> = crate::Codec::message(74);
+static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(18);
+static DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(50);
+static DESCRIPTOR_PROTO_NESTED_TYPE_CODEC: crate::Codec<self::DescriptorProto> = crate::Codec::message(26);
+static DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<self::EnumDescriptorProto> = crate::Codec::message(34);
+static DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC: crate::Codec<self::DescriptorProto_ExtensionRange> = crate::Codec::message(42);
+static DESCRIPTOR_PROTO_ONEOF_DECL_CODEC: crate::Codec<self::OneofDescriptorProto> = crate::Codec::message(66);
+static DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::DescriptorProto_ReservedRange> = crate::Codec::message(74);
 static DESCRIPTOR_PROTO_RESERVED_NAME_CODEC: crate::Codec<std::string::String> = crate::Codec::string(82);
 impl crate::CodedMessage for self::DescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -652,10 +652,10 @@ impl self::DescriptorProto_ReservedRange {
 }
 #[derive(Debug, PartialEq)]
 pub struct ExtensionRangeOptions {
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ExtensionRangeOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -1138,14 +1138,14 @@ impl self::OneofDescriptorProto {
 #[derive(Debug, PartialEq)]
 pub struct EnumDescriptorProto {
     pub name: std::option::Option<std::string::String>,
-    pub value: crate::collections::RepeatedField<std::boxed::Box<self::EnumValueDescriptorProto>>,
+    pub value: crate::collections::RepeatedField<self::EnumValueDescriptorProto>,
     pub options: std::option::Option<std::boxed::Box<self::EnumOptions>>,
-    pub reserved_range: crate::collections::RepeatedField<std::boxed::Box<self::EnumDescriptorProto_EnumReservedRange>>,
+    pub reserved_range: crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange>,
     pub reserved_name: crate::collections::RepeatedField<std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<std::boxed::Box<self::EnumValueDescriptorProto>> = crate::Codec::message(18);
-static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<std::boxed::Box<self::EnumDescriptorProto_EnumReservedRange>> = crate::Codec::message(34);
+static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<self::EnumValueDescriptorProto> = crate::Codec::message(18);
+static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::EnumDescriptorProto_EnumReservedRange> = crate::Codec::message(34);
 static ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC: crate::Codec<std::string::String> = crate::Codec::string(42);
 impl crate::CodedMessage for self::EnumDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1457,11 +1457,11 @@ impl self::EnumValueDescriptorProto {
 #[derive(Debug, PartialEq)]
 pub struct ServiceDescriptorProto {
     pub name: std::option::Option<std::string::String>,
-    pub method: crate::collections::RepeatedField<std::boxed::Box<self::MethodDescriptorProto>>,
+    pub method: crate::collections::RepeatedField<self::MethodDescriptorProto>,
     pub options: std::option::Option<std::boxed::Box<self::ServiceOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
-static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<std::boxed::Box<self::MethodDescriptorProto>> = crate::Codec::message(18);
+static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<self::MethodDescriptorProto> = crate::Codec::message(18);
 impl crate::CodedMessage for self::ServiceDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -1750,10 +1750,10 @@ pub struct FileOptions {
     pub php_namespace: std::option::Option<std::string::String>,
     pub php_metadata_namespace: std::option::Option<std::string::String>,
     pub ruby_package: std::option::Option<std::string::String>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FileOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2254,10 +2254,10 @@ pub struct MessageOptions {
     pub no_standard_descriptor_accessor: std::option::Option<bool>,
     pub deprecated: std::option::Option<bool>,
     pub map_entry: std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MessageOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2401,10 +2401,10 @@ pub struct FieldOptions {
     pub lazy: std::option::Option<bool>,
     pub deprecated: std::option::Option<bool>,
     pub weak: std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FieldOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2630,10 +2630,10 @@ impl std::convert::From<self::FieldOptions_JSType> for i32 {
 }
 #[derive(Debug, PartialEq)]
 pub struct OneofOptions {
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::OneofOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2689,10 +2689,10 @@ impl self::OneofOptions {
 pub struct EnumOptions {
     pub allow_alias: std::option::Option<bool>,
     pub deprecated: std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2789,10 +2789,10 @@ impl self::EnumOptions {
 #[derive(Debug, PartialEq)]
 pub struct EnumValueOptions {
     pub deprecated: std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumValueOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2868,10 +2868,10 @@ impl self::EnumValueOptions {
 #[derive(Debug, PartialEq)]
 pub struct ServiceOptions {
     pub deprecated: std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ServiceOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -2948,10 +2948,10 @@ impl self::ServiceOptions {
 pub struct MethodOptions {
     pub deprecated: std::option::Option<bool>,
     pub idempotency_level: std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
-    pub uninterpreted_option: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption>>,
+    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
-static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption>> = crate::Codec::message(7994);
+static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MethodOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -3070,7 +3070,7 @@ impl std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
 }
 #[derive(Debug, PartialEq)]
 pub struct UninterpretedOption {
-    pub name: crate::collections::RepeatedField<std::boxed::Box<self::UninterpretedOption_NamePart>>,
+    pub name: crate::collections::RepeatedField<self::UninterpretedOption_NamePart>,
     pub identifier_value: std::option::Option<std::string::String>,
     pub positive_int_value: std::option::Option<u64>,
     pub negative_int_value: std::option::Option<i64>,
@@ -3079,7 +3079,7 @@ pub struct UninterpretedOption {
     pub aggregate_value: std::option::Option<std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
-static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<std::boxed::Box<self::UninterpretedOption_NamePart>> = crate::Codec::message(18);
+static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<self::UninterpretedOption_NamePart> = crate::Codec::message(18);
 impl crate::CodedMessage for self::UninterpretedOption {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -3350,10 +3350,10 @@ impl self::UninterpretedOption_NamePart {
 }
 #[derive(Debug, PartialEq)]
 pub struct SourceCodeInfo {
-    pub location: crate::collections::RepeatedField<std::boxed::Box<self::SourceCodeInfo_Location>>,
+    pub location: crate::collections::RepeatedField<self::SourceCodeInfo_Location>,
     unknown_fields: crate::UnknownFieldSet
 }
-static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<std::boxed::Box<self::SourceCodeInfo_Location>> = crate::Codec::message(10);
+static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<self::SourceCodeInfo_Location> = crate::Codec::message(10);
 impl crate::CodedMessage for self::SourceCodeInfo {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -3528,10 +3528,10 @@ impl self::SourceCodeInfo_Location {
 }
 #[derive(Debug, PartialEq)]
 pub struct GeneratedCodeInfo {
-    pub annotation: crate::collections::RepeatedField<std::boxed::Box<self::GeneratedCodeInfo_Annotation>>,
+    pub annotation: crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation>,
     unknown_fields: crate::UnknownFieldSet
 }
-static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<std::boxed::Box<self::GeneratedCodeInfo_Annotation>> = crate::Codec::message(10);
+static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<self::GeneratedCodeInfo_Annotation> = crate::Codec::message(10);
 impl crate::CodedMessage for self::GeneratedCodeInfo {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {

@@ -6,16 +6,16 @@
 #[derive(Debug, PartialEq)]
 pub struct Type {
     pub name: std::string::String,
-    pub fields: crate::collections::RepeatedField<std::boxed::Box<self::Field>>,
+    pub fields: crate::collections::RepeatedField<self::Field>,
     pub oneofs: crate::collections::RepeatedField<std::string::String>,
-    pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
+    pub options: crate::collections::RepeatedField<self::Option>,
     pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
-static TYPE_FIELDS_CODEC: crate::Codec<std::boxed::Box<self::Field>> = crate::Codec::message(18);
+static TYPE_FIELDS_CODEC: crate::Codec<self::Field> = crate::Codec::message(18);
 static TYPE_ONEOFS_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
-static TYPE_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(34);
+static TYPE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(34);
 impl crate::CodedMessage for self::Type {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -123,53 +123,17 @@ impl self::Type {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'fields' field
     pub const FIELDS_FIELD_NUMBER: i32 = 2;
-    pub fn fields(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Field>> {
-        &self.fields
-    }
-    pub fn fields_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Field>> {
-        &mut self.fields
-    }
     /// Gets the field number of the 'oneofs' field
     pub const ONEOFS_FIELD_NUMBER: i32 = 3;
-    pub fn oneofs(&self) -> &crate::collections::RepeatedField<std::string::String> {
-        &self.oneofs
-    }
-    pub fn oneofs_mut(&mut self) -> &mut crate::collections::RepeatedField<std::string::String> {
-        &mut self.oneofs
-    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
-    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &self.options
-    }
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &mut self.options
-    }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
-        &self.source_context
-    }
-    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
-        &mut self.source_context
-    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 6;
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
-    pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
-        &self.syntax
-    }
-    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
-        &mut self.syntax
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Field {
@@ -180,12 +144,12 @@ pub struct Field {
     pub type_url: std::string::String,
     pub oneof_index: i32,
     pub packed: bool,
-    pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
+    pub options: crate::collections::RepeatedField<self::Option>,
     pub json_name: std::string::String,
     pub default_value: std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
-static FIELD_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(74);
+static FIELD_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(74);
 impl crate::CodedMessage for self::Field {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -363,92 +327,32 @@ impl self::Field {
     /// Gets the field number of the 'kind' field
     pub const KIND_FIELD_NUMBER: i32 = 1;
     pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::Field_Kind> = crate::EnumValue::Defined(self::Field_Kind::TypeUnknown);
-    pub fn kind(&self) -> &crate::EnumValue<self::Field_Kind> {
-        &self.kind
-    }
-    pub fn kind_mut(&mut self) -> &mut crate::EnumValue<self::Field_Kind> {
-        &mut self.kind
-    }
     /// Gets the field number of the 'cardinality' field
     pub const CARDINALITY_FIELD_NUMBER: i32 = 2;
     pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::Field_Cardinality> = crate::EnumValue::Defined(self::Field_Cardinality::Unknown);
-    pub fn cardinality(&self) -> &crate::EnumValue<self::Field_Cardinality> {
-        &self.cardinality
-    }
-    pub fn cardinality_mut(&mut self) -> &mut crate::EnumValue<self::Field_Cardinality> {
-        &mut self.cardinality
-    }
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 3;
     pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-    pub fn number(&self) -> &i32 {
-        &self.number
-    }
-    pub fn number_mut(&mut self) -> &mut i32 {
-        &mut self.number
-    }
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 4;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'type_url' field
     pub const TYPE_URL_FIELD_NUMBER: i32 = 6;
     pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
-    pub fn type_url(&self) -> &std::string::String {
-        &self.type_url
-    }
-    pub fn type_url_mut(&mut self) -> &mut std::string::String {
-        &mut self.type_url
-    }
     /// Gets the field number of the 'oneof_index' field
     pub const ONEOF_INDEX_FIELD_NUMBER: i32 = 7;
     pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-    pub fn oneof_index(&self) -> &i32 {
-        &self.oneof_index
-    }
-    pub fn oneof_index_mut(&mut self) -> &mut i32 {
-        &mut self.oneof_index
-    }
     /// Gets the field number of the 'packed' field
     pub const PACKED_FIELD_NUMBER: i32 = 8;
     pub const PACKED_DEFAULT_VALUE: bool = false;
-    pub fn packed(&self) -> &bool {
-        &self.packed
-    }
-    pub fn packed_mut(&mut self) -> &mut bool {
-        &mut self.packed
-    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 9;
-    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &self.options
-    }
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &mut self.options
-    }
     /// Gets the field number of the 'json_name' field
     pub const JSON_NAME_FIELD_NUMBER: i32 = 10;
     pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn json_name(&self) -> &std::string::String {
-        &self.json_name
-    }
-    pub fn json_name_mut(&mut self) -> &mut std::string::String {
-        &mut self.json_name
-    }
     /// Gets the field number of the 'default_value' field
     pub const DEFAULT_VALUE_FIELD_NUMBER: i32 = 11;
     pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-    pub fn default_value(&self) -> &std::string::String {
-        &self.default_value
-    }
-    pub fn default_value_mut(&mut self) -> &mut std::string::String {
-        &mut self.default_value
-    }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Kind {
@@ -533,14 +437,14 @@ impl std::convert::From<self::Field_Cardinality> for i32 {
 #[derive(Debug, PartialEq)]
 pub struct Enum {
     pub name: std::string::String,
-    pub enumvalue: crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>>,
-    pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
+    pub enumvalue: crate::collections::RepeatedField<self::EnumValue>,
+    pub options: crate::collections::RepeatedField<self::Option>,
     pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_ENUMVALUE_CODEC: crate::Codec<std::boxed::Box<self::EnumValue>> = crate::Codec::message(18);
-static ENUM_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(26);
+static ENUM_ENUMVALUE_CODEC: crate::Codec<self::EnumValue> = crate::Codec::message(18);
+static ENUM_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
 impl crate::CodedMessage for self::Enum {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -642,54 +546,24 @@ impl self::Enum {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'enumvalue' field
     pub const ENUMVALUE_FIELD_NUMBER: i32 = 2;
-    pub fn enumvalue(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>> {
-        &self.enumvalue
-    }
-    pub fn enumvalue_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::EnumValue>> {
-        &mut self.enumvalue
-    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &self.options
-    }
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &mut self.options
-    }
     /// Gets the field number of the 'source_context' field
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
-    pub fn source_context(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
-        &self.source_context
-    }
-    pub fn source_context_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>> {
-        &mut self.source_context
-    }
     /// Gets the field number of the 'syntax' field
     pub const SYNTAX_FIELD_NUMBER: i32 = 5;
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
-    pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
-        &self.syntax
-    }
-    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
-        &mut self.syntax
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct EnumValue {
     pub name: std::string::String,
     pub number: i32,
-    pub options: crate::collections::RepeatedField<std::boxed::Box<self::Option>>,
+    pub options: crate::collections::RepeatedField<self::Option>,
     unknown_fields: crate::UnknownFieldSet
 }
-static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<std::boxed::Box<self::Option>> = crate::Codec::message(26);
+static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
 impl crate::CodedMessage for self::EnumValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -769,29 +643,11 @@ impl self::EnumValue {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 2;
     pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-    pub fn number(&self) -> &i32 {
-        &self.number
-    }
-    pub fn number_mut(&mut self) -> &mut i32 {
-        &mut self.number
-    }
     /// Gets the field number of the 'options' field
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> &crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &self.options
-    }
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<std::boxed::Box<self::Option>> {
-        &mut self.options
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Option {
@@ -874,20 +730,8 @@ impl self::Option {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'value' field
     pub const VALUE_FIELD_NUMBER: i32 = 2;
-    pub fn value(&self) -> &std::option::Option<std::boxed::Box<crate::wkt::any::Any>> {
-        &self.value
-    }
-    pub fn value_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<crate::wkt::any::Any>> {
-        &mut self.value
-    }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Syntax {

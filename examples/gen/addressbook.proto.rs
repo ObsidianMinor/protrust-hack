@@ -5,14 +5,14 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Person {
-    name: std::string::String,
-    id: i32,
-    email: std::string::String,
-    phones: protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>>,
-    last_updated: std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>>,
+    pub name: std::string::String,
+    pub id: i32,
+    pub email: std::string::String,
+    pub phones: protrust::collections::RepeatedField<self::Person_PhoneNumber>,
+    pub last_updated: std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>>,
     unknown_fields: protrust::UnknownFieldSet
 }
-static PERSON_PHONES_CODEC: protrust::Codec<std::boxed::Box<self::Person_PhoneNumber>> = protrust::Codec::message(34);
+static PERSON_PHONES_CODEC: protrust::Codec<self::Person_PhoneNumber> = protrust::Codec::message(34);
 impl protrust::CodedMessage for self::Person {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -122,51 +122,21 @@ impl self::Person {
     /// Gets the field number of the 'name' field
     pub const NAME_FIELD_NUMBER: i32 = 1;
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    pub fn name(&self) -> &std::string::String {
-        &self.name
-    }
-    pub fn name_mut(&mut self) -> &mut std::string::String {
-        &mut self.name
-    }
     /// Gets the field number of the 'id' field
     pub const ID_FIELD_NUMBER: i32 = 2;
     pub const ID_DEFAULT_VALUE: i32 = 0;
-    pub fn id(&self) -> &i32 {
-        &self.id
-    }
-    pub fn id_mut(&mut self) -> &mut i32 {
-        &mut self.id
-    }
     /// Gets the field number of the 'email' field
     pub const EMAIL_FIELD_NUMBER: i32 = 3;
     pub const EMAIL_DEFAULT_VALUE: &'static str = "";
-    pub fn email(&self) -> &std::string::String {
-        &self.email
-    }
-    pub fn email_mut(&mut self) -> &mut std::string::String {
-        &mut self.email
-    }
     /// Gets the field number of the 'phones' field
     pub const PHONES_FIELD_NUMBER: i32 = 4;
-    pub fn phones(&self) -> &protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>> {
-        &self.phones
-    }
-    pub fn phones_mut(&mut self) -> &mut protrust::collections::RepeatedField<std::boxed::Box<self::Person_PhoneNumber>> {
-        &mut self.phones
-    }
     /// Gets the field number of the 'last_updated' field
     pub const LAST_UPDATED_FIELD_NUMBER: i32 = 5;
-    pub fn last_updated(&self) -> &std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>> {
-        &self.last_updated
-    }
-    pub fn last_updated_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<protrust::wkt::timestamp::Timestamp>> {
-        &mut self.last_updated
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct Person_PhoneNumber {
-    number: std::string::String,
-    r#type: protrust::EnumValue<self::Person_PhoneType>,
+    pub number: std::string::String,
+    pub r#type: protrust::EnumValue<self::Person_PhoneType>,
     unknown_fields: protrust::UnknownFieldSet
 }
 impl protrust::CodedMessage for self::Person_PhoneNumber {
@@ -242,21 +212,9 @@ impl self::Person_PhoneNumber {
     /// Gets the field number of the 'number' field
     pub const NUMBER_FIELD_NUMBER: i32 = 1;
     pub const NUMBER_DEFAULT_VALUE: &'static str = "";
-    pub fn number(&self) -> &std::string::String {
-        &self.number
-    }
-    pub fn number_mut(&mut self) -> &mut std::string::String {
-        &mut self.number
-    }
     /// Gets the field number of the 'type' field
     pub const TYPE_FIELD_NUMBER: i32 = 2;
     pub const TYPE_DEFAULT_VALUE: protrust::EnumValue<self::Person_PhoneType> = protrust::EnumValue::Defined(self::Person_PhoneType::Mobile);
-    pub fn r#type(&self) -> &protrust::EnumValue<self::Person_PhoneType> {
-        &self.r#type
-    }
-    pub fn r#type_mut(&mut self) -> &mut protrust::EnumValue<self::Person_PhoneType> {
-        &mut self.r#type
-    }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Person_PhoneType {
@@ -283,10 +241,10 @@ impl std::convert::From<self::Person_PhoneType> for i32 {
 }
 #[derive(Debug, PartialEq)]
 pub struct AddressBook {
-    people: protrust::collections::RepeatedField<std::boxed::Box<self::Person>>,
+    pub people: protrust::collections::RepeatedField<self::Person>,
     unknown_fields: protrust::UnknownFieldSet
 }
-static ADDRESS_BOOK_PEOPLE_CODEC: protrust::Codec<std::boxed::Box<self::Person>> = protrust::Codec::message(10);
+static ADDRESS_BOOK_PEOPLE_CODEC: protrust::Codec<self::Person> = protrust::Codec::message(10);
 impl protrust::CodedMessage for self::AddressBook {
     fn merge_from(&mut self, input: &mut protrust::io::CodedInput) -> protrust::io::InputResult<()> {
         while let std::option::Option::Some(tag) = input.read_tag()? {
@@ -337,10 +295,4 @@ impl protrust::Message for self::AddressBook {
 impl self::AddressBook {
     /// Gets the field number of the 'people' field
     pub const PEOPLE_FIELD_NUMBER: i32 = 1;
-    pub fn people(&self) -> &protrust::collections::RepeatedField<std::boxed::Box<self::Person>> {
-        &self.people
-    }
-    pub fn people_mut(&mut self) -> &mut protrust::collections::RepeatedField<std::boxed::Box<self::Person>> {
-        &mut self.people
-    }
 }

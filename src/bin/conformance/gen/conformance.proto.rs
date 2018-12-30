@@ -5,11 +5,11 @@
 
 #[derive(Debug, PartialEq)]
 pub struct ConformanceRequest {
-    requested_output_format: protrust::EnumValue<self::WireFormat>,
-    message_type: std::string::String,
-    test_category: protrust::EnumValue<self::TestCategory>,
-    jspb_encoding_options: std::option::Option<std::boxed::Box<self::JspbEncodingConfig>>,
-    payload: ConformanceRequest_Payload,
+    pub requested_output_format: protrust::EnumValue<self::WireFormat>,
+    pub message_type: std::string::String,
+    pub test_category: protrust::EnumValue<self::TestCategory>,
+    pub jspb_encoding_options: std::option::Option<std::boxed::Box<self::JspbEncodingConfig>>,
+    pub payload: ConformanceRequest_Payload,
     unknown_fields: protrust::UnknownFieldSet
 }
 #[derive(Clone, Debug, PartialEq)]
@@ -161,48 +161,18 @@ impl self::ConformanceRequest {
     /// Gets the field number of the 'requested_output_format' field
     pub const REQUESTED_OUTPUT_FORMAT_FIELD_NUMBER: i32 = 3;
     pub const REQUESTED_OUTPUT_FORMAT_DEFAULT_VALUE: protrust::EnumValue<self::WireFormat> = protrust::EnumValue::Defined(self::WireFormat::Unspecified);
-    pub fn requested_output_format(&self) -> &protrust::EnumValue<self::WireFormat> {
-        &self.requested_output_format
-    }
-    pub fn requested_output_format_mut(&mut self) -> &mut protrust::EnumValue<self::WireFormat> {
-        &mut self.requested_output_format
-    }
     /// Gets the field number of the 'message_type' field
     pub const MESSAGE_TYPE_FIELD_NUMBER: i32 = 4;
     pub const MESSAGE_TYPE_DEFAULT_VALUE: &'static str = "";
-    pub fn message_type(&self) -> &std::string::String {
-        &self.message_type
-    }
-    pub fn message_type_mut(&mut self) -> &mut std::string::String {
-        &mut self.message_type
-    }
     /// Gets the field number of the 'test_category' field
     pub const TEST_CATEGORY_FIELD_NUMBER: i32 = 5;
     pub const TEST_CATEGORY_DEFAULT_VALUE: protrust::EnumValue<self::TestCategory> = protrust::EnumValue::Defined(self::TestCategory::UnspecifiedTest);
-    pub fn test_category(&self) -> &protrust::EnumValue<self::TestCategory> {
-        &self.test_category
-    }
-    pub fn test_category_mut(&mut self) -> &mut protrust::EnumValue<self::TestCategory> {
-        &mut self.test_category
-    }
     /// Gets the field number of the 'jspb_encoding_options' field
     pub const JSPB_ENCODING_OPTIONS_FIELD_NUMBER: i32 = 6;
-    pub fn jspb_encoding_options(&self) -> &std::option::Option<std::boxed::Box<self::JspbEncodingConfig>> {
-        &self.jspb_encoding_options
-    }
-    pub fn jspb_encoding_options_mut(&mut self) -> &mut std::option::Option<std::boxed::Box<self::JspbEncodingConfig>> {
-        &mut self.jspb_encoding_options
-    }
-    pub fn payload(&self) -> &ConformanceRequest_Payload {
-        &self.payload
-    }
-    pub fn payload_mut(&mut self) -> &mut ConformanceRequest_Payload {
-        &mut self.payload
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct ConformanceResponse {
-    result: ConformanceResponse_Result,
+    pub result: ConformanceResponse_Result,
     unknown_fields: protrust::UnknownFieldSet
 }
 #[derive(Clone, Debug, PartialEq)]
@@ -345,16 +315,10 @@ impl protrust::Message for self::ConformanceResponse {
     }
 }
 impl self::ConformanceResponse {
-    pub fn result(&self) -> &ConformanceResponse_Result {
-        &self.result
-    }
-    pub fn result_mut(&mut self) -> &mut ConformanceResponse_Result {
-        &mut self.result
-    }
 }
 #[derive(Debug, PartialEq)]
 pub struct JspbEncodingConfig {
-    use_jspb_array_any_format: bool,
+    pub use_jspb_array_any_format: bool,
     unknown_fields: protrust::UnknownFieldSet
 }
 impl protrust::CodedMessage for self::JspbEncodingConfig {
@@ -416,12 +380,6 @@ impl self::JspbEncodingConfig {
     /// Gets the field number of the 'use_jspb_array_any_format' field
     pub const USE_JSPB_ARRAY_ANY_FORMAT_FIELD_NUMBER: i32 = 1;
     pub const USE_JSPB_ARRAY_ANY_FORMAT_DEFAULT_VALUE: bool = false;
-    pub fn use_jspb_array_any_format(&self) -> &bool {
-        &self.use_jspb_array_any_format
-    }
-    pub fn use_jspb_array_any_format_mut(&mut self) -> &mut bool {
-        &mut self.use_jspb_array_any_format
-    }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum WireFormat {

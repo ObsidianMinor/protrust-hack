@@ -82,19 +82,7 @@ impl self::Timestamp {
     /// Gets the field number of the 'seconds' field
     pub const SECONDS_FIELD_NUMBER: i32 = 1;
     pub const SECONDS_DEFAULT_VALUE: i64 = 0;
-    pub fn seconds(&self) -> &i64 {
-        &self.seconds
-    }
-    pub fn seconds_mut(&mut self) -> &mut i64 {
-        &mut self.seconds
-    }
     /// Gets the field number of the 'nanos' field
     pub const NANOS_FIELD_NUMBER: i32 = 2;
     pub const NANOS_DEFAULT_VALUE: i32 = 0;
-    pub fn nanos(&self) -> &i32 {
-        &self.nanos
-    }
-    pub fn nanos_mut(&mut self) -> &mut i32 {
-        &mut self.nanos
-    }
 }

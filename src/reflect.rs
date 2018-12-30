@@ -60,13 +60,13 @@ fn raw_box<T>(value: T) -> *mut T {
 }
 
 pub struct DescriptorPool<'a> {
-    protos: &'a [Box<FileDescriptorProto>],
+    protos: &'a [FileDescriptorProto],
     symbols: HashMap<String, Symbol>,
 }
 
 impl DescriptorPool<'_> {
     /// Builds a descriptor pool from the slice of file descriptors
-    pub fn build_from_files(files: &[Box<FileDescriptorProto>]) -> DescriptorPool {
+    pub fn build_from_files(files: &[FileDescriptorProto]) -> DescriptorPool {
         let mut pool = DescriptorPool {
             protos: files,
             symbols: HashMap::new(),
@@ -74,7 +74,7 @@ impl DescriptorPool<'_> {
 
         // insert the symbol for each file
         for file in pool.protos.iter() {
-            let file = FileDescriptor::new(&**file as *const FileDescriptorProto, &mut pool);
+            let file = FileDescriptor::new(&*file as *const FileDescriptorProto, &mut pool);
             unsafe {
                 (*file).cross_ref(&mut pool);
             }
@@ -319,7 +319,7 @@ impl FileDescriptor {
             .iter()
             .map(|m| {
                 MessageDescriptor::new(
-                    &**m as *const DescriptorProto,
+                    &*m as *const DescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -333,7 +333,7 @@ impl FileDescriptor {
             .iter()
             .map(|e| {
                 EnumDescriptor::new(
-                    &**e as *const EnumDescriptorProto,
+                    &*e as *const EnumDescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -347,7 +347,7 @@ impl FileDescriptor {
             .iter()
             .map(|s| {
                 ServiceDescriptor::new(
-                    &**s as *const ServiceDescriptorProto,
+                    &*s as *const ServiceDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
                 )
@@ -361,7 +361,7 @@ impl FileDescriptor {
             .iter()
             .map(|e| {
                 FieldDescriptor::new(
-                    &**e as *const FieldDescriptorProto,
+                    &*e as *const FieldDescriptorProto,
                     FieldScope::File(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -533,7 +533,7 @@ impl MessageDescriptor {
             .iter()
             .map(|m| {
                 MessageDescriptor::new(
-                    &**m as *const DescriptorProto,
+                    &*m as *const DescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -547,7 +547,7 @@ impl MessageDescriptor {
             .iter()
             .map(|e| {
                 EnumDescriptor::new(
-                    &**e as *const EnumDescriptorProto,
+                    &*e as *const EnumDescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -561,7 +561,7 @@ impl MessageDescriptor {
             .iter()
             .map(|e| {
                 FieldDescriptor::new(
-                    &**e as *const FieldDescriptorProto,
+                    &*e as *const FieldDescriptorProto,
                     FieldScope::Message(Ref::new(descriptor_raw)),
                     pool,
                 )
@@ -575,7 +575,7 @@ impl MessageDescriptor {
             .iter()
             .map(|o| {
                 OneofDescriptor::new(
-                    &**o as *const OneofDescriptorProto,
+                    &*o as *const OneofDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
                 )
@@ -589,7 +589,7 @@ impl MessageDescriptor {
             .iter()
             .map(|f| {
                 FieldDescriptor::new(
-                    &**f as *const FieldDescriptorProto,
+                    &*f as *const FieldDescriptorProto,
                     if let Some(o) = f.oneof_index {
                         FieldScope::Oneof(Ref::clone(&descriptor.oneofs[o as usize]))
                     } else {
@@ -730,7 +730,7 @@ impl EnumDescriptor {
             .iter()
             .map(|v| {
                 EnumValueDescriptor::new(
-                    &**v as *const EnumValueDescriptorProto,
+                    &*v as *const EnumValueDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
                 )
@@ -913,7 +913,7 @@ impl ServiceDescriptor {
             .iter()
             .map(|m| {
                 MethodDescriptor::new(
-                    &**m as *const MethodDescriptorProto,
+                    &*m as *const MethodDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
                 )
