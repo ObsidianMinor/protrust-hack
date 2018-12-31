@@ -11,14 +11,14 @@ pub struct Timestamp {
 }
 impl crate::CodedMessage for self::Timestamp {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.seconds = input.read_int64()?,
                 16 => self.nanos = input.read_int32()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -47,7 +47,7 @@ impl crate::CodedMessage for self::Timestamp {
             output.write_int32(nanos)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Timestamp {
@@ -59,7 +59,7 @@ impl crate::LiteMessage for self::Timestamp {
         }
     }
 }
-impl std::clone::Clone for self::Timestamp {
+impl ::std::clone::Clone for self::Timestamp {
     fn clone(&self) -> Self {
         Self {
             seconds: self.seconds.clone(),

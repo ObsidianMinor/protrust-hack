@@ -5,11 +5,11 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Api {
-    pub name: std::string::String,
+    pub name: ::std::string::String,
     pub methods: crate::collections::RepeatedField<self::Method>,
     pub options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
-    pub version: std::string::String,
-    pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    pub version: ::std::string::String,
+    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub mixins: crate::collections::RepeatedField<self::Mixin>,
     pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
     unknown_fields: crate::UnknownFieldSet
@@ -19,7 +19,7 @@ static API_OPTIONS_CODEC: crate::Codec<crate::wkt::r#type::Option> = crate::Code
 static API_MIXINS_CODEC: crate::Codec<self::Mixin> = crate::Codec::message(50);
 impl crate::CodedMessage for self::Api {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.methods.add_entries(tag.get(), input, &API_METHODS_CODEC)?,
@@ -31,9 +31,9 @@ impl crate::CodedMessage for self::Api {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
@@ -48,7 +48,7 @@ impl crate::CodedMessage for self::Api {
             size = size.checked_add(crate::io::sizes::string(version)?)?;
         }
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(source_context)?)?;
         }
@@ -59,7 +59,7 @@ impl crate::CodedMessage for self::Api {
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
@@ -75,7 +75,7 @@ impl crate::CodedMessage for self::Api {
             output.write_string(version)?;
         }
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
             output.write_message(source_context)?;
         }
@@ -86,24 +86,24 @@ impl crate::CodedMessage for self::Api {
             output.write_enum_value(syntax)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Api {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
+            name: ::std::string::String::new(),
             methods: crate::collections::RepeatedField::new(),
             options: crate::collections::RepeatedField::new(),
-            version: std::string::String::new(),
-            source_context: std::option::Option::None,
+            version: ::std::string::String::new(),
+            source_context: ::std::option::Option::None,
             mixins: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Api {
+impl ::std::clone::Clone for self::Api {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -121,7 +121,7 @@ impl std::clone::Clone for self::Api {
         self.methods.clone_from(&other.methods);
         self.options.clone_from(&other.options);
         self.version = other.version.clone();
-        if let std::option::Option::Some(source_context) = &other.source_context {
+        if let ::std::option::Option::Some(source_context) = &other.source_context {
             self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
         }
         self.mixins.clone_from(&other.mixins);
@@ -155,10 +155,10 @@ impl self::Api {
 }
 #[derive(Debug, PartialEq)]
 pub struct Method {
-    pub name: std::string::String,
-    pub request_type_url: std::string::String,
+    pub name: ::std::string::String,
+    pub request_type_url: ::std::string::String,
     pub request_streaming: bool,
-    pub response_type_url: std::string::String,
+    pub response_type_url: ::std::string::String,
     pub response_streaming: bool,
     pub options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
     pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
@@ -167,7 +167,7 @@ pub struct Method {
 static METHOD_OPTIONS_CODEC: crate::Codec<crate::wkt::r#type::Option> = crate::Codec::message(50);
 impl crate::CodedMessage for self::Method {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.request_type_url = input.read_string()?,
@@ -179,9 +179,9 @@ impl crate::CodedMessage for self::Method {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
@@ -215,7 +215,7 @@ impl crate::CodedMessage for self::Method {
             size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
@@ -250,16 +250,16 @@ impl crate::CodedMessage for self::Method {
             output.write_enum_value(syntax)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Method {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
-            request_type_url: std::string::String::new(),
+            name: ::std::string::String::new(),
+            request_type_url: ::std::string::String::new(),
             request_streaming: Self::REQUEST_STREAMING_DEFAULT_VALUE,
-            response_type_url: std::string::String::new(),
+            response_type_url: ::std::string::String::new(),
             response_streaming: Self::RESPONSE_STREAMING_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
@@ -267,7 +267,7 @@ impl crate::LiteMessage for self::Method {
         }
     }
 }
-impl std::clone::Clone for self::Method {
+impl ::std::clone::Clone for self::Method {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -320,22 +320,22 @@ impl self::Method {
 }
 #[derive(Debug, PartialEq)]
 pub struct Mixin {
-    pub name: std::string::String,
-    pub root: std::string::String,
+    pub name: ::std::string::String,
+    pub root: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Mixin {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.root = input.read_string()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
@@ -348,7 +348,7 @@ impl crate::CodedMessage for self::Mixin {
             size = size.checked_add(crate::io::sizes::string(root)?)?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
@@ -362,19 +362,19 @@ impl crate::CodedMessage for self::Mixin {
             output.write_string(root)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Mixin {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
-            root: std::string::String::new(),
+            name: ::std::string::String::new(),
+            root: ::std::string::String::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Mixin {
+impl ::std::clone::Clone for self::Mixin {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),

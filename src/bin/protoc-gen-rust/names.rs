@@ -117,8 +117,8 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
         TypeResolution::Base => match field.field_type() {
             Message(m) | Group(m) => get_full_message_type_name(m, field.file(), crate_name),
             Enum(e) => format!("{}::EnumValue<{}>", crate_name, get_full_enum_type_name(e, field.file(), crate_name)),
-            Bytes => format!("std::vec::Vec<u8>"),
-            String => format!("std::string::String"),
+            Bytes => format!("::std::vec::Vec<u8>"),
+            String => format!("::std::string::String"),
             Bool => format!("bool"),
             Sfixed32 | Sint32 | Int32 => format!("i32"),
             Fixed32 | Uint32 => format!("u32"),
@@ -130,7 +130,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
         TypeResolution::Indirection => {
             let base = get_rust_type(TypeResolution::Base, field, crate_name);
             match field.field_type() {
-                Message(_) | Group(_) => format!("std::boxed::Box<{}>", base),
+                Message(_) | Group(_) => format!("::std::boxed::Box<{}>", base),
                 _ => base,
             }
         }
@@ -138,14 +138,14 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
             FieldLabel::Optional | FieldLabel::Required => {
                 let base = get_rust_type(TypeResolution::Indirection, field, crate_name);
                 if field.file().syntax() == Syntax::Proto2 {
-                    format!("std::option::Option<{}>", base)
+                    format!("::std::option::Option<{}>", base)
                 } else {
                     if let FieldScope::Oneof(_) = field.scope() {
                         base
                     } else {
                         match field.field_type() {
                             FieldType::Message(_) | FieldType::Group(_) => {
-                                format!("std::option::Option<{}>", base)
+                                format!("::std::option::Option<{}>", base)
                             }
                             _ => base,
                         }

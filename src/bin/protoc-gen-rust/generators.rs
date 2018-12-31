@@ -169,7 +169,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         gen!(
             self.printer,
-            "\nwhile let std::option::Option::Some(tag) = input.read_tag()? {{"
+            "\nwhile let ::std::option::Option::Some(tag) = input.read_tag()? {{"
         );
         self.printer.indent();
         gen!(self.printer, "\nmatch tag.get() {{");
@@ -188,14 +188,14 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         gen!(self.printer, "\n}}");
         self.printer.unindent();
         gen!(self.printer, "\n}}");
-        gen!(self.printer, "\nstd::result::Result::Ok(())");
+        gen!(self.printer, "\n::std::result::Result::Ok(())");
         self.printer.unindent();
         gen!(self.printer, "\n}}");
 
         if self.options.size_checks {
             gen!(
                 self.printer,
-                "\nfn calculate_size(&self) -> std::option::Option<i32> {{"
+                "\nfn calculate_size(&self) -> ::std::option::Option<i32> {{"
             );
         } else {
             gen!(self.printer, "\nfn calculate_size(&self) -> i32 {{");
@@ -212,7 +212,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
                 self.printer,
                 "\nsize = size.checked_add(self.unknown_fields.calculate_size()?)?;"
             );
-            gen!(self.printer, "\nstd::option::Option::Some(size)");
+            gen!(self.printer, "\n::std::option::Option::Some(size)");
         } else {
             gen!(
                 self.printer,
@@ -231,7 +231,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         }
 
         gen!(self.printer, "\nself.unknown_fields.write_to(output)?;");
-        gen!(self.printer, "\nstd::result::Result::Ok(())");
+        gen!(self.printer, "\n::std::result::Result::Ok(())");
 
         self.printer.unindent();
         gen!(self.printer, "\n}}");
@@ -298,7 +298,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
     }
 
     pub fn generate_clone_impl(&mut self) -> Result {
-        gen!(self.printer; self.vars => "\nimpl std::clone::Clone for {full_type_name} {{", full_type_name);
+        gen!(self.printer; self.vars => "\nimpl ::std::clone::Clone for {full_type_name} {{", full_type_name);
         self.printer.indent();
         gen!(self.printer, "\nfn clone(&self) -> Self {{");
         self.printer.indent();
@@ -563,7 +563,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
             FieldScope::Message(_) => match self.proto.label() {
                 FieldLabel::Optional | FieldLabel::Required => match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = &other.{field_name} {{", field_name);
+                        gen!(self.printer; self.vars => "\nif let ::std::option::Option::Some({field_name}) = &other.{field_name} {{", field_name);
                         self.printer.indent();
                         gen!(self.printer; self.vars => "\nself.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).clone_from({field_name});", crate_name, field_name);
                         self.printer.unindent();
@@ -606,7 +606,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     _ => {
                         gen!(self.printer; self.vars => "self.{field_name} = ", field_name);
                         if self.proto.file().syntax() == Syntax::Proto2 {
-                            gen!(self.printer, "std::option::Option::Some(");
+                            gen!(self.printer, "::std::option::Option::Some(");
                         }
 
                         gen!(self.printer; self.vars => "input.read_{proto_type}()?", proto_type);
@@ -625,7 +625,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                         self.printer.unindent();
                         gen!(self.printer, "\n}} else {{");
                         self.printer.indent();
-                        gen!(self.printer; self.vars => "\n\nlet mut {field_name} = std::boxed::Box::new(<{base_type} as {crate_name}::LiteMessage>::new());\n{field_name}.merge_from(input)?;\nself.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name, crate_name, oneof, name);
+                        gen!(self.printer; self.vars => "\n\nlet mut {field_name} = ::std::boxed::Box::new(<{base_type} as {crate_name}::LiteMessage>::new());\n{field_name}.merge_from(input)?;\nself.{field_name} = self::{oneof}::{name}({field_name})", base_type, field_name, crate_name, oneof, name);
                         self.printer.unindent();
                         gen!(self.printer, "\n}}");
                         self.printer.unindent();
@@ -667,12 +667,12 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
                 match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
+                        gen!(self.printer; self.vars => "\nif let ::std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                         self.printer.indent();
                     }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
-                            gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
+                            gen!(self.printer; self.vars => "\nif let ::std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                             self.printer.indent();
                         }
                         match self.proto.field_type() {
@@ -750,12 +750,12 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
                 match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
+                        gen!(self.printer; self.vars => "\nif let ::std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                         self.printer.indent();
                     }
                     _ => {
                         if self.proto.file().syntax() == Syntax::Proto2 {
-                            gen!(self.printer; self.vars => "\nif let std::option::Option::Some({field_name}) = {field_name} {{", field_name);
+                            gen!(self.printer; self.vars => "\nif let ::std::option::Option::Some({field_name}) = {field_name} {{", field_name);
                             self.printer.indent();
                         }
                         match self.proto.field_type() {
@@ -870,8 +870,8 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
     pub fn generate_accessors(&mut self) -> Result {
         match self.proto.file().syntax() {
-            Syntax::Proto2 => {}
-            Syntax::Proto3 => {}
+            Syntax::Proto2 => {},
+            Syntax::Proto3 => {},
             _ => panic!("Unknown syntax"),
         }
 
@@ -883,14 +883,14 @@ fn default_field_value(field: &FieldDescriptor, crate_name: &str) -> String {
     match field.label() {
         FieldLabel::Optional | FieldLabel::Required => {
             if field.file().syntax() == Syntax::Proto2 {
-                format!("std::option::Option::None")
+                format!("::std::option::Option::None")
             } else {
                 match field.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        format!("std::option::Option::None")
+                        format!("::std::option::Option::None")
                     }
-                    FieldType::String => format!("std::string::String::new()"),
-                    FieldType::Bytes => format!("std::vec::Vec::new()"),
+                    FieldType::String => format!("::std::string::String::new()"),
+                    FieldType::Bytes => format!("::std::vec::Vec::new()"),
                     _ => "Self::".to_string() + &names::get_field_default_value_name(field),
                 }
             }
@@ -930,12 +930,12 @@ impl<W: Write> Generator<'_, EnumDescriptor, W> {
         }
 
         self.printer.unindent();
-        gen!(self.printer; self.vars => "\n}}\nimpl std::convert::TryFrom<i32> for {full_type_name} {{", full_type_name);
+        gen!(self.printer; self.vars => "\n}}\nimpl ::std::convert::TryFrom<i32> for {full_type_name} {{", full_type_name);
         self.printer.indent();
         gen!(self.printer; self.vars => concat!(
             "\ntype Error = {crate_name}::VariantUndefinedError;",
             "\n",
-            "\nfn try_from(value: i32) -> std::result::Result<Self, {crate_name}::VariantUndefinedError> {{"), crate_name);
+            "\nfn try_from(value: i32) -> ::std::result::Result<Self, {crate_name}::VariantUndefinedError> {{"), crate_name);
         self.printer.indent();
         gen!(self.printer, "\nmatch value {{");
         self.printer.indent();
@@ -945,7 +945,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, W> {
             Generator::<EnumValueDescriptor, _>::from_other(self, value).generate_int_match()?;
         }
 
-        gen!(self.printer; self.vars => "\n_ => std::result::Result::Err({crate_name}::VariantUndefinedError)", crate_name);
+        gen!(self.printer; self.vars => "\n_ => ::std::result::Result::Err({crate_name}::VariantUndefinedError)", crate_name);
         self.printer.unindent();
         gen!(self.printer, "\n}}");
         self.printer.unindent();
@@ -953,7 +953,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, W> {
         self.printer.unindent();
         gen!(self.printer, "\n}}");
 
-        gen!(self.printer; self.vars => "\nimpl std::convert::From<{full_type_name}> for i32 {{", full_type_name);
+        gen!(self.printer; self.vars => "\nimpl ::std::convert::From<{full_type_name}> for i32 {{", full_type_name);
         self.printer.indent();
         gen!(self.printer; self.vars => "\nfn from(value: {full_type_name}) -> i32 {{", full_type_name);
         self.printer.indent();
@@ -979,7 +979,7 @@ impl<W: Write> Generator<'_, EnumValueDescriptor, W> {
     }
 
     pub fn generate_int_match(&mut self) -> Result {
-        gen!(self.printer; self.vars => "{number} => std::result::Result::Ok({full_variant}),", number, full_variant);
+        gen!(self.printer; self.vars => "{number} => ::std::result::Result::Ok({full_variant}),", number, full_variant);
         Ok(())
     }
 }

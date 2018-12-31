@@ -9,12 +9,12 @@ pub struct Empty {
 }
 impl crate::CodedMessage for self::Empty {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -23,7 +23,7 @@ impl crate::CodedMessage for self::Empty {
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Empty {
@@ -33,7 +33,7 @@ impl crate::LiteMessage for self::Empty {
         }
     }
 }
-impl std::clone::Clone for self::Empty {
+impl ::std::clone::Clone for self::Empty {
     fn clone(&self) -> Self {
         Self {
             unknown_fields: self.unknown_fields.clone()

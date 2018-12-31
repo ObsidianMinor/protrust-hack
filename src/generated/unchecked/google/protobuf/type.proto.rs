@@ -5,20 +5,20 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Type {
-    pub name: std::string::String,
+    pub name: ::std::string::String,
     pub fields: crate::collections::RepeatedField<self::Field>,
-    pub oneofs: crate::collections::RepeatedField<std::string::String>,
+    pub oneofs: crate::collections::RepeatedField<::std::string::String>,
     pub options: crate::collections::RepeatedField<self::Option>,
-    pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
 static TYPE_FIELDS_CODEC: crate::Codec<self::Field> = crate::Codec::message(18);
-static TYPE_ONEOFS_CODEC: crate::Codec<std::string::String> = crate::Codec::string(26);
+static TYPE_ONEOFS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(26);
 static TYPE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(34);
 impl crate::CodedMessage for self::Type {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.fields.add_entries(tag.get(), input, &TYPE_FIELDS_CODEC)?,
@@ -29,7 +29,7 @@ impl crate::CodedMessage for self::Type {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -42,7 +42,7 @@ impl crate::CodedMessage for self::Type {
         size += self.oneofs.calculate_size(&TYPE_ONEOFS_CODEC);
         size += self.options.calculate_size(&TYPE_OPTIONS_CODEC);
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             size += 1;
             size += crate::io::sizes::message(source_context);
         }
@@ -64,7 +64,7 @@ impl crate::CodedMessage for self::Type {
         self.oneofs.write_to(output, &TYPE_ONEOFS_CODEC)?;
         self.options.write_to(output, &TYPE_OPTIONS_CODEC)?;
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
             output.write_message(source_context)?;
         }
@@ -74,23 +74,23 @@ impl crate::CodedMessage for self::Type {
             output.write_enum_value(syntax)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Type {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
+            name: ::std::string::String::new(),
             fields: crate::collections::RepeatedField::new(),
             oneofs: crate::collections::RepeatedField::new(),
             options: crate::collections::RepeatedField::new(),
-            source_context: std::option::Option::None,
+            source_context: ::std::option::Option::None,
             syntax: Self::SYNTAX_DEFAULT_VALUE,
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Type {
+impl ::std::clone::Clone for self::Type {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -107,7 +107,7 @@ impl std::clone::Clone for self::Type {
         self.fields.clone_from(&other.fields);
         self.oneofs.clone_from(&other.oneofs);
         self.options.clone_from(&other.options);
-        if let std::option::Option::Some(source_context) = &other.source_context {
+        if let ::std::option::Option::Some(source_context) = &other.source_context {
             self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
         }
         self.syntax = other.syntax;
@@ -140,19 +140,19 @@ pub struct Field {
     pub kind: crate::EnumValue<self::Field_Kind>,
     pub cardinality: crate::EnumValue<self::Field_Cardinality>,
     pub number: i32,
-    pub name: std::string::String,
-    pub type_url: std::string::String,
+    pub name: ::std::string::String,
+    pub type_url: ::std::string::String,
     pub oneof_index: i32,
     pub packed: bool,
     pub options: crate::collections::RepeatedField<self::Option>,
-    pub json_name: std::string::String,
-    pub default_value: std::string::String,
+    pub json_name: ::std::string::String,
+    pub default_value: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(74);
 impl crate::CodedMessage for self::Field {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.kind = input.read_enum_value()?,
                 16 => self.cardinality = input.read_enum_value()?,
@@ -167,7 +167,7 @@ impl crate::CodedMessage for self::Field {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -268,7 +268,7 @@ impl crate::CodedMessage for self::Field {
             output.write_string(default_value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Field {
@@ -277,18 +277,18 @@ impl crate::LiteMessage for self::Field {
             kind: Self::KIND_DEFAULT_VALUE,
             cardinality: Self::CARDINALITY_DEFAULT_VALUE,
             number: Self::NUMBER_DEFAULT_VALUE,
-            name: std::string::String::new(),
-            type_url: std::string::String::new(),
+            name: ::std::string::String::new(),
+            type_url: ::std::string::String::new(),
             oneof_index: Self::ONEOF_INDEX_DEFAULT_VALUE,
             packed: Self::PACKED_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
-            json_name: std::string::String::new(),
-            default_value: std::string::String::new(),
+            json_name: ::std::string::String::new(),
+            default_value: ::std::string::String::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Field {
+impl ::std::clone::Clone for self::Field {
     fn clone(&self) -> Self {
         Self {
             kind: self.kind.clone(),
@@ -376,35 +376,35 @@ pub enum Field_Kind {
     TypeSint32 = 17,
     TypeSint64 = 18,
 }
-impl std::convert::TryFrom<i32> for self::Field_Kind {
+impl ::std::convert::TryFrom<i32> for self::Field_Kind {
     type Error = crate::VariantUndefinedError;
     
-    fn try_from(value: i32) -> std::result::Result<Self, crate::VariantUndefinedError> {
+    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
         match value {
-            0 => std::result::Result::Ok(self::Field_Kind::TypeUnknown),
-            1 => std::result::Result::Ok(self::Field_Kind::TypeDouble),
-            2 => std::result::Result::Ok(self::Field_Kind::TypeFloat),
-            3 => std::result::Result::Ok(self::Field_Kind::TypeInt64),
-            4 => std::result::Result::Ok(self::Field_Kind::TypeUint64),
-            5 => std::result::Result::Ok(self::Field_Kind::TypeInt32),
-            6 => std::result::Result::Ok(self::Field_Kind::TypeFixed64),
-            7 => std::result::Result::Ok(self::Field_Kind::TypeFixed32),
-            8 => std::result::Result::Ok(self::Field_Kind::TypeBool),
-            9 => std::result::Result::Ok(self::Field_Kind::TypeString),
-            10 => std::result::Result::Ok(self::Field_Kind::TypeGroup),
-            11 => std::result::Result::Ok(self::Field_Kind::TypeMessage),
-            12 => std::result::Result::Ok(self::Field_Kind::TypeBytes),
-            13 => std::result::Result::Ok(self::Field_Kind::TypeUint32),
-            14 => std::result::Result::Ok(self::Field_Kind::TypeEnum),
-            15 => std::result::Result::Ok(self::Field_Kind::TypeSfixed32),
-            16 => std::result::Result::Ok(self::Field_Kind::TypeSfixed64),
-            17 => std::result::Result::Ok(self::Field_Kind::TypeSint32),
-            18 => std::result::Result::Ok(self::Field_Kind::TypeSint64),
-            _ => std::result::Result::Err(crate::VariantUndefinedError)
+            0 => ::std::result::Result::Ok(self::Field_Kind::TypeUnknown),
+            1 => ::std::result::Result::Ok(self::Field_Kind::TypeDouble),
+            2 => ::std::result::Result::Ok(self::Field_Kind::TypeFloat),
+            3 => ::std::result::Result::Ok(self::Field_Kind::TypeInt64),
+            4 => ::std::result::Result::Ok(self::Field_Kind::TypeUint64),
+            5 => ::std::result::Result::Ok(self::Field_Kind::TypeInt32),
+            6 => ::std::result::Result::Ok(self::Field_Kind::TypeFixed64),
+            7 => ::std::result::Result::Ok(self::Field_Kind::TypeFixed32),
+            8 => ::std::result::Result::Ok(self::Field_Kind::TypeBool),
+            9 => ::std::result::Result::Ok(self::Field_Kind::TypeString),
+            10 => ::std::result::Result::Ok(self::Field_Kind::TypeGroup),
+            11 => ::std::result::Result::Ok(self::Field_Kind::TypeMessage),
+            12 => ::std::result::Result::Ok(self::Field_Kind::TypeBytes),
+            13 => ::std::result::Result::Ok(self::Field_Kind::TypeUint32),
+            14 => ::std::result::Result::Ok(self::Field_Kind::TypeEnum),
+            15 => ::std::result::Result::Ok(self::Field_Kind::TypeSfixed32),
+            16 => ::std::result::Result::Ok(self::Field_Kind::TypeSfixed64),
+            17 => ::std::result::Result::Ok(self::Field_Kind::TypeSint32),
+            18 => ::std::result::Result::Ok(self::Field_Kind::TypeSint64),
+            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
         }
     }
 }
-impl std::convert::From<self::Field_Kind> for i32 {
+impl ::std::convert::From<self::Field_Kind> for i32 {
     fn from(value: self::Field_Kind) -> i32 {
         value as i32
     }
@@ -416,30 +416,30 @@ pub enum Field_Cardinality {
     Required = 2,
     Repeated = 3,
 }
-impl std::convert::TryFrom<i32> for self::Field_Cardinality {
+impl ::std::convert::TryFrom<i32> for self::Field_Cardinality {
     type Error = crate::VariantUndefinedError;
     
-    fn try_from(value: i32) -> std::result::Result<Self, crate::VariantUndefinedError> {
+    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
         match value {
-            0 => std::result::Result::Ok(self::Field_Cardinality::Unknown),
-            1 => std::result::Result::Ok(self::Field_Cardinality::Optional),
-            2 => std::result::Result::Ok(self::Field_Cardinality::Required),
-            3 => std::result::Result::Ok(self::Field_Cardinality::Repeated),
-            _ => std::result::Result::Err(crate::VariantUndefinedError)
+            0 => ::std::result::Result::Ok(self::Field_Cardinality::Unknown),
+            1 => ::std::result::Result::Ok(self::Field_Cardinality::Optional),
+            2 => ::std::result::Result::Ok(self::Field_Cardinality::Required),
+            3 => ::std::result::Result::Ok(self::Field_Cardinality::Repeated),
+            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
         }
     }
 }
-impl std::convert::From<self::Field_Cardinality> for i32 {
+impl ::std::convert::From<self::Field_Cardinality> for i32 {
     fn from(value: self::Field_Cardinality) -> i32 {
         value as i32
     }
 }
 #[derive(Debug, PartialEq)]
 pub struct Enum {
-    pub name: std::string::String,
+    pub name: ::std::string::String,
     pub enumvalue: crate::collections::RepeatedField<self::EnumValue>,
     pub options: crate::collections::RepeatedField<self::Option>,
-    pub source_context: std::option::Option<std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
     pub syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
@@ -447,7 +447,7 @@ static ENUM_ENUMVALUE_CODEC: crate::Codec<self::EnumValue> = crate::Codec::messa
 static ENUM_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
 impl crate::CodedMessage for self::Enum {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.enumvalue.add_entries(tag.get(), input, &ENUM_ENUMVALUE_CODEC)?,
@@ -457,7 +457,7 @@ impl crate::CodedMessage for self::Enum {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -469,7 +469,7 @@ impl crate::CodedMessage for self::Enum {
         size += self.enumvalue.calculate_size(&ENUM_ENUMVALUE_CODEC);
         size += self.options.calculate_size(&ENUM_OPTIONS_CODEC);
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             size += 1;
             size += crate::io::sizes::message(source_context);
         }
@@ -490,7 +490,7 @@ impl crate::CodedMessage for self::Enum {
         self.enumvalue.write_to(output, &ENUM_ENUMVALUE_CODEC)?;
         self.options.write_to(output, &ENUM_OPTIONS_CODEC)?;
         let source_context = &self.source_context;
-        if let std::option::Option::Some(source_context) = source_context {
+        if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[34])?;
             output.write_message(source_context)?;
         }
@@ -500,22 +500,22 @@ impl crate::CodedMessage for self::Enum {
             output.write_enum_value(syntax)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Enum {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
+            name: ::std::string::String::new(),
             enumvalue: crate::collections::RepeatedField::new(),
             options: crate::collections::RepeatedField::new(),
-            source_context: std::option::Option::None,
+            source_context: ::std::option::Option::None,
             syntax: Self::SYNTAX_DEFAULT_VALUE,
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Enum {
+impl ::std::clone::Clone for self::Enum {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -530,7 +530,7 @@ impl std::clone::Clone for self::Enum {
         self.name = other.name.clone();
         self.enumvalue.clone_from(&other.enumvalue);
         self.options.clone_from(&other.options);
-        if let std::option::Option::Some(source_context) = &other.source_context {
+        if let ::std::option::Option::Some(source_context) = &other.source_context {
             self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
         }
         self.syntax = other.syntax;
@@ -558,7 +558,7 @@ impl self::Enum {
 }
 #[derive(Debug, PartialEq)]
 pub struct EnumValue {
-    pub name: std::string::String,
+    pub name: ::std::string::String,
     pub number: i32,
     pub options: crate::collections::RepeatedField<self::Option>,
     unknown_fields: crate::UnknownFieldSet
@@ -566,7 +566,7 @@ pub struct EnumValue {
 static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
 impl crate::CodedMessage for self::EnumValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 16 => self.number = input.read_int32()?,
@@ -574,7 +574,7 @@ impl crate::CodedMessage for self::EnumValue {
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -605,20 +605,20 @@ impl crate::CodedMessage for self::EnumValue {
         }
         self.options.write_to(output, &ENUM_VALUE_OPTIONS_CODEC)?;
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::EnumValue {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
+            name: ::std::string::String::new(),
             number: Self::NUMBER_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::EnumValue {
+impl ::std::clone::Clone for self::EnumValue {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -651,20 +651,20 @@ impl self::EnumValue {
 }
 #[derive(Debug, PartialEq)]
 pub struct Option {
-    pub name: std::string::String,
-    pub value: std::option::Option<std::boxed::Box<crate::wkt::any::Any>>,
+    pub name: ::std::string::String,
+    pub value: ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Option {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => input.read_message(self.value.get_or_insert_with(crate::LiteMessage::new))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -674,7 +674,7 @@ impl crate::CodedMessage for self::Option {
             size += crate::io::sizes::string(name);
         }
         let value = &self.value;
-        if let std::option::Option::Some(value) = value {
+        if let ::std::option::Option::Some(value) = value {
             size += 1;
             size += crate::io::sizes::message(value);
         }
@@ -688,24 +688,24 @@ impl crate::CodedMessage for self::Option {
             output.write_string(name)?;
         }
         let value = &self.value;
-        if let std::option::Option::Some(value) = value {
+        if let ::std::option::Option::Some(value) = value {
             output.write_raw_tag_bytes(&[18])?;
             output.write_message(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Option {
     fn new() -> Self {
         Self {
-            name: std::string::String::new(),
-            value: std::option::Option::None,
+            name: ::std::string::String::new(),
+            value: ::std::option::Option::None,
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Option {
+impl ::std::clone::Clone for self::Option {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
@@ -715,7 +715,7 @@ impl std::clone::Clone for self::Option {
     }
     fn clone_from(&mut self, other: &Self) {
         self.name = other.name.clone();
-        if let std::option::Option::Some(value) = &other.value {
+        if let ::std::option::Option::Some(value) = &other.value {
             self.value.get_or_insert_with(crate::LiteMessage::new).clone_from(value);
         }
         self.unknown_fields.clone_from(&other.unknown_fields);
@@ -738,18 +738,18 @@ pub enum Syntax {
     Proto2 = 0,
     Proto3 = 1,
 }
-impl std::convert::TryFrom<i32> for self::Syntax {
+impl ::std::convert::TryFrom<i32> for self::Syntax {
     type Error = crate::VariantUndefinedError;
     
-    fn try_from(value: i32) -> std::result::Result<Self, crate::VariantUndefinedError> {
+    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
         match value {
-            0 => std::result::Result::Ok(self::Syntax::Proto2),
-            1 => std::result::Result::Ok(self::Syntax::Proto3),
-            _ => std::result::Result::Err(crate::VariantUndefinedError)
+            0 => ::std::result::Result::Ok(self::Syntax::Proto2),
+            1 => ::std::result::Result::Ok(self::Syntax::Proto3),
+            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
         }
     }
 }
-impl std::convert::From<self::Syntax> for i32 {
+impl ::std::convert::From<self::Syntax> for i32 {
     fn from(value: self::Syntax) -> i32 {
         value as i32
     }

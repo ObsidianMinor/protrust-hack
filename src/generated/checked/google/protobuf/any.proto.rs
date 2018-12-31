@@ -5,22 +5,22 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Any {
-    pub type_url: std::string::String,
-    pub value: std::vec::Vec<u8>,
+    pub type_url: ::std::string::String,
+    pub value: ::std::vec::Vec<u8>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Any {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.type_url = input.read_string()?,
                 18 => self.value = input.read_bytes()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let type_url = &self.type_url;
         if type_url != Self::TYPE_URL_DEFAULT_VALUE {
@@ -33,7 +33,7 @@ impl crate::CodedMessage for self::Any {
             size = size.checked_add(crate::io::sizes::bytes(value)?)?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let type_url = &self.type_url;
@@ -47,19 +47,19 @@ impl crate::CodedMessage for self::Any {
             output.write_bytes(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Any {
     fn new() -> Self {
         Self {
-            type_url: std::string::String::new(),
-            value: std::vec::Vec::new(),
+            type_url: ::std::string::String::new(),
+            value: ::std::vec::Vec::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::Any {
+impl ::std::clone::Clone for self::Any {
     fn clone(&self) -> Self {
         Self {
             type_url: self.type_url.clone(),

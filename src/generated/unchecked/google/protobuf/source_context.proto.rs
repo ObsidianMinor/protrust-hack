@@ -5,18 +5,18 @@
 
 #[derive(Debug, PartialEq)]
 pub struct SourceContext {
-    pub file_name: std::string::String,
+    pub file_name: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::SourceContext {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.file_name = input.read_string()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -35,18 +35,18 @@ impl crate::CodedMessage for self::SourceContext {
             output.write_string(file_name)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::SourceContext {
     fn new() -> Self {
         Self {
-            file_name: std::string::String::new(),
+            file_name: ::std::string::String::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::SourceContext {
+impl ::std::clone::Clone for self::SourceContext {
     fn clone(&self) -> Self {
         Self {
             file_name: self.file_name.clone(),

@@ -10,15 +10,15 @@ pub struct DoubleValue {
 }
 impl crate::CodedMessage for self::DoubleValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 9 => self.value = input.read_double()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -26,7 +26,7 @@ impl crate::CodedMessage for self::DoubleValue {
             size = size.checked_add(crate::io::sizes::double(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -35,7 +35,7 @@ impl crate::CodedMessage for self::DoubleValue {
             output.write_double(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::DoubleValue {
@@ -46,7 +46,7 @@ impl crate::LiteMessage for self::DoubleValue {
         }
     }
 }
-impl std::clone::Clone for self::DoubleValue {
+impl ::std::clone::Clone for self::DoubleValue {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -75,15 +75,15 @@ pub struct FloatValue {
 }
 impl crate::CodedMessage for self::FloatValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 13 => self.value = input.read_float()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -91,7 +91,7 @@ impl crate::CodedMessage for self::FloatValue {
             size = size.checked_add(crate::io::sizes::float(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -100,7 +100,7 @@ impl crate::CodedMessage for self::FloatValue {
             output.write_float(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::FloatValue {
@@ -111,7 +111,7 @@ impl crate::LiteMessage for self::FloatValue {
         }
     }
 }
-impl std::clone::Clone for self::FloatValue {
+impl ::std::clone::Clone for self::FloatValue {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -140,15 +140,15 @@ pub struct Int64Value {
 }
 impl crate::CodedMessage for self::Int64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.value = input.read_int64()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -156,7 +156,7 @@ impl crate::CodedMessage for self::Int64Value {
             size = size.checked_add(crate::io::sizes::int64(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -165,7 +165,7 @@ impl crate::CodedMessage for self::Int64Value {
             output.write_int64(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Int64Value {
@@ -176,7 +176,7 @@ impl crate::LiteMessage for self::Int64Value {
         }
     }
 }
-impl std::clone::Clone for self::Int64Value {
+impl ::std::clone::Clone for self::Int64Value {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -205,15 +205,15 @@ pub struct UInt64Value {
 }
 impl crate::CodedMessage for self::UInt64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.value = input.read_uint64()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -221,7 +221,7 @@ impl crate::CodedMessage for self::UInt64Value {
             size = size.checked_add(crate::io::sizes::uint64(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -230,7 +230,7 @@ impl crate::CodedMessage for self::UInt64Value {
             output.write_uint64(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::UInt64Value {
@@ -241,7 +241,7 @@ impl crate::LiteMessage for self::UInt64Value {
         }
     }
 }
-impl std::clone::Clone for self::UInt64Value {
+impl ::std::clone::Clone for self::UInt64Value {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -270,15 +270,15 @@ pub struct Int32Value {
 }
 impl crate::CodedMessage for self::Int32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.value = input.read_int32()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -286,7 +286,7 @@ impl crate::CodedMessage for self::Int32Value {
             size = size.checked_add(crate::io::sizes::int32(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -295,7 +295,7 @@ impl crate::CodedMessage for self::Int32Value {
             output.write_int32(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Int32Value {
@@ -306,7 +306,7 @@ impl crate::LiteMessage for self::Int32Value {
         }
     }
 }
-impl std::clone::Clone for self::Int32Value {
+impl ::std::clone::Clone for self::Int32Value {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -335,15 +335,15 @@ pub struct UInt32Value {
 }
 impl crate::CodedMessage for self::UInt32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.value = input.read_uint32()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -351,7 +351,7 @@ impl crate::CodedMessage for self::UInt32Value {
             size = size.checked_add(crate::io::sizes::uint32(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -360,7 +360,7 @@ impl crate::CodedMessage for self::UInt32Value {
             output.write_uint32(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::UInt32Value {
@@ -371,7 +371,7 @@ impl crate::LiteMessage for self::UInt32Value {
         }
     }
 }
-impl std::clone::Clone for self::UInt32Value {
+impl ::std::clone::Clone for self::UInt32Value {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -400,15 +400,15 @@ pub struct BoolValue {
 }
 impl crate::CodedMessage for self::BoolValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.value = input.read_bool()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -416,7 +416,7 @@ impl crate::CodedMessage for self::BoolValue {
             size = size.checked_add(crate::io::sizes::bool(value))?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = self.value;
@@ -425,7 +425,7 @@ impl crate::CodedMessage for self::BoolValue {
             output.write_bool(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::BoolValue {
@@ -436,7 +436,7 @@ impl crate::LiteMessage for self::BoolValue {
         }
     }
 }
-impl std::clone::Clone for self::BoolValue {
+impl ::std::clone::Clone for self::BoolValue {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -460,20 +460,20 @@ impl self::BoolValue {
 }
 #[derive(Debug, PartialEq)]
 pub struct StringValue {
-    pub value: std::string::String,
+    pub value: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::StringValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.value = input.read_string()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = &self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
@@ -481,7 +481,7 @@ impl crate::CodedMessage for self::StringValue {
             size = size.checked_add(crate::io::sizes::string(value)?)?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = &self.value;
@@ -490,18 +490,18 @@ impl crate::CodedMessage for self::StringValue {
             output.write_string(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::StringValue {
     fn new() -> Self {
         Self {
-            value: std::string::String::new(),
+            value: ::std::string::String::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::StringValue {
+impl ::std::clone::Clone for self::StringValue {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
@@ -525,20 +525,20 @@ impl self::StringValue {
 }
 #[derive(Debug, PartialEq)]
 pub struct BytesValue {
-    pub value: std::vec::Vec<u8>,
+    pub value: ::std::vec::Vec<u8>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::BytesValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.value = input.read_bytes()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
-    fn calculate_size(&self) -> std::option::Option<i32> {
+    fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
         let value = &self.value;
         if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
@@ -546,7 +546,7 @@ impl crate::CodedMessage for self::BytesValue {
             size = size.checked_add(crate::io::sizes::bytes(value)?)?;
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        std::option::Option::Some(size)
+        ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let value = &self.value;
@@ -555,18 +555,18 @@ impl crate::CodedMessage for self::BytesValue {
             output.write_bytes(value)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::BytesValue {
     fn new() -> Self {
         Self {
-            value: std::vec::Vec::new(),
+            value: ::std::vec::Vec::new(),
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
 }
-impl std::clone::Clone for self::BytesValue {
+impl ::std::clone::Clone for self::BytesValue {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),

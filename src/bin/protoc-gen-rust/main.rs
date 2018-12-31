@@ -26,7 +26,7 @@ pub struct Options {
 impl Default for Options {
     fn default() -> Self {
         Options {
-            crate_name: "protrust".to_string(),
+            crate_name: "::protrust".to_string(),
             no_json: false,
             pub_fields: false,
             size_checks: false,
@@ -112,7 +112,13 @@ fn parse_options(params: Option<&String>) -> Result<Options, String> {
     if let Some(params) = params {
         for option in params.split(',') {
             match split_option(option) {
-                ("crate_name", Some(value)) => options.crate_name = value.to_string(),
+                ("crate_name", Some(value)) => {
+                    if value != "crate" {
+                        options.crate_name = format!("::{}", value)
+                    } else {
+                        options.crate_name = value.to_string()
+                    }
+                },
                 ("no_json", None) => options.no_json = true,
                 ("pub_fields", None) => options.pub_fields = true,
                 ("checked_size", None) => options.size_checks = true,

@@ -5,19 +5,19 @@
 
 #[derive(Debug, PartialEq)]
 pub struct Struct {
-    pub fields: crate::collections::MapField<std::string::String, self::Value>,
+    pub fields: crate::collections::MapField<::std::string::String, self::Value>,
     unknown_fields: crate::UnknownFieldSet
 }
-static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<std::string::String, self::Value> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
+static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<::std::string::String, self::Value> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
 impl crate::CodedMessage for self::Struct {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.fields.add_entries(input, &STRUCT_FIELDS_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -28,7 +28,7 @@ impl crate::CodedMessage for self::Struct {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.fields.write_to(output, &STRUCT_FIELDS_CODEC)?;
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Struct {
@@ -39,7 +39,7 @@ impl crate::LiteMessage for self::Struct {
         }
     }
 }
-impl std::clone::Clone for self::Struct {
+impl ::std::clone::Clone for self::Struct {
     fn clone(&self) -> Self {
         Self {
             fields: self.fields.clone(),
@@ -70,15 +70,15 @@ pub enum Value_Kind {
     None,
     NullValue(crate::EnumValue<self::NullValue>),
     NumberValue(f64),
-    StringValue(std::string::String),
+    StringValue(::std::string::String),
     BoolValue(bool),
-    StructValue(std::boxed::Box<self::Struct>),
-    ListValue(std::boxed::Box<self::ListValue>),
+    StructValue(::std::boxed::Box<self::Struct>),
+    ListValue(::std::boxed::Box<self::ListValue>),
 }
 
 impl crate::CodedMessage for self::Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 8 => self.kind = self::Value_Kind::NullValue(input.read_enum_value()?),
                 17 => self.kind = self::Value_Kind::NumberValue(input.read_double()?),
@@ -89,7 +89,7 @@ impl crate::CodedMessage for self::Value {
                         kind.merge_from(input)?;
                     } else {
                         
-                        let mut kind = std::boxed::Box::new(<self::Struct as crate::LiteMessage>::new());
+                        let mut kind = ::std::boxed::Box::new(<self::Struct as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::StructValue(kind)
                     },
@@ -98,14 +98,14 @@ impl crate::CodedMessage for self::Value {
                         kind.merge_from(input)?;
                     } else {
                         
-                        let mut kind = std::boxed::Box::new(<self::ListValue as crate::LiteMessage>::new());
+                        let mut kind = ::std::boxed::Box::new(<self::ListValue as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::ListValue(kind)
                     },
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -162,7 +162,7 @@ impl crate::CodedMessage for self::Value {
             output.write_message(kind)?;
         }
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::Value {
@@ -173,7 +173,7 @@ impl crate::LiteMessage for self::Value {
         }
     }
 }
-impl std::clone::Clone for self::Value {
+impl ::std::clone::Clone for self::Value {
     fn clone(&self) -> Self {
         Self {
             kind: self.kind.clone(),
@@ -225,13 +225,13 @@ pub struct ListValue {
 static LIST_VALUE_VALUES_CODEC: crate::Codec<self::Value> = crate::Codec::message(10);
 impl crate::CodedMessage for self::ListValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let std::option::Option::Some(tag) = input.read_tag()? {
+        while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.values.add_entries(tag.get(), input, &LIST_VALUE_VALUES_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
@@ -242,7 +242,7 @@ impl crate::CodedMessage for self::ListValue {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.values.write_to(output, &LIST_VALUE_VALUES_CODEC)?;
         self.unknown_fields.write_to(output)?;
-        std::result::Result::Ok(())
+        ::std::result::Result::Ok(())
     }
 }
 impl crate::LiteMessage for self::ListValue {
@@ -253,7 +253,7 @@ impl crate::LiteMessage for self::ListValue {
         }
     }
 }
-impl std::clone::Clone for self::ListValue {
+impl ::std::clone::Clone for self::ListValue {
     fn clone(&self) -> Self {
         Self {
             values: self.values.clone(),
@@ -278,17 +278,17 @@ impl self::ListValue {
 pub enum NullValue {
     NullValue = 0,
 }
-impl std::convert::TryFrom<i32> for self::NullValue {
+impl ::std::convert::TryFrom<i32> for self::NullValue {
     type Error = crate::VariantUndefinedError;
     
-    fn try_from(value: i32) -> std::result::Result<Self, crate::VariantUndefinedError> {
+    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
         match value {
-            0 => std::result::Result::Ok(self::NullValue::NullValue),
-            _ => std::result::Result::Err(crate::VariantUndefinedError)
+            0 => ::std::result::Result::Ok(self::NullValue::NullValue),
+            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
         }
     }
 }
-impl std::convert::From<self::NullValue> for i32 {
+impl ::std::convert::From<self::NullValue> for i32 {
     fn from(value: self::NullValue) -> i32 {
         value as i32
     }
