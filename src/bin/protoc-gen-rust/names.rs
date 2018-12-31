@@ -116,7 +116,11 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
     match res {
         TypeResolution::Base => match field.field_type() {
             Message(m) | Group(m) => get_full_message_type_name(m, field.file(), crate_name),
-            Enum(e) => format!("{}::EnumValue<{}>", crate_name, get_full_enum_type_name(e, field.file(), crate_name)),
+            Enum(e) => format!(
+                "{}::EnumValue<{}>",
+                crate_name,
+                get_full_enum_type_name(e, field.file(), crate_name)
+            ),
             Bytes => format!("::std::vec::Vec<u8>"),
             String => format!("::std::string::String"),
             Bool => format!("bool"),

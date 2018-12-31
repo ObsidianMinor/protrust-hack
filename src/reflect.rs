@@ -652,7 +652,7 @@ impl MessageDescriptor {
         }
 
         for mut extension in self.extensions.iter_mut() {
-            unsafe { 
+            unsafe {
                 Ref::get_mut(&mut extension).cross_ref(pool);
             }
         }

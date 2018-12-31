@@ -118,7 +118,7 @@ fn parse_options(params: Option<&String>) -> Result<Options, String> {
                     } else {
                         options.crate_name = value.to_string()
                     }
-                },
+                }
                 ("no_json", None) => options.no_json = true,
                 ("pub_fields", None) => options.pub_fields = true,
                 ("checked_size", None) => options.size_checks = true,
