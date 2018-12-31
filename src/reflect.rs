@@ -453,6 +453,7 @@ pub struct MessageDescriptor {
     full_name: String,
     fields: Box<[Ref<FieldDescriptor>]>,
     fields_ordered: Box<[Ref<FieldDescriptor>]>,
+    message_fields: Box<[Ref<FieldDescriptor>]>,
     extensions: Box<[Ref<FieldDescriptor>]>,
     messages: Box<[Ref<MessageDescriptor>]>,
     enums: Box<[Ref<EnumDescriptor>]>,
@@ -475,6 +476,11 @@ impl MessageDescriptor {
 
     pub fn fields(&self) -> &[Ref<FieldDescriptor>] {
         &self.fields
+    }
+
+    /// Gets all the fields in this message except those contained within oneofs
+    pub fn message_fields(&self) -> &[Ref<FieldDescriptor>] {
+        &self.message_fields
     }
 
     pub fn extensions(&self) -> &[Ref<FieldDescriptor>] {
@@ -608,6 +614,13 @@ impl MessageDescriptor {
             .collect::<Vec<_>>();
         number_order.sort_by_key(|r| FieldDescriptor::number(r));
         descriptor.fields_ordered = number_order.into();
+        descriptor.message_fields = descriptor
+            .fields()
+            .iter()
+            .filter(|f| f.proto().oneof_index.is_none())
+            .map(Ref::clone)
+            .collect::<Vec<_>>()
+            .into();
 
         if let Some(_) = pool.symbols.insert(
             descriptor.full_name().clone(),
@@ -639,7 +652,9 @@ impl MessageDescriptor {
         }
 
         for mut extension in self.extensions.iter_mut() {
-            unsafe { Ref::get_mut(&mut extension).cross_ref(pool) }
+            unsafe { 
+                Ref::get_mut(&mut extension).cross_ref(pool);
+            }
         }
     }
 }
