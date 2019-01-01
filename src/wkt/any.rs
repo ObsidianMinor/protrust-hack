@@ -8,9 +8,9 @@ const DEFAULT_PREFIX: &'static str = "type.googleapis.com";
 
 fn get_type_url(descriptor: &MessageDescriptor, prefix: &str) -> String {
     if prefix.ends_with('/') {
-        format!("{}{}", prefix, descriptor.full_name())
+        format!("{}{}", prefix, &descriptor.full_name()[1..])
     } else {
-        format!("{}/{}", prefix, descriptor.full_name())
+        format!("{}/{}", prefix, &descriptor.full_name()[1..])
     }
 }
 
