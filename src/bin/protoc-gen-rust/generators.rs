@@ -87,7 +87,9 @@ pub struct Generator<'a, T, W> {
 }
 
 generator_new!(FileDescriptor, proto, options;
-    "file", proto.name().to_string());
+    "file", proto.name().to_string(),
+    "crate_name", options.crate_name.clone(),
+    "dep_count", proto.dependencies().len().to_string());
 
 impl<W: Write> Generator<'_, FileDescriptor, W> {
     pub fn generate(&mut self) -> Result {
@@ -100,6 +102,7 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         genln!(self.printer; "//! Source: {file}\n" => self.vars, file);
 
         // static descriptor code
+        self.generate_descriptor_code()?;
 
         // extensions
         //for _extension in self.proto.extensions() {
@@ -115,6 +118,73 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         for enum_type in self.proto.enums() {
             Generator::<EnumDescriptor, _>::from_other(self, enum_type).generate()?;
         }
+
+        Ok(())
+    }
+
+    pub fn generate_descriptor_code(&mut self) -> Result {
+        genln!(self.printer, "static FILE_ONCE: ::std::sync::Once = ::std::sync::Once::new();");
+        genln!(self.printer; "static mut FILE_POOL: ::std::option::Option<{crate_name}::reflect::DescriptorPool<'static>> = ::std::option::Option::None;" => self.vars, crate_name);
+        genln!(self.printer; "static mut FILE_PROTO: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;" => self.vars, crate_name);
+        genln!(self.printer; "static mut FILE_DESCRIPTOR: ::std::option::Option<&'static {crate_name}::reflect::FileDescriptor> = ::std::option::Option::None;" => self.vars, crate_name);
+        genln!(self.printer; "static mut FILE_DEPS: ::std::option::Option<[&'static {crate_name}::reflect::DescriptorPool<'static>; {dep_count}]> = ::std::option::Option::None;" => self.vars, crate_name, dep_count);
+        genln!(self.printer, "");
+        genln!(self.printer, "fn file_once_init() {{");
+        indent!(self.printer, {
+            genln!(self.printer, "unsafe {{");
+            indent!(self.printer, {
+                genln!(self.printer; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut [" => self.vars, crate_name);
+                indent!(self.printer, {
+                    genln!(self.printer, "");
+                    let vec = self.proto.proto().write_to_vec().unwrap();
+                    let mut bytes_on_line = 0;
+                    for byte in vec {
+                        gen!(self.printer, "{}, ", byte);
+                        bytes_on_line += 1;
+                        if bytes_on_line == 20 {
+                            genln!(self.printer, "");
+                            bytes_on_line = 0;
+                        }
+                    }
+                });
+                genln!(self.printer, "].as_ref()).expect(\"Could not read file descriptor\")]);");
+                genln!(self.printer, "FILE_DEPS = ::std::option::Option::Some([");
+                for file in self.proto.dependencies() {
+                    gen!(self.printer, "{}::pool(), ", names::get_rust_external_mod_name(file, &self.options.crate_name));
+                }
+                gen!(self.printer, "]);");
+                genln!(self.printer; "FILE_POOL = ::std::option::Option::Some({crate_name}::reflect::DescriptorPool::build_generated_pool(" => self.vars, crate_name);
+                indent!(self.printer, {
+                    genln!(self.printer, "FILE_PROTO.as_ref().unwrap(),");
+                    genln!(self.printer, "FILE_DEPS.as_ref().unwrap()");
+                });
+                genln!(self.printer, "));");
+                genln!(self.printer; "FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name(\"{file}\").unwrap());" => self.vars, file);
+            });
+            genln!(self.printer, "}}");
+        });
+        genln!(self.printer, "}}");
+        genln!(self.printer, "");
+        genln!(self.printer; "pub fn pool() -> &'static {crate_name}::reflect::DescriptorPool<'static> {{" => self.vars, crate_name);
+        indent!(self.printer, {
+            genln!(self.printer, "unsafe {{");
+            indent!(self.printer, {
+                genln!(self.printer, "FILE_ONCE.call_once(file_once_init);");
+                genln!(self.printer, "FILE_POOL.as_ref().unwrap()");
+            });
+            genln!(self.printer, "}}");
+        });
+        genln!(self.printer, "}}");
+        genln!(self.printer; "pub fn file() -> &'static {crate_name}::reflect::FileDescriptor {{" => self.vars, crate_name);
+        indent!(self.printer, {
+            genln!(self.printer, "unsafe {{");
+            indent!(self.printer, {
+                genln!(self.printer, "FILE_ONCE.call_once(file_once_init);");
+                genln!(self.printer, "FILE_DESCRIPTOR.as_ref().unwrap()");
+            });
+            genln!(self.printer, "}}");
+        });
+        genln!(self.printer, "}}");
 
         Ok(())
     }
@@ -284,7 +354,14 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
         indent!(self.printer, {
             genln!(self.printer; "fn descriptor() -> &'static {crate_name}::reflect::MessageDescriptor {{" => self.vars, crate_name);
             indent!(self.printer, {
-                genln!(self.printer, "unimplemented!()");
+                genln!(self.printer, "&self::file()");
+                let mut message_access = format!(".messages()[{}]", self.proto.scope_index());
+                let mut scope = self.proto.scope();
+                while let CompositeScope::Message(m) = scope {
+                    message_access.insert_str(0, &format!(".messages()[{}]", m.scope_index()));
+                    scope = m.scope();
+                }
+                gen!(self.printer, "{}", message_access);
             });
             genln!(self.printer, "}}");
         });

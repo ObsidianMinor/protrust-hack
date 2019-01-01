@@ -58,24 +58,27 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
             return Some(0)
         }
         if codec.is_packed() {
-            let length = match codec.size {
-                ValueSize::Fixed(s) => self
-                    .len()
-                    .checked_mul(s as usize)
-                    .and_then(|m| m.try_into().ok()),
-                ValueSize::Func(fun) => self
-                    .iter()
-                    .fold(Some(0i32), |last, value| last?.checked_add(fun(value)?)),
-            };
-            crate::io::sizes::int32(codec.tag())
-                .checked_add(crate::io::sizes::int32(length))?
-                .checked_add(length)
+            let length = self.calculate_packed_size(codec)?;
+            (crate::io::sizes::int32(codec.tag()) + crate::io::sizes::int32(length)).checked_add(length)
         } else {
             self
                 .iter()
-                .fold(0, |last, value| last
-                    .checked_add(crate::io::sizes::uint32(codec.tag()))?
-                    .checked_add(codec.calculate_size(value)?))
+                .fold(
+                    crates::io::sizes::uint32(codec.tag()).checked_mul(self.len()), 
+                    |last, value| last.checked_add(codec.calculate_size(value)?))
+        }
+    }
+
+    #[cfg(checked_size)]
+    fn calculate_packed_size(&self, codec: &Codec<T>) -> Option<i32> {
+        match codec.size {
+            ValueSize::Fixed(s) => self
+                .len()
+                .checked_mul(s as usize)
+                .and_then(|m| m.try_into().ok()),
+            ValueSize::Func(fun) => self
+                .iter()
+                .fold(0, |last, value| last.checked_add(fun(value)?)?),
         }
     }
 
@@ -85,13 +88,18 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
             return 0
         }
         if codec.is_packed() {
-            let length = match codec.size {
-                ValueSize::Fixed(s) => (self.len() * s as usize) as i32,
-                ValueSize::Func(fun) => self.iter().fold(0, |last, value| last + fun(value)),
-            };
+            let length = self.calculate_packed_size(codec);
             crate::io::sizes::uint32(codec.tag()) + crate::io::sizes::int32(length) + length
         } else {
-            self.iter().fold(0, |last, value| last + crate::io::sizes::uint32(codec.tag()) + codec.calculate_size(value))
+            self.iter().fold((crate::io::sizes::uint32(codec.tag()) as usize * self.len()) as i32, |last, value| last + codec.calculate_size(value))
+        }
+    }
+
+    #[cfg(not(checked_size))]
+    fn calculate_packed_size(&self, codec: &Codec<T>) -> i32 {
+        match codec.size {
+            ValueSize::Fixed(s) => (self.len() * s as usize) as i32,
+            ValueSize::Func(fun) => self.iter().fold(0, |last, value| last + fun(value)),
         }
     }
 
@@ -99,10 +107,10 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         if !self.is_empty() {
             if codec.is_packed() {
                 #[cfg(checked_size)]
-                let size = self.calculate_size(codec).ok_or(OutputError::ValueTooLarge)?;
+                let size = self.calculate_packed_size(codec)?;
 
                 #[cfg(not(checked_size))]
-                let size = self.calculate_size(codec);
+                let size = self.calculate_packed_size(codec);
 
                 output.write_raw_tag(codec.tag())?;
                 output.write_int32(size)?;

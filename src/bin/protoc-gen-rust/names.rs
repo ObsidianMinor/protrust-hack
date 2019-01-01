@@ -9,6 +9,13 @@ pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
         .replace(|s| s == '/' || s == '-' || s == '.', "_")
 }
 
+pub fn get_rust_external_mod_name(file: &FileDescriptor, crate_name: &str) -> String {
+    match well_known_file(file) {
+        Some(f) => format!("{}::{}", crate_name, f),
+        None => format!("super::{}", get_rust_file_mod_name(file))
+    }
+}
+
 pub fn get_message_type_name(message: &MessageDescriptor) -> String {
     get_type_name(message.name(), message.scope())
 }

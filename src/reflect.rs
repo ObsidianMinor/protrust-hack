@@ -50,7 +50,9 @@ impl<T> Deref for Ref<T> {
     type Target = T;
 
     fn deref(&self) -> &T {
-        unsafe { &*self.0 }
+        unsafe {
+            &*self.0
+        }
     }
 }
 
@@ -60,110 +62,130 @@ fn raw_box<T>(value: T) -> *mut T {
 }
 
 pub struct DescriptorPool<'a> {
+    pools: &'a [&'a DescriptorPool<'a>],
     protos: &'a [FileDescriptorProto],
     symbols: HashMap<String, Symbol>,
 }
+
+static EMPTY_POOLS: &'static [&'static DescriptorPool<'static>] = &[];
 
 impl DescriptorPool<'_> {
     /// Builds a descriptor pool from the slice of file descriptors
     pub fn build_from_files(files: &[FileDescriptorProto]) -> DescriptorPool {
         let mut pool = DescriptorPool {
+            pools: EMPTY_POOLS,
             protos: files,
             symbols: HashMap::new(),
         };
-
-        // insert the symbol for each file
-        for file in pool.protos.iter() {
-            let file = FileDescriptor::new(&*file as *const FileDescriptorProto, &mut pool);
-            unsafe {
-                (*file).cross_ref(&mut pool);
-            }
-        }
-
+        pool.build();
         pool
     }
 
+    pub fn build_generated_pool(file: &'static [FileDescriptorProto; 1], pools: &'static [&'static DescriptorPool]) -> DescriptorPool<'static> {
+        let mut pool = DescriptorPool {
+            pools,
+            protos: file,
+            symbols: HashMap::new()
+        };
+        pool.build();
+        pool
+    }
+
+    fn build(&mut self) {
+        // insert the symbol for each file
+        for file in self.protos.iter() {
+            let file = FileDescriptor::new(&*file as *const FileDescriptorProto, self);
+            unsafe {
+                (*file).cross_ref(self);
+            }
+        }
+    }
+
+    fn find_symbol(&self, name: &str) -> Option<&Symbol> {
+        self.symbols.get(name).or_else(|| self.pools.iter().find_map(|p| p.find_symbol(name)))
+    }
+
     pub fn find_file_by_name(&self, name: &str) -> Option<&FileDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::File(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_message_by_name(&self, name: &str) -> Option<&MessageDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Message(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_field_by_name(&self, name: &str) -> Option<&FieldDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Field(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_oneof_by_name(&self, name: &str) -> Option<&OneofDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Oneof(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_enum_by_name(&self, name: &str) -> Option<&EnumDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Enum(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_enum_value_by_name(&self, name: &str) -> Option<&EnumValueDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::EnumValue(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_service_by_name(&self, name: &str) -> Option<&ServiceDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Service(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
     pub fn find_method_by_name(&self, name: &str) -> Option<&MethodDescriptor> {
-        match self.symbols.get(name) {
+        match self.find_symbol(name) {
             Some(Symbol::Method(symbol)) => unsafe { Some(&**symbol) },
             _ => None,
         }
     }
 
-    fn get_file_ref(&mut self, name: &str) -> Ref<FileDescriptor> {
-        match self.symbols.get_mut(name) {
+    fn get_file_ref(&self, name: &str) -> Ref<FileDescriptor> {
+        match self.find_symbol(name) {
             Some(Symbol::File(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol")
         }
     }
 
-    fn get_message_ref(&mut self, name: &str) -> Ref<MessageDescriptor> {
-        match self.symbols.get_mut(name) {
+    fn get_message_ref(&self, name: &str) -> Ref<MessageDescriptor> {
+        match self.find_symbol(name) {
             Some(Symbol::Message(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol")
         }
     }
 
-    fn get_enum_ref(&mut self, name: &str) -> Ref<EnumDescriptor> {
-        match self.symbols.get_mut(name) {
+    fn get_enum_ref(&self, name: &str) -> Ref<EnumDescriptor> {
+        match self.find_symbol(name) {
             Some(Symbol::Enum(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol")
         }
     }
 
     fn get_enum_value_ref(&mut self, name: &str) -> Ref<EnumValueDescriptor> {
-        match self.symbols.get_mut(name) {
+        match self.find_symbol(name) {
             Some(Symbol::EnumValue(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol")
         }
     }
 }
@@ -317,11 +339,13 @@ impl FileDescriptor {
             .proto()
             .message_type
             .iter()
-            .map(|m| {
+            .enumerate()
+            .map(|(i, m)| {
                 MessageDescriptor::new(
                     &*m as *const DescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -331,11 +355,13 @@ impl FileDescriptor {
             .proto()
             .enum_type
             .iter()
-            .map(|e| {
+            .enumerate()
+            .map(|(i, e)| {
                 EnumDescriptor::new(
                     &*e as *const EnumDescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -345,11 +371,13 @@ impl FileDescriptor {
             .proto()
             .service
             .iter()
-            .map(|s| {
+            .enumerate()
+            .map(|(i, s)| {
                 ServiceDescriptor::new(
                     &*s as *const ServiceDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -359,11 +387,13 @@ impl FileDescriptor {
             .proto()
             .extension
             .iter()
-            .map(|e| {
+            .enumerate()
+            .map(|(i, e)| {
                 FieldDescriptor::new(
                     &*e as *const FieldDescriptorProto,
                     FieldScope::File(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -450,6 +480,7 @@ impl CompositeScope {
 pub struct MessageDescriptor {
     proto: *const DescriptorProto,
     scope: CompositeScope,
+    scope_index: usize,
     full_name: String,
     fields: Box<[Ref<FieldDescriptor>]>,
     fields_ordered: Box<[Ref<FieldDescriptor>]>,
@@ -468,6 +499,11 @@ impl MessageDescriptor {
     /// Gets the file this descriptor belongs to
     pub fn scope(&self) -> &CompositeScope {
         &self.scope
+    }
+
+    /// Gets the index of this descriptor in its parent descriptor
+    pub fn scope_index(&self) -> usize {
+        self.scope_index
     }
 
     pub fn name(&self) -> &String {
@@ -520,6 +556,7 @@ impl MessageDescriptor {
         proto: *const DescriptorProto,
         scope: CompositeScope,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<MessageDescriptor> {
         let descriptor_raw: *mut MessageDescriptor;
         let descriptor: &mut MessageDescriptor;
@@ -530,6 +567,7 @@ impl MessageDescriptor {
 
         descriptor.proto = proto;
         descriptor.scope = scope;
+        descriptor.scope_index = index;
 
         descriptor.full_name = get_full_type_name(descriptor.name(), descriptor.scope());
 
@@ -537,11 +575,13 @@ impl MessageDescriptor {
             .proto()
             .nested_type
             .iter()
-            .map(|m| {
+            .enumerate()
+            .map(|(i, m)| {
                 MessageDescriptor::new(
                     &*m as *const DescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -551,11 +591,13 @@ impl MessageDescriptor {
             .proto()
             .enum_type
             .iter()
-            .map(|e| {
+            .enumerate()
+            .map(|(i, e)| {
                 EnumDescriptor::new(
                     &*e as *const EnumDescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -565,11 +607,13 @@ impl MessageDescriptor {
             .proto()
             .extension
             .iter()
-            .map(|e| {
+            .enumerate()
+            .map(|(i, e)| {
                 FieldDescriptor::new(
                     &*e as *const FieldDescriptorProto,
                     FieldScope::Message(Ref::new(descriptor_raw)),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -593,7 +637,8 @@ impl MessageDescriptor {
             .proto()
             .field
             .iter()
-            .map(|f| {
+            .enumerate()
+            .map(|(i, f)| {
                 FieldDescriptor::new(
                     &*f as *const FieldDescriptorProto,
                     if let Some(o) = f.oneof_index {
@@ -602,6 +647,7 @@ impl MessageDescriptor {
                         FieldScope::Message(Ref::new(descriptor_raw))
                     },
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -694,6 +740,7 @@ impl Descriptor for MessageDescriptor {
 pub struct EnumDescriptor {
     proto: *const EnumDescriptorProto,
     scope: CompositeScope,
+    scope_index: usize,
     full_name: String,
     values: Box<[Ref<EnumValueDescriptor>]>,
 }
@@ -705,6 +752,10 @@ impl EnumDescriptor {
 
     pub fn scope(&self) -> &CompositeScope {
         &self.scope
+    }
+
+    pub fn scope_index(&self) -> usize {
+        self.scope_index
     }
 
     pub fn name(&self) -> &String {
@@ -727,6 +778,7 @@ impl EnumDescriptor {
         proto: *const EnumDescriptorProto,
         scope: CompositeScope,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<EnumDescriptor> {
         let descriptor_raw: *mut EnumDescriptor;
         let descriptor: &mut EnumDescriptor;
@@ -737,17 +789,20 @@ impl EnumDescriptor {
 
         descriptor.proto = proto;
         descriptor.scope = scope;
+        descriptor.scope_index = index;
         descriptor.full_name = get_full_type_name(descriptor.name(), descriptor.scope());
 
         descriptor.values = descriptor
             .proto()
             .value
             .iter()
-            .map(|v| {
+            .enumerate()
+            .map(|(i, v)| {
                 EnumValueDescriptor::new(
                     &*v as *const EnumValueDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -790,6 +845,7 @@ impl Descriptor for EnumDescriptor {
 
 pub struct EnumValueDescriptor {
     proto: *const EnumValueDescriptorProto,
+    index: usize,
     enum_type: Ref<EnumDescriptor>,
     full_name: String,
 }
@@ -801,6 +857,11 @@ impl EnumValueDescriptor {
 
     pub fn enum_type(&self) -> &EnumDescriptor {
         &self.enum_type
+    }
+
+    /// Gets the index of this enum value in its parent enum
+    pub fn index(&self) -> usize {
+        self.index
     }
 
     pub fn name(&self) -> &String {
@@ -823,6 +884,7 @@ impl EnumValueDescriptor {
         proto: *const EnumValueDescriptorProto,
         parent: Ref<EnumDescriptor>,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<EnumValueDescriptor> {
         let descriptor_raw: *mut EnumValueDescriptor;
         let descriptor: &mut EnumValueDescriptor;
@@ -833,6 +895,7 @@ impl EnumValueDescriptor {
 
         descriptor.proto = proto;
         descriptor.enum_type = parent;
+        descriptor.index = index;
         descriptor.full_name = format!(
             "{}.{}",
             descriptor.enum_type().full_name().clone(),
@@ -878,6 +941,7 @@ pub struct ServiceDescriptor {
     proto: *const ServiceDescriptorProto,
     full_name: String,
     file: Ref<FileDescriptor>,
+    index: usize,
     methods: Box<[Ref<MethodDescriptor>]>,
 }
 
@@ -888,6 +952,10 @@ impl ServiceDescriptor {
 
     pub fn file(&self) -> &FileDescriptor {
         &self.file
+    }
+
+    pub fn index(&self) -> usize {
+        self.index
     }
 
     pub fn name(&self) -> &String {
@@ -910,6 +978,7 @@ impl ServiceDescriptor {
         proto: *const ServiceDescriptorProto,
         file: Ref<FileDescriptor>,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<ServiceDescriptor> {
         let descriptor_raw: *mut ServiceDescriptor;
         let descriptor: &mut ServiceDescriptor;
@@ -920,17 +989,20 @@ impl ServiceDescriptor {
 
         descriptor.proto = proto;
         descriptor.file = file;
+        descriptor.index = index;
         descriptor.full_name = format!(".{}.{}", descriptor.file().name(), descriptor.name());
 
         descriptor.methods = descriptor
             .proto()
             .method
             .iter()
-            .map(|m| {
+            .enumerate()
+            .map(|(i, m)| {
                 MethodDescriptor::new(
                     &*m as *const MethodDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
+                    i
                 )
             })
             .collect::<Vec<_>>()
@@ -983,6 +1055,7 @@ pub struct MethodDescriptor {
     proto: *const MethodDescriptorProto,
     full_name: String,
     service: Ref<ServiceDescriptor>,
+    index: usize,
     input_type: Ref<MessageDescriptor>,
     output_type: Ref<MessageDescriptor>,
 }
@@ -994,6 +1067,10 @@ impl MethodDescriptor {
 
     pub fn service(&self) -> &ServiceDescriptor {
         &self.service
+    }
+
+    pub fn index(&self) -> usize {
+        self.index
     }
 
     pub fn name(&self) -> &String {
@@ -1028,6 +1105,7 @@ impl MethodDescriptor {
         proto: *const MethodDescriptorProto,
         service: Ref<ServiceDescriptor>,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<MethodDescriptor> {
         let descriptor_raw: *mut MethodDescriptor;
         let descriptor: &mut MethodDescriptor;
@@ -1038,6 +1116,7 @@ impl MethodDescriptor {
 
         descriptor.proto = proto;
         descriptor.service = service;
+        descriptor.index = index;
         descriptor.full_name = format!(
             ".{}.{}",
             descriptor.service().full_name(),
@@ -1123,6 +1202,7 @@ pub struct FieldDescriptor {
     proto: *const FieldDescriptorProto,
     full_name: String,
     scope: FieldScope,
+    scope_index: usize,
     value_type: FieldType,
     default: DefaultValue,
     message: Ref<MessageDescriptor>,
@@ -1163,6 +1243,11 @@ impl FieldDescriptor {
 
     pub fn scope(&self) -> &FieldScope {
         &self.scope
+    }
+
+    /// Gets the index of this field in its parent descriptor
+    pub fn scope_index(&self) -> usize {
+        self.scope_index
     }
 
     pub fn options(&self) -> Option<&FieldOptions> {
@@ -1208,6 +1293,7 @@ impl FieldDescriptor {
         proto: *const FieldDescriptorProto,
         scope: FieldScope,
         pool: &mut DescriptorPool,
+        index: usize,
     ) -> Ref<FieldDescriptor> {
         let descriptor_raw: *mut FieldDescriptor;
         let descriptor: &mut FieldDescriptor;
@@ -1218,6 +1304,7 @@ impl FieldDescriptor {
 
         descriptor.proto = proto;
         descriptor.scope = scope;
+        descriptor.scope_index = index;
         descriptor.full_name = match &descriptor.scope {
             FieldScope::File(f) => format!(".{}.{}", f.package(), descriptor.name()),
             FieldScope::Message(m) => format!("{}.{}", m.full_name(), descriptor.name()),
