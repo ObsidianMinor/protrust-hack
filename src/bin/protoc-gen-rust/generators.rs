@@ -136,7 +136,9 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
                 genln!(self.printer; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut [" => self.vars, crate_name);
                 indent!(self.printer, {
                     genln!(self.printer, "");
-                    let vec = self.proto.proto().write_to_vec().unwrap();
+                    let mut new_proto = self.proto.proto().clone();
+                    new_proto.source_code_info = None;
+                    let vec = new_proto.write_to_vec().unwrap();
                     let mut bytes_on_line = 0;
                     for byte in vec {
                         gen!(self.printer, "{}, ", byte);
