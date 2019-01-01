@@ -229,7 +229,7 @@ enum ValueSize<T> {
 }
 
 const fn is_packed(tag: u32) -> bool {
-    (tag | 0b111) == 2
+    (tag & 0b111) == 2
 }
 
 impl<T: Clone + PartialEq> Codec<T> {
