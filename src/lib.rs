@@ -1,4 +1,6 @@
-//! protrust: Another Protocol Buffers implementation in Rust focused on being a complete implementation with support
+//! # protrust
+//! 
+//! A Protocol Buffers implementation in Rust focused on being a complete implementation with support
 //! for proto3 json mapping, reflection, and being easy to use.
 
 #![feature(const_fn)]
@@ -16,31 +18,20 @@ pub(crate) mod generated;
 /// Alleviates imports of many common protobuf traits and io structs
 /// by adding a glob import to the top of protobuf heavy modules
 pub mod prelude {
-    pub use crate::io::CodedInput;
-    pub use crate::io::CodedOutput;
     pub use crate::CodedMessage;
-    pub use crate::EnumValue;
     pub use crate::LiteMessage;
+    pub use crate::EnumValue;
     #[cfg(feature = "reflection")]
     pub use crate::Message;
 }
-/// Provides modules for using vectors and hashmaps as repeated fields and map fields
 pub mod collections;
-/// Provides input output types for reading and writing protobuf streams
 pub mod io;
-/// Provides runtime support for well known types
-#[cfg(all(feature = "reflection", feature = "json"))]
+#[cfg(all(feature = "reflection"))]
 pub mod wkt;
-/// Provides plugin types from plugin.proto
 #[cfg(feature = "reflection")]
 pub use crate::generated::google_protobuf_compiler_plugin_proto as plugin;
-/// Provides descriptor types from descriptor.proto
 #[cfg(feature = "reflection")]
 pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
-/// Provides proto3 JSON mapping support
-#[cfg(feature = "json")]
-pub mod json;
-/// Provides reflection acccess for messages
 #[cfg(feature = "reflection")]
 pub mod reflect;
 
@@ -55,6 +46,7 @@ pub trait CodedMessage {
     fn merge_from(&mut self, input: &mut io::CodedInput) -> io::InputResult<()>;
 
     /// Merges an instance of self from a Read instance
+    #[inline]
     fn merge_from_read(&mut self, read: &mut std::io::Read) -> io::InputResult<()> {
         let mut reader = io::CodedInput::new(read);
         self.merge_from(&mut reader)
@@ -72,6 +64,7 @@ pub trait CodedMessage {
     fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult;
 
     /// Writes the message to a Write instance
+    #[inline]
     fn write(&self, write: &mut std::io::Write) -> io::OutputResult {
         let mut writer = io::CodedOutput::new(write);
         self.write_to(&mut writer)
@@ -125,9 +118,7 @@ pub trait LiteMessage: CodedMessage + Clone + PartialEq {
 #[cfg(feature = "reflection")]
 pub trait Message: LiteMessage {
     /// Gets a static reference to the descriptor describing this message type
-    fn descriptor() -> &'static reflect::MessageDescriptor {
-        unimplemented!()
-    }
+    fn descriptor() -> &'static reflect::MessageDescriptor;
 }
 
 impl<T: CodedMessage> CodedMessage for Box<T> {
@@ -161,7 +152,7 @@ pub struct VariantUndefinedError;
 
 /// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
 ///
-/// In Rust, enums with values without discriminants is considered undefined behaviour.
+/// In Rust, an enum value without an associated discriminant is undefined behavior.
 /// In Protocol Buffers, there is no guarantee that an enum value will be valid.
 /// Thus, this union is introduced to allow for both undefined enum values and defined enum values.
 #[derive(Copy, Debug, Clone)]
@@ -209,6 +200,9 @@ impl<E: Into<i32> + Clone> From<EnumValue<E>> for i32 {
     }
 }
 
+/// A structure detailing all the required information to read, write, and calculate the size of a field.
+/// 
+/// Consumers will rarely use this outside of generated code
 pub struct Codec<T> {
     default: Option<T>,
     start: u32,

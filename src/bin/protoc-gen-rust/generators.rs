@@ -1,6 +1,7 @@
 use crate::names;
 use crate::printer;
 use crate::Options;
+use protrust::descriptor;
 use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::WireType;
 use protrust::prelude::*;
@@ -30,7 +31,8 @@ macro_rules! genln {
     ($dst:expr, $($arg:tt)*) => {
         writeln!($dst)?;
         write!($dst, $($arg)*)?;
-    }
+    };
+    ($dst:expr) => (writeln!($dst)?)
 }
 
 macro_rules! indent {
@@ -102,7 +104,14 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         genln!(self.printer; "//! Source: {file}\n" => self.vars, file);
 
         // static descriptor code
-        self.generate_descriptor_code()?;
+        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| {
+            o.optimize_for
+                .unwrap_or(descriptor::FileOptions::OPTIMIZE_FOR_DEFAULT_VALUE)
+        }) {
+            if o != OptimizeMode::LiteRuntime {
+                self.generate_descriptor_code()?;
+            }
+        }
 
         // extensions
         //for _extension in self.proto.extensions() {
@@ -128,14 +137,14 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         genln!(self.printer; "static mut FILE_PROTO: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;" => self.vars, crate_name);
         genln!(self.printer; "static mut FILE_DESCRIPTOR: ::std::option::Option<&'static {crate_name}::reflect::FileDescriptor> = ::std::option::Option::None;" => self.vars, crate_name);
         genln!(self.printer; "static mut FILE_DEPS: ::std::option::Option<[&'static {crate_name}::reflect::DescriptorPool<'static>; {dep_count}]> = ::std::option::Option::None;" => self.vars, crate_name, dep_count);
-        genln!(self.printer, "");
+        genln!(self.printer);
         genln!(self.printer, "fn file_once_init() {{");
         indent!(self.printer, {
             genln!(self.printer, "unsafe {{");
             indent!(self.printer, {
                 genln!(self.printer; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut [" => self.vars, crate_name);
                 indent!(self.printer, {
-                    genln!(self.printer, "");
+                    genln!(self.printer);
                     let mut new_proto = self.proto.proto().clone();
                     new_proto.source_code_info = None;
                     let vec = new_proto.write_to_vec().unwrap();
@@ -144,7 +153,7 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
                         gen!(self.printer, "{}, ", byte);
                         bytes_on_line += 1;
                         if bytes_on_line == 20 {
-                            genln!(self.printer, "");
+                            genln!(self.printer);
                             bytes_on_line = 0;
                         }
                     }
@@ -166,7 +175,8 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
             genln!(self.printer, "}}");
         });
         genln!(self.printer, "}}");
-        genln!(self.printer, "");
+        genln!(self.printer);
+        genln!(self.printer, "/// Gets the pool containing all the symbols in this proto file and its dependencies");
         genln!(self.printer; "pub fn pool() -> &'static {crate_name}::reflect::DescriptorPool<'static> {{" => self.vars, crate_name);
         indent!(self.printer, {
             genln!(self.printer, "unsafe {{");
@@ -177,6 +187,7 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
             genln!(self.printer, "}}");
         });
         genln!(self.printer, "}}");
+        genln!(self.printer, "/// Gets the file descriptor representing the proto that created this generated file");
         genln!(self.printer; "pub fn file() -> &'static {crate_name}::reflect::FileDescriptor {{" => self.vars, crate_name);
         indent!(self.printer, {
             genln!(self.printer, "unsafe {{");

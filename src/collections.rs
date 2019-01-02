@@ -1,14 +1,34 @@
+//! Contains protobuf collection types `repeated` and `map` and 
+//! are represented through the [`RepeatedField`] and [`MapField`] types respectively
+//! in generated code.
+//! 
+//! [`RepeatedField`]: struct.RepeatedField.html
+//! [`MapField`]: struct.MapField.html
+
 use crate::io::{CodedInput, CodedOutput, InputError, InputResult, OutputResult};
 use crate::Codec;
+use crate::LiteMessage;
 use crate::ValueSize;
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::hash::Hash;
+use std::ops::{Deref, DerefMut};
 
+/// A `repeated` protobuf field. This type derefs to [`Vec<T>`]
+/// 
+/// This type is used in generated code to represent `repeated` fields and is
+/// paired with a private static [`Codec`] to perform reading, writing, and size calculations.
+/// 
+/// The functions included in this type are made for generated code and as such are 
+/// rarely used directly by consumers. Most consumers will exclusively use derefed 
+/// [`Vec<T>`] functions.
+/// 
+/// [`Vec<T>`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
+/// [`Codec`]: ../struct.Codec.html
 #[derive(Clone, Debug, PartialEq)]
 pub struct RepeatedField<T>(Vec<T>);
 
-impl<T> std::ops::Deref for RepeatedField<T> {
+impl<T> Deref for RepeatedField<T> {
     type Target = Vec<T>;
 
     fn deref(&self) -> &Vec<T> {
@@ -16,19 +36,27 @@ impl<T> std::ops::Deref for RepeatedField<T> {
     }
 }
 
-impl<T> std::ops::DerefMut for RepeatedField<T> {
+impl<T> DerefMut for RepeatedField<T> {
     fn deref_mut(&mut self) -> &mut Vec<T> {
         &mut self.0
     }
 }
 
 impl<T> RepeatedField<T> {
+    /// Creates a new RepeatedField
+    /// 
+    /// Consumers will rarely use this outside of generated code
     pub fn new() -> RepeatedField<T> {
         RepeatedField(Vec::new())
     }
 }
 
 impl<T: Clone + PartialEq> RepeatedField<T> {
+    /// Adds entries from the specified [`CodedInput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedInput`]: ../io/structs.CodedInput.html
     pub fn add_entries(
         &mut self,
         tag: u32,
@@ -52,6 +80,11 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
+    /// Calculates the size it take to serialize this field in a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &Codec<T>) -> Option<i32> {
         if self.len() == 0 {
@@ -82,6 +115,11 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
+    /// Calculates the size it take to serialize this field in a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &Codec<T>) -> i32 {
         if self.len() == 0 {
@@ -103,6 +141,11 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
+    /// Writes this field to a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     pub fn write_to(&self, output: &mut CodedOutput, codec: &Codec<T>) -> OutputResult {
         if !self.is_empty() {
             if codec.is_packed() {
@@ -130,17 +173,39 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         Ok(())
     }
 
-    #[allow(unused_variables)]
-    pub fn is_initialized(&self) -> bool {
-        unimplemented!()
-    }
-
-    #[allow(unused_variables)]
+    /// Merges this field with another field of the same type
+    /// 
+    /// Consumers will rarely use this outside of generated code
     pub fn merge(&mut self, other: &Self) {
         self.extend_from_slice(other.as_slice())
     }
 }
 
+impl<T: LiteMessage> RepeatedField<T> {
+    /// Checks each message in this field to see if it is initialized
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    pub fn is_initialized(&self) -> bool {
+        for msg in self.iter() {
+            if !msg.is_initialized() {
+                return false
+            }
+        }
+        true
+    }
+}
+
+/// A `map` protobuf field. This type derefs to [`HashMap<K, V>`]
+/// 
+/// This type is used in generated code to represent `map` fields and is
+/// paired with a private static [`MapCodec`] to perform reading, writing, and size calculations.
+/// 
+/// The functions included in this type are made for generated code and as such are 
+/// rarely used directly by consumers. Most consumers will exclusively use derefed 
+/// [`HashMap<K, V>`] functions.
+/// 
+/// [`HashMap<K, V>`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
+/// [`MapCodec`]: struct.MapCodec.html
 #[derive(Clone)]
 pub struct MapField<K, V>(HashMap<K, V>);
 
@@ -162,7 +227,7 @@ impl<K: Eq + Hash + Debug, V: PartialEq + Debug> Debug for MapField<K, V> {
     }
 }
 
-impl<K, V> std::ops::Deref for MapField<K, V> {
+impl<K, V> Deref for MapField<K, V> {
     type Target = HashMap<K, V>;
 
     fn deref(&self) -> &HashMap<K, V> {
@@ -170,13 +235,18 @@ impl<K, V> std::ops::Deref for MapField<K, V> {
     }
 }
 
-impl<K, V> std::ops::DerefMut for MapField<K, V> {
+impl<K, V> DerefMut for MapField<K, V> {
     fn deref_mut(&mut self) -> &mut HashMap<K, V> {
         &mut self.0
     }
 }
 
 impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
+    /// Adds entries from the specified [`CodedInput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedInput`]: ../io/structs.CodedInput.html
     pub fn add_entries(
         &mut self,
         input: &mut CodedInput,
@@ -191,6 +261,12 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         Ok(())
     }
+    
+    /// Calculates the size it take to serialize this field in a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> Option<i32> {
         if self.is_empty() {
@@ -207,6 +283,12 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         Some(size)
     }
+    
+    /// Calculates the size it take to serialize this field in a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> i32 {
         if self.is_empty() {
@@ -223,6 +305,12 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         size
     }
+
+    /// Writes this field to a [`CodedOutput`]
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    /// 
+    /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     pub fn write_to(&self, output: &mut CodedOutput, codec: &MapCodec<K, V>) -> OutputResult {
         let mut adapter = MapWriteAdapter::new(codec);
         for field in &self.0 {
@@ -233,6 +321,10 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         Ok(())
     }
+
+    /// Merges this field with another field of the same type
+    /// 
+    /// Consumers will rarely use this outside of generated code
     pub fn merge(&mut self, other: &Self) {
         for entry in &other.0 {
             match self.get_mut(entry.0) {
@@ -242,6 +334,20 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
                 }
             }
         }
+    }
+}
+
+impl<K: Eq + Hash + Clone, V: LiteMessage> MapField<K, V> {
+    /// Checks each message in this field to see if it is initialized
+    /// 
+    /// Consumers will rarely use this outside of generated code
+    pub fn is_initialized(&self) -> bool {
+        for msg in self.values() {
+            if !msg.is_initialized() {
+                return false
+            }
+        }
+        true
     }
 }
 
@@ -338,6 +444,7 @@ impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapWrit
     }
 }
 
+/// A codec containing the required information to read, write, and calculate the size of a map field
 pub struct MapCodec<K, V> {
     key: Codec<K>,
     value: Codec<V>,
@@ -345,6 +452,9 @@ pub struct MapCodec<K, V> {
 }
 
 impl<K, V> MapCodec<K, V> {
+    /// Creates a new MapCodec for static storage
+    /// 
+    /// Consumers will rarely use this outside of generated code
     pub const fn new(key: Codec<K>, value: Codec<V>, tag: u32) -> MapCodec<K, V> {
         MapCodec { key, value, tag }
     }

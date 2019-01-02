@@ -4,12 +4,13 @@ use crate::descriptor::*;
 use crate::io::WireType;
 use std::collections::HashMap;
 use std::convert::AsRef;
+use std::fmt::{self, Formatter, Debug};
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
 use std::ops::Deref;
 
 macro_rules! validate {
     ($e:expr, $n:expr) => {
-        $e.expect("invalid descriptor: missing field '$n'")
+        $e.expect(concat!("invalid descriptor: missing field '", $n, "'"))
     };
 }
 
@@ -53,6 +54,12 @@ impl<T> Deref for Ref<T> {
         unsafe {
             &*self.0
         }
+    }
+}
+
+impl<T: Debug> Debug for Ref<T> {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        self.deref().fmt(fmt)
     }
 }
 
@@ -454,6 +461,26 @@ impl Descriptor for FileDescriptor {
     }
 }
 
+impl Debug for FileDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("FileDescriptor")
+            .field("name", self.name())
+            .field("package", self.package())
+            .field("syntax", &self.syntax())
+            .field("public_dependencies", 
+                &self.public_dependencies()
+                    .iter()
+                    .map(|d| d.name())
+                    .collect::<Box<[_]>>())
+            .field("dependencies", &self.dependencies())
+            .field("messages", &self.messages())
+            .field("enums", &self.enums())
+            .field("services", &self.services())
+            .field("extensions", &self.extensions())
+            .finish()
+    }
+}
+
 /// Represents the scope of a composite type (message or enum type)
 pub enum CompositeScope {
     /// A file scope
@@ -584,8 +611,7 @@ impl MessageDescriptor {
                     i
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         descriptor.enums = descriptor
             .proto()
@@ -600,8 +626,7 @@ impl MessageDescriptor {
                     i
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         descriptor.extensions = descriptor
             .proto()
@@ -616,8 +641,7 @@ impl MessageDescriptor {
                     i
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         descriptor.oneofs = descriptor
             .proto()
@@ -630,8 +654,7 @@ impl MessageDescriptor {
                     pool,
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         descriptor.fields = descriptor
             .proto()
@@ -650,8 +673,7 @@ impl MessageDescriptor {
                     i
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         let mut number_order = descriptor
             .fields()
@@ -665,8 +687,7 @@ impl MessageDescriptor {
             .iter()
             .filter(|f| f.proto().oneof_index.is_none())
             .map(Ref::clone)
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         if let Some(_) = pool.symbols.insert(
             descriptor.full_name().clone(),
@@ -734,6 +755,19 @@ impl Descriptor for MessageDescriptor {
             CompositeScope::File(f) => f,
             _ => unreachable!(),
         }
+    }
+}
+
+impl Debug for MessageDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("MessageDescriptor")
+            .field("name", self.name())
+            .field("fields", &self.fields())
+            .field("oneofs", &self.oneofs())
+            .field("messages", &self.messages())
+            .field("enums", &self.enums())
+            .field("extensions", &self.extensions())
+            .finish()
     }
 }
 
@@ -843,6 +877,15 @@ impl Descriptor for EnumDescriptor {
     }
 }
 
+impl Debug for EnumDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("EnumDescriptor")
+            .field("name", self.name())
+            .field("values", &self.values())
+            .finish()
+    }
+}
+
 pub struct EnumValueDescriptor {
     proto: *const EnumValueDescriptorProto,
     index: usize,
@@ -873,7 +916,7 @@ impl EnumValueDescriptor {
     }
 
     pub fn number(&self) -> i32 {
-        validate!(self.proto().number, "number")
+        self.proto().number.unwrap_or(0)
     }
 
     pub fn options(&self) -> Option<&EnumValueOptions> {
@@ -934,6 +977,15 @@ impl Descriptor for EnumValueDescriptor {
     }
     fn file(&self) -> &FileDescriptor {
         self.enum_type().file()
+    }
+}
+
+impl Debug for EnumValueDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("EnumValueDescriptor")
+            .field("name", self.name())
+            .field("number", &self.number())
+            .finish()
     }
 }
 
@@ -1005,8 +1057,7 @@ impl ServiceDescriptor {
                     i
                 )
             })
-            .collect::<Vec<_>>()
-            .into();
+            .collect::<Box<[_]>>();
 
         if let Some(_) = pool.symbols.insert(
             descriptor.full_name().clone(),
@@ -1048,6 +1099,15 @@ impl Descriptor for ServiceDescriptor {
     }
     fn file(&self) -> &FileDescriptor {
         self.file()
+    }
+}
+
+impl Debug for ServiceDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("ServiceDescriptor")
+            .field("name", self.name())
+            .field("methods", &self.methods())
+            .finish()
     }
 }
 
@@ -1163,6 +1223,16 @@ impl Descriptor for MethodDescriptor {
     }
 }
 
+impl Debug for MethodDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("MethodDescriptor")
+            .field("name", self.name())
+            .field("input_type", self.input_type().full_name())
+            .field("output_type", self.output_type().full_name())
+            .finish()
+    }
+}
+
 pub enum FieldType {
     Double,
     Float,
@@ -1184,6 +1254,32 @@ pub enum FieldType {
     Group(Ref<MessageDescriptor>),
 }
 
+impl Debug for FieldType {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        use crate::reflect::FieldType::*;
+        match self {
+            Double => fmt.write_str("Double"),
+            Float => fmt.write_str("Float"),
+            Int64 => fmt.write_str("Int64"),
+            Uint64 => fmt.write_str("Uint64"),
+            Sint64 => fmt.write_str("Sint64"),
+            Fixed64 => fmt.write_str("Fixed64"),
+            Sfixed64 => fmt.write_str("Sfixed64"),
+            Int32 => fmt.write_str("Int32"),
+            Uint32 => fmt.write_str("Uint32"),
+            Sint32 => fmt.write_str("Sint32"),
+            Fixed32 => fmt.write_str("Fixed32"),
+            Sfixed32 => fmt.write_str("Sfixed32"),
+            Bool => fmt.write_str("Bool"),
+            String => fmt.write_str("String"),
+            Bytes => fmt.write_str("Bytes"),
+            Enum(e) => fmt.write_fmt(format_args!("Enum({})", e.full_name())),
+            Message(m) => fmt.write_fmt(format_args!("Message({})", m.full_name())),
+            Group(g) => fmt.write_fmt(format_args!("Group({})", g.full_name())),
+        }
+    }
+}
+
 pub enum DefaultValue {
     /// There was no specified default value
     None,
@@ -1196,6 +1292,23 @@ pub enum DefaultValue {
     Enum(Ref<EnumValueDescriptor>),
     String(String),
     Bytes(Vec<u8>),
+}
+
+impl Debug for DefaultValue {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        use crate::reflect::DefaultValue::*;
+        match self {
+            None => fmt.write_str("None"),
+            Invalid => fmt.write_str("Invalid"),
+            Bool(b) => fmt.write_fmt(format_args!("Bool({})", b)),
+            Double(d) => fmt.write_fmt(format_args!("Double({})", d)),
+            SignedInt(s) => fmt.write_fmt(format_args!("SignedInt({})", s)),
+            UnsignedInt(u) => fmt.write_fmt(format_args!("UnsignedInt({})", u)),
+            Enum(e) => fmt.write_fmt(format_args!("Enum({})", e.full_name())),
+            String(s) => fmt.write_fmt(format_args!("String({})", s)),
+            Bytes(b) => fmt.write_fmt(format_args!("Bytes({:?})", b))
+        }
+    }
 }
 
 pub struct FieldDescriptor {
@@ -1452,6 +1565,18 @@ impl Descriptor for FieldDescriptor {
     }
 }
 
+impl Debug for FieldDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.debug_struct("FieldDescriptor")
+            .field("label", &self.label())
+            .field("name", self.name())
+            .field("number", &self.number())
+            .field("field_type", self.field_type())
+            .field("default_value", self.default_value())
+            .finish()
+    }
+}
+
 /// Gets the scope a field is defined in
 #[derive(PartialEq, Eq)]
 pub enum FieldScope {
@@ -1564,5 +1689,11 @@ impl Descriptor for OneofDescriptor {
     }
     fn file(&self) -> &FileDescriptor {
         self.message().file()
+    }
+}
+
+impl Debug for OneofDescriptor {
+    fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
+        fmt.write_str(self.name())
     }
 }

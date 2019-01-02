@@ -49,12 +49,14 @@ fn file_once_init() {
     }
 }
 
+/// Gets the pool containing all the symbols in this proto file and its dependencies
 pub fn pool() -> &'static ::protrust::reflect::DescriptorPool<'static> {
     unsafe {
         FILE_ONCE.call_once(file_once_init);
         FILE_POOL.as_ref().unwrap()
     }
 }
+/// Gets the file descriptor representing the proto that created this generated file
 pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     unsafe {
         FILE_ONCE.call_once(file_once_init);
