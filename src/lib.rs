@@ -1,5 +1,3 @@
-//! # protrust
-//! 
 //! A Protocol Buffers implementation in Rust focused on being a complete implementation with support
 //! for proto3 json mapping, reflection, and being easy to use.
 

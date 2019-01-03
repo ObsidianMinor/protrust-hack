@@ -270,9 +270,9 @@ fn get_full_type_name(
 
 fn try_remove_prefix<'a>(type_name: &str, value_name: &'a str) -> &'a str {
     let mut prefix = type_name
-        .chars()
-        .filter(|c| *c != '_')
-        .map(|c| c.to_ascii_lowercase());
+        .char_indices()
+        .filter(|(_, c)| *c != '_')
+        .map(|(i, c)| (i, c.to_ascii_lowercase()));
     let mut value = value_name
         .char_indices()
         .filter(|(_, c)| *c != '_')
@@ -281,7 +281,8 @@ fn try_remove_prefix<'a>(type_name: &str, value_name: &'a str) -> &'a str {
     loop {
         match (prefix.next(), value.next()) {
             (_, None) => return value_name,
-            (a, Some((i, b))) if a != Some(b) => return &value_name[i..].trim_start_matches('_'),
+            (Some((_, a)), Some((_, b))) if a != b => return value_name,
+            (a, Some((ib, b))) if a.map(|t| t.1) != Some(b) => return &value_name[ib..].trim_start_matches('_'),
             _ => (),
         }
     }

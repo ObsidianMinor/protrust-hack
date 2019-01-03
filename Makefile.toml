@@ -50,6 +50,7 @@ command = "protoc"
 args = [
     "--proto_path=protos",
     "--rust_out=examples/gen",
+    "--rust_opt=pub_fields",
     "addressbook.proto"
 ]
 

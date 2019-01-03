@@ -101,9 +101,11 @@ impl DescriptorPool<'_> {
     fn build(&mut self) {
         // insert the symbol for each file
         for file in self.protos.iter() {
-            let file = FileDescriptor::new(&*file as *const FileDescriptorProto, self);
+            let file = FileDescriptor::new(file as *const FileDescriptorProto, self);
             unsafe {
-                (*file).cross_ref(self);
+                let file = &mut (*file);
+                file.cross_ref(self);
+                file.parse_source_code_info();
             }
         }
     }
@@ -189,7 +191,7 @@ impl DescriptorPool<'_> {
         }
     }
 
-    fn get_enum_value_ref(&mut self, name: &str) -> Ref<EnumValueDescriptor> {
+    fn get_enum_value_ref(&self, name: &str) -> Ref<EnumValueDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::EnumValue(symbol)) => Ref::new(*symbol),
             _ => panic!("Pool did not contain referenced symbol")
@@ -224,6 +226,26 @@ pub trait Descriptor {
     fn name(&self) -> &String;
     fn full_name(&self) -> &String;
     fn file(&self) -> &FileDescriptor;
+}
+
+pub struct SourceCodeInfo {
+    leading_comments: Option<*const String>,
+    trailing_comments: Option<*const String>,
+    leading_detached_comments: *const [String],
+}
+
+impl SourceCodeInfo {
+    pub fn leading_comments(&self) -> Option<&String> {
+        unsafe { self.leading_comments.map(|s| &*s) }
+    }
+
+    pub fn trailing_comments(&self) -> Option<&String> {
+        unsafe { self.trailing_comments.map(|s| &*s) }
+    }
+
+    pub fn leading_detached_comments(&self) -> &[String] {
+        unsafe { &*self.leading_detached_comments }
+    }
 }
 
 /// Specifies the syntax of a proto file
@@ -435,6 +457,33 @@ impl FileDescriptor {
             unsafe { Ref::get_mut(&mut extension).cross_ref(pool) }
         }
     }
+
+    unsafe fn parse_source_code_info(&mut self) {
+        if let Some(source_code_info) = &(*self.proto).source_code_info {
+            for location in source_code_info.location.iter() {
+                if location.path.is_empty() || location.path.len() % 2 != 0 {
+                    continue
+                }
+
+                let info = 
+                    match location.path[0] {
+                        4 => Ref::get_mut(&mut self.messages[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
+                        5 => Ref::get_mut(&mut self.enums[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
+                        6 => Ref::get_mut(&mut self.services[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
+                        7 => Ref::get_mut(&mut self.extensions[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
+                        _ => continue
+                    };
+
+                if let Some(info) = info {
+                    *info = Some(SourceCodeInfo {
+                        leading_comments: location.leading_comments.as_ref().map(|r| r as *const String),
+                        trailing_comments: location.trailing_comments.as_ref().map(|r| r as *const String),
+                        leading_detached_comments: location.leading_detached_comments.as_slice() as *const [String]
+                    });
+                }
+            }
+        }
+    }
 }
 
 impl PartialEq for FileDescriptor {
@@ -516,6 +565,7 @@ pub struct MessageDescriptor {
     messages: Box<[Ref<MessageDescriptor>]>,
     enums: Box<[Ref<EnumDescriptor>]>,
     oneofs: Box<[Ref<OneofDescriptor>]>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl MessageDescriptor {
@@ -569,6 +619,10 @@ impl MessageDescriptor {
     /// Creates a new string with the full name of this descriptor
     pub fn full_name(&self) -> &String {
         &self.full_name
+    }
+
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
     }
 
     pub fn map_entry(&self) -> bool {
@@ -724,6 +778,23 @@ impl MessageDescriptor {
             }
         }
     }
+
+    fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            unsafe {
+                match path[0] {
+                    2 => Ref::get_mut(&mut self.fields[path[1] as usize]).get_source_code_info(&path[2..]),
+                    3 => Ref::get_mut(&mut self.messages[path[1] as usize]).get_source_code_info(&path[2..]),
+                    4 => Ref::get_mut(&mut self.enums[path[1] as usize]).get_source_code_info(&path[2..]),
+                    6 => Ref::get_mut(&mut self.extensions[path[1] as usize]).get_source_code_info(&path[2..]),
+                    8 => Ref::get_mut(&mut self.oneofs[path[1] as usize]).get_source_code_info(&path[2..]),
+                    _ => None
+                }
+            }
+        }
+    }
 }
 
 impl PartialEq for MessageDescriptor {
@@ -777,6 +848,7 @@ pub struct EnumDescriptor {
     scope_index: usize,
     full_name: String,
     values: Box<[Ref<EnumValueDescriptor>]>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl EnumDescriptor {
@@ -806,6 +878,10 @@ impl EnumDescriptor {
 
     pub fn options(&self) -> Option<&EnumOptions> {
         self.proto().options.as_ref().map(AsRef::as_ref)
+    }
+
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
     }
 
     fn new(
@@ -851,6 +927,17 @@ impl EnumDescriptor {
 
         Ref::new(descriptor_raw)
     }
+
+    unsafe fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            match path[0] {
+                2 => Ref::get_mut(&mut self.values[path[1] as usize]).get_source_code_info(&path[2..]),
+                _ => None
+            }
+        }
+    }
 }
 
 impl PartialEq for EnumDescriptor {
@@ -891,6 +978,7 @@ pub struct EnumValueDescriptor {
     index: usize,
     enum_type: Ref<EnumDescriptor>,
     full_name: String,
+    info: Option<SourceCodeInfo>,
 }
 
 impl EnumValueDescriptor {
@@ -923,6 +1011,10 @@ impl EnumValueDescriptor {
         self.proto().options.as_ref().map(AsRef::as_ref)
     }
 
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
+    }
+
     fn new(
         proto: *const EnumValueDescriptorProto,
         parent: Ref<EnumDescriptor>,
@@ -953,6 +1045,14 @@ impl EnumValueDescriptor {
         }
 
         Ref::new(descriptor_raw)
+    }
+
+    fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            None
+        }
     }
 }
 
@@ -995,6 +1095,7 @@ pub struct ServiceDescriptor {
     file: Ref<FileDescriptor>,
     index: usize,
     methods: Box<[Ref<MethodDescriptor>]>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl ServiceDescriptor {
@@ -1024,6 +1125,10 @@ impl ServiceDescriptor {
 
     pub fn options(&self) -> Option<&ServiceOptions> {
         self.proto().options.as_ref().map(AsRef::as_ref)
+    }
+
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
     }
 
     fn new(
@@ -1076,6 +1181,17 @@ impl ServiceDescriptor {
             }
         }
     }
+
+    unsafe fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            match path[0] {
+                2 => Ref::get_mut(&mut self.methods[path[1] as usize]).get_source_code_info(&path[2..]),
+                _ => None
+            }
+        }
+    }
 }
 
 impl PartialEq for ServiceDescriptor {
@@ -1118,6 +1234,7 @@ pub struct MethodDescriptor {
     index: usize,
     input_type: Ref<MessageDescriptor>,
     output_type: Ref<MessageDescriptor>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl MethodDescriptor {
@@ -1161,6 +1278,10 @@ impl MethodDescriptor {
         self.proto().options.as_ref().map(AsRef::as_ref)
     }
 
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
+    }
+
     fn new(
         proto: *const MethodDescriptorProto,
         service: Ref<ServiceDescriptor>,
@@ -1196,6 +1317,14 @@ impl MethodDescriptor {
     fn cross_ref(&mut self, pool: &mut DescriptorPool) {
         self.input_type = pool.get_message_ref(self.proto().input_type.as_ref().unwrap());
         self.output_type = pool.get_message_ref(self.proto().output_type.as_ref().unwrap());
+    }
+
+    fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            None
+        }
     }
 }
 
@@ -1233,6 +1362,7 @@ impl Debug for MethodDescriptor {
     }
 }
 
+#[derive(PartialEq, Eq)]
 pub enum FieldType {
     Double,
     Float,
@@ -1319,6 +1449,7 @@ pub struct FieldDescriptor {
     value_type: FieldType,
     default: DefaultValue,
     message: Ref<MessageDescriptor>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl FieldDescriptor {
@@ -1365,6 +1496,10 @@ impl FieldDescriptor {
 
     pub fn options(&self) -> Option<&FieldOptions> {
         self.proto().options.as_ref().map(AsRef::as_ref)
+    }
+
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
     }
 
     pub fn packed(&self) -> bool {
@@ -1535,6 +1670,14 @@ impl FieldDescriptor {
             }
         }
     }
+
+    fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            None
+        }
+    }
 }
 
 impl PartialEq for FieldDescriptor {
@@ -1601,6 +1744,7 @@ pub struct OneofDescriptor {
     full_name: String,
     message: Ref<MessageDescriptor>,
     fields: Box<[Ref<FieldDescriptor>]>,
+    info: Option<SourceCodeInfo>,
 }
 
 impl OneofDescriptor {
@@ -1622,6 +1766,10 @@ impl OneofDescriptor {
 
     pub fn fields(&self) -> &[Ref<FieldDescriptor>] {
         &self.fields
+    }
+
+    pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
+        self.info.as_ref()
     }
 
     fn new(
@@ -1665,6 +1813,14 @@ impl OneofDescriptor {
             .map(Ref::clone)
             .collect::<Vec<_>>()
             .into()
+    }
+
+    fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
+        if path.is_empty() {
+            Some(&mut self.info)
+        } else {
+            None
+        }
     }
 }
 
