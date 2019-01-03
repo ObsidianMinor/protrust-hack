@@ -93,7 +93,7 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
 ///   1. parse this proto (which should always succeed)
 ///   2. parse the protobuf or JSON payload in "payload" (which may fail)
 ///   3. if the parse succeeded, serialize the message in the requested format.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ConformanceRequest {
     requested_output_format: ::protrust::EnumValue<self::WireFormat>,
     message_type: ::std::string::String,
@@ -219,19 +219,7 @@ impl ::protrust::LiteMessage for self::ConformanceRequest {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::ConformanceRequest {
-    fn clone(&self) -> Self {
-        Self {
-            requested_output_format: self.requested_output_format.clone(),
-            message_type: self.message_type.clone(),
-            test_category: self.test_category.clone(),
-            jspb_encoding_options: self.jspb_encoding_options.clone(),
-            payload: self.payload.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         if let self::ConformanceRequest_Payload::ProtobufPayload(payload) = &other.payload {
             self.payload = self::ConformanceRequest_Payload::ProtobufPayload(payload.clone());
         }
@@ -245,9 +233,9 @@ impl ::std::clone::Clone for self::ConformanceRequest {
         self.message_type = other.message_type.clone();
         self.test_category = other.test_category;
         if let ::std::option::Option::Some(jspb_encoding_options) = &other.jspb_encoding_options {
-            self.jspb_encoding_options.get_or_insert_with(::protrust::LiteMessage::new).clone_from(jspb_encoding_options);
+            self.jspb_encoding_options.get_or_insert_with(::protrust::LiteMessage::new).merge(jspb_encoding_options);
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::ConformanceRequest {
@@ -342,7 +330,7 @@ impl self::ConformanceRequest {
     }
 }
 /// Represents a single test case's output.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ConformanceResponse {
     result: self::ConformanceResponse_Result,
     unknown_fields: ::protrust::UnknownFieldSet
@@ -468,15 +456,7 @@ impl ::protrust::LiteMessage for self::ConformanceResponse {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::ConformanceResponse {
-    fn clone(&self) -> Self {
-        Self {
-            result: self.result.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         if let self::ConformanceResponse_Result::ParseError(result) = &other.result {
             self.result = self::ConformanceResponse_Result::ParseError(result.clone());
         }
@@ -498,7 +478,7 @@ impl ::std::clone::Clone for self::ConformanceResponse {
         if let self::ConformanceResponse_Result::JspbPayload(result) = &other.result {
             self.result = self::ConformanceResponse_Result::JspbPayload(result.clone());
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::ConformanceResponse {
@@ -521,7 +501,7 @@ impl self::ConformanceResponse {
     }
 }
 /// Encoding options for jspb format.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct JspbEncodingConfig {
     use_jspb_array_any_format: bool,
     unknown_fields: ::protrust::UnknownFieldSet
@@ -563,17 +543,9 @@ impl ::protrust::LiteMessage for self::JspbEncodingConfig {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::JspbEncodingConfig {
-    fn clone(&self) -> Self {
-        Self {
-            use_jspb_array_any_format: self.use_jspb_array_any_format.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.use_jspb_array_any_format = other.use_jspb_array_any_format;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::JspbEncodingConfig {

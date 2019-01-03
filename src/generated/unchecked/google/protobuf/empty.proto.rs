@@ -55,7 +55,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///     }
 ///
 /// The JSON representation for `Empty` is empty JSON object `{}`.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Empty {
     unknown_fields: crate::UnknownFieldSet
 }
@@ -84,15 +84,8 @@ impl crate::LiteMessage for self::Empty {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Empty {
-    fn clone(&self) -> Self {
-        Self {
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.unknown_fields.clone_from(&other.unknown_fields);
+    fn merge(&mut self, other: &Self) {
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Empty {

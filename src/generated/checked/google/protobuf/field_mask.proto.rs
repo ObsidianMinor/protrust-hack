@@ -255,7 +255,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// The implementation of any API method which has a FieldMask type field in the
 /// request should verify the included field paths, and return an
 /// `INVALID_ARGUMENT` error if any path is duplicated or unmappable.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldMask {
     pub paths: crate::collections::RepeatedField<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
@@ -290,17 +290,9 @@ impl crate::LiteMessage for self::FieldMask {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::FieldMask {
-    fn clone(&self) -> Self {
-        Self {
-            paths: self.paths.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.paths.clone_from(&other.paths);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+    fn merge(&mut self, other: &Self) {
+        self.paths.merge(&other.paths);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FieldMask {

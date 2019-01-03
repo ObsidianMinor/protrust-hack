@@ -81,7 +81,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// with the proto support for the language.
 ///
 /// The JSON representation for `Struct` is JSON object.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Struct {
     pub fields: crate::collections::MapField<::std::string::String, self::Value>,
     unknown_fields: crate::UnknownFieldSet
@@ -116,17 +116,9 @@ impl crate::LiteMessage for self::Struct {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Struct {
-    fn clone(&self) -> Self {
-        Self {
-            fields: self.fields.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.fields.clone_from(&other.fields);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+    fn merge(&mut self, other: &Self) {
+        self.fields.merge(&other.fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Struct {
@@ -156,7 +148,7 @@ impl self::Struct {
 /// variants, absence of any variant indicates an error.
 ///
 /// The JSON representation for `Value` is JSON value.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Value {
     pub kind: Value_Kind,
     unknown_fields: crate::UnknownFieldSet
@@ -273,15 +265,7 @@ impl crate::LiteMessage for self::Value {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Value {
-    fn clone(&self) -> Self {
-        Self {
-            kind: self.kind.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         if let self::Value_Kind::NullValue(kind) = other.kind {
             self.kind = self::Value_Kind::NullValue(kind);
         }
@@ -296,19 +280,19 @@ impl ::std::clone::Clone for self::Value {
         }
         if let self::Value_Kind::StructValue(kind) = &other.kind {
             if let self::Value_Kind::StructValue(existing) = &mut self.kind {
-                existing.clone_from(kind);
+                existing.merge(kind);
             } else {
                 self.kind = self::Value_Kind::StructValue(kind.clone());
             }
         }
         if let self::Value_Kind::ListValue(kind) = &other.kind {
             if let self::Value_Kind::ListValue(existing) = &mut self.kind {
-                existing.clone_from(kind);
+                existing.merge(kind);
             } else {
                 self.kind = self::Value_Kind::ListValue(kind.clone());
             }
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Value {
@@ -333,7 +317,7 @@ impl self::Value {
 /// `ListValue` is a wrapper around a repeated field of values.
 ///
 /// The JSON representation for `ListValue` is JSON array.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ListValue {
     pub values: crate::collections::RepeatedField<self::Value>,
     unknown_fields: crate::UnknownFieldSet
@@ -368,17 +352,9 @@ impl crate::LiteMessage for self::ListValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::ListValue {
-    fn clone(&self) -> Self {
-        Self {
-            values: self.values.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.values.clone_from(&other.values);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+    fn merge(&mut self, other: &Self) {
+        self.values.merge(&other.values);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::ListValue {

@@ -52,7 +52,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 }
 /// `SourceContext` represents information about the source of a
 /// protobuf element, like the file in which it is defined.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SourceContext {
     pub file_name: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
@@ -94,17 +94,9 @@ impl crate::LiteMessage for self::SourceContext {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::SourceContext {
-    fn clone(&self) -> Self {
-        Self {
-            file_name: self.file_name.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.file_name = other.file_name.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::SourceContext {

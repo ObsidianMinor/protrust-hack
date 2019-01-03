@@ -76,7 +76,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     }
 }
 /// The version number of protocol compiler.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Version {
     pub major: ::std::option::Option<i32>,
     pub minor: ::std::option::Option<i32>,
@@ -173,23 +173,12 @@ impl crate::LiteMessage for self::Version {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Version {
-    fn clone(&self) -> Self {
-        Self {
-            major: self.major.clone(),
-            minor: self.minor.clone(),
-            patch: self.patch.clone(),
-            suffix: self.suffix.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.major = other.major;
         self.minor = other.minor;
         self.patch = other.patch;
         self.suffix = other.suffix.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Version {
@@ -330,7 +319,7 @@ impl self::Version {
     }
 }
 /// An encoded CodeGeneratorRequest is written to the plugin's stdin.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorRequest {
     pub file_to_generate: crate::collections::RepeatedField<::std::string::String>,
     pub parameter: ::std::option::Option<::std::string::String>,
@@ -401,25 +390,14 @@ impl crate::LiteMessage for self::CodeGeneratorRequest {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::CodeGeneratorRequest {
-    fn clone(&self) -> Self {
-        Self {
-            file_to_generate: self.file_to_generate.clone(),
-            parameter: self.parameter.clone(),
-            proto_file: self.proto_file.clone(),
-            compiler_version: self.compiler_version.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.file_to_generate.clone_from(&other.file_to_generate);
+    fn merge(&mut self, other: &Self) {
+        self.file_to_generate.merge(&other.file_to_generate);
         self.parameter = other.parameter.clone();
-        self.proto_file.clone_from(&other.proto_file);
+        self.proto_file.merge(&other.proto_file);
         if let ::std::option::Option::Some(compiler_version) = &other.compiler_version {
-            self.compiler_version.get_or_insert_with(crate::LiteMessage::new).clone_from(compiler_version);
+            self.compiler_version.get_or_insert_with(crate::LiteMessage::new).merge(compiler_version);
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorRequest {
@@ -553,7 +531,7 @@ impl self::CodeGeneratorRequest {
     }
 }
 /// The plugin writes an encoded CodeGeneratorResponse to stdout.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse {
     pub error: ::std::option::Option<::std::string::String>,
     pub file: crate::collections::RepeatedField<self::CodeGeneratorResponse_File>,
@@ -605,19 +583,10 @@ impl crate::LiteMessage for self::CodeGeneratorResponse {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::CodeGeneratorResponse {
-    fn clone(&self) -> Self {
-        Self {
-            error: self.error.clone(),
-            file: self.file.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.error = other.error.clone();
-        self.file.clone_from(&other.file);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.file.merge(&other.file);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorResponse {
@@ -690,7 +659,7 @@ impl self::CodeGeneratorResponse {
     }
 }
 /// Represents a single generated file.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse_File {
     pub name: ::std::option::Option<::std::string::String>,
     pub insertion_point: ::std::option::Option<::std::string::String>,
@@ -770,21 +739,11 @@ impl crate::LiteMessage for self::CodeGeneratorResponse_File {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::CodeGeneratorResponse_File {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            insertion_point: self.insertion_point.clone(),
-            content: self.content.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.insertion_point = other.insertion_point.clone();
         self.content = other.content.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::CodeGeneratorResponse_File {

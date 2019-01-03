@@ -129,7 +129,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     }
 }
 /// A protocol buffer message type.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Type {
     pub name: ::std::string::String,
     pub fields: crate::collections::RepeatedField<self::Field>,
@@ -215,29 +215,16 @@ impl crate::LiteMessage for self::Type {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Type {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            fields: self.fields.clone(),
-            oneofs: self.oneofs.clone(),
-            options: self.options.clone(),
-            source_context: self.source_context.clone(),
-            syntax: self.syntax.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
-        self.fields.clone_from(&other.fields);
-        self.oneofs.clone_from(&other.oneofs);
-        self.options.clone_from(&other.options);
+        self.fields.merge(&other.fields);
+        self.oneofs.merge(&other.oneofs);
+        self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
+            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
         }
         self.syntax = other.syntax;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Type {
@@ -340,7 +327,7 @@ impl self::Type {
     }
 }
 /// A single field of a message type.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Field {
     pub kind: crate::EnumValue<self::Field_Kind>,
     pub cardinality: crate::EnumValue<self::Field_Cardinality>,
@@ -492,24 +479,7 @@ impl crate::LiteMessage for self::Field {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Field {
-    fn clone(&self) -> Self {
-        Self {
-            kind: self.kind.clone(),
-            cardinality: self.cardinality.clone(),
-            number: self.number.clone(),
-            name: self.name.clone(),
-            type_url: self.type_url.clone(),
-            oneof_index: self.oneof_index.clone(),
-            packed: self.packed.clone(),
-            options: self.options.clone(),
-            json_name: self.json_name.clone(),
-            default_value: self.default_value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.kind = other.kind;
         self.cardinality = other.cardinality;
         self.number = other.number;
@@ -517,10 +487,10 @@ impl ::std::clone::Clone for self::Field {
         self.type_url = other.type_url.clone();
         self.oneof_index = other.oneof_index;
         self.packed = other.packed;
-        self.options.clone_from(&other.options);
+        self.options.merge(&other.options);
         self.json_name = other.json_name.clone();
         self.default_value = other.default_value.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Field {
@@ -812,7 +782,7 @@ impl ::std::convert::From<self::Field_Cardinality> for i32 {
     }
 }
 /// Enum type definition.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Enum {
     pub name: ::std::string::String,
     pub enumvalue: crate::collections::RepeatedField<self::EnumValue>,
@@ -892,27 +862,15 @@ impl crate::LiteMessage for self::Enum {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Enum {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            enumvalue: self.enumvalue.clone(),
-            options: self.options.clone(),
-            source_context: self.source_context.clone(),
-            syntax: self.syntax.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
-        self.enumvalue.clone_from(&other.enumvalue);
-        self.options.clone_from(&other.options);
+        self.enumvalue.merge(&other.enumvalue);
+        self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
+            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
         }
         self.syntax = other.syntax;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Enum {
@@ -1001,7 +959,7 @@ impl self::Enum {
     }
 }
 /// Enum value definition.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumValue {
     pub name: ::std::string::String,
     pub number: i32,
@@ -1062,21 +1020,11 @@ impl crate::LiteMessage for self::EnumValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::EnumValue {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            number: self.number.clone(),
-            options: self.options.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.number = other.number;
-        self.options.clone_from(&other.options);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.options.merge(&other.options);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::EnumValue {
@@ -1138,7 +1086,7 @@ impl self::EnumValue {
 }
 /// A protocol buffer option, which can be attached to a message, field,
 /// enumeration, etc.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Option {
     pub name: ::std::string::String,
     pub value: ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>>,
@@ -1193,21 +1141,12 @@ impl crate::LiteMessage for self::Option {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Option {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         if let ::std::option::Option::Some(value) = &other.value {
-            self.value.get_or_insert_with(crate::LiteMessage::new).clone_from(value);
+            self.value.get_or_insert_with(crate::LiteMessage::new).merge(value);
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Option {

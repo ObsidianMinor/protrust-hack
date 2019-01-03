@@ -65,7 +65,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// Wrapper message for `double`.
 ///
 /// The JSON representation for `DoubleValue` is JSON number.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DoubleValue {
     pub value: f64,
     unknown_fields: crate::UnknownFieldSet
@@ -107,17 +107,9 @@ impl crate::LiteMessage for self::DoubleValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::DoubleValue {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::DoubleValue {
@@ -148,7 +140,7 @@ impl self::DoubleValue {
 /// Wrapper message for `float`.
 ///
 /// The JSON representation for `FloatValue` is JSON number.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct FloatValue {
     pub value: f32,
     unknown_fields: crate::UnknownFieldSet
@@ -190,17 +182,9 @@ impl crate::LiteMessage for self::FloatValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::FloatValue {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::FloatValue {
@@ -231,7 +215,7 @@ impl self::FloatValue {
 /// Wrapper message for `int64`.
 ///
 /// The JSON representation for `Int64Value` is JSON string.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Int64Value {
     pub value: i64,
     unknown_fields: crate::UnknownFieldSet
@@ -273,17 +257,9 @@ impl crate::LiteMessage for self::Int64Value {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Int64Value {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Int64Value {
@@ -314,7 +290,7 @@ impl self::Int64Value {
 /// Wrapper message for `uint64`.
 ///
 /// The JSON representation for `UInt64Value` is JSON string.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UInt64Value {
     pub value: u64,
     unknown_fields: crate::UnknownFieldSet
@@ -356,17 +332,9 @@ impl crate::LiteMessage for self::UInt64Value {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::UInt64Value {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::UInt64Value {
@@ -397,7 +365,7 @@ impl self::UInt64Value {
 /// Wrapper message for `int32`.
 ///
 /// The JSON representation for `Int32Value` is JSON number.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Int32Value {
     pub value: i32,
     unknown_fields: crate::UnknownFieldSet
@@ -439,17 +407,9 @@ impl crate::LiteMessage for self::Int32Value {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Int32Value {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Int32Value {
@@ -480,7 +440,7 @@ impl self::Int32Value {
 /// Wrapper message for `uint32`.
 ///
 /// The JSON representation for `UInt32Value` is JSON number.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UInt32Value {
     pub value: u32,
     unknown_fields: crate::UnknownFieldSet
@@ -522,17 +482,9 @@ impl crate::LiteMessage for self::UInt32Value {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::UInt32Value {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::UInt32Value {
@@ -563,7 +515,7 @@ impl self::UInt32Value {
 /// Wrapper message for `bool`.
 ///
 /// The JSON representation for `BoolValue` is JSON `true` and `false`.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BoolValue {
     pub value: bool,
     unknown_fields: crate::UnknownFieldSet
@@ -605,17 +557,9 @@ impl crate::LiteMessage for self::BoolValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::BoolValue {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::BoolValue {
@@ -646,7 +590,7 @@ impl self::BoolValue {
 /// Wrapper message for `string`.
 ///
 /// The JSON representation for `StringValue` is JSON string.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct StringValue {
     pub value: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
@@ -688,17 +632,9 @@ impl crate::LiteMessage for self::StringValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::StringValue {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::StringValue {
@@ -729,7 +665,7 @@ impl self::StringValue {
 /// Wrapper message for `bytes`.
 ///
 /// The JSON representation for `BytesValue` is JSON string.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BytesValue {
     pub value: ::std::vec::Vec<u8>,
     unknown_fields: crate::UnknownFieldSet
@@ -771,17 +707,9 @@ impl crate::LiteMessage for self::BytesValue {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::BytesValue {
-    fn clone(&self) -> Self {
-        Self {
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.value = other.value.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::BytesValue {

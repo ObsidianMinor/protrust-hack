@@ -1,7 +1,6 @@
 use crate::names;
 use crate::printer;
 use crate::Options;
-use protrust::descriptor;
 use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::WireType;
 use protrust::prelude::*;
@@ -104,13 +103,8 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         genln!(self.printer; "// Source: {file}\n" => self.vars, file);
 
         // static descriptor code
-        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| {
-            o.optimize_for
-                .unwrap_or(descriptor::FileOptions::OPTIMIZE_FOR_DEFAULT_VALUE)
-        }) {
-            if o != OptimizeMode::LiteRuntime {
-                self.generate_descriptor_code()?;
-            }
+        if self.proto.file().options().map(|o| o.optimize_for()) != Some(EnumValue::Defined(OptimizeMode::LiteRuntime)) {
+            self.generate_descriptor_code()?;
         }
 
         // extensions
@@ -223,7 +217,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
     pub fn generate(&mut self) -> Result {
         self.generate_rustdoc_comments()?;
-        genln!(self.printer, "#[derive(Debug, PartialEq)]");
+        genln!(self.printer, "#[derive(Clone, Debug, PartialEq)]");
         genln!(self.printer; "pub struct {type_name} {{" => self.vars, type_name);
         indent!(self.printer, {
             for field in self.proto.message_fields() {
@@ -248,15 +242,10 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
 
         self.generate_coded_message_impl()?;
         self.generate_lite_message_impl()?;
-        self.generate_clone_impl()?;
 
-        if let Some(EnumValue::Defined(o)) = self.proto.file().options().map(|o| {
-            o.optimize_for
-                .unwrap_or(EnumValue::Defined(OptimizeMode::Speed))
-        }) {
-            if o != OptimizeMode::LiteRuntime {
-                self.generate_message_impl()?;
-            }
+        if self.proto.file().options().map(|o| o.optimize_for()) != Some(EnumValue::Defined(OptimizeMode::LiteRuntime)) {
+            self.generate_message_impl()?;
+            
         }
 
         self.generate_struct_impl()?;
@@ -369,6 +358,19 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
                 genln!(self.printer, "}}");
             });
             genln!(self.printer, "}}");
+            genln!(self.printer, "fn merge(&mut self, other: &Self) {{");
+            indent!(self.printer, {
+                for field in self.proto.fields() {
+                    Generator::<FieldDescriptor, _>::from_other(self, field)
+                        .generate_field_merge()?;
+                }
+
+                genln!(
+                    self.printer,
+                    "self.unknown_fields.merge(&other.unknown_fields);"
+                );
+            });
+            genln!(self.printer, "}}");
         });
         genln!(self.printer, "}}");
 
@@ -392,47 +394,6 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
             genln!(self.printer, "}}");
         });
         genln!(self.printer, "}}");
-        Ok(())
-    }
-
-    pub fn generate_clone_impl(&mut self) -> Result {
-        genln!(self.printer; "impl ::std::clone::Clone for {full_type_name} {{" => self.vars, full_type_name);
-        indent!(self.printer, {
-            genln!(self.printer, "fn clone(&self) -> Self {{");
-            indent!(self.printer, {
-                genln!(self.printer, "Self {{");
-                indent!(self.printer, {
-                    for field in self.proto.message_fields() {
-                        Generator::<FieldDescriptor, _>::from_other(self, field)
-                            .generate_clone()?;
-                    }
-
-                    for oneof in self.proto.oneofs() {
-                        Generator::<OneofDescriptor, _>::from_other(self, oneof)
-                            .generate_clone()?;
-                    }
-
-                    genln!(self.printer, "unknown_fields: self.unknown_fields.clone()");
-                });
-                genln!(self.printer, "}}");
-            });
-            genln!(self.printer, "}}");
-            genln!(self.printer, "fn clone_from(&mut self, other: &Self) {{");
-            indent!(self.printer, {
-                for field in self.proto.fields() {
-                    Generator::<FieldDescriptor, _>::from_other(self, field)
-                        .generate_field_merge()?;
-                }
-
-                genln!(
-                    self.printer,
-                    "self.unknown_fields.clone_from(&other.unknown_fields);"
-                );
-            });
-            genln!(self.printer, "}}");
-        });
-        genln!(self.printer, "}}");
-
         Ok(())
     }
 
@@ -615,7 +576,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                         FieldType::Message(_) | FieldType::Group(_) => {
                             genln!(self.printer; "if let self::{oneof}::{name}(existing) = &mut self.{field_name} {{" => self.vars, oneof, name, field_name);
                             indent!(self.printer, {
-                                genln!(self.printer; "existing.clone_from({field_name});" => self.vars, field_name);
+                                genln!(self.printer; "existing.merge({field_name});" => self.vars, field_name);
                             });
                             genln!(self.printer, "}} else {{");
                             indent!(self.printer, {
@@ -638,7 +599,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         genln!(self.printer; "if let ::std::option::Option::Some({field_name}) = &other.{field_name} {{" => self.vars, field_name);
                         indent!(self.printer, {
-                            genln!(self.printer; "self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).clone_from({field_name});" => self.vars, crate_name, field_name);
+                            genln!(self.printer; "self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).merge({field_name});" => self.vars, crate_name, field_name);
                         });
                         genln!(self.printer, "}}");
                     }
@@ -650,7 +611,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     }
                 },
                 FieldLabel::Repeated => {
-                    genln!(self.printer; "self.{field_name}.clone_from(&other.{field_name});" => self.vars, field_name);
+                    genln!(self.printer; "self.{field_name}.merge(&other.{field_name});" => self.vars, field_name);
                 }
             },
             _ => {}
@@ -874,11 +835,6 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
             }
         }
 
-        Ok(())
-    }
-
-    pub fn generate_clone(&mut self) -> Result {
-        genln!(self.printer; "{field_name}: self.{field_name}.clone()," => self.vars, field_name);
         Ok(())
     }
 
@@ -1301,11 +1257,6 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
             }
         });
         genln!(self.printer, "}}");
-        Ok(())
-    }
-
-    pub fn generate_clone(&mut self) -> Result {
-        genln!(self.printer; "{field_name}: self.{field_name}.clone()," => self.vars, field_name);
         Ok(())
     }
 

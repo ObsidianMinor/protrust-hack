@@ -109,7 +109,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// microsecond should be expressed in JSON format as "3.000001s".
 ///
 ///
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Duration {
     pub seconds: i64,
     pub nanos: i32,
@@ -164,19 +164,10 @@ impl crate::LiteMessage for self::Duration {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Duration {
-    fn clone(&self) -> Self {
-        Self {
-            seconds: self.seconds.clone(),
-            nanos: self.nanos.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.seconds = other.seconds;
         self.nanos = other.nanos;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Duration {

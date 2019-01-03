@@ -64,7 +64,7 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     }
 }
 /// [START messages]
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Person {
     pub name: ::std::string::String,
     pub id: i32,
@@ -151,27 +151,15 @@ impl ::protrust::LiteMessage for self::Person {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Person {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            id: self.id.clone(),
-            email: self.email.clone(),
-            phones: self.phones.clone(),
-            last_updated: self.last_updated.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.id = other.id;
         self.email = other.email.clone();
-        self.phones.clone_from(&other.phones);
+        self.phones.merge(&other.phones);
         if let ::std::option::Option::Some(last_updated) = &other.last_updated {
-            self.last_updated.get_or_insert_with(::protrust::LiteMessage::new).clone_from(last_updated);
+            self.last_updated.get_or_insert_with(::protrust::LiteMessage::new).merge(last_updated);
         }
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::Person {
@@ -259,7 +247,7 @@ impl self::Person {
         &mut self.last_updated
     }
 }
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Person_PhoneNumber {
     pub number: ::std::string::String,
     pub r#type: ::protrust::EnumValue<self::Person_PhoneType>,
@@ -314,19 +302,10 @@ impl ::protrust::LiteMessage for self::Person_PhoneNumber {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Person_PhoneNumber {
-    fn clone(&self) -> Self {
-        Self {
-            number: self.number.clone(),
-            r#type: self.r#type.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.number = other.number.clone();
         self.r#type = other.r#type;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::Person_PhoneNumber {
@@ -393,7 +372,7 @@ impl ::std::convert::From<self::Person_PhoneType> for i32 {
     }
 }
 /// Our address book file is just one of these.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct AddressBook {
     pub people: ::protrust::collections::RepeatedField<self::Person>,
     unknown_fields: ::protrust::UnknownFieldSet
@@ -428,17 +407,9 @@ impl ::protrust::LiteMessage for self::AddressBook {
             unknown_fields: ::protrust::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::AddressBook {
-    fn clone(&self) -> Self {
-        Self {
-            people: self.people.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
-        self.people.clone_from(&other.people);
-        self.unknown_fields.clone_from(&other.unknown_fields);
+    fn merge(&mut self, other: &Self) {
+        self.people.merge(&other.people);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl ::protrust::Message for self::AddressBook {

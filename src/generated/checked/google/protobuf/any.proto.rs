@@ -128,7 +128,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///       "value": "1.212s"
 ///     }
 ///
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Any {
     pub type_url: ::std::string::String,
     pub value: ::std::vec::Vec<u8>,
@@ -183,19 +183,10 @@ impl crate::LiteMessage for self::Any {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Any {
-    fn clone(&self) -> Self {
-        Self {
-            type_url: self.type_url.clone(),
-            value: self.value.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.type_url = other.type_url.clone();
         self.value = other.value.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Any {

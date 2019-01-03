@@ -91,7 +91,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// sometimes simply referred to as "APIs" in other contexts, such as the name of
 /// this message itself. See https://cloud.google.com/apis/design/glossary for
 /// detailed terminology.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Api {
     pub name: ::std::string::String,
     pub methods: crate::collections::RepeatedField<self::Method>,
@@ -190,31 +190,17 @@ impl crate::LiteMessage for self::Api {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Api {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            methods: self.methods.clone(),
-            options: self.options.clone(),
-            version: self.version.clone(),
-            source_context: self.source_context.clone(),
-            mixins: self.mixins.clone(),
-            syntax: self.syntax.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
-        self.methods.clone_from(&other.methods);
-        self.options.clone_from(&other.options);
+        self.methods.merge(&other.methods);
+        self.options.merge(&other.options);
         self.version = other.version.clone();
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).clone_from(source_context);
+            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
         }
-        self.mixins.clone_from(&other.mixins);
+        self.mixins.merge(&other.mixins);
         self.syntax = other.syntax;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Api {
@@ -357,7 +343,7 @@ impl self::Api {
     }
 }
 /// Method represents a method of an API interface.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Method {
     pub name: ::std::string::String,
     pub request_type_url: ::std::string::String,
@@ -470,29 +456,15 @@ impl crate::LiteMessage for self::Method {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Method {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            request_type_url: self.request_type_url.clone(),
-            request_streaming: self.request_streaming.clone(),
-            response_type_url: self.response_type_url.clone(),
-            response_streaming: self.response_streaming.clone(),
-            options: self.options.clone(),
-            syntax: self.syntax.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.request_type_url = other.request_type_url.clone();
         self.request_streaming = other.request_streaming;
         self.response_type_url = other.response_type_url.clone();
         self.response_streaming = other.response_streaming;
-        self.options.clone_from(&other.options);
+        self.options.merge(&other.options);
         self.syntax = other.syntax;
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Method {
@@ -702,7 +674,7 @@ impl self::Method {
 ///       }
 ///       ...
 ///     }
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Mixin {
     pub name: ::std::string::String,
     pub root: ::std::string::String,
@@ -757,19 +729,10 @@ impl crate::LiteMessage for self::Mixin {
             unknown_fields: crate::UnknownFieldSet::new()
         }
     }
-}
-impl ::std::clone::Clone for self::Mixin {
-    fn clone(&self) -> Self {
-        Self {
-            name: self.name.clone(),
-            root: self.root.clone(),
-            unknown_fields: self.unknown_fields.clone()
-        }
-    }
-    fn clone_from(&mut self, other: &Self) {
+    fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         self.root = other.root.clone();
-        self.unknown_fields.clone_from(&other.unknown_fields);
+        self.unknown_fields.merge(&other.unknown_fields);
     }
 }
 impl crate::Message for self::Mixin {
