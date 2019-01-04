@@ -424,15 +424,16 @@ impl FileDescriptor {
             .collect::<Vec<_>>()
             .into();
 
-        descriptor.syntax = if descriptor.proto().has_syntax() {
-            Syntax::Proto2
-        } else {
-            match descriptor.proto().syntax() {
-                "proto3" => Syntax::Proto3,
-                "proto2" => Syntax::Proto2,
-                _ => Syntax::Unknown,
-            }
-        };
+        descriptor.syntax = 
+            if !descriptor.proto().has_syntax() {
+                Syntax::Proto2
+            } else {
+                match descriptor.proto().syntax() {
+                    "proto3" => Syntax::Proto3,
+                    "proto2" => Syntax::Proto2,
+                    _ => Syntax::Unknown,
+                }
+            };
 
         if let Some(_) = pool
             .symbols
