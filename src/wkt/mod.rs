@@ -10,7 +10,7 @@
 /// msg.seconds = 25;
 /// msg.nanos = 56;
 /// let packed = Any::pack(&msg).expect("Could not pack");
-/// 
+///
 /// assert!(packed.is::<Timestamp>());
 /// assert_eq!(packed.unpack::<Timestamp>().unwrap(), Some(msg));
 /// # }

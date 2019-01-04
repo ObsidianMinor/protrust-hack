@@ -78,10 +78,10 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// The version number of protocol compiler.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Version {
-    pub major: ::std::option::Option<i32>,
-    pub minor: ::std::option::Option<i32>,
-    pub patch: ::std::option::Option<i32>,
-    pub suffix: ::std::option::Option<::std::string::String>,
+    major: ::std::option::Option<i32>,
+    minor: ::std::option::Option<i32>,
+    patch: ::std::option::Option<i32>,
+    suffix: ::std::option::Option<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Version {
@@ -321,10 +321,10 @@ impl self::Version {
 /// An encoded CodeGeneratorRequest is written to the plugin's stdin.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorRequest {
-    pub file_to_generate: crate::collections::RepeatedField<::std::string::String>,
-    pub parameter: ::std::option::Option<::std::string::String>,
-    pub proto_file: crate::collections::RepeatedField<crate::descriptor::FileDescriptorProto>,
-    pub compiler_version: ::std::option::Option<::std::boxed::Box<self::Version>>,
+    file_to_generate: crate::collections::RepeatedField<::std::string::String>,
+    parameter: ::std::option::Option<::std::string::String>,
+    proto_file: crate::collections::RepeatedField<crate::descriptor::FileDescriptorProto>,
+    compiler_version: ::std::option::Option<::std::boxed::Box<self::Version>>,
     unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(10);
@@ -533,8 +533,8 @@ impl self::CodeGeneratorRequest {
 /// The plugin writes an encoded CodeGeneratorResponse to stdout.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse {
-    pub error: ::std::option::Option<::std::string::String>,
-    pub file: crate::collections::RepeatedField<self::CodeGeneratorResponse_File>,
+    error: ::std::option::Option<::std::string::String>,
+    file: crate::collections::RepeatedField<self::CodeGeneratorResponse_File>,
     unknown_fields: crate::UnknownFieldSet
 }
 static CODE_GENERATOR_RESPONSE_FILE_CODEC: crate::Codec<self::CodeGeneratorResponse_File> = crate::Codec::message(122);
@@ -661,9 +661,9 @@ impl self::CodeGeneratorResponse {
 /// Represents a single generated file.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse_File {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub insertion_point: ::std::option::Option<::std::string::String>,
-    pub content: ::std::option::Option<::std::string::String>,
+    name: ::std::option::Option<::std::string::String>,
+    insertion_point: ::std::option::Option<::std::string::String>,
+    content: ::std::option::Option<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::CodeGeneratorResponse_File {

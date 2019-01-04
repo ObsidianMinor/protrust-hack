@@ -1,7 +1,7 @@
 use protrust::reflect::*;
 
 pub fn get_rust_file_name(file: &FileDescriptor) -> String {
-    file.name().clone() + ".rs"
+    file.name().to_string() + ".rs"
 }
 
 pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
@@ -12,7 +12,7 @@ pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
 pub fn get_rust_external_mod_name(file: &FileDescriptor, crate_name: &str) -> String {
     match well_known_file(file) {
         Some(f) => format!("{}::{}", crate_name, f),
-        None => format!("super::{}", get_rust_file_mod_name(file))
+        None => format!("super::{}", get_rust_file_mod_name(file)),
     }
 }
 
@@ -62,7 +62,7 @@ pub fn get_full_enum_variant_name(
 
 pub fn get_field_name(field: &FieldDescriptor) -> String {
     match field.scope() {
-        FieldScope::Message(_) | FieldScope::File(_) => field.name().clone(),
+        FieldScope::Message(_) | FieldScope::File(_) => field.name().to_string(),
         FieldScope::Oneof(_) => underscores_to_pascal_case(field.name(), false),
     }
 }
@@ -71,7 +71,8 @@ pub fn get_struct_field_name(field: &FieldDescriptor) -> String {
     let mut name = match field.scope() {
         FieldScope::Message(_) | FieldScope::File(_) => field.name().clone(),
         FieldScope::Oneof(o) => o.name().clone(),
-    };
+    }
+    .to_string();
     escape_name(&mut name);
     name
 }
@@ -282,7 +283,9 @@ fn try_remove_prefix<'a>(type_name: &str, value_name: &'a str) -> &'a str {
         match (prefix.next(), value.next()) {
             (_, None) => return value_name,
             (Some((_, a)), Some((_, b))) if a != b => return value_name,
-            (a, Some((ib, b))) if a.map(|t| t.1) != Some(b) => return &value_name[ib..].trim_start_matches('_'),
+            (a, Some((ib, b))) if a.map(|t| t.1) != Some(b) => {
+                return &value_name[ib..].trim_start_matches('_');
+            }
             _ => (),
         }
     }
@@ -354,7 +357,7 @@ fn underscores_to_pascal_case(input: &str, preserve_dot: bool) -> String {
 }
 
 fn well_known_file(file: &FileDescriptor) -> Option<&'static str> {
-    match &**file.name() {
+    match file.name() {
         "google/protobuf/descriptor.proto" => Some("descriptor"),
         "google/protobuf/compiler/plugin.proto" => Some("plugin"),
         "google/protobuf/any.proto" => Some("wkt::any"),

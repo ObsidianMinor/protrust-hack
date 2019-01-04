@@ -131,12 +131,12 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// A protocol buffer message type.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Type {
-    pub name: ::std::string::String,
-    pub fields: crate::collections::RepeatedField<self::Field>,
-    pub oneofs: crate::collections::RepeatedField<::std::string::String>,
-    pub options: crate::collections::RepeatedField<self::Option>,
-    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
-    pub syntax: crate::EnumValue<self::Syntax>,
+    name: ::std::string::String,
+    fields: crate::collections::RepeatedField<self::Field>,
+    oneofs: crate::collections::RepeatedField<::std::string::String>,
+    options: crate::collections::RepeatedField<self::Option>,
+    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
 static TYPE_FIELDS_CODEC: crate::Codec<self::Field> = crate::Codec::message(18);
@@ -329,16 +329,16 @@ impl self::Type {
 /// A single field of a message type.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Field {
-    pub kind: crate::EnumValue<self::Field_Kind>,
-    pub cardinality: crate::EnumValue<self::Field_Cardinality>,
-    pub number: i32,
-    pub name: ::std::string::String,
-    pub type_url: ::std::string::String,
-    pub oneof_index: i32,
-    pub packed: bool,
-    pub options: crate::collections::RepeatedField<self::Option>,
-    pub json_name: ::std::string::String,
-    pub default_value: ::std::string::String,
+    kind: crate::EnumValue<self::Field_Kind>,
+    cardinality: crate::EnumValue<self::Field_Cardinality>,
+    number: i32,
+    name: ::std::string::String,
+    type_url: ::std::string::String,
+    oneof_index: i32,
+    packed: bool,
+    options: crate::collections::RepeatedField<self::Option>,
+    json_name: ::std::string::String,
+    default_value: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(74);
@@ -784,11 +784,11 @@ impl ::std::convert::From<self::Field_Cardinality> for i32 {
 /// Enum type definition.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Enum {
-    pub name: ::std::string::String,
-    pub enumvalue: crate::collections::RepeatedField<self::EnumValue>,
-    pub options: crate::collections::RepeatedField<self::Option>,
-    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
-    pub syntax: crate::EnumValue<self::Syntax>,
+    name: ::std::string::String,
+    enumvalue: crate::collections::RepeatedField<self::EnumValue>,
+    options: crate::collections::RepeatedField<self::Option>,
+    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    syntax: crate::EnumValue<self::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_ENUMVALUE_CODEC: crate::Codec<self::EnumValue> = crate::Codec::message(18);
@@ -961,9 +961,9 @@ impl self::Enum {
 /// Enum value definition.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumValue {
-    pub name: ::std::string::String,
-    pub number: i32,
-    pub options: crate::collections::RepeatedField<self::Option>,
+    name: ::std::string::String,
+    number: i32,
+    options: crate::collections::RepeatedField<self::Option>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
@@ -1088,8 +1088,8 @@ impl self::EnumValue {
 /// enumeration, etc.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Option {
-    pub name: ::std::string::String,
-    pub value: ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>>,
+    name: ::std::string::String,
+    value: ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Option {

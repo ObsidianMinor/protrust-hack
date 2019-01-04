@@ -83,7 +83,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// The JSON representation for `Struct` is JSON object.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Struct {
-    pub fields: crate::collections::MapField<::std::string::String, self::Value>,
+    fields: crate::collections::MapField<::std::string::String, self::Value>,
     unknown_fields: crate::UnknownFieldSet
 }
 static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<::std::string::String, self::Value> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
@@ -150,7 +150,7 @@ impl self::Struct {
 /// The JSON representation for `Value` is JSON value.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Value {
-    pub kind: Value_Kind,
+    kind: self::Value_Kind,
     unknown_fields: crate::UnknownFieldSet
 }
 /// The kind of value.
@@ -319,7 +319,7 @@ impl self::Value {
 /// The JSON representation for `ListValue` is JSON array.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ListValue {
-    pub values: crate::collections::RepeatedField<self::Value>,
+    values: crate::collections::RepeatedField<self::Value>,
     unknown_fields: crate::UnknownFieldSet
 }
 static LIST_VALUE_VALUES_CODEC: crate::Codec<self::Value> = crate::Codec::message(10);

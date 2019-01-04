@@ -11,7 +11,7 @@ args = ["test"]
 command = "protoc"
 args = [
     "--rust_out=src/generated/checked",
-    "--rust_opt=pub_fields,crate_name=crate,checked_size",
+    "--rust_opt=crate_name=crate,checked_size",
     "google/protobuf/any.proto",
     "google/protobuf/api.proto",
     "google/protobuf/descriptor.proto",
@@ -30,7 +30,7 @@ args = [
 command = "protoc"
 args = [
     "--rust_out=src/generated/unchecked",
-    "--rust_opt=pub_fields,crate_name=crate",
+    "--rust_opt=crate_name=crate",
     "google/protobuf/any.proto",
     "google/protobuf/api.proto",
     "google/protobuf/descriptor.proto",
@@ -50,7 +50,6 @@ command = "protoc"
 args = [
     "--proto_path=protos",
     "--rust_out=examples/gen",
-    "--rust_opt=pub_fields",
     "addressbook.proto"
 ]
 

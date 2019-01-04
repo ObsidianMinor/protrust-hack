@@ -1,9 +1,9 @@
-//! Contains protobuf collection types `repeated` and `map` and 
+//! Contains protobuf collection types `repeated` and `map` and
 //! are represented through the [`RepeatedField`] and [`MapField`] types respectively
 //! in generated code.
-//! 
-//! [`RepeatedField`]: struct.RepeatedField.html
-//! [`MapField`]: struct.MapField.html
+//!
+//! [`RepeatedField`]: collections/struct.RepeatedField.html
+//! [`MapField`]: collections/struct.MapField.html
 
 use crate::io::{CodedInput, CodedOutput, InputError, InputResult, OutputResult};
 use crate::Codec;
@@ -15,14 +15,14 @@ use std::hash::Hash;
 use std::ops::{Deref, DerefMut};
 
 /// A `repeated` protobuf field. This type derefs to [`Vec<T>`]
-/// 
+///
 /// This type is used in generated code to represent `repeated` fields and is
 /// paired with a private static [`Codec`] to perform reading, writing, and size calculations.
-/// 
-/// The functions included in this type are made for generated code and as such are 
-/// rarely used directly by consumers. Most consumers will exclusively use derefed 
+///
+/// The functions included in this type are made for generated code and as such are
+/// rarely used directly by consumers. Most consumers will exclusively use derefed
 /// [`Vec<T>`] functions.
-/// 
+///
 /// [`Vec<T>`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 /// [`Codec`]: ../struct.Codec.html
 #[derive(Clone, Debug, PartialEq)]
@@ -44,7 +44,7 @@ impl<T> DerefMut for RepeatedField<T> {
 
 impl<T> RepeatedField<T> {
     /// Creates a new RepeatedField
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub fn new() -> RepeatedField<T> {
         RepeatedField(Vec::new())
@@ -53,9 +53,9 @@ impl<T> RepeatedField<T> {
 
 impl<T: Clone + PartialEq> RepeatedField<T> {
     /// Adds entries from the specified [`CodedInput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedInput`]: ../io/structs.CodedInput.html
     pub fn add_entries(
         &mut self,
@@ -81,24 +81,24 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
     }
 
     /// Calculates the size it take to serialize this field in a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &Codec<T>) -> Option<i32> {
         if self.len() == 0 {
-            return Some(0)
+            return Some(0);
         }
         if codec.is_packed() {
             let length = self.calculate_packed_size(codec)?;
-            (crate::io::sizes::int32(codec.tag()) + crate::io::sizes::int32(length)).checked_add(length)
+            (crate::io::sizes::int32(codec.tag()) + crate::io::sizes::int32(length))
+                .checked_add(length)
         } else {
-            self
-                .iter()
-                .fold(
-                    crates::io::sizes::uint32(codec.tag()).checked_mul(self.len()), 
-                    |last, value| last.checked_add(codec.calculate_size(value)?))
+            self.iter().fold(
+                crates::io::sizes::uint32(codec.tag()).checked_mul(self.len()),
+                |last, value| last.checked_add(codec.calculate_size(value)?),
+            )
         }
     }
 
@@ -116,20 +116,23 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
     }
 
     /// Calculates the size it take to serialize this field in a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &Codec<T>) -> i32 {
         if self.len() == 0 {
-            return 0
+            return 0;
         }
         if codec.is_packed() {
             let length = self.calculate_packed_size(codec);
             crate::io::sizes::uint32(codec.tag()) + crate::io::sizes::int32(length) + length
         } else {
-            self.iter().fold((crate::io::sizes::uint32(codec.tag()) as usize * self.len()) as i32, |last, value| last + codec.calculate_size(value))
+            self.iter().fold(
+                (crate::io::sizes::uint32(codec.tag()) as usize * self.len()) as i32,
+                |last, value| last + codec.calculate_size(value),
+            )
         }
     }
 
@@ -142,9 +145,9 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
     }
 
     /// Writes this field to a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     pub fn write_to(&self, output: &mut CodedOutput, codec: &Codec<T>) -> OutputResult {
         if !self.is_empty() {
@@ -174,7 +177,7 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
     }
 
     /// Merges this field with another field of the same type
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub fn merge(&mut self, other: &Self) {
         self.extend_from_slice(other.as_slice())
@@ -183,12 +186,12 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
 
 impl<T: LiteMessage> RepeatedField<T> {
     /// Checks each message in this field to see if it is initialized
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub fn is_initialized(&self) -> bool {
         for msg in self.iter() {
             if !msg.is_initialized() {
-                return false
+                return false;
             }
         }
         true
@@ -196,14 +199,14 @@ impl<T: LiteMessage> RepeatedField<T> {
 }
 
 /// A `map` protobuf field. This type derefs to [`HashMap<K, V>`]
-/// 
+///
 /// This type is used in generated code to represent `map` fields and is
 /// paired with a private static [`MapCodec`] to perform reading, writing, and size calculations.
-/// 
-/// The functions included in this type are made for generated code and as such are 
-/// rarely used directly by consumers. Most consumers will exclusively use derefed 
+///
+/// The functions included in this type are made for generated code and as such are
+/// rarely used directly by consumers. Most consumers will exclusively use derefed
 /// [`HashMap<K, V>`] functions.
-/// 
+///
 /// [`HashMap<K, V>`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
 /// [`MapCodec`]: struct.MapCodec.html
 #[derive(Clone)]
@@ -243,9 +246,9 @@ impl<K, V> DerefMut for MapField<K, V> {
 
 impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
     /// Adds entries from the specified [`CodedInput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedInput`]: ../io/structs.CodedInput.html
     pub fn add_entries(
         &mut self,
@@ -261,11 +264,11 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         Ok(())
     }
-    
+
     /// Calculates the size it take to serialize this field in a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> Option<i32> {
@@ -283,11 +286,11 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         }
         Some(size)
     }
-    
+
     /// Calculates the size it take to serialize this field in a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> i32 {
@@ -307,9 +310,9 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
     }
 
     /// Writes this field to a [`CodedOutput`]
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
-    /// 
+    ///
     /// [`CodedOutput`]: ../io/structs.CodedOutput.html
     pub fn write_to(&self, output: &mut CodedOutput, codec: &MapCodec<K, V>) -> OutputResult {
         let mut adapter = MapWriteAdapter::new(codec);
@@ -323,7 +326,7 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
     }
 
     /// Merges this field with another field of the same type
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub fn merge(&mut self, other: &Self) {
         for entry in &other.0 {
@@ -339,12 +342,12 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
 
 impl<K: Eq + Hash + Clone, V: LiteMessage> MapField<K, V> {
     /// Checks each message in this field to see if it is initialized
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub fn is_initialized(&self) -> bool {
         for msg in self.values() {
             if !msg.is_initialized() {
-                return false
+                return false;
             }
         }
         true
@@ -453,7 +456,7 @@ pub struct MapCodec<K, V> {
 
 impl<K, V> MapCodec<K, V> {
     /// Creates a new MapCodec for static storage
-    /// 
+    ///
     /// Consumers will rarely use this outside of generated code
     pub const fn new(key: Codec<K>, value: Codec<V>, tag: u32) -> MapCodec<K, V> {
         MapCodec { key, value, tag }

@@ -17,8 +17,8 @@ pub(crate) mod generated;
 /// by adding a glob import to the top of protobuf heavy modules
 pub mod prelude {
     pub use crate::CodedMessage;
-    pub use crate::LiteMessage;
     pub use crate::EnumValue;
+    pub use crate::LiteMessage;
     #[cfg(feature = "reflection")]
     pub use crate::Message;
 }
@@ -167,13 +167,27 @@ pub enum EnumValue<E> {
 }
 
 impl<E> EnumValue<E> {
-    /// Returns a Defined value, panics if it's Undefined
+    /// Returns a Defined value, panics if Undefined
     pub fn unwrap(self) -> E {
         match self {
             EnumValue::Defined(e) => e,
             EnumValue::Undefined(u) => panic!("Undefined enum value {}", u),
         }
     }
+
+    /// Returns a Defined value, panics with the specified message if Undefined
+    pub fn expect(self, msg: &str) -> E {
+        match self {
+            EnumValue::Defined(e) => e,
+            EnumValue::Undefined(_) => expect_failed(msg),
+        }
+    }
+}
+
+#[inline(never)]
+#[cold]
+fn expect_failed(msg: &str) -> ! {
+    panic!("{}", msg)
 }
 
 impl<E: Into<i32> + Clone> PartialEq for EnumValue<E> {
@@ -204,7 +218,7 @@ impl<E: Into<i32> + Clone> From<EnumValue<E>> for i32 {
 }
 
 /// A structure detailing all the required information to read, write, and calculate the size of a field.
-/// 
+///
 /// Consumers will rarely use this outside of generated code
 pub struct Codec<T> {
     default: Option<T>,

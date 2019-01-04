@@ -36,14 +36,14 @@ impl Any {
 
     pub fn pack_with_prefix<T: Message>(message: &T, prefix: &str) -> Result<Any, OutputError> {
         let mut value = Any::new();
-        value.type_url = get_type_url(T::descriptor(), prefix);
-        value.value = message.write_to_vec()?;
+        *value.type_url_mut() = get_type_url(T::descriptor(), prefix);
+        *value.value_mut() = message.write_to_vec()?;
 
         Ok(value)
     }
 
     pub fn is<T: Message>(&self) -> bool {
-        match get_type_name(&self.type_url) {
+        match get_type_name(self.type_url()) {
             Some(msg_type) => *msg_type == T::descriptor().full_name()[1..],
             None => false,
         }
@@ -68,8 +68,8 @@ impl Any {
         }
     }
 
+    #[inline]
     pub fn unpack_unchecked<T: Message>(&self) -> Result<T, crate::io::InputError> {
-        let mut slice = self.value.as_slice();
-        T::read_new(&mut slice)
+        T::read_new(&mut self.value().as_slice())
     }
 }

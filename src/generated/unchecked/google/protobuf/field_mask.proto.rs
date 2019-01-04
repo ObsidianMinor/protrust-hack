@@ -257,7 +257,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// `INVALID_ARGUMENT` error if any path is duplicated or unmappable.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldMask {
-    pub paths: crate::collections::RepeatedField<::std::string::String>,
+    paths: crate::collections::RepeatedField<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_MASK_PATHS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(10);

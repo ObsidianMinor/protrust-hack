@@ -15,10 +15,6 @@ pub struct Options {
     pub crate_name: String,
     /// Allows users to make the compiler not generate JSON trait implementations, even for proto3 files
     pub no_json: bool,
-    /// Sets all generated fields to public and doesn't generate accessors
-    ///
-    /// Static default values will also be set to public
-    pub pub_fields: bool,
     /// Uses checked addition in CodedMessage::calculate_size. Must be used with the checked_size feature
     pub size_checks: bool,
 }
@@ -28,7 +24,6 @@ impl Default for Options {
         Options {
             crate_name: "::protrust".to_string(),
             no_json: false,
-            pub_fields: false,
             size_checks: false,
         }
     }
@@ -48,21 +43,21 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
         mut response: plugin::CodeGeneratorResponse,
         msg: String,
     ) -> plugin::CodeGeneratorResponse {
-        response.file.clear();
-        response.error = Some(msg);
+        response.file_mut().clear();
+        response.set_error(msg);
         response
     }
 
     let mut response = plugin::CodeGeneratorResponse::new();
-    let options = match parse_options(request.parameter.as_ref()) {
+    let options = match parse_options(request.parameter()) {
         Ok(k) => k,
         Err(s) => return error(response, s),
     };
 
     let mut mod_file_content =
         "#![allow(unused_variables, dead_code, non_camel_case_types)]\n\n".to_string();
-    let pool = reflect::DescriptorPool::build_from_files(request.proto_file.as_slice());
-    for file in request.file_to_generate.iter() {
+    let pool = reflect::DescriptorPool::build_from_files(request.proto_file().as_slice());
+    for file in request.file_to_generate().iter() {
         let descriptor: &reflect::FileDescriptor = pool
             .find_file_by_name(file)
             .expect("proto_file did not contain file to generate");
@@ -76,10 +71,10 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
         match generator.generate() {
             Ok(()) => {
                 let mut gen_file = plugin::CodeGeneratorResponse_File::new();
-                gen_file.name = Some(names::get_rust_file_name(descriptor));
-                gen_file.content = Some(printer.into_inner());
+                gen_file.set_name(names::get_rust_file_name(descriptor));
+                gen_file.set_content(printer.into_inner());
 
-                response.file.push(gen_file);
+                response.file_mut().push(gen_file);
             }
             Err(err) => return error(response, format!("{:?}", err)),
         }
@@ -99,17 +94,17 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
     }
 
     let mut mod_file = plugin::CodeGeneratorResponse_File::new();
-    mod_file.content = Some(mod_file_content);
-    mod_file.name = Some("mod.rs".to_string());
+    mod_file.set_content(mod_file_content);
+    mod_file.set_name("mod.rs".to_string());
 
-    response.file.push(mod_file);
+    response.file_mut().push(mod_file);
     response
 }
 
-fn parse_options(params: Option<&String>) -> Result<Options, String> {
+fn parse_options(params: &str) -> Result<Options, String> {
     let mut options = Options::default();
 
-    if let Some(params) = params {
+    if !params.is_empty() {
         for option in params.split(',') {
             match split_option(option) {
                 ("crate_name", Some(value)) => {
@@ -120,7 +115,6 @@ fn parse_options(params: Option<&String>) -> Result<Options, String> {
                     }
                 }
                 ("no_json", None) => options.no_json = true,
-                ("pub_fields", None) => options.pub_fields = true,
                 ("checked_size", None) => options.size_checks = true,
                 (k, v) => return Err(format!("Unknown option: {}={:#?}", k, v)),
             }

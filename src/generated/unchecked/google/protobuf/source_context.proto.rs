@@ -54,7 +54,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// protobuf element, like the file in which it is defined.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SourceContext {
-    pub file_name: ::std::string::String,
+    file_name: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::SourceContext {

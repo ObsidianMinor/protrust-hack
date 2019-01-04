@@ -419,7 +419,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// files it parses.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileDescriptorSet {
-    pub file: crate::collections::RepeatedField<self::FileDescriptorProto>,
+    file: crate::collections::RepeatedField<self::FileDescriptorProto>,
     unknown_fields: crate::UnknownFieldSet
 }
 static FILE_DESCRIPTOR_SET_FILE_CODEC: crate::Codec<self::FileDescriptorProto> = crate::Codec::message(10);
@@ -480,18 +480,18 @@ impl self::FileDescriptorSet {
 /// Describes a complete .proto file.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub package: ::std::option::Option<::std::string::String>,
-    pub dependency: crate::collections::RepeatedField<::std::string::String>,
-    pub public_dependency: crate::collections::RepeatedField<i32>,
-    pub weak_dependency: crate::collections::RepeatedField<i32>,
-    pub message_type: crate::collections::RepeatedField<self::DescriptorProto>,
-    pub enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
-    pub service: crate::collections::RepeatedField<self::ServiceDescriptorProto>,
-    pub extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::FileOptions>>,
-    pub source_code_info: ::std::option::Option<::std::boxed::Box<self::SourceCodeInfo>>,
-    pub syntax: ::std::option::Option<::std::string::String>,
+    name: ::std::option::Option<::std::string::String>,
+    package: ::std::option::Option<::std::string::String>,
+    dependency: crate::collections::RepeatedField<::std::string::String>,
+    public_dependency: crate::collections::RepeatedField<i32>,
+    weak_dependency: crate::collections::RepeatedField<i32>,
+    message_type: crate::collections::RepeatedField<self::DescriptorProto>,
+    enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
+    service: crate::collections::RepeatedField<self::ServiceDescriptorProto>,
+    extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
+    options: ::std::option::Option<::std::boxed::Box<self::FileOptions>>,
+    source_code_info: ::std::option::Option<::std::boxed::Box<self::SourceCodeInfo>>,
+    syntax: ::std::option::Option<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(26);
@@ -957,16 +957,16 @@ impl self::FileDescriptorProto {
 /// Describes a message type.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub field: crate::collections::RepeatedField<self::FieldDescriptorProto>,
-    pub extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
-    pub nested_type: crate::collections::RepeatedField<self::DescriptorProto>,
-    pub enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
-    pub extension_range: crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange>,
-    pub oneof_decl: crate::collections::RepeatedField<self::OneofDescriptorProto>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::MessageOptions>>,
-    pub reserved_range: crate::collections::RepeatedField<self::DescriptorProto_ReservedRange>,
-    pub reserved_name: crate::collections::RepeatedField<::std::string::String>,
+    name: ::std::option::Option<::std::string::String>,
+    field: crate::collections::RepeatedField<self::FieldDescriptorProto>,
+    extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
+    nested_type: crate::collections::RepeatedField<self::DescriptorProto>,
+    enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
+    extension_range: crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange>,
+    oneof_decl: crate::collections::RepeatedField<self::OneofDescriptorProto>,
+    options: ::std::option::Option<::std::boxed::Box<self::MessageOptions>>,
+    reserved_range: crate::collections::RepeatedField<self::DescriptorProto_ReservedRange>,
+    reserved_name: crate::collections::RepeatedField<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(18);
@@ -1271,9 +1271,9 @@ impl self::DescriptorProto {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto_ExtensionRange {
-    pub start: ::std::option::Option<i32>,
-    pub end: ::std::option::Option<i32>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::ExtensionRangeOptions>>,
+    start: ::std::option::Option<i32>,
+    end: ::std::option::Option<i32>,
+    options: ::std::option::Option<::std::boxed::Box<self::ExtensionRangeOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
@@ -1461,8 +1461,8 @@ impl self::DescriptorProto_ExtensionRange {
 /// not overlap.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DescriptorProto_ReservedRange {
-    pub start: ::std::option::Option<i32>,
-    pub end: ::std::option::Option<i32>,
+    start: ::std::option::Option<i32>,
+    end: ::std::option::Option<i32>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
@@ -1597,7 +1597,7 @@ impl self::DescriptorProto_ReservedRange {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct ExtensionRangeOptions {
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -1659,16 +1659,16 @@ impl self::ExtensionRangeOptions {
 /// Describes a field within a message.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub number: ::std::option::Option<i32>,
-    pub label: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Label>>,
-    pub r#type: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Type>>,
-    pub type_name: ::std::option::Option<::std::string::String>,
-    pub extendee: ::std::option::Option<::std::string::String>,
-    pub default_value: ::std::option::Option<::std::string::String>,
-    pub oneof_index: ::std::option::Option<i32>,
-    pub json_name: ::std::option::Option<::std::string::String>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::FieldOptions>>,
+    name: ::std::option::Option<::std::string::String>,
+    number: ::std::option::Option<i32>,
+    label: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Label>>,
+    r#type: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Type>>,
+    type_name: ::std::option::Option<::std::string::String>,
+    extendee: ::std::option::Option<::std::string::String>,
+    default_value: ::std::option::Option<::std::string::String>,
+    oneof_index: ::std::option::Option<i32>,
+    json_name: ::std::option::Option<::std::string::String>,
+    options: ::std::option::Option<::std::boxed::Box<self::FieldOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::FieldDescriptorProto {
@@ -2345,8 +2345,8 @@ impl ::std::convert::From<self::FieldDescriptorProto_Label> for i32 {
 /// Describes a oneof.
 #[derive(Clone, Debug, PartialEq)]
 pub struct OneofDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::OneofOptions>>,
+    name: ::std::option::Option<::std::string::String>,
+    options: ::std::option::Option<::std::boxed::Box<self::OneofOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::OneofDescriptorProto {
@@ -2498,11 +2498,11 @@ impl self::OneofDescriptorProto {
 /// Describes an enum type.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub value: crate::collections::RepeatedField<self::EnumValueDescriptorProto>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::EnumOptions>>,
-    pub reserved_range: crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange>,
-    pub reserved_name: crate::collections::RepeatedField<::std::string::String>,
+    name: ::std::option::Option<::std::string::String>,
+    value: crate::collections::RepeatedField<self::EnumValueDescriptorProto>,
+    options: ::std::option::Option<::std::boxed::Box<self::EnumOptions>>,
+    reserved_range: crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange>,
+    reserved_name: crate::collections::RepeatedField<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<self::EnumValueDescriptorProto> = crate::Codec::message(18);
@@ -2721,8 +2721,8 @@ impl self::EnumDescriptorProto {
 /// domain.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumDescriptorProto_EnumReservedRange {
-    pub start: ::std::option::Option<i32>,
-    pub end: ::std::option::Option<i32>,
+    start: ::std::option::Option<i32>,
+    end: ::std::option::Option<i32>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
@@ -2858,9 +2858,9 @@ impl self::EnumDescriptorProto_EnumReservedRange {
 /// Describes a value within an enum.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumValueDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub number: ::std::option::Option<i32>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::EnumValueOptions>>,
+    name: ::std::option::Option<::std::string::String>,
+    number: ::std::option::Option<i32>,
+    options: ::std::option::Option<::std::boxed::Box<self::EnumValueOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::EnumValueDescriptorProto {
@@ -3058,9 +3058,9 @@ impl self::EnumValueDescriptorProto {
 /// Describes a service.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ServiceDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub method: crate::collections::RepeatedField<self::MethodDescriptorProto>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::ServiceOptions>>,
+    name: ::std::option::Option<::std::string::String>,
+    method: crate::collections::RepeatedField<self::MethodDescriptorProto>,
+    options: ::std::option::Option<::std::boxed::Box<self::ServiceOptions>>,
     unknown_fields: crate::UnknownFieldSet
 }
 static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<self::MethodDescriptorProto> = crate::Codec::message(18);
@@ -3231,12 +3231,12 @@ impl self::ServiceDescriptorProto {
 /// Describes a method of a service.
 #[derive(Clone, Debug, PartialEq)]
 pub struct MethodDescriptorProto {
-    pub name: ::std::option::Option<::std::string::String>,
-    pub input_type: ::std::option::Option<::std::string::String>,
-    pub output_type: ::std::option::Option<::std::string::String>,
-    pub options: ::std::option::Option<::std::boxed::Box<self::MethodOptions>>,
-    pub client_streaming: ::std::option::Option<bool>,
-    pub server_streaming: ::std::option::Option<bool>,
+    name: ::std::option::Option<::std::string::String>,
+    input_type: ::std::option::Option<::std::string::String>,
+    output_type: ::std::option::Option<::std::string::String>,
+    options: ::std::option::Option<::std::boxed::Box<self::MethodOptions>>,
+    client_streaming: ::std::option::Option<bool>,
+    server_streaming: ::std::option::Option<bool>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::MethodDescriptorProto {
@@ -3599,27 +3599,27 @@ impl self::MethodDescriptorProto {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileOptions {
-    pub java_package: ::std::option::Option<::std::string::String>,
-    pub java_outer_classname: ::std::option::Option<::std::string::String>,
-    pub java_multiple_files: ::std::option::Option<bool>,
-    pub java_generate_equals_and_hash: ::std::option::Option<bool>,
-    pub java_string_check_utf8: ::std::option::Option<bool>,
-    pub optimize_for: ::std::option::Option<crate::EnumValue<self::FileOptions_OptimizeMode>>,
-    pub go_package: ::std::option::Option<::std::string::String>,
-    pub cc_generic_services: ::std::option::Option<bool>,
-    pub java_generic_services: ::std::option::Option<bool>,
-    pub py_generic_services: ::std::option::Option<bool>,
-    pub php_generic_services: ::std::option::Option<bool>,
-    pub deprecated: ::std::option::Option<bool>,
-    pub cc_enable_arenas: ::std::option::Option<bool>,
-    pub objc_class_prefix: ::std::option::Option<::std::string::String>,
-    pub csharp_namespace: ::std::option::Option<::std::string::String>,
-    pub swift_prefix: ::std::option::Option<::std::string::String>,
-    pub php_class_prefix: ::std::option::Option<::std::string::String>,
-    pub php_namespace: ::std::option::Option<::std::string::String>,
-    pub php_metadata_namespace: ::std::option::Option<::std::string::String>,
-    pub ruby_package: ::std::option::Option<::std::string::String>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    java_package: ::std::option::Option<::std::string::String>,
+    java_outer_classname: ::std::option::Option<::std::string::String>,
+    java_multiple_files: ::std::option::Option<bool>,
+    java_generate_equals_and_hash: ::std::option::Option<bool>,
+    java_string_check_utf8: ::std::option::Option<bool>,
+    optimize_for: ::std::option::Option<crate::EnumValue<self::FileOptions_OptimizeMode>>,
+    go_package: ::std::option::Option<::std::string::String>,
+    cc_generic_services: ::std::option::Option<bool>,
+    java_generic_services: ::std::option::Option<bool>,
+    py_generic_services: ::std::option::Option<bool>,
+    php_generic_services: ::std::option::Option<bool>,
+    deprecated: ::std::option::Option<bool>,
+    cc_enable_arenas: ::std::option::Option<bool>,
+    objc_class_prefix: ::std::option::Option<::std::string::String>,
+    csharp_namespace: ::std::option::Option<::std::string::String>,
+    swift_prefix: ::std::option::Option<::std::string::String>,
+    php_class_prefix: ::std::option::Option<::std::string::String>,
+    php_namespace: ::std::option::Option<::std::string::String>,
+    php_metadata_namespace: ::std::option::Option<::std::string::String>,
+    ruby_package: ::std::option::Option<::std::string::String>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -4808,11 +4808,11 @@ impl ::std::convert::From<self::FileOptions_OptimizeMode> for i32 {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct MessageOptions {
-    pub message_set_wire_format: ::std::option::Option<bool>,
-    pub no_standard_descriptor_accessor: ::std::option::Option<bool>,
-    pub deprecated: ::std::option::Option<bool>,
-    pub map_entry: ::std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    message_set_wire_format: ::std::option::Option<bool>,
+    no_standard_descriptor_accessor: ::std::option::Option<bool>,
+    deprecated: ::std::option::Option<bool>,
+    map_entry: ::std::option::Option<bool>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5103,13 +5103,13 @@ impl self::MessageOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldOptions {
-    pub ctype: ::std::option::Option<crate::EnumValue<self::FieldOptions_CType>>,
-    pub packed: ::std::option::Option<bool>,
-    pub jstype: ::std::option::Option<crate::EnumValue<self::FieldOptions_JSType>>,
-    pub lazy: ::std::option::Option<bool>,
-    pub deprecated: ::std::option::Option<bool>,
-    pub weak: ::std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    ctype: ::std::option::Option<crate::EnumValue<self::FieldOptions_CType>>,
+    packed: ::std::option::Option<bool>,
+    jstype: ::std::option::Option<crate::EnumValue<self::FieldOptions_JSType>>,
+    lazy: ::std::option::Option<bool>,
+    deprecated: ::std::option::Option<bool>,
+    weak: ::std::option::Option<bool>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5547,7 +5547,7 @@ impl ::std::convert::From<self::FieldOptions_JSType> for i32 {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct OneofOptions {
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5608,9 +5608,9 @@ impl self::OneofOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumOptions {
-    pub allow_alias: ::std::option::Option<bool>,
-    pub deprecated: ::std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    allow_alias: ::std::option::Option<bool>,
+    deprecated: ::std::option::Option<bool>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5769,8 +5769,8 @@ impl self::EnumOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumValueOptions {
-    pub deprecated: ::std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    deprecated: ::std::option::Option<bool>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5881,8 +5881,8 @@ impl self::EnumValueOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct ServiceOptions {
-    pub deprecated: ::std::option::Option<bool>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    deprecated: ::std::option::Option<bool>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -5993,9 +5993,9 @@ impl self::ServiceOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct MethodOptions {
-    pub deprecated: ::std::option::Option<bool>,
-    pub idempotency_level: ::std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
-    pub uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
+    deprecated: ::std::option::Option<bool>,
+    idempotency_level: ::std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
+    uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet
 }
 static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
@@ -6185,13 +6185,13 @@ impl ::std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
 /// in them.
 #[derive(Clone, Debug, PartialEq)]
 pub struct UninterpretedOption {
-    pub name: crate::collections::RepeatedField<self::UninterpretedOption_NamePart>,
-    pub identifier_value: ::std::option::Option<::std::string::String>,
-    pub positive_int_value: ::std::option::Option<u64>,
-    pub negative_int_value: ::std::option::Option<i64>,
-    pub double_value: ::std::option::Option<f64>,
-    pub string_value: ::std::option::Option<::std::vec::Vec<u8>>,
-    pub aggregate_value: ::std::option::Option<::std::string::String>,
+    name: crate::collections::RepeatedField<self::UninterpretedOption_NamePart>,
+    identifier_value: ::std::option::Option<::std::string::String>,
+    positive_int_value: ::std::option::Option<u64>,
+    negative_int_value: ::std::option::Option<i64>,
+    double_value: ::std::option::Option<f64>,
+    string_value: ::std::option::Option<::std::vec::Vec<u8>>,
+    aggregate_value: ::std::option::Option<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<self::UninterpretedOption_NamePart> = crate::Codec::message(18);
@@ -6570,8 +6570,8 @@ impl self::UninterpretedOption {
 /// "foo.(bar.baz).qux".
 #[derive(Clone, Debug, PartialEq)]
 pub struct UninterpretedOption_NamePart {
-    pub name_part: ::std::option::Option<::std::string::String>,
-    pub is_extension: ::std::option::Option<bool>,
+    name_part: ::std::option::Option<::std::string::String>,
+    is_extension: ::std::option::Option<bool>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::UninterpretedOption_NamePart {
@@ -6718,7 +6718,7 @@ impl self::UninterpretedOption_NamePart {
 /// FileDescriptorProto was generated.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SourceCodeInfo {
-    pub location: crate::collections::RepeatedField<self::SourceCodeInfo_Location>,
+    location: crate::collections::RepeatedField<self::SourceCodeInfo_Location>,
     unknown_fields: crate::UnknownFieldSet
 }
 static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<self::SourceCodeInfo_Location> = crate::Codec::message(10);
@@ -6821,11 +6821,11 @@ impl self::SourceCodeInfo {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct SourceCodeInfo_Location {
-    pub path: crate::collections::RepeatedField<i32>,
-    pub span: crate::collections::RepeatedField<i32>,
-    pub leading_comments: ::std::option::Option<::std::string::String>,
-    pub trailing_comments: ::std::option::Option<::std::string::String>,
-    pub leading_detached_comments: crate::collections::RepeatedField<::std::string::String>,
+    path: crate::collections::RepeatedField<i32>,
+    span: crate::collections::RepeatedField<i32>,
+    leading_comments: ::std::option::Option<::std::string::String>,
+    trailing_comments: ::std::option::Option<::std::string::String>,
+    leading_detached_comments: crate::collections::RepeatedField<::std::string::String>,
     unknown_fields: crate::UnknownFieldSet
 }
 static SOURCE_CODE_INFO__LOCATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
@@ -7117,7 +7117,7 @@ impl self::SourceCodeInfo_Location {
 /// source file, but may contain references to different source .proto files.
 #[derive(Clone, Debug, PartialEq)]
 pub struct GeneratedCodeInfo {
-    pub annotation: crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation>,
+    annotation: crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation>,
     unknown_fields: crate::UnknownFieldSet
 }
 static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<self::GeneratedCodeInfo_Annotation> = crate::Codec::message(10);
@@ -7179,10 +7179,10 @@ impl self::GeneratedCodeInfo {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct GeneratedCodeInfo_Annotation {
-    pub path: crate::collections::RepeatedField<i32>,
-    pub source_file: ::std::option::Option<::std::string::String>,
-    pub begin: ::std::option::Option<i32>,
-    pub end: ::std::option::Option<i32>,
+    path: crate::collections::RepeatedField<i32>,
+    source_file: ::std::option::Option<::std::string::String>,
+    begin: ::std::option::Option<i32>,
+    end: ::std::option::Option<i32>,
     unknown_fields: crate::UnknownFieldSet
 }
 static GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);

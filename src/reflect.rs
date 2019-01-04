@@ -3,16 +3,9 @@ pub use crate::descriptor::FieldDescriptorProto_Label as FieldLabel;
 use crate::descriptor::*;
 use crate::io::WireType;
 use std::collections::HashMap;
-use std::convert::AsRef;
-use std::fmt::{self, Formatter, Debug};
+use std::fmt::{self, Debug, Formatter};
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
 use std::ops::Deref;
-
-macro_rules! validate {
-    ($e:expr, $n:expr) => {
-        $e.expect(concat!("invalid descriptor: missing field '", $n, "'"))
-    };
-}
 
 enum Symbol {
     File(*mut FileDescriptor),
@@ -51,9 +44,7 @@ impl<T> Deref for Ref<T> {
     type Target = T;
 
     fn deref(&self) -> &T {
-        unsafe {
-            &*self.0
-        }
+        unsafe { &*self.0 }
     }
 }
 
@@ -88,11 +79,14 @@ impl DescriptorPool<'_> {
         pool
     }
 
-    pub fn build_generated_pool(file: &'static [FileDescriptorProto; 1], pools: &'static [&'static DescriptorPool]) -> DescriptorPool<'static> {
+    pub fn build_generated_pool(
+        file: &'static [FileDescriptorProto; 1],
+        pools: &'static [&'static DescriptorPool],
+    ) -> DescriptorPool<'static> {
         let mut pool = DescriptorPool {
             pools,
             protos: file,
-            symbols: HashMap::new()
+            symbols: HashMap::new(),
         };
         pool.build();
         pool
@@ -111,7 +105,9 @@ impl DescriptorPool<'_> {
     }
 
     fn find_symbol(&self, name: &str) -> Option<&Symbol> {
-        self.symbols.get(name).or_else(|| self.pools.iter().find_map(|p| p.find_symbol(name)))
+        self.symbols
+            .get(name)
+            .or_else(|| self.pools.iter().find_map(|p| p.find_symbol(name)))
     }
 
     pub fn find_file_by_name(&self, name: &str) -> Option<&FileDescriptor> {
@@ -173,28 +169,28 @@ impl DescriptorPool<'_> {
     fn get_file_ref(&self, name: &str) -> Ref<FileDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::File(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol")
+            _ => panic!("Pool did not contain referenced symbol"),
         }
     }
 
     fn get_message_ref(&self, name: &str) -> Ref<MessageDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::Message(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol")
+            _ => panic!("Pool did not contain referenced symbol"),
         }
     }
 
     fn get_enum_ref(&self, name: &str) -> Ref<EnumDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::Enum(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol")
+            _ => panic!("Pool did not contain referenced symbol"),
         }
     }
 
     fn get_enum_value_ref(&self, name: &str) -> Ref<EnumValueDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::EnumValue(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol")
+            _ => panic!("Pool did not contain referenced symbol"),
         }
     }
 }
@@ -223,23 +219,23 @@ unsafe impl Send for DescriptorPool<'_> {}
 unsafe impl Sync for DescriptorPool<'_> {}
 
 pub trait Descriptor {
-    fn name(&self) -> &String;
-    fn full_name(&self) -> &String;
+    fn name(&self) -> &str;
+    fn full_name(&self) -> &str;
     fn file(&self) -> &FileDescriptor;
 }
 
 pub struct SourceCodeInfo {
-    leading_comments: Option<*const String>,
-    trailing_comments: Option<*const String>,
+    leading_comments: Option<*const str>,
+    trailing_comments: Option<*const str>,
     leading_detached_comments: *const [String],
 }
 
 impl SourceCodeInfo {
-    pub fn leading_comments(&self) -> Option<&String> {
+    pub fn leading_comments(&self) -> Option<&str> {
         unsafe { self.leading_comments.map(|s| &*s) }
     }
 
-    pub fn trailing_comments(&self) -> Option<&String> {
+    pub fn trailing_comments(&self) -> Option<&str> {
         unsafe { self.trailing_comments.map(|s| &*s) }
     }
 
@@ -266,8 +262,8 @@ impl std::fmt::Display for Syntax {
     }
 }
 
-fn get_full_type_name(name: &String, scope: &CompositeScope) -> String {
-    let mut name = name.clone();
+fn get_full_type_name(name: &str, scope: &CompositeScope) -> String {
+    let mut name = name.to_string();
     name.insert(0, '.');
     match scope {
         CompositeScope::Message(m) => name.insert_str(0, m.full_name()),
@@ -306,12 +302,12 @@ impl FileDescriptor {
     }
 
     /// Gets the name of this file
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn package(&self) -> &String {
-        validate!(self.proto().package.as_ref(), "package")
+    pub fn package(&self) -> &str {
+        self.proto().package()
     }
 
     /// Gets the messages defined in this file
@@ -332,7 +328,7 @@ impl FileDescriptor {
     }
 
     pub fn options(&self) -> Option<&FileOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn syntax(&self) -> Syntax {
@@ -350,7 +346,7 @@ impl FileDescriptor {
         descriptor.proto = proto;
         descriptor.dependencies = descriptor
             .proto()
-            .dependency
+            .dependency()
             .iter()
             .map(|f| pool.get_file_ref(f))
             .collect::<Vec<_>>()
@@ -358,7 +354,7 @@ impl FileDescriptor {
 
         descriptor.public_dependencies = descriptor
             .proto()
-            .public_dependency
+            .public_dependency()
             .iter()
             .map(|f| Ref::clone(&descriptor.dependencies[*f as usize]))
             .collect::<Vec<_>>()
@@ -366,15 +362,15 @@ impl FileDescriptor {
 
         descriptor.messages = descriptor
             .proto()
-            .message_type
+            .message_type()
             .iter()
             .enumerate()
             .map(|(i, m)| {
                 MessageDescriptor::new(
-                    &*m as *const DescriptorProto,
+                    m as *const DescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Vec<_>>()
@@ -382,15 +378,15 @@ impl FileDescriptor {
 
         descriptor.enums = descriptor
             .proto()
-            .enum_type
+            .enum_type()
             .iter()
             .enumerate()
             .map(|(i, e)| {
                 EnumDescriptor::new(
-                    &*e as *const EnumDescriptorProto,
+                    e as *const EnumDescriptorProto,
                     CompositeScope::File(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Vec<_>>()
@@ -398,15 +394,15 @@ impl FileDescriptor {
 
         descriptor.services = descriptor
             .proto()
-            .service
+            .service()
             .iter()
             .enumerate()
             .map(|(i, s)| {
                 ServiceDescriptor::new(
-                    &*s as *const ServiceDescriptorProto,
+                    s as *const ServiceDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Vec<_>>()
@@ -414,29 +410,33 @@ impl FileDescriptor {
 
         descriptor.extensions = descriptor
             .proto()
-            .extension
+            .extension()
             .iter()
             .enumerate()
             .map(|(i, e)| {
                 FieldDescriptor::new(
-                    &*e as *const FieldDescriptorProto,
+                    e as *const FieldDescriptorProto,
                     FieldScope::File(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Vec<_>>()
             .into();
 
-        descriptor.syntax = match descriptor.proto().syntax.as_ref().map(AsRef::as_ref) {
-            Some("proto3") => Syntax::Proto3,
-            Some("proto2") | None => Syntax::Proto2,
-            Some(_) => Syntax::Unknown,
+        descriptor.syntax = if descriptor.proto().has_syntax() {
+            Syntax::Proto2
+        } else {
+            match descriptor.proto().syntax() {
+                "proto3" => Syntax::Proto3,
+                "proto2" => Syntax::Proto2,
+                _ => Syntax::Unknown,
+            }
         };
 
         if let Some(_) = pool
             .symbols
-            .insert(descriptor.name().clone(), Symbol::File(descriptor_raw))
+            .insert(descriptor.name().to_string(), Symbol::File(descriptor_raw))
         {
             panic!()
         }
@@ -459,26 +459,38 @@ impl FileDescriptor {
     }
 
     unsafe fn parse_source_code_info(&mut self) {
-        if let Some(source_code_info) = &(*self.proto).source_code_info {
-            for location in source_code_info.location.iter() {
-                if location.path.is_empty() || location.path.len() % 2 != 0 {
-                    continue
+        if let Some(source_code_info) = &(*self.proto).source_code_info() {
+            for location in source_code_info.location().iter() {
+                if location.path().is_empty() || location.path().len() % 2 != 0 {
+                    continue;
                 }
 
-                let info = 
-                    match location.path[0] {
-                        4 => Ref::get_mut(&mut self.messages[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
-                        5 => Ref::get_mut(&mut self.enums[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
-                        6 => Ref::get_mut(&mut self.services[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
-                        7 => Ref::get_mut(&mut self.extensions[location.path[1] as usize]).get_source_code_info(&location.path[2..]),
-                        _ => continue
-                    };
+                let info = match location.path()[0] {
+                    4 => Ref::get_mut(&mut self.messages[location.path()[1] as usize])
+                        .get_source_code_info(&location.path()[2..]),
+                    5 => Ref::get_mut(&mut self.enums[location.path()[1] as usize])
+                        .get_source_code_info(&location.path()[2..]),
+                    6 => Ref::get_mut(&mut self.services[location.path()[1] as usize])
+                        .get_source_code_info(&location.path()[2..]),
+                    7 => Ref::get_mut(&mut self.extensions[location.path()[1] as usize])
+                        .get_source_code_info(&location.path()[2..]),
+                    _ => continue,
+                };
 
                 if let Some(info) = info {
                     *info = Some(SourceCodeInfo {
-                        leading_comments: location.leading_comments.as_ref().map(|r| r as *const String),
-                        trailing_comments: location.trailing_comments.as_ref().map(|r| r as *const String),
-                        leading_detached_comments: location.leading_detached_comments.as_slice() as *const [String]
+                        leading_comments: if location.has_leading_comments() {
+                            Some(location.leading_comments() as *const str)
+                        } else {
+                            None
+                        },
+                        trailing_comments: if location.has_trailing_comments() {
+                            Some(location.trailing_comments() as *const str)
+                        } else {
+                            None
+                        },
+                        leading_detached_comments: location.leading_detached_comments().as_slice()
+                            as *const [String],
                     });
                 }
             }
@@ -499,10 +511,10 @@ unsafe impl Send for FileDescriptor {}
 unsafe impl Sync for FileDescriptor {}
 
 impl Descriptor for FileDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -513,14 +525,17 @@ impl Descriptor for FileDescriptor {
 impl Debug for FileDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("FileDescriptor")
-            .field("name", self.name())
-            .field("package", self.package())
+            .field("name", &self.name())
+            .field("package", &self.package())
             .field("syntax", &self.syntax())
-            .field("public_dependencies", 
-                &self.public_dependencies()
+            .field(
+                "public_dependencies",
+                &self
+                    .public_dependencies()
                     .iter()
                     .map(|d| d.name())
-                    .collect::<Box<[_]>>())
+                    .collect::<Box<[_]>>(),
+            )
             .field("dependencies", &self.dependencies())
             .field("messages", &self.messages())
             .field("enums", &self.enums())
@@ -583,8 +598,8 @@ impl MessageDescriptor {
         self.scope_index
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
     pub fn fields(&self) -> &[Ref<FieldDescriptor>] {
@@ -613,11 +628,11 @@ impl MessageDescriptor {
     }
 
     pub fn options(&self) -> Option<&MessageOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     /// Creates a new string with the full name of this descriptor
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
@@ -627,7 +642,7 @@ impl MessageDescriptor {
 
     pub fn map_entry(&self) -> bool {
         if let Some(options) = self.options() {
-            options.map_entry.unwrap_or(false)
+            options.map_entry()
         } else {
             false
         }
@@ -654,37 +669,37 @@ impl MessageDescriptor {
 
         descriptor.messages = descriptor
             .proto()
-            .nested_type
+            .nested_type()
             .iter()
             .enumerate()
             .map(|(i, m)| {
                 MessageDescriptor::new(
-                    &*m as *const DescriptorProto,
+                    m as *const DescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Box<[_]>>();
 
         descriptor.enums = descriptor
             .proto()
-            .enum_type
+            .enum_type()
             .iter()
             .enumerate()
             .map(|(i, e)| {
                 EnumDescriptor::new(
-                    &*e as *const EnumDescriptorProto,
+                    e as *const EnumDescriptorProto,
                     CompositeScope::Message(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Box<[_]>>();
 
         descriptor.extensions = descriptor
             .proto()
-            .extension
+            .extension()
             .iter()
             .enumerate()
             .map(|(i, e)| {
@@ -692,18 +707,18 @@ impl MessageDescriptor {
                     &*e as *const FieldDescriptorProto,
                     FieldScope::Message(Ref::new(descriptor_raw)),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Box<[_]>>();
 
         descriptor.oneofs = descriptor
             .proto()
-            .oneof_decl // oneofs before fields since we reference them when determining field scopes
+            .oneof_decl() // oneofs before fields since we reference them when determining field scopes
             .iter()
             .map(|o| {
                 OneofDescriptor::new(
-                    &*o as *const OneofDescriptorProto,
+                    o as *const OneofDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
                 )
@@ -712,19 +727,19 @@ impl MessageDescriptor {
 
         descriptor.fields = descriptor
             .proto()
-            .field
+            .field()
             .iter()
             .enumerate()
             .map(|(i, f)| {
                 FieldDescriptor::new(
-                    &*f as *const FieldDescriptorProto,
-                    if let Some(o) = f.oneof_index {
-                        FieldScope::Oneof(Ref::clone(&descriptor.oneofs[o as usize]))
+                    f as *const FieldDescriptorProto,
+                    if f.has_oneof_index() {
+                        FieldScope::Oneof(Ref::clone(&descriptor.oneofs[f.oneof_index() as usize]))
                     } else {
                         FieldScope::Message(Ref::new(descriptor_raw))
                     },
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Box<[_]>>();
@@ -734,17 +749,17 @@ impl MessageDescriptor {
             .iter()
             .map(Ref::clone)
             .collect::<Vec<_>>();
-        number_order.sort_by_key(|r| FieldDescriptor::number(r));
+        number_order.sort_by_key(|r| r.number());
         descriptor.fields_ordered = number_order.into();
         descriptor.message_fields = descriptor
             .fields()
             .iter()
-            .filter(|f| f.proto().oneof_index.is_none())
+            .filter(|f| !f.proto().has_oneof_index())
             .map(Ref::clone)
             .collect::<Box<[_]>>();
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::Message(descriptor_raw),
         ) {
             panic!()
@@ -785,12 +800,17 @@ impl MessageDescriptor {
         } else {
             unsafe {
                 match path[0] {
-                    2 => Ref::get_mut(&mut self.fields[path[1] as usize]).get_source_code_info(&path[2..]),
-                    3 => Ref::get_mut(&mut self.messages[path[1] as usize]).get_source_code_info(&path[2..]),
-                    4 => Ref::get_mut(&mut self.enums[path[1] as usize]).get_source_code_info(&path[2..]),
-                    6 => Ref::get_mut(&mut self.extensions[path[1] as usize]).get_source_code_info(&path[2..]),
-                    8 => Ref::get_mut(&mut self.oneofs[path[1] as usize]).get_source_code_info(&path[2..]),
-                    _ => None
+                    2 => Ref::get_mut(&mut self.fields[path[1] as usize])
+                        .get_source_code_info(&path[2..]),
+                    3 => Ref::get_mut(&mut self.messages[path[1] as usize])
+                        .get_source_code_info(&path[2..]),
+                    4 => Ref::get_mut(&mut self.enums[path[1] as usize])
+                        .get_source_code_info(&path[2..]),
+                    6 => Ref::get_mut(&mut self.extensions[path[1] as usize])
+                        .get_source_code_info(&path[2..]),
+                    8 => Ref::get_mut(&mut self.oneofs[path[1] as usize])
+                        .get_source_code_info(&path[2..]),
+                    _ => None,
                 }
             }
         }
@@ -810,10 +830,10 @@ unsafe impl Send for MessageDescriptor {}
 unsafe impl Sync for MessageDescriptor {}
 
 impl Descriptor for MessageDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -832,7 +852,7 @@ impl Descriptor for MessageDescriptor {
 impl Debug for MessageDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("MessageDescriptor")
-            .field("name", self.name())
+            .field("name", &self.name())
             .field("fields", &self.fields())
             .field("oneofs", &self.oneofs())
             .field("messages", &self.messages())
@@ -864,11 +884,11 @@ impl EnumDescriptor {
         self.scope_index
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
@@ -877,7 +897,7 @@ impl EnumDescriptor {
     }
 
     pub fn options(&self) -> Option<&EnumOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -904,7 +924,7 @@ impl EnumDescriptor {
 
         descriptor.values = descriptor
             .proto()
-            .value
+            .value()
             .iter()
             .enumerate()
             .map(|(i, v)| {
@@ -912,16 +932,16 @@ impl EnumDescriptor {
                     &*v as *const EnumValueDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Vec<_>>()
             .into();
 
-        if let Some(_) = pool
-            .symbols
-            .insert(descriptor.full_name().clone(), Symbol::Enum(descriptor_raw))
-        {
+        if let Some(_) = pool.symbols.insert(
+            descriptor.full_name().to_string(),
+            Symbol::Enum(descriptor_raw),
+        ) {
             panic!()
         }
 
@@ -933,8 +953,9 @@ impl EnumDescriptor {
             Some(&mut self.info)
         } else {
             match path[0] {
-                2 => Ref::get_mut(&mut self.values[path[1] as usize]).get_source_code_info(&path[2..]),
-                _ => None
+                2 => Ref::get_mut(&mut self.values[path[1] as usize])
+                    .get_source_code_info(&path[2..]),
+                _ => None,
             }
         }
     }
@@ -953,10 +974,10 @@ unsafe impl Send for EnumDescriptor {}
 unsafe impl Sync for EnumDescriptor {}
 
 impl Descriptor for EnumDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -967,7 +988,7 @@ impl Descriptor for EnumDescriptor {
 impl Debug for EnumDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("EnumDescriptor")
-            .field("name", self.name())
+            .field("name", &self.name())
             .field("values", &self.values())
             .finish()
     }
@@ -995,20 +1016,20 @@ impl EnumValueDescriptor {
         self.index
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
     pub fn number(&self) -> i32 {
-        self.proto().number.unwrap_or(0)
+        self.proto().number()
     }
 
     pub fn options(&self) -> Option<&EnumValueOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1038,7 +1059,7 @@ impl EnumValueDescriptor {
         );
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::EnumValue(descriptor_raw),
         ) {
             panic!()
@@ -1069,10 +1090,10 @@ unsafe impl Send for EnumValueDescriptor {}
 unsafe impl Sync for EnumValueDescriptor {}
 
 impl Descriptor for EnumValueDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -1083,7 +1104,7 @@ impl Descriptor for EnumValueDescriptor {
 impl Debug for EnumValueDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("EnumValueDescriptor")
-            .field("name", self.name())
+            .field("name", &self.name())
             .field("number", &self.number())
             .finish()
     }
@@ -1111,11 +1132,11 @@ impl ServiceDescriptor {
         self.index
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
@@ -1124,7 +1145,7 @@ impl ServiceDescriptor {
     }
 
     pub fn options(&self) -> Option<&ServiceOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1151,7 +1172,7 @@ impl ServiceDescriptor {
 
         descriptor.methods = descriptor
             .proto()
-            .method
+            .method()
             .iter()
             .enumerate()
             .map(|(i, m)| {
@@ -1159,13 +1180,13 @@ impl ServiceDescriptor {
                     &*m as *const MethodDescriptorProto,
                     Ref::new(descriptor_raw),
                     pool,
-                    i
+                    i,
                 )
             })
             .collect::<Box<[_]>>();
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::Service(descriptor_raw),
         ) {
             panic!()
@@ -1187,8 +1208,9 @@ impl ServiceDescriptor {
             Some(&mut self.info)
         } else {
             match path[0] {
-                2 => Ref::get_mut(&mut self.methods[path[1] as usize]).get_source_code_info(&path[2..]),
-                _ => None
+                2 => Ref::get_mut(&mut self.methods[path[1] as usize])
+                    .get_source_code_info(&path[2..]),
+                _ => None,
             }
         }
     }
@@ -1207,10 +1229,10 @@ unsafe impl Send for ServiceDescriptor {}
 unsafe impl Sync for ServiceDescriptor {}
 
 impl Descriptor for ServiceDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -1221,7 +1243,7 @@ impl Descriptor for ServiceDescriptor {
 impl Debug for ServiceDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("ServiceDescriptor")
-            .field("name", self.name())
+            .field("name", &self.name())
             .field("methods", &self.methods())
             .finish()
     }
@@ -1250,11 +1272,11 @@ impl MethodDescriptor {
         self.index
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
@@ -1267,15 +1289,15 @@ impl MethodDescriptor {
     }
 
     pub fn client_streaming(&self) -> bool {
-        validate!(self.proto().client_streaming, "client_streaming")
+        self.proto().client_streaming()
     }
 
     pub fn server_streaming(&self) -> bool {
-        validate!(self.proto().server_streaming, "server_streaming")
+        self.proto().server_streaming()
     }
 
     pub fn options(&self) -> Option<&MethodOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1305,7 +1327,7 @@ impl MethodDescriptor {
         );
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::Method(descriptor_raw),
         ) {
             panic!()
@@ -1315,8 +1337,8 @@ impl MethodDescriptor {
     }
 
     fn cross_ref(&mut self, pool: &mut DescriptorPool) {
-        self.input_type = pool.get_message_ref(self.proto().input_type.as_ref().unwrap());
-        self.output_type = pool.get_message_ref(self.proto().output_type.as_ref().unwrap());
+        self.input_type = pool.get_message_ref(self.proto().input_type());
+        self.output_type = pool.get_message_ref(self.proto().output_type());
     }
 
     fn get_source_code_info(&mut self, path: &[i32]) -> Option<&mut Option<SourceCodeInfo>> {
@@ -1341,10 +1363,10 @@ unsafe impl Send for MethodDescriptor {}
 unsafe impl Sync for MethodDescriptor {}
 
 impl Descriptor for MethodDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -1355,9 +1377,9 @@ impl Descriptor for MethodDescriptor {
 impl Debug for MethodDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("MethodDescriptor")
-            .field("name", self.name())
-            .field("input_type", self.input_type().full_name())
-            .field("output_type", self.output_type().full_name())
+            .field("name", &self.name())
+            .field("input_type", &self.input_type().full_name())
+            .field("output_type", &self.output_type().full_name())
             .finish()
     }
 }
@@ -1436,7 +1458,7 @@ impl Debug for DefaultValue {
             UnsignedInt(u) => fmt.write_fmt(format_args!("UnsignedInt({})", u)),
             Enum(e) => fmt.write_fmt(format_args!("Enum({})", e.full_name())),
             String(s) => fmt.write_fmt(format_args!("String({})", s)),
-            Bytes(b) => fmt.write_fmt(format_args!("Bytes({:?})", b))
+            Bytes(b) => fmt.write_fmt(format_args!("Bytes({:?})", b)),
         }
     }
 }
@@ -1457,20 +1479,20 @@ impl FieldDescriptor {
         unsafe { &*self.proto }
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
     pub fn number(&self) -> i32 {
-        validate!(self.proto().number, "number")
+        self.proto().number()
     }
 
     pub fn label(&self) -> FieldLabel {
-        validate!(self.proto().label, "label").unwrap()
+        self.proto().label().expect("Undefined enum value")
     }
 
     pub fn field_type(&self) -> &FieldType {
@@ -1481,8 +1503,8 @@ impl FieldDescriptor {
         &self.default
     }
 
-    pub fn json_name(&self) -> &String {
-        validate!(self.proto().json_name.as_ref(), "json_name")
+    pub fn json_name(&self) -> &str {
+        self.proto().json_name()
     }
 
     pub fn scope(&self) -> &FieldScope {
@@ -1495,7 +1517,7 @@ impl FieldDescriptor {
     }
 
     pub fn options(&self) -> Option<&FieldOptions> {
-        self.proto().options.as_ref().map(AsRef::as_ref)
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1505,11 +1527,10 @@ impl FieldDescriptor {
     pub fn packed(&self) -> bool {
         if self.label() == FieldLabel::Repeated && self.wire_type().is_packable() {
             if let Some(options) = self.options() {
-                if let Some(option) = options.packed {
-                    return option;
+                if options.has_packed() {
+                    return options.packed();
                 }
             }
-
             self.file().syntax() == Syntax::Proto3
         } else {
             false
@@ -1560,7 +1581,7 @@ impl FieldDescriptor {
         };
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::Field(descriptor_raw),
         ) {
             panic!()
@@ -1571,14 +1592,10 @@ impl FieldDescriptor {
 
     fn cross_ref(&mut self, pool: &mut DescriptorPool) {
         use crate::descriptor::FieldDescriptorProto_Type::*;
-        self.value_type = match self.proto().r#type.unwrap().unwrap() {
-            Message => {
-                FieldType::Message(pool.get_message_ref(self.proto().type_name.as_ref().unwrap()))
-            }
-            Enum => FieldType::Enum(pool.get_enum_ref(self.proto().type_name.as_ref().unwrap())),
-            Group => {
-                FieldType::Group(pool.get_message_ref(self.proto().type_name.as_ref().unwrap()))
-            }
+        self.value_type = match self.proto().r#type().expect("Undefined enum value") {
+            Message => FieldType::Message(pool.get_message_ref(self.proto().type_name())),
+            Enum => FieldType::Enum(pool.get_enum_ref(self.proto().type_name())),
+            Group => FieldType::Group(pool.get_message_ref(self.proto().type_name())),
             Double => FieldType::Double,
             Float => FieldType::Float,
             Int64 => FieldType::Int64,
@@ -1596,35 +1613,37 @@ impl FieldDescriptor {
             Sint64 => FieldType::Sint64,
         };
 
-        if let Some(default) = self.proto().default_value.as_ref() {
+        if self.proto().has_default_value() {
             self.default = match self.field_type() {
-                FieldType::Enum(e) => DefaultValue::Enum(
-                    pool.get_enum_value_ref(&(e.full_name().clone() + "." + default)),
-                ),
-                FieldType::Double | FieldType::Float => match default.parse() {
-                    Ok(ok) => DefaultValue::Double(ok),
-                    Err(_) => DefaultValue::Invalid,
-                },
+                FieldType::Enum(e) => DefaultValue::Enum(pool.get_enum_value_ref(
+                    &(e.full_name().to_string() + "." + self.proto().default_value()),
+                )),
+                FieldType::Double | FieldType::Float => {
+                    match self.proto().default_value().parse() {
+                        Ok(ok) => DefaultValue::Double(ok),
+                        Err(_) => DefaultValue::Invalid,
+                    }
+                }
                 FieldType::Int32
                 | FieldType::Int64
                 | FieldType::Sfixed32
                 | FieldType::Sfixed64
                 | FieldType::Sint32
-                | FieldType::Sint64 => match default.parse() {
+                | FieldType::Sint64 => match self.proto().default_value().parse() {
                     Ok(ok) => DefaultValue::SignedInt(ok),
                     Err(_) => DefaultValue::Invalid,
                 },
                 FieldType::Uint32 | FieldType::Uint64 | FieldType::Fixed32 | FieldType::Fixed64 => {
-                    match default.parse() {
+                    match self.proto().default_value().parse() {
                         Ok(ok) => DefaultValue::UnsignedInt(ok),
                         Err(_) => DefaultValue::Invalid,
                     }
                 }
-                FieldType::Bool => match default.parse() {
+                FieldType::Bool => match self.proto().default_value().parse() {
                     Ok(ok) => DefaultValue::Double(ok),
                     Err(_) => DefaultValue::Invalid,
                 },
-                FieldType::String => DefaultValue::String(default.clone()),
+                FieldType::String => DefaultValue::String(self.proto().default_value().to_string()),
                 FieldType::Bytes => {
                     fn esc_lit(lit: &str) -> u8 {
                         match &lit[0..2] {
@@ -1644,10 +1663,10 @@ impl FieldDescriptor {
                         }
                     }
 
-                    let mut result = Vec::with_capacity(default.len());
-                    for (i, c) in default.char_indices() {
+                    let mut result = Vec::with_capacity(self.proto().default_value().len());
+                    for (i, c) in self.proto().default_value().char_indices() {
                         match c {
-                            '\\' => result.push(esc_lit(&default[i..])),
+                            '\\' => result.push(esc_lit(&self.proto().default_value()[i..])),
                             _ => result.push(c as u8),
                         }
                     }
@@ -1660,8 +1679,8 @@ impl FieldDescriptor {
             self.default = DefaultValue::None;
         }
 
-        if let Some(extendee) = &self.proto().extendee {
-            self.message = pool.get_message_ref(extendee);
+        if self.proto().has_extendee() {
+            self.message = pool.get_message_ref(self.proto().extendee());
         } else {
             self.message = match &self.scope {
                 FieldScope::Message(m) => Ref::clone(m),
@@ -1693,10 +1712,10 @@ unsafe impl Send for FieldDescriptor {}
 unsafe impl Sync for FieldDescriptor {}
 
 impl Descriptor for FieldDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {
@@ -1712,7 +1731,7 @@ impl Debug for FieldDescriptor {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         fmt.debug_struct("FieldDescriptor")
             .field("label", &self.label())
-            .field("name", self.name())
+            .field("name", &self.name())
             .field("number", &self.number())
             .field("field_type", self.field_type())
             .field("default_value", self.default_value())
@@ -1756,11 +1775,11 @@ impl OneofDescriptor {
         &self.message
     }
 
-    pub fn name(&self) -> &String {
-        validate!(self.proto().name.as_ref(), "name")
+    pub fn name(&self) -> &str {
+        self.proto().name()
     }
 
-    pub fn full_name(&self) -> &String {
+    pub fn full_name(&self) -> &str {
         &self.full_name
     }
 
@@ -1786,10 +1805,10 @@ impl OneofDescriptor {
 
         descriptor.proto = proto;
         descriptor.message = message;
-        descriptor.full_name = descriptor.message.full_name().clone() + "." + descriptor.name();
+        descriptor.full_name = descriptor.message.full_name().to_string() + "." + descriptor.name();
 
         if let Some(_) = pool.symbols.insert(
-            descriptor.full_name().clone(),
+            descriptor.full_name().to_string(),
             Symbol::Oneof(descriptor_raw),
         ) {
             panic!()
@@ -1837,10 +1856,10 @@ unsafe impl Send for OneofDescriptor {}
 unsafe impl Sync for OneofDescriptor {}
 
 impl Descriptor for OneofDescriptor {
-    fn name(&self) -> &String {
+    fn name(&self) -> &str {
         self.name()
     }
-    fn full_name(&self) -> &String {
+    fn full_name(&self) -> &str {
         self.full_name()
     }
     fn file(&self) -> &FileDescriptor {

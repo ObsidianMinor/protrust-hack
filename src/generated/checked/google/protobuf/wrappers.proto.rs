@@ -67,7 +67,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// The JSON representation for `DoubleValue` is JSON number.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DoubleValue {
-    pub value: f64,
+    value: f64,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::DoubleValue {
@@ -142,7 +142,7 @@ impl self::DoubleValue {
 /// The JSON representation for `FloatValue` is JSON number.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FloatValue {
-    pub value: f32,
+    value: f32,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::FloatValue {
@@ -217,7 +217,7 @@ impl self::FloatValue {
 /// The JSON representation for `Int64Value` is JSON string.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int64Value {
-    pub value: i64,
+    value: i64,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Int64Value {
@@ -292,7 +292,7 @@ impl self::Int64Value {
 /// The JSON representation for `UInt64Value` is JSON string.
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt64Value {
-    pub value: u64,
+    value: u64,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::UInt64Value {
@@ -367,7 +367,7 @@ impl self::UInt64Value {
 /// The JSON representation for `Int32Value` is JSON number.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int32Value {
-    pub value: i32,
+    value: i32,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Int32Value {
@@ -442,7 +442,7 @@ impl self::Int32Value {
 /// The JSON representation for `UInt32Value` is JSON number.
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt32Value {
-    pub value: u32,
+    value: u32,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::UInt32Value {
@@ -517,7 +517,7 @@ impl self::UInt32Value {
 /// The JSON representation for `BoolValue` is JSON `true` and `false`.
 #[derive(Clone, Debug, PartialEq)]
 pub struct BoolValue {
-    pub value: bool,
+    value: bool,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::BoolValue {
@@ -592,7 +592,7 @@ impl self::BoolValue {
 /// The JSON representation for `StringValue` is JSON string.
 #[derive(Clone, Debug, PartialEq)]
 pub struct StringValue {
-    pub value: ::std::string::String,
+    value: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::StringValue {
@@ -667,7 +667,7 @@ impl self::StringValue {
 /// The JSON representation for `BytesValue` is JSON string.
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytesValue {
-    pub value: ::std::vec::Vec<u8>,
+    value: ::std::vec::Vec<u8>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::BytesValue {

@@ -131,8 +131,8 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///
 #[derive(Clone, Debug, PartialEq)]
 pub struct Timestamp {
-    pub seconds: i64,
-    pub nanos: i32,
+    seconds: i64,
+    nanos: i32,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Timestamp {

@@ -93,13 +93,13 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// detailed terminology.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Api {
-    pub name: ::std::string::String,
-    pub methods: crate::collections::RepeatedField<self::Method>,
-    pub options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
-    pub version: ::std::string::String,
-    pub source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
-    pub mixins: crate::collections::RepeatedField<self::Mixin>,
-    pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
+    name: ::std::string::String,
+    methods: crate::collections::RepeatedField<self::Method>,
+    options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
+    version: ::std::string::String,
+    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    mixins: crate::collections::RepeatedField<self::Mixin>,
+    syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
 static API_METHODS_CODEC: crate::Codec<self::Method> = crate::Codec::message(18);
@@ -345,13 +345,13 @@ impl self::Api {
 /// Method represents a method of an API interface.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Method {
-    pub name: ::std::string::String,
-    pub request_type_url: ::std::string::String,
-    pub request_streaming: bool,
-    pub response_type_url: ::std::string::String,
-    pub response_streaming: bool,
-    pub options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
-    pub syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
+    name: ::std::string::String,
+    request_type_url: ::std::string::String,
+    request_streaming: bool,
+    response_type_url: ::std::string::String,
+    response_streaming: bool,
+    options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
+    syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
     unknown_fields: crate::UnknownFieldSet
 }
 static METHOD_OPTIONS_CODEC: crate::Codec<crate::wkt::r#type::Option> = crate::Codec::message(50);
@@ -676,8 +676,8 @@ impl self::Method {
 ///     }
 #[derive(Clone, Debug, PartialEq)]
 pub struct Mixin {
-    pub name: ::std::string::String,
-    pub root: ::std::string::String,
+    name: ::std::string::String,
+    root: ::std::string::String,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Mixin {

@@ -66,11 +66,11 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
 /// [START messages]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Person {
-    pub name: ::std::string::String,
-    pub id: i32,
-    pub email: ::std::string::String,
-    pub phones: ::protrust::collections::RepeatedField<self::Person_PhoneNumber>,
-    pub last_updated: ::std::option::Option<::std::boxed::Box<::protrust::wkt::timestamp::Timestamp>>,
+    name: ::std::string::String,
+    id: i32,
+    email: ::std::string::String,
+    phones: ::protrust::collections::RepeatedField<self::Person_PhoneNumber>,
+    last_updated: ::std::option::Option<::std::boxed::Box<::protrust::wkt::timestamp::Timestamp>>,
     unknown_fields: ::protrust::UnknownFieldSet
 }
 static PERSON_PHONES_CODEC: ::protrust::Codec<self::Person_PhoneNumber> = ::protrust::Codec::message(34);
@@ -249,8 +249,8 @@ impl self::Person {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct Person_PhoneNumber {
-    pub number: ::std::string::String,
-    pub r#type: ::protrust::EnumValue<self::Person_PhoneType>,
+    number: ::std::string::String,
+    r#type: ::protrust::EnumValue<self::Person_PhoneType>,
     unknown_fields: ::protrust::UnknownFieldSet
 }
 impl ::protrust::CodedMessage for self::Person_PhoneNumber {
@@ -374,7 +374,7 @@ impl ::std::convert::From<self::Person_PhoneType> for i32 {
 /// Our address book file is just one of these.
 #[derive(Clone, Debug, PartialEq)]
 pub struct AddressBook {
-    pub people: ::protrust::collections::RepeatedField<self::Person>,
+    people: ::protrust::collections::RepeatedField<self::Person>,
     unknown_fields: ::protrust::UnknownFieldSet
 }
 static ADDRESS_BOOK_PEOPLE_CODEC: ::protrust::Codec<self::Person> = ::protrust::Codec::message(10);

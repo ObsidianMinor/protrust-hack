@@ -130,8 +130,8 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///
 #[derive(Clone, Debug, PartialEq)]
 pub struct Any {
-    pub type_url: ::std::string::String,
-    pub value: ::std::vec::Vec<u8>,
+    type_url: ::std::string::String,
+    value: ::std::vec::Vec<u8>,
     unknown_fields: crate::UnknownFieldSet
 }
 impl crate::CodedMessage for self::Any {
