@@ -328,7 +328,7 @@ impl FileDescriptor {
     }
 
     pub fn options(&self) -> Option<&FileOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn syntax(&self) -> Syntax {
@@ -460,7 +460,7 @@ impl FileDescriptor {
     }
 
     unsafe fn parse_source_code_info(&mut self) {
-        if let Some(source_code_info) = &(*self.proto).source_code_info() {
+        if let Some(source_code_info) = &(*self.proto).source_code_info_option() {
             for location in source_code_info.location().iter() {
                 if location.path().is_empty() || location.path().len() % 2 != 0 {
                     continue;
@@ -629,7 +629,7 @@ impl MessageDescriptor {
     }
 
     pub fn options(&self) -> Option<&MessageOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     /// Creates a new string with the full name of this descriptor
@@ -898,7 +898,7 @@ impl EnumDescriptor {
     }
 
     pub fn options(&self) -> Option<&EnumOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1030,7 +1030,7 @@ impl EnumValueDescriptor {
     }
 
     pub fn options(&self) -> Option<&EnumValueOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1146,7 +1146,7 @@ impl ServiceDescriptor {
     }
 
     pub fn options(&self) -> Option<&ServiceOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1298,7 +1298,7 @@ impl MethodDescriptor {
     }
 
     pub fn options(&self) -> Option<&MethodOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1518,7 +1518,7 @@ impl FieldDescriptor {
     }
 
     pub fn options(&self) -> Option<&FieldOptions> {
-        self.proto().options()
+        self.proto().options_option()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {

@@ -554,14 +554,7 @@ generator_new!(FieldDescriptor, proto, options;
 impl<W: Write> Generator<'_, FieldDescriptor, W> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
         if let Some(source_info) = self.proto.source_code_info() {
-            if let Some(comments) = source_info
-                .leading_comments()
-                .or(source_info.trailing_comments())
-            {
-                for line in comments.lines() {
-                    genln!(self.printer, "///{}", line);
-                }
-            }
+            generate_rustdoc_comments(self.printer, source_info)?
         }
 
         Ok(())
@@ -948,7 +941,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                 _ => match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         self.generate_rustdoc_comments()?;
-                        genln!(self.printer; "pub fn {field_name}(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, field_name, base_type);
+                        genln!(self.printer; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
                         indent!(self.printer, {
                             genln!(self.printer; "self.{field_name}.as_ref().map(|b| &**b)" => self.vars, field_name);
                         });
@@ -1002,7 +995,16 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                             genln!(self.printer; "pub fn {field_name}(&self) -> &[u8] {{" => self.vars, field_name);
                         }
                         indent!(self.printer, {
-                            genln!(self.printer; "&self.{field_name}.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::{default})" => self.vars, default, field_name);
+                            genln!(self.printer; "self.{field_name}.as_ref().map(|v| &**v).unwrap_or(Self::{default})" => self.vars, default, field_name);
+                        });
+                        genln!(self.printer, "}}");
+                        genln!(self.printer; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                        genln!(self.printer, "///");
+                        genln!(self.printer; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                        genln!(self.printer, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
+                        genln!(self.printer; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
+                        indent!(self.printer, {
+                            genln!(self.printer; "self.{field_name}.as_ref()" => self.vars, field_name);
                         });
                         genln!(self.printer, "}}");
                         genln!(self.printer; "/// Returns a unique reference to the [`{proto_name}`] field" => self.vars, proto_name);
@@ -1055,6 +1057,15 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                         genln!(self.printer; "pub fn {field_name}(&self) -> {base_type} {{" => self.vars, field_name, base_type);
                         indent!(self.printer, {
                             genln!(self.printer; "self.{field_name}.unwrap_or(Self::{default})" => self.vars, default, field_name);
+                        });
+                        genln!(self.printer, "}}");
+                        genln!(self.printer; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                        genln!(self.printer, "///");
+                        genln!(self.printer; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                        genln!(self.printer, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
+                        genln!(self.printer; "pub fn {name}_option(&self) -> ::std::option::Option<{base_type}> {{" => self.vars, name, base_type);
+                        indent!(self.printer, {
+                            genln!(self.printer; "self.{field_name}" => self.vars, field_name);
                         });
                         genln!(self.printer, "}}");
                         genln!(self.printer; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
@@ -1158,14 +1169,7 @@ generator_new!(EnumDescriptor, proto, options;
 impl<W: Write> Generator<'_, EnumDescriptor, W> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
         if let Some(source_info) = self.proto.source_code_info() {
-            if let Some(comments) = source_info
-                .leading_comments()
-                .or(source_info.trailing_comments())
-            {
-                for line in comments.lines() {
-                    genln!(self.printer, "///{}", line);
-                }
-            }
+            generate_rustdoc_comments(self.printer, source_info)?
         }
 
         Ok(())
@@ -1224,14 +1228,7 @@ generator_new!(EnumValueDescriptor, proto, options;
 impl<W: Write> Generator<'_, EnumValueDescriptor, W> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
         if let Some(source_info) = self.proto.source_code_info() {
-            if let Some(comments) = source_info
-                .leading_comments()
-                .or(source_info.trailing_comments())
-            {
-                for line in comments.lines() {
-                    genln!(self.printer, "///{}", line);
-                }
-            }
+            generate_rustdoc_comments(self.printer, source_info)?
         }
 
         Ok(())
@@ -1257,14 +1254,7 @@ generator_new!(OneofDescriptor, proto, options;
 impl<W: Write> Generator<'_, OneofDescriptor, W> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
         if let Some(source_info) = self.proto.source_code_info() {
-            if let Some(comments) = source_info
-                .leading_comments()
-                .or(source_info.trailing_comments())
-            {
-                for line in comments.lines() {
-                    genln!(self.printer, "///{}", line);
-                }
-            }
+            generate_rustdoc_comments(self.printer, source_info)?
         }
 
         Ok(())
@@ -1317,4 +1307,17 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
 
         Ok(())
     }
+}
+
+fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source_info: &SourceCodeInfo) -> Result {
+    if let Some(comments) = source_info
+        .leading_comments()
+        .or(source_info.trailing_comments())
+    {
+        for line in comments.lines() {
+            genln!(printer, "///{}", line);
+        }
+    }
+
+    Ok(())
 }

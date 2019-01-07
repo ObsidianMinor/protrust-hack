@@ -662,7 +662,14 @@ impl self::FileDescriptorProto {
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     /// file name, relative to root of source tree
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -704,7 +711,14 @@ impl self::FileDescriptorProto {
     pub const PACKAGE_DEFAULT_VALUE: &'static str = "";
     /// e.g. "foo", "foo.bar", etc.
     pub fn package(&self) -> &str {
-        &self.package.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::PACKAGE_DEFAULT_VALUE)
+        self.package.as_ref().map(|v| &**v).unwrap_or(Self::PACKAGE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`package`] field
+    ///
+    /// [`package`]: #method.package
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn package_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.package.as_ref()
     }
     /// Returns a unique reference to the [`package`] field
     ///
@@ -836,7 +850,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
-    pub fn options(&self) -> ::std::option::Option<&self::FileOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::FileOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -877,7 +891,7 @@ impl self::FileDescriptorProto {
     /// You may safely remove this entire field without harming runtime
     /// functionality of the descriptors -- the information is needed only by
     /// development tools.
-    pub fn source_code_info(&self) -> ::std::option::Option<&self::SourceCodeInfo> {
+    pub fn source_code_info_option(&self) -> ::std::option::Option<&self::SourceCodeInfo> {
         self.source_code_info.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`source_code_info`] field
@@ -921,7 +935,14 @@ impl self::FileDescriptorProto {
     /// The syntax of the proto file.
     /// The supported values are "proto2" and "proto3".
     pub fn syntax(&self) -> &str {
-        &self.syntax.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::SYNTAX_DEFAULT_VALUE)
+        self.syntax.as_ref().map(|v| &**v).unwrap_or(Self::SYNTAX_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`syntax`] field
+    ///
+    /// [`syntax`]: #method.syntax
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn syntax_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.syntax.as_ref()
     }
     /// Returns a unique reference to the [`syntax`] field
     ///
@@ -1093,7 +1114,14 @@ impl self::DescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -1207,7 +1235,7 @@ impl self::DescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 7;
-    pub fn options(&self) -> ::std::option::Option<&self::MessageOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::MessageOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -1371,6 +1399,13 @@ impl self::DescriptorProto_ExtensionRange {
     pub fn start(&self) -> i32 {
         self.start.unwrap_or(Self::START_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`start`] field
+    ///
+    /// [`start`]: #method.start
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn start_option(&self) -> ::std::option::Option<i32> {
+        self.start
+    }
     /// Returns a bool indicating the presence of the [`start`] field
     ///
     /// [`start`]: #method.start
@@ -1400,6 +1435,13 @@ impl self::DescriptorProto_ExtensionRange {
     pub fn end(&self) -> i32 {
         self.end.unwrap_or(Self::END_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`end`] field
+    ///
+    /// [`end`]: #method.end
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn end_option(&self) -> ::std::option::Option<i32> {
+        self.end
+    }
     /// Returns a bool indicating the presence of the [`end`] field
     ///
     /// [`end`]: #method.end
@@ -1422,7 +1464,7 @@ impl self::DescriptorProto_ExtensionRange {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> ::std::option::Option<&self::ExtensionRangeOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::ExtensionRangeOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -1546,6 +1588,13 @@ impl self::DescriptorProto_ReservedRange {
     pub fn start(&self) -> i32 {
         self.start.unwrap_or(Self::START_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`start`] field
+    ///
+    /// [`start`]: #method.start
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn start_option(&self) -> ::std::option::Option<i32> {
+        self.start
+    }
     /// Returns a bool indicating the presence of the [`start`] field
     ///
     /// [`start`]: #method.start
@@ -1575,6 +1624,13 @@ impl self::DescriptorProto_ReservedRange {
     /// Exclusive.
     pub fn end(&self) -> i32 {
         self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`end`] field
+    ///
+    /// [`end`]: #method.end
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn end_option(&self) -> ::std::option::Option<i32> {
+        self.end
     }
     /// Returns a bool indicating the presence of the [`end`] field
     ///
@@ -1883,7 +1939,14 @@ impl self::FieldDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -1926,6 +1989,13 @@ impl self::FieldDescriptorProto {
     pub fn number(&self) -> i32 {
         self.number.unwrap_or(Self::NUMBER_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`number`] field
+    ///
+    /// [`number`]: #method.number
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn number_option(&self) -> ::std::option::Option<i32> {
+        self.number
+    }
     /// Returns a bool indicating the presence of the [`number`] field
     ///
     /// [`number`]: #method.number
@@ -1954,6 +2024,13 @@ impl self::FieldDescriptorProto {
     pub const LABEL_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Label> = crate::EnumValue::Undefined(0);
     pub fn label(&self) -> crate::EnumValue<self::FieldDescriptorProto_Label> {
         self.label.unwrap_or(Self::LABEL_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`label`] field
+    ///
+    /// [`label`]: #method.label
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn label_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Label>> {
+        self.label
     }
     /// Returns a bool indicating the presence of the [`label`] field
     ///
@@ -1985,6 +2062,13 @@ impl self::FieldDescriptorProto {
     /// are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
     pub fn r#type(&self) -> crate::EnumValue<self::FieldDescriptorProto_Type> {
         self.r#type.unwrap_or(Self::TYPE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`type`] field
+    ///
+    /// [`type`]: #method.type
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn type_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Type>> {
+        self.r#type
     }
     /// Returns a bool indicating the presence of the [`type`] field
     ///
@@ -2018,7 +2102,14 @@ impl self::FieldDescriptorProto {
     /// message are searched, then within the parent, on up to the root
     /// namespace).
     pub fn type_name(&self) -> &str {
-        &self.type_name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::TYPE_NAME_DEFAULT_VALUE)
+        self.type_name.as_ref().map(|v| &**v).unwrap_or(Self::TYPE_NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`type_name`] field
+    ///
+    /// [`type_name`]: #method.type_name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn type_name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.type_name.as_ref()
     }
     /// Returns a unique reference to the [`type_name`] field
     ///
@@ -2061,7 +2152,14 @@ impl self::FieldDescriptorProto {
     /// For extensions, this is the name of the type being extended.  It is
     /// resolved in the same manner as type_name.
     pub fn extendee(&self) -> &str {
-        &self.extendee.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::EXTENDEE_DEFAULT_VALUE)
+        self.extendee.as_ref().map(|v| &**v).unwrap_or(Self::EXTENDEE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`extendee`] field
+    ///
+    /// [`extendee`]: #method.extendee
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn extendee_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.extendee.as_ref()
     }
     /// Returns a unique reference to the [`extendee`] field
     ///
@@ -2107,7 +2205,14 @@ impl self::FieldDescriptorProto {
     /// For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
     /// TODO(kenton):  Base-64 encode?
     pub fn default_value(&self) -> &str {
-        &self.default_value.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::DEFAULT_VALUE_DEFAULT_VALUE)
+        self.default_value.as_ref().map(|v| &**v).unwrap_or(Self::DEFAULT_VALUE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`default_value`] field
+    ///
+    /// [`default_value`]: #method.default_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn default_value_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.default_value.as_ref()
     }
     /// Returns a unique reference to the [`default_value`] field
     ///
@@ -2152,6 +2257,13 @@ impl self::FieldDescriptorProto {
     pub fn oneof_index(&self) -> i32 {
         self.oneof_index.unwrap_or(Self::ONEOF_INDEX_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`oneof_index`] field
+    ///
+    /// [`oneof_index`]: #method.oneof_index
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn oneof_index_option(&self) -> ::std::option::Option<i32> {
+        self.oneof_index
+    }
     /// Returns a bool indicating the presence of the [`oneof_index`] field
     ///
     /// [`oneof_index`]: #method.oneof_index
@@ -2183,7 +2295,14 @@ impl self::FieldDescriptorProto {
     /// will be used. Otherwise, it's deduced from the field's name by converting
     /// it to camelCase.
     pub fn json_name(&self) -> &str {
-        &self.json_name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::JSON_NAME_DEFAULT_VALUE)
+        self.json_name.as_ref().map(|v| &**v).unwrap_or(Self::JSON_NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`json_name`] field
+    ///
+    /// [`json_name`]: #method.json_name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn json_name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.json_name.as_ref()
     }
     /// Returns a unique reference to the [`json_name`] field
     ///
@@ -2219,7 +2338,7 @@ impl self::FieldDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
-    pub fn options(&self) -> ::std::option::Option<&self::FieldOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::FieldOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2425,7 +2544,14 @@ impl self::OneofDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -2461,7 +2587,7 @@ impl self::OneofDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 2;
-    pub fn options(&self) -> ::std::option::Option<&self::OneofOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::OneofOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2599,7 +2725,14 @@ impl self::EnumDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -2648,7 +2781,7 @@ impl self::EnumDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> ::std::option::Option<&self::EnumOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::EnumOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2806,6 +2939,13 @@ impl self::EnumDescriptorProto_EnumReservedRange {
     pub fn start(&self) -> i32 {
         self.start.unwrap_or(Self::START_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`start`] field
+    ///
+    /// [`start`]: #method.start
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn start_option(&self) -> ::std::option::Option<i32> {
+        self.start
+    }
     /// Returns a bool indicating the presence of the [`start`] field
     ///
     /// [`start`]: #method.start
@@ -2835,6 +2975,13 @@ impl self::EnumDescriptorProto_EnumReservedRange {
     /// Inclusive.
     pub fn end(&self) -> i32 {
         self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`end`] field
+    ///
+    /// [`end`]: #method.end
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn end_option(&self) -> ::std::option::Option<i32> {
+        self.end
     }
     /// Returns a bool indicating the presence of the [`end`] field
     ///
@@ -2956,7 +3103,14 @@ impl self::EnumValueDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -2999,6 +3153,13 @@ impl self::EnumValueDescriptorProto {
     pub fn number(&self) -> i32 {
         self.number.unwrap_or(Self::NUMBER_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`number`] field
+    ///
+    /// [`number`]: #method.number
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn number_option(&self) -> ::std::option::Option<i32> {
+        self.number
+    }
     /// Returns a bool indicating the presence of the [`number`] field
     ///
     /// [`number`]: #method.number
@@ -3021,7 +3182,7 @@ impl self::EnumValueDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> ::std::option::Option<&self::EnumValueOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::EnumValueOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -3145,7 +3306,14 @@ impl self::ServiceDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -3194,7 +3362,7 @@ impl self::ServiceDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options(&self) -> ::std::option::Option<&self::ServiceOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::ServiceOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -3383,7 +3551,14 @@ impl self::MethodDescriptorProto {
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -3426,7 +3601,14 @@ impl self::MethodDescriptorProto {
     /// Input and output type names.  These are resolved in the same way as
     /// FieldDescriptorProto.type_name, but must refer to a message type.
     pub fn input_type(&self) -> &str {
-        &self.input_type.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::INPUT_TYPE_DEFAULT_VALUE)
+        self.input_type.as_ref().map(|v| &**v).unwrap_or(Self::INPUT_TYPE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`input_type`] field
+    ///
+    /// [`input_type`]: #method.input_type
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn input_type_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.input_type.as_ref()
     }
     /// Returns a unique reference to the [`input_type`] field
     ///
@@ -3467,7 +3649,14 @@ impl self::MethodDescriptorProto {
     /// [`output_type`]: #method.output_type
     pub const OUTPUT_TYPE_DEFAULT_VALUE: &'static str = "";
     pub fn output_type(&self) -> &str {
-        &self.output_type.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::OUTPUT_TYPE_DEFAULT_VALUE)
+        self.output_type.as_ref().map(|v| &**v).unwrap_or(Self::OUTPUT_TYPE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`output_type`] field
+    ///
+    /// [`output_type`]: #method.output_type
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn output_type_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.output_type.as_ref()
     }
     /// Returns a unique reference to the [`output_type`] field
     ///
@@ -3503,7 +3692,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
-    pub fn options(&self) -> ::std::option::Option<&self::MethodOptions> {
+    pub fn options_option(&self) -> ::std::option::Option<&self::MethodOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -3548,6 +3737,13 @@ impl self::MethodDescriptorProto {
     pub fn client_streaming(&self) -> bool {
         self.client_streaming.unwrap_or(Self::CLIENT_STREAMING_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`client_streaming`] field
+    ///
+    /// [`client_streaming`]: #method.client_streaming
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn client_streaming_option(&self) -> ::std::option::Option<bool> {
+        self.client_streaming
+    }
     /// Returns a bool indicating the presence of the [`client_streaming`] field
     ///
     /// [`client_streaming`]: #method.client_streaming
@@ -3577,6 +3773,13 @@ impl self::MethodDescriptorProto {
     /// Identifies if server streams multiple server messages
     pub fn server_streaming(&self) -> bool {
         self.server_streaming.unwrap_or(Self::SERVER_STREAMING_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`server_streaming`] field
+    ///
+    /// [`server_streaming`]: #method.server_streaming
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn server_streaming_option(&self) -> ::std::option::Option<bool> {
+        self.server_streaming
     }
     /// Returns a bool indicating the presence of the [`server_streaming`] field
     ///
@@ -4016,7 +4219,14 @@ impl self::FileOptions {
     /// inappropriate because proto packages do not normally start with backwards
     /// domain names.
     pub fn java_package(&self) -> &str {
-        &self.java_package.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::JAVA_PACKAGE_DEFAULT_VALUE)
+        self.java_package.as_ref().map(|v| &**v).unwrap_or(Self::JAVA_PACKAGE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`java_package`] field
+    ///
+    /// [`java_package`]: #method.java_package
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_package_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.java_package.as_ref()
     }
     /// Returns a unique reference to the [`java_package`] field
     ///
@@ -4062,7 +4272,14 @@ impl self::FileOptions {
     /// a .proto always translates to a single class, but you may want to
     /// explicitly choose the class name).
     pub fn java_outer_classname(&self) -> &str {
-        &self.java_outer_classname.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE)
+        self.java_outer_classname.as_ref().map(|v| &**v).unwrap_or(Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`java_outer_classname`] field
+    ///
+    /// [`java_outer_classname`]: #method.java_outer_classname
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_outer_classname_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.java_outer_classname.as_ref()
     }
     /// Returns a unique reference to the [`java_outer_classname`] field
     ///
@@ -4111,6 +4328,13 @@ impl self::FileOptions {
     pub fn java_multiple_files(&self) -> bool {
         self.java_multiple_files.unwrap_or(Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`java_multiple_files`] field
+    ///
+    /// [`java_multiple_files`]: #method.java_multiple_files
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_multiple_files_option(&self) -> ::std::option::Option<bool> {
+        self.java_multiple_files
+    }
     /// Returns a bool indicating the presence of the [`java_multiple_files`] field
     ///
     /// [`java_multiple_files`]: #method.java_multiple_files
@@ -4140,6 +4364,13 @@ impl self::FileOptions {
     /// This option does nothing.
     pub fn java_generate_equals_and_hash(&self) -> bool {
         self.java_generate_equals_and_hash.unwrap_or(Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`java_generate_equals_and_hash`] field
+    ///
+    /// [`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_generate_equals_and_hash_option(&self) -> ::std::option::Option<bool> {
+        self.java_generate_equals_and_hash
     }
     /// Returns a bool indicating the presence of the [`java_generate_equals_and_hash`] field
     ///
@@ -4176,6 +4407,13 @@ impl self::FileOptions {
     pub fn java_string_check_utf8(&self) -> bool {
         self.java_string_check_utf8.unwrap_or(Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`java_string_check_utf8`] field
+    ///
+    /// [`java_string_check_utf8`]: #method.java_string_check_utf8
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_string_check_utf8_option(&self) -> ::std::option::Option<bool> {
+        self.java_string_check_utf8
+    }
     /// Returns a bool indicating the presence of the [`java_string_check_utf8`] field
     ///
     /// [`java_string_check_utf8`]: #method.java_string_check_utf8
@@ -4204,6 +4442,13 @@ impl self::FileOptions {
     pub const OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::FileOptions_OptimizeMode> = crate::EnumValue::Defined(self::FileOptions_OptimizeMode::Speed);
     pub fn optimize_for(&self) -> crate::EnumValue<self::FileOptions_OptimizeMode> {
         self.optimize_for.unwrap_or(Self::OPTIMIZE_FOR_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`optimize_for`] field
+    ///
+    /// [`optimize_for`]: #method.optimize_for
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn optimize_for_option(&self) -> ::std::option::Option<crate::EnumValue<self::FileOptions_OptimizeMode>> {
+        self.optimize_for
     }
     /// Returns a bool indicating the presence of the [`optimize_for`] field
     ///
@@ -4237,7 +4482,14 @@ impl self::FileOptions {
     ///   - Otherwise, the package statement in the .proto file, if present.
     ///   - Otherwise, the basename of the .proto file, without extension.
     pub fn go_package(&self) -> &str {
-        &self.go_package.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::GO_PACKAGE_DEFAULT_VALUE)
+        self.go_package.as_ref().map(|v| &**v).unwrap_or(Self::GO_PACKAGE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`go_package`] field
+    ///
+    /// [`go_package`]: #method.go_package
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn go_package_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.go_package.as_ref()
     }
     /// Returns a unique reference to the [`go_package`] field
     ///
@@ -4290,6 +4542,13 @@ impl self::FileOptions {
     pub fn cc_generic_services(&self) -> bool {
         self.cc_generic_services.unwrap_or(Self::CC_GENERIC_SERVICES_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`cc_generic_services`] field
+    ///
+    /// [`cc_generic_services`]: #method.cc_generic_services
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn cc_generic_services_option(&self) -> ::std::option::Option<bool> {
+        self.cc_generic_services
+    }
     /// Returns a bool indicating the presence of the [`cc_generic_services`] field
     ///
     /// [`cc_generic_services`]: #method.cc_generic_services
@@ -4318,6 +4577,13 @@ impl self::FileOptions {
     pub const JAVA_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     pub fn java_generic_services(&self) -> bool {
         self.java_generic_services.unwrap_or(Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`java_generic_services`] field
+    ///
+    /// [`java_generic_services`]: #method.java_generic_services
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn java_generic_services_option(&self) -> ::std::option::Option<bool> {
+        self.java_generic_services
     }
     /// Returns a bool indicating the presence of the [`java_generic_services`] field
     ///
@@ -4348,6 +4614,13 @@ impl self::FileOptions {
     pub fn py_generic_services(&self) -> bool {
         self.py_generic_services.unwrap_or(Self::PY_GENERIC_SERVICES_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`py_generic_services`] field
+    ///
+    /// [`py_generic_services`]: #method.py_generic_services
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn py_generic_services_option(&self) -> ::std::option::Option<bool> {
+        self.py_generic_services
+    }
     /// Returns a bool indicating the presence of the [`py_generic_services`] field
     ///
     /// [`py_generic_services`]: #method.py_generic_services
@@ -4376,6 +4649,13 @@ impl self::FileOptions {
     pub const PHP_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
     pub fn php_generic_services(&self) -> bool {
         self.php_generic_services.unwrap_or(Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`php_generic_services`] field
+    ///
+    /// [`php_generic_services`]: #method.php_generic_services
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn php_generic_services_option(&self) -> ::std::option::Option<bool> {
+        self.php_generic_services
     }
     /// Returns a bool indicating the presence of the [`php_generic_services`] field
     ///
@@ -4410,6 +4690,13 @@ impl self::FileOptions {
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
+    }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
     /// [`deprecated`]: #method.deprecated
@@ -4441,6 +4728,13 @@ impl self::FileOptions {
     pub fn cc_enable_arenas(&self) -> bool {
         self.cc_enable_arenas.unwrap_or(Self::CC_ENABLE_ARENAS_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`cc_enable_arenas`] field
+    ///
+    /// [`cc_enable_arenas`]: #method.cc_enable_arenas
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn cc_enable_arenas_option(&self) -> ::std::option::Option<bool> {
+        self.cc_enable_arenas
+    }
     /// Returns a bool indicating the presence of the [`cc_enable_arenas`] field
     ///
     /// [`cc_enable_arenas`]: #method.cc_enable_arenas
@@ -4470,7 +4764,14 @@ impl self::FileOptions {
     /// Sets the objective c class prefix which is prepended to all objective c
     /// generated classes from this .proto. There is no default.
     pub fn objc_class_prefix(&self) -> &str {
-        &self.objc_class_prefix.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE)
+        self.objc_class_prefix.as_ref().map(|v| &**v).unwrap_or(Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`objc_class_prefix`] field
+    ///
+    /// [`objc_class_prefix`]: #method.objc_class_prefix
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn objc_class_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.objc_class_prefix.as_ref()
     }
     /// Returns a unique reference to the [`objc_class_prefix`] field
     ///
@@ -4512,7 +4813,14 @@ impl self::FileOptions {
     pub const CSHARP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
     /// Namespace for generated classes; defaults to the package.
     pub fn csharp_namespace(&self) -> &str {
-        &self.csharp_namespace.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::CSHARP_NAMESPACE_DEFAULT_VALUE)
+        self.csharp_namespace.as_ref().map(|v| &**v).unwrap_or(Self::CSHARP_NAMESPACE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`csharp_namespace`] field
+    ///
+    /// [`csharp_namespace`]: #method.csharp_namespace
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn csharp_namespace_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.csharp_namespace.as_ref()
     }
     /// Returns a unique reference to the [`csharp_namespace`] field
     ///
@@ -4557,7 +4865,14 @@ impl self::FileOptions {
     /// defined. When this options is provided, they will use this value instead
     /// to prefix the types/symbols defined.
     pub fn swift_prefix(&self) -> &str {
-        &self.swift_prefix.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::SWIFT_PREFIX_DEFAULT_VALUE)
+        self.swift_prefix.as_ref().map(|v| &**v).unwrap_or(Self::SWIFT_PREFIX_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`swift_prefix`] field
+    ///
+    /// [`swift_prefix`]: #method.swift_prefix
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn swift_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.swift_prefix.as_ref()
     }
     /// Returns a unique reference to the [`swift_prefix`] field
     ///
@@ -4600,7 +4915,14 @@ impl self::FileOptions {
     /// Sets the php class prefix which is prepended to all php generated classes
     /// from this .proto. Default is empty.
     pub fn php_class_prefix(&self) -> &str {
-        &self.php_class_prefix.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::PHP_CLASS_PREFIX_DEFAULT_VALUE)
+        self.php_class_prefix.as_ref().map(|v| &**v).unwrap_or(Self::PHP_CLASS_PREFIX_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`php_class_prefix`] field
+    ///
+    /// [`php_class_prefix`]: #method.php_class_prefix
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn php_class_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.php_class_prefix.as_ref()
     }
     /// Returns a unique reference to the [`php_class_prefix`] field
     ///
@@ -4644,7 +4966,14 @@ impl self::FileOptions {
     /// is empty. When this option is empty, the package name will be used for
     /// determining the namespace.
     pub fn php_namespace(&self) -> &str {
-        &self.php_namespace.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::PHP_NAMESPACE_DEFAULT_VALUE)
+        self.php_namespace.as_ref().map(|v| &**v).unwrap_or(Self::PHP_NAMESPACE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`php_namespace`] field
+    ///
+    /// [`php_namespace`]: #method.php_namespace
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn php_namespace_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.php_namespace.as_ref()
     }
     /// Returns a unique reference to the [`php_namespace`] field
     ///
@@ -4688,7 +5017,14 @@ impl self::FileOptions {
     /// Default is empty. When this option is empty, the proto file name will be used
     /// for determining the namespace.
     pub fn php_metadata_namespace(&self) -> &str {
-        &self.php_metadata_namespace.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE)
+        self.php_metadata_namespace.as_ref().map(|v| &**v).unwrap_or(Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`php_metadata_namespace`] field
+    ///
+    /// [`php_metadata_namespace`]: #method.php_metadata_namespace
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn php_metadata_namespace_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.php_metadata_namespace.as_ref()
     }
     /// Returns a unique reference to the [`php_metadata_namespace`] field
     ///
@@ -4732,7 +5068,14 @@ impl self::FileOptions {
     /// is empty. When this option is not set, the package name will be used for
     /// determining the ruby package.
     pub fn ruby_package(&self) -> &str {
-        &self.ruby_package.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::RUBY_PACKAGE_DEFAULT_VALUE)
+        self.ruby_package.as_ref().map(|v| &**v).unwrap_or(Self::RUBY_PACKAGE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`ruby_package`] field
+    ///
+    /// [`ruby_package`]: #method.ruby_package
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn ruby_package_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.ruby_package.as_ref()
     }
     /// Returns a unique reference to the [`ruby_package`] field
     ///
@@ -4953,6 +5296,13 @@ impl self::MessageOptions {
     pub fn message_set_wire_format(&self) -> bool {
         self.message_set_wire_format.unwrap_or(Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`message_set_wire_format`] field
+    ///
+    /// [`message_set_wire_format`]: #method.message_set_wire_format
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn message_set_wire_format_option(&self) -> ::std::option::Option<bool> {
+        self.message_set_wire_format
+    }
     /// Returns a bool indicating the presence of the [`message_set_wire_format`] field
     ///
     /// [`message_set_wire_format`]: #method.message_set_wire_format
@@ -4984,6 +5334,13 @@ impl self::MessageOptions {
     /// from proto1 easier; new code should avoid fields named "descriptor".
     pub fn no_standard_descriptor_accessor(&self) -> bool {
         self.no_standard_descriptor_accessor.unwrap_or(Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`no_standard_descriptor_accessor`] field
+    ///
+    /// [`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn no_standard_descriptor_accessor_option(&self) -> ::std::option::Option<bool> {
+        self.no_standard_descriptor_accessor
     }
     /// Returns a bool indicating the presence of the [`no_standard_descriptor_accessor`] field
     ///
@@ -5017,6 +5374,13 @@ impl self::MessageOptions {
     /// this is a formalization for deprecating messages.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
     }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
@@ -5067,6 +5431,13 @@ impl self::MessageOptions {
     /// parser.
     pub fn map_entry(&self) -> bool {
         self.map_entry.unwrap_or(Self::MAP_ENTRY_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`map_entry`] field
+    ///
+    /// [`map_entry`]: #method.map_entry
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn map_entry_option(&self) -> ::std::option::Option<bool> {
+        self.map_entry
     }
     /// Returns a bool indicating the presence of the [`map_entry`] field
     ///
@@ -5270,6 +5641,13 @@ impl self::FieldOptions {
     pub fn ctype(&self) -> crate::EnumValue<self::FieldOptions_CType> {
         self.ctype.unwrap_or(Self::CTYPE_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`ctype`] field
+    ///
+    /// [`ctype`]: #method.ctype
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn ctype_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldOptions_CType>> {
+        self.ctype
+    }
     /// Returns a bool indicating the presence of the [`ctype`] field
     ///
     /// [`ctype`]: #method.ctype
@@ -5303,6 +5681,13 @@ impl self::FieldOptions {
     /// false will avoid using packed encoding.
     pub fn packed(&self) -> bool {
         self.packed.unwrap_or(Self::PACKED_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`packed`] field
+    ///
+    /// [`packed`]: #method.packed
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn packed_option(&self) -> ::std::option::Option<bool> {
+        self.packed
     }
     /// Returns a bool indicating the presence of the [`packed`] field
     ///
@@ -5343,6 +5728,13 @@ impl self::FieldOptions {
     /// goog.math.Integer.
     pub fn jstype(&self) -> crate::EnumValue<self::FieldOptions_JSType> {
         self.jstype.unwrap_or(Self::JSTYPE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`jstype`] field
+    ///
+    /// [`jstype`]: #method.jstype
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn jstype_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldOptions_JSType>> {
+        self.jstype
     }
     /// Returns a bool indicating the presence of the [`jstype`] field
     ///
@@ -5401,6 +5793,13 @@ impl self::FieldOptions {
     pub fn lazy(&self) -> bool {
         self.lazy.unwrap_or(Self::LAZY_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`lazy`] field
+    ///
+    /// [`lazy`]: #method.lazy
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn lazy_option(&self) -> ::std::option::Option<bool> {
+        self.lazy
+    }
     /// Returns a bool indicating the presence of the [`lazy`] field
     ///
     /// [`lazy`]: #method.lazy
@@ -5434,6 +5833,13 @@ impl self::FieldOptions {
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
+    }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
     /// [`deprecated`]: #method.deprecated
@@ -5463,6 +5869,13 @@ impl self::FieldOptions {
     /// For Google-internal migration only. Do not use.
     pub fn weak(&self) -> bool {
         self.weak.unwrap_or(Self::WEAK_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`weak`] field
+    ///
+    /// [`weak`]: #method.weak
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn weak_option(&self) -> ::std::option::Option<bool> {
+        self.weak
     }
     /// Returns a bool indicating the presence of the [`weak`] field
     ///
@@ -5701,6 +6114,13 @@ impl self::EnumOptions {
     pub fn allow_alias(&self) -> bool {
         self.allow_alias.unwrap_or(Self::ALLOW_ALIAS_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`allow_alias`] field
+    ///
+    /// [`allow_alias`]: #method.allow_alias
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn allow_alias_option(&self) -> ::std::option::Option<bool> {
+        self.allow_alias
+    }
     /// Returns a bool indicating the presence of the [`allow_alias`] field
     ///
     /// [`allow_alias`]: #method.allow_alias
@@ -5733,6 +6153,13 @@ impl self::EnumOptions {
     /// is a formalization for deprecating enums.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
     }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
@@ -5846,6 +6273,13 @@ impl self::EnumValueOptions {
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
+    }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
     /// [`deprecated`]: #method.deprecated
@@ -5957,6 +6391,13 @@ impl self::ServiceOptions {
     /// this is a formalization for deprecating services.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
     }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
@@ -6088,6 +6529,13 @@ impl self::MethodOptions {
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`deprecated`] field
+    ///
+    /// [`deprecated`]: #method.deprecated
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn deprecated_option(&self) -> ::std::option::Option<bool> {
+        self.deprecated
+    }
     /// Returns a bool indicating the presence of the [`deprecated`] field
     ///
     /// [`deprecated`]: #method.deprecated
@@ -6116,6 +6564,13 @@ impl self::MethodOptions {
     pub const IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<self::MethodOptions_IdempotencyLevel> = crate::EnumValue::Defined(self::MethodOptions_IdempotencyLevel::IdempotencyUnknown);
     pub fn idempotency_level(&self) -> crate::EnumValue<self::MethodOptions_IdempotencyLevel> {
         self.idempotency_level.unwrap_or(Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`idempotency_level`] field
+    ///
+    /// [`idempotency_level`]: #method.idempotency_level
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn idempotency_level_option(&self) -> ::std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>> {
+        self.idempotency_level
     }
     /// Returns a bool indicating the presence of the [`idempotency_level`] field
     ///
@@ -6361,7 +6816,14 @@ impl self::UninterpretedOption {
     /// The value of the uninterpreted option, in whatever type the tokenizer
     /// identified it as during parsing. Exactly one of these should be set.
     pub fn identifier_value(&self) -> &str {
-        &self.identifier_value.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::IDENTIFIER_VALUE_DEFAULT_VALUE)
+        self.identifier_value.as_ref().map(|v| &**v).unwrap_or(Self::IDENTIFIER_VALUE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`identifier_value`] field
+    ///
+    /// [`identifier_value`]: #method.identifier_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn identifier_value_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.identifier_value.as_ref()
     }
     /// Returns a unique reference to the [`identifier_value`] field
     ///
@@ -6404,6 +6866,13 @@ impl self::UninterpretedOption {
     pub fn positive_int_value(&self) -> u64 {
         self.positive_int_value.unwrap_or(Self::POSITIVE_INT_VALUE_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`positive_int_value`] field
+    ///
+    /// [`positive_int_value`]: #method.positive_int_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn positive_int_value_option(&self) -> ::std::option::Option<u64> {
+        self.positive_int_value
+    }
     /// Returns a bool indicating the presence of the [`positive_int_value`] field
     ///
     /// [`positive_int_value`]: #method.positive_int_value
@@ -6432,6 +6901,13 @@ impl self::UninterpretedOption {
     pub const NEGATIVE_INT_VALUE_DEFAULT_VALUE: i64 = 0;
     pub fn negative_int_value(&self) -> i64 {
         self.negative_int_value.unwrap_or(Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`negative_int_value`] field
+    ///
+    /// [`negative_int_value`]: #method.negative_int_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn negative_int_value_option(&self) -> ::std::option::Option<i64> {
+        self.negative_int_value
     }
     /// Returns a bool indicating the presence of the [`negative_int_value`] field
     ///
@@ -6462,6 +6938,13 @@ impl self::UninterpretedOption {
     pub fn double_value(&self) -> f64 {
         self.double_value.unwrap_or(Self::DOUBLE_VALUE_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`double_value`] field
+    ///
+    /// [`double_value`]: #method.double_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn double_value_option(&self) -> ::std::option::Option<f64> {
+        self.double_value
+    }
     /// Returns a bool indicating the presence of the [`double_value`] field
     ///
     /// [`double_value`]: #method.double_value
@@ -6489,7 +6972,14 @@ impl self::UninterpretedOption {
     /// [`string_value`]: #method.string_value
     pub const STRING_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
     pub fn string_value(&self) -> &[u8] {
-        &self.string_value.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::STRING_VALUE_DEFAULT_VALUE)
+        self.string_value.as_ref().map(|v| &**v).unwrap_or(Self::STRING_VALUE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`string_value`] field
+    ///
+    /// [`string_value`]: #method.string_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn string_value_option(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        self.string_value.as_ref()
     }
     /// Returns a unique reference to the [`string_value`] field
     ///
@@ -6530,7 +7020,14 @@ impl self::UninterpretedOption {
     /// [`aggregate_value`]: #method.aggregate_value
     pub const AGGREGATE_VALUE_DEFAULT_VALUE: &'static str = "";
     pub fn aggregate_value(&self) -> &str {
-        &self.aggregate_value.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::AGGREGATE_VALUE_DEFAULT_VALUE)
+        self.aggregate_value.as_ref().map(|v| &**v).unwrap_or(Self::AGGREGATE_VALUE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`aggregate_value`] field
+    ///
+    /// [`aggregate_value`]: #method.aggregate_value
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn aggregate_value_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.aggregate_value.as_ref()
     }
     /// Returns a unique reference to the [`aggregate_value`] field
     ///
@@ -6652,7 +7149,14 @@ impl self::UninterpretedOption_NamePart {
     /// [`name_part`]: #method.name_part
     pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
     pub fn name_part(&self) -> &str {
-        &self.name_part.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
+        self.name_part.as_ref().map(|v| &**v).unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name_part`] field
+    ///
+    /// [`name_part`]: #method.name_part
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_part_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name_part.as_ref()
     }
     /// Returns a unique reference to the [`name_part`] field
     ///
@@ -6694,6 +7198,13 @@ impl self::UninterpretedOption_NamePart {
     pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
     pub fn is_extension(&self) -> bool {
         self.is_extension.unwrap_or(Self::IS_EXTENSION_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`is_extension`] field
+    ///
+    /// [`is_extension`]: #method.is_extension
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn is_extension_option(&self) -> ::std::option::Option<bool> {
+        self.is_extension
     }
     /// Returns a bool indicating the presence of the [`is_extension`] field
     ///
@@ -7025,7 +7536,14 @@ impl self::SourceCodeInfo_Location {
     ///
     ///   // ignored detached comments.
     pub fn leading_comments(&self) -> &str {
-        &self.leading_comments.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
+        self.leading_comments.as_ref().map(|v| &**v).unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`leading_comments`] field
+    ///
+    /// [`leading_comments`]: #method.leading_comments
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn leading_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.leading_comments.as_ref()
     }
     /// Returns a unique reference to the [`leading_comments`] field
     ///
@@ -7066,7 +7584,14 @@ impl self::SourceCodeInfo_Location {
     /// [`trailing_comments`]: #method.trailing_comments
     pub const TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
     pub fn trailing_comments(&self) -> &str {
-        &self.trailing_comments.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::TRAILING_COMMENTS_DEFAULT_VALUE)
+        self.trailing_comments.as_ref().map(|v| &**v).unwrap_or(Self::TRAILING_COMMENTS_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`trailing_comments`] field
+    ///
+    /// [`trailing_comments`]: #method.trailing_comments
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn trailing_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.trailing_comments.as_ref()
     }
     /// Returns a unique reference to the [`trailing_comments`] field
     ///
@@ -7302,7 +7827,14 @@ impl self::GeneratedCodeInfo_Annotation {
     pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
     /// Identifies the filesystem path to the original source .proto.
     pub fn source_file(&self) -> &str {
-        &self.source_file.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
+        self.source_file.as_ref().map(|v| &**v).unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`source_file`] field
+    ///
+    /// [`source_file`]: #method.source_file
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn source_file_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.source_file.as_ref()
     }
     /// Returns a unique reference to the [`source_file`] field
     ///
@@ -7347,6 +7879,13 @@ impl self::GeneratedCodeInfo_Annotation {
     pub fn begin(&self) -> i32 {
         self.begin.unwrap_or(Self::BEGIN_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`begin`] field
+    ///
+    /// [`begin`]: #method.begin
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn begin_option(&self) -> ::std::option::Option<i32> {
+        self.begin
+    }
     /// Returns a bool indicating the presence of the [`begin`] field
     ///
     /// [`begin`]: #method.begin
@@ -7378,6 +7917,13 @@ impl self::GeneratedCodeInfo_Annotation {
     /// the last relevant byte (so the length of the text = end - begin).
     pub fn end(&self) -> i32 {
         self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`end`] field
+    ///
+    /// [`end`]: #method.end
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn end_option(&self) -> ::std::option::Option<i32> {
+        self.end
     }
     /// Returns a bool indicating the presence of the [`end`] field
     ///

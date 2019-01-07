@@ -250,21 +250,25 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 
     /// Gets whether this field is packed or not
+    #[inline]
     pub fn is_packed(&self) -> bool {
         self.packed
     }
 
     /// Gets the tag of the codec or the start tag for groups
+    #[inline]
     pub fn tag(&self) -> u32 {
         self.start
     }
 
     /// Gets the end tag of the codec (groups only)
+    #[inline]
     pub fn end_tag(&self) -> Option<NonZeroU32> {
         self.end
     }
 
     /// Gets whether the value is default and should be written to an output
+    #[inline]
     pub fn is_default(&self, value: &T) -> bool {
         match &self.default {
             None => false,
@@ -274,6 +278,7 @@ impl<T: Clone + PartialEq> Codec<T> {
 
     /// Calculates the size of the value
     #[cfg(checked_size)]
+    #[inline]
     pub fn calculate_size(&self, value: &T) -> Option<i32> {
         match self.size {
             ValueSize::Fixed(s) => Some(s),
@@ -282,6 +287,7 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 
     #[cfg(not(checked_size))]
+    #[inline]
     pub fn calculate_size(&self, value: &T) -> i32 {
         match self.size {
             ValueSize::Fixed(s) => s,
@@ -290,6 +296,7 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 
     /// Writes the value to the provided output
+    #[inline]
     pub fn write_to(&self, output: &mut io::CodedOutput, value: &T) -> io::OutputResult {
         (self.write)(output, value)
     }
@@ -306,6 +313,7 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 
     /// Merges a value from the provided input into the the given Option instance
+    #[inline]
     pub fn merge_from(
         &self,
         input: &mut io::CodedInput,

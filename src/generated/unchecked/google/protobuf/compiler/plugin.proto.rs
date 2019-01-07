@@ -198,6 +198,13 @@ impl self::Version {
     pub fn major(&self) -> i32 {
         self.major.unwrap_or(Self::MAJOR_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`major`] field
+    ///
+    /// [`major`]: #method.major
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn major_option(&self) -> ::std::option::Option<i32> {
+        self.major
+    }
     /// Returns a bool indicating the presence of the [`major`] field
     ///
     /// [`major`]: #method.major
@@ -226,6 +233,13 @@ impl self::Version {
     pub const MINOR_DEFAULT_VALUE: i32 = 0;
     pub fn minor(&self) -> i32 {
         self.minor.unwrap_or(Self::MINOR_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`minor`] field
+    ///
+    /// [`minor`]: #method.minor
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn minor_option(&self) -> ::std::option::Option<i32> {
+        self.minor
     }
     /// Returns a bool indicating the presence of the [`minor`] field
     ///
@@ -256,6 +270,13 @@ impl self::Version {
     pub fn patch(&self) -> i32 {
         self.patch.unwrap_or(Self::PATCH_DEFAULT_VALUE)
     }
+    /// Returns an [`Option`] representing the presence of the [`patch`] field
+    ///
+    /// [`patch`]: #method.patch
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn patch_option(&self) -> ::std::option::Option<i32> {
+        self.patch
+    }
     /// Returns a bool indicating the presence of the [`patch`] field
     ///
     /// [`patch`]: #method.patch
@@ -285,7 +306,14 @@ impl self::Version {
     /// A suffix for alpha, beta or rc release, e.g., "alpha-1", "rc2". It should
     /// be empty for mainline stable releases.
     pub fn suffix(&self) -> &str {
-        &self.suffix.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::SUFFIX_DEFAULT_VALUE)
+        self.suffix.as_ref().map(|v| &**v).unwrap_or(Self::SUFFIX_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`suffix`] field
+    ///
+    /// [`suffix`]: #method.suffix
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn suffix_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.suffix.as_ref()
     }
     /// Returns a unique reference to the [`suffix`] field
     ///
@@ -432,7 +460,14 @@ impl self::CodeGeneratorRequest {
     pub const PARAMETER_DEFAULT_VALUE: &'static str = "";
     /// The generator parameter passed on the command-line.
     pub fn parameter(&self) -> &str {
-        &self.parameter.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::PARAMETER_DEFAULT_VALUE)
+        self.parameter.as_ref().map(|v| &**v).unwrap_or(Self::PARAMETER_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`parameter`] field
+    ///
+    /// [`parameter`]: #method.parameter
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn parameter_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.parameter.as_ref()
     }
     /// Returns a unique reference to the [`parameter`] field
     ///
@@ -496,7 +531,7 @@ impl self::CodeGeneratorRequest {
     /// [`compiler_version`]: #method.compiler_version
     pub const COMPILER_VERSION_FIELD_NUMBER: i32 = 3;
     /// The version number of protocol compiler.
-    pub fn compiler_version(&self) -> ::std::option::Option<&self::Version> {
+    pub fn compiler_version_option(&self) -> ::std::option::Option<&self::Version> {
         self.compiler_version.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`compiler_version`] field
@@ -612,7 +647,14 @@ impl self::CodeGeneratorResponse {
     /// unparseable -- should be reported by writing a message to stderr and
     /// exiting with a non-zero status code.
     pub fn error(&self) -> &str {
-        &self.error.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::ERROR_DEFAULT_VALUE)
+        self.error.as_ref().map(|v| &**v).unwrap_or(Self::ERROR_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`error`] field
+    ///
+    /// [`error`]: #method.error
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn error_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.error.as_ref()
     }
     /// Returns a unique reference to the [`error`] field
     ///
@@ -772,7 +814,14 @@ impl self::CodeGeneratorResponse_File {
     /// this writing protoc does not optimize for this -- it will read the entire
     /// CodeGeneratorResponse before writing files to disk.
     pub fn name(&self) -> &str {
-        &self.name.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`name`] field
+    ///
+    /// [`name`]: #method.name
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.name.as_ref()
     }
     /// Returns a unique reference to the [`name`] field
     ///
@@ -850,7 +899,14 @@ impl self::CodeGeneratorResponse_File {
     ///
     /// If |insertion_point| is present, |name| must also be present.
     pub fn insertion_point(&self) -> &str {
-        &self.insertion_point.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::INSERTION_POINT_DEFAULT_VALUE)
+        self.insertion_point.as_ref().map(|v| &**v).unwrap_or(Self::INSERTION_POINT_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`insertion_point`] field
+    ///
+    /// [`insertion_point`]: #method.insertion_point
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn insertion_point_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.insertion_point.as_ref()
     }
     /// Returns a unique reference to the [`insertion_point`] field
     ///
@@ -892,7 +948,14 @@ impl self::CodeGeneratorResponse_File {
     pub const CONTENT_DEFAULT_VALUE: &'static str = "";
     /// The file contents.
     pub fn content(&self) -> &str {
-        &self.content.as_ref().map(::std::convert::AsRef::as_ref).unwrap_or(Self::CONTENT_DEFAULT_VALUE)
+        self.content.as_ref().map(|v| &**v).unwrap_or(Self::CONTENT_DEFAULT_VALUE)
+    }
+    /// Returns an [`Option`] representing the presence of the [`content`] field
+    ///
+    /// [`content`]: #method.content
+    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+    pub fn content_option(&self) -> ::std::option::Option<&::std::string::String> {
+        self.content.as_ref()
     }
     /// Returns a unique reference to the [`content`] field
     ///
