@@ -351,9 +351,9 @@ impl self::Person_PhoneNumber {
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Person_PhoneType {
-    Mobile = 0,
-    Home = 1,
-    Work = 2,
+    Mobile,
+    Home,
+    Work,
 }
 impl ::std::convert::TryFrom<i32> for self::Person_PhoneType {
     type Error = ::protrust::VariantUndefinedError;
@@ -368,7 +368,11 @@ impl ::std::convert::TryFrom<i32> for self::Person_PhoneType {
 }
 impl ::std::convert::From<self::Person_PhoneType> for i32 {
     fn from(value: self::Person_PhoneType) -> i32 {
-        value as i32
+        match value {
+            Person_PhoneType::Mobile => 0,
+            Person_PhoneType::Home => 1,
+            Person_PhoneType::Work => 2,
+        }
     }
 }
 /// Our address book file is just one of these.

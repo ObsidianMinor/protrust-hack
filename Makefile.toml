@@ -61,6 +61,15 @@ args = [
     "conformance.proto"
 ]
 
+[tasks.gen-test-messages]
+command = "protoc"
+args = [
+    "--proto_path=protos",
+    "--rust_out=tests/gen",
+    "test_messages_proto2.proto",
+    "test_messages_proto3.proto"
+]
+
 [tasks.protoc-check.windows]
 script_runner = "powershell"
 script_extension = "ps1"
@@ -199,13 +208,30 @@ script = [
     'New-Item "src\bin\conformance\gen" -ItemType "directory" | Out-Null'
 ]
 
+[tasks.gen-move-test-messages]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+    'mv "tests/gen" "tests/gen.old"',
+    'mkdir "tests/gen"'
+]
+
+[tasks.gen-move-test-messages.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Rename-Item "tests\gen" "gen.old"',
+    'New-Item "tests\gen" -ItemType "directory" | Out-Null'
+]
+
 [tasks.pre-gen]
 description = "Moves old generated code to .old directories to be reverted or commited later"
 dependencies = [
     "gen-move-included-checked",
     "gen-move-included-unchecked",
     "gen-move-sample",
-    "gen-move-conformance"
+    "gen-move-conformance",
+    "gen-move-test-messages"
 ]
 
 [tasks.gen]
@@ -220,7 +246,8 @@ dependencies = [
     "gen-included-checked",
     "gen-included-unchecked",
     "gen-sample",
-    "gen-conformance"
+    "gen-conformance",
+    "gen-test-messages"
 ]
 
 [tasks.gen.windows]
@@ -243,7 +270,8 @@ dependencies = [
     "gen-revert-included-checked",
     "gen-revert-included-unchecked",
     "gen-revert-sample",
-    "gen-revert-conformance"
+    "gen-revert-conformance",
+    "gen-revert-test-messages"
 ]
 
 [tasks.gen-revert-included-checked]
@@ -310,12 +338,29 @@ script = [
     'Rename-Item "src\bin\conformance\gen.old" "gen"'
 ]
 
+[tasks.gen-revert-test-messages]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+    'rm -rf "tests/gen"',
+    'mv "tests/gen.old" "tests/gen"'
+]
+
+[tasks.gen-revert-test-messages.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Remove-Item -Force -Recurse "tests\gen"',
+    'Rename-Item "tests\gen.old" "gen"'
+]
+
 [tasks.gen-commit]
 dependencies = [
     "gen-commit-included-checked",
     "gen-commit-included-unchecked",
     "gen-commit-sample",
-    "gen-commit-conformance"
+    "gen-commit-conformance",
+    "gen-commit-test-messages"
 ]
 
 [tasks.gen-commit-included-checked]
@@ -358,6 +403,16 @@ script_runner = "powershell"
 script_extension = "ps1"
 script = [ 'Remove-Item -Recurse -Force "src\bin\conformance\gen.old"' ]
 
+[tasks.gen-commit-test-messages]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [ 'rm -rf "tests/gen.old"' ]
+
+[tasks.gen-commit-test-messages.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [ 'Remove-Item -Recurse -Force "tests\gen.old"' ]
+
 [tasks.gen-git-add-included-checked]
 command = "git"
 args = [ "add", "src/generated/checked" ]
@@ -374,10 +429,15 @@ args = [ "add", "examples/gen" ]
 command = "git"
 args = [ "add", "src/bin/conformance/gen" ]
 
+[tasks.gen-git-add-test-messages]
+command = "git"
+args = [ "add", "tests/gen" ]
+
 [tasks.gen-git-add]
 dependencies = [
     "gen-git-add-included-checked",
     "gen-git-add-included-unchecked",
     "gen-git-add-sample",
-    "gen-git-add-conformance"
+    "gen-git-add-conformance",
+    "gen-git-add-test-messages"
 ]

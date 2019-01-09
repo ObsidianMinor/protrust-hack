@@ -385,7 +385,7 @@ impl self::ListValue {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum NullValue {
     /// Null value.
-    NullValue = 0,
+    NullValue,
 }
 impl ::std::convert::TryFrom<i32> for self::NullValue {
     type Error = crate::VariantUndefinedError;
@@ -398,6 +398,8 @@ impl ::std::convert::TryFrom<i32> for self::NullValue {
 }
 impl ::std::convert::From<self::NullValue> for i32 {
     fn from(value: self::NullValue) -> i32 {
-        value as i32
+        match value {
+            NullValue::NullValue => 0,
+        }
     }
 }

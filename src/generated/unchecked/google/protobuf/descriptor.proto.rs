@@ -2376,36 +2376,36 @@ impl self::FieldDescriptorProto {
 pub enum FieldDescriptorProto_Type {
     /// 0 is reserved for errors.
     /// Order is weird for historical reasons.
-    Double = 1,
-    Float = 2,
+    Double,
+    Float,
     /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
     /// negative values are likely.
-    Int64 = 3,
-    Uint64 = 4,
+    Int64,
+    Uint64,
     /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
     /// negative values are likely.
-    Int32 = 5,
-    Fixed64 = 6,
-    Fixed32 = 7,
-    Bool = 8,
-    String = 9,
+    Int32,
+    Fixed64,
+    Fixed32,
+    Bool,
+    String,
     /// Tag-delimited aggregate.
     /// Group type is deprecated and not supported in proto3. However, Proto3
     /// implementations should still be able to parse the group wire format and
     /// treat group fields as unknown fields.
-    Group = 10,
+    Group,
     /// Length-delimited aggregate.
-    Message = 11,
+    Message,
     /// New in version 2.
-    Bytes = 12,
-    Uint32 = 13,
-    Enum = 14,
-    Sfixed32 = 15,
-    Sfixed64 = 16,
+    Bytes,
+    Uint32,
+    Enum,
+    Sfixed32,
+    Sfixed64,
     /// Uses ZigZag encoding.
-    Sint32 = 17,
+    Sint32,
     /// Uses ZigZag encoding.
-    Sint64 = 18,
+    Sint64,
 }
 impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Type {
     type Error = crate::VariantUndefinedError;
@@ -2435,15 +2435,34 @@ impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Type {
 }
 impl ::std::convert::From<self::FieldDescriptorProto_Type> for i32 {
     fn from(value: self::FieldDescriptorProto_Type) -> i32 {
-        value as i32
+        match value {
+            FieldDescriptorProto_Type::Double => 1,
+            FieldDescriptorProto_Type::Float => 2,
+            FieldDescriptorProto_Type::Int64 => 3,
+            FieldDescriptorProto_Type::Uint64 => 4,
+            FieldDescriptorProto_Type::Int32 => 5,
+            FieldDescriptorProto_Type::Fixed64 => 6,
+            FieldDescriptorProto_Type::Fixed32 => 7,
+            FieldDescriptorProto_Type::Bool => 8,
+            FieldDescriptorProto_Type::String => 9,
+            FieldDescriptorProto_Type::Group => 10,
+            FieldDescriptorProto_Type::Message => 11,
+            FieldDescriptorProto_Type::Bytes => 12,
+            FieldDescriptorProto_Type::Uint32 => 13,
+            FieldDescriptorProto_Type::Enum => 14,
+            FieldDescriptorProto_Type::Sfixed32 => 15,
+            FieldDescriptorProto_Type::Sfixed64 => 16,
+            FieldDescriptorProto_Type::Sint32 => 17,
+            FieldDescriptorProto_Type::Sint64 => 18,
+        }
     }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldDescriptorProto_Label {
     /// 0 is reserved for errors
-    Optional = 1,
-    Required = 2,
-    Repeated = 3,
+    Optional,
+    Required,
+    Repeated,
 }
 impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Label {
     type Error = crate::VariantUndefinedError;
@@ -2458,7 +2477,11 @@ impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Label {
 }
 impl ::std::convert::From<self::FieldDescriptorProto_Label> for i32 {
     fn from(value: self::FieldDescriptorProto_Label) -> i32 {
-        value as i32
+        match value {
+            FieldDescriptorProto_Label::Optional => 1,
+            FieldDescriptorProto_Label::Required => 2,
+            FieldDescriptorProto_Label::Repeated => 3,
+        }
     }
 }
 /// Describes a oneof.
@@ -5127,11 +5150,11 @@ impl self::FileOptions {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FileOptions_OptimizeMode {
     /// Generate complete code for parsing, serialization,
-    Speed = 1,
+    Speed,
     /// etc.
-    CodeSize = 2,
+    CodeSize,
     /// Generate code using MessageLite and the lite runtime.
-    LiteRuntime = 3,
+    LiteRuntime,
 }
 impl ::std::convert::TryFrom<i32> for self::FileOptions_OptimizeMode {
     type Error = crate::VariantUndefinedError;
@@ -5146,7 +5169,11 @@ impl ::std::convert::TryFrom<i32> for self::FileOptions_OptimizeMode {
 }
 impl ::std::convert::From<self::FileOptions_OptimizeMode> for i32 {
     fn from(value: self::FileOptions_OptimizeMode) -> i32 {
-        value as i32
+        match value {
+            FileOptions_OptimizeMode::Speed => 1,
+            FileOptions_OptimizeMode::CodeSize => 2,
+            FileOptions_OptimizeMode::LiteRuntime => 3,
+        }
     }
 }
 #[derive(Clone, Debug, PartialEq)]
@@ -5913,9 +5940,9 @@ impl self::FieldOptions {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldOptions_CType {
     /// Default mode.
-    String = 0,
-    Cord = 1,
-    StringPiece = 2,
+    String,
+    Cord,
+    StringPiece,
 }
 impl ::std::convert::TryFrom<i32> for self::FieldOptions_CType {
     type Error = crate::VariantUndefinedError;
@@ -5930,17 +5957,21 @@ impl ::std::convert::TryFrom<i32> for self::FieldOptions_CType {
 }
 impl ::std::convert::From<self::FieldOptions_CType> for i32 {
     fn from(value: self::FieldOptions_CType) -> i32 {
-        value as i32
+        match value {
+            FieldOptions_CType::String => 0,
+            FieldOptions_CType::Cord => 1,
+            FieldOptions_CType::StringPiece => 2,
+        }
     }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FieldOptions_JSType {
     /// Use the default type.
-    JsNormal = 0,
+    JsNormal,
     /// Use JavaScript strings.
-    JsString = 1,
+    JsString,
     /// Use JavaScript numbers.
-    JsNumber = 2,
+    JsNumber,
 }
 impl ::std::convert::TryFrom<i32> for self::FieldOptions_JSType {
     type Error = crate::VariantUndefinedError;
@@ -5955,7 +5986,11 @@ impl ::std::convert::TryFrom<i32> for self::FieldOptions_JSType {
 }
 impl ::std::convert::From<self::FieldOptions_JSType> for i32 {
     fn from(value: self::FieldOptions_JSType) -> i32 {
-        value as i32
+        match value {
+            FieldOptions_JSType::JsNormal => 0,
+            FieldOptions_JSType::JsString => 1,
+            FieldOptions_JSType::JsNumber => 2,
+        }
     }
 }
 #[derive(Clone, Debug, PartialEq)]
@@ -6610,11 +6645,11 @@ impl self::MethodOptions {
 /// methods, and PUT verb for idempotent methods instead of the default POST.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum MethodOptions_IdempotencyLevel {
-    IdempotencyUnknown = 0,
+    IdempotencyUnknown,
     /// implies idempotent
-    NoSideEffects = 1,
+    NoSideEffects,
     /// idempotent, but may have side effects
-    Idempotent = 2,
+    Idempotent,
 }
 impl ::std::convert::TryFrom<i32> for self::MethodOptions_IdempotencyLevel {
     type Error = crate::VariantUndefinedError;
@@ -6629,7 +6664,11 @@ impl ::std::convert::TryFrom<i32> for self::MethodOptions_IdempotencyLevel {
 }
 impl ::std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
     fn from(value: self::MethodOptions_IdempotencyLevel) -> i32 {
-        value as i32
+        match value {
+            MethodOptions_IdempotencyLevel::IdempotencyUnknown => 0,
+            MethodOptions_IdempotencyLevel::NoSideEffects => 1,
+            MethodOptions_IdempotencyLevel::Idempotent => 2,
+        }
     }
 }
 /// A message representing a option the parser does not recognize. This only

@@ -575,11 +575,11 @@ impl self::JspbEncodingConfig {
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum WireFormat {
-    Unspecified = 0,
-    Protobuf = 1,
-    Json = 2,
+    Unspecified,
+    Protobuf,
+    Json,
     /// Google internal only. Opensource testees just skip it.
-    Jspb = 3,
+    Jspb,
 }
 impl ::std::convert::TryFrom<i32> for self::WireFormat {
     type Error = ::protrust::VariantUndefinedError;
@@ -595,24 +595,29 @@ impl ::std::convert::TryFrom<i32> for self::WireFormat {
 }
 impl ::std::convert::From<self::WireFormat> for i32 {
     fn from(value: self::WireFormat) -> i32 {
-        value as i32
+        match value {
+            WireFormat::Unspecified => 0,
+            WireFormat::Protobuf => 1,
+            WireFormat::Json => 2,
+            WireFormat::Jspb => 3,
+        }
     }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TestCategory {
-    UnspecifiedTest = 0,
+    UnspecifiedTest,
     /// Test binary wire format.
-    BinaryTest = 1,
+    BinaryTest,
     /// Test json wire format.
-    JsonTest = 2,
+    JsonTest,
     /// Similar to JSON_TEST. However, during parsing json, testee should ignore
     /// unknown fields. This feature is optional. Each implementation can descide
     /// whether to support it.  See
     /// https://developers.google.com/protocol-buffers/docs/proto3#json_options
     /// for more detail.
-    JsonIgnoreUnknownParsingTest = 3,
+    JsonIgnoreUnknownParsingTest,
     /// Test jspb wire format. Google internal only.
-    JspbTest = 4,
+    JspbTest,
 }
 impl ::std::convert::TryFrom<i32> for self::TestCategory {
     type Error = ::protrust::VariantUndefinedError;
@@ -629,6 +634,12 @@ impl ::std::convert::TryFrom<i32> for self::TestCategory {
 }
 impl ::std::convert::From<self::TestCategory> for i32 {
     fn from(value: self::TestCategory) -> i32 {
-        value as i32
+        match value {
+            TestCategory::UnspecifiedTest => 0,
+            TestCategory::BinaryTest => 1,
+            TestCategory::JsonTest => 2,
+            TestCategory::JsonIgnoreUnknownParsingTest => 3,
+            TestCategory::JspbTest => 4,
+        }
     }
 }

@@ -244,6 +244,15 @@ impl SourceCodeInfo {
     }
 }
 
+pub struct GeneratedCodeInfo<'a> {
+    pub structs: &'a [GeneratedStructInfo<'a>]
+}
+
+pub struct GeneratedStructInfo<'a> {
+    pub new: fn() -> Box<crate::CodedMessage + 'static>,
+    pub structs: &'a [GeneratedStructInfo<'a>]
+}
+
 /// Specifies the syntax of a proto file
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub enum Syntax {
@@ -571,6 +580,7 @@ impl CompositeScope {
 /// A message descriptor
 pub struct MessageDescriptor {
     proto: *const DescriptorProto,
+    new: Option<fn() -> Box<crate::CodedMessage + 'static>>,
     scope: CompositeScope,
     scope_index: usize,
     full_name: String,
@@ -597,6 +607,11 @@ impl MessageDescriptor {
     /// Gets the index of this descriptor in its parent descriptor
     pub fn scope_index(&self) -> usize {
         self.scope_index
+    }
+
+    /// Creates a new instance of the type represented by this descriptor
+    pub fn new_message(&self) -> Option<Box<crate::CodedMessage + 'static>> {
+        Some((self.new?)())
     }
 
     pub fn name(&self) -> &str {

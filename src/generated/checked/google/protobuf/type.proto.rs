@@ -682,43 +682,43 @@ impl self::Field {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Kind {
     /// Field type unknown.
-    TypeUnknown = 0,
+    TypeUnknown,
     /// Field type double.
-    TypeDouble = 1,
+    TypeDouble,
     /// Field type float.
-    TypeFloat = 2,
+    TypeFloat,
     /// Field type int64.
-    TypeInt64 = 3,
+    TypeInt64,
     /// Field type uint64.
-    TypeUint64 = 4,
+    TypeUint64,
     /// Field type int32.
-    TypeInt32 = 5,
+    TypeInt32,
     /// Field type fixed64.
-    TypeFixed64 = 6,
+    TypeFixed64,
     /// Field type fixed32.
-    TypeFixed32 = 7,
+    TypeFixed32,
     /// Field type bool.
-    TypeBool = 8,
+    TypeBool,
     /// Field type string.
-    TypeString = 9,
+    TypeString,
     /// Field type group. Proto2 syntax only, and deprecated.
-    TypeGroup = 10,
+    TypeGroup,
     /// Field type message.
-    TypeMessage = 11,
+    TypeMessage,
     /// Field type bytes.
-    TypeBytes = 12,
+    TypeBytes,
     /// Field type uint32.
-    TypeUint32 = 13,
+    TypeUint32,
     /// Field type enum.
-    TypeEnum = 14,
+    TypeEnum,
     /// Field type sfixed32.
-    TypeSfixed32 = 15,
+    TypeSfixed32,
     /// Field type sfixed64.
-    TypeSfixed64 = 16,
+    TypeSfixed64,
     /// Field type sint32.
-    TypeSint32 = 17,
+    TypeSint32,
     /// Field type sint64.
-    TypeSint64 = 18,
+    TypeSint64,
 }
 impl ::std::convert::TryFrom<i32> for self::Field_Kind {
     type Error = crate::VariantUndefinedError;
@@ -749,20 +749,40 @@ impl ::std::convert::TryFrom<i32> for self::Field_Kind {
 }
 impl ::std::convert::From<self::Field_Kind> for i32 {
     fn from(value: self::Field_Kind) -> i32 {
-        value as i32
+        match value {
+            Field_Kind::TypeUnknown => 0,
+            Field_Kind::TypeDouble => 1,
+            Field_Kind::TypeFloat => 2,
+            Field_Kind::TypeInt64 => 3,
+            Field_Kind::TypeUint64 => 4,
+            Field_Kind::TypeInt32 => 5,
+            Field_Kind::TypeFixed64 => 6,
+            Field_Kind::TypeFixed32 => 7,
+            Field_Kind::TypeBool => 8,
+            Field_Kind::TypeString => 9,
+            Field_Kind::TypeGroup => 10,
+            Field_Kind::TypeMessage => 11,
+            Field_Kind::TypeBytes => 12,
+            Field_Kind::TypeUint32 => 13,
+            Field_Kind::TypeEnum => 14,
+            Field_Kind::TypeSfixed32 => 15,
+            Field_Kind::TypeSfixed64 => 16,
+            Field_Kind::TypeSint32 => 17,
+            Field_Kind::TypeSint64 => 18,
+        }
     }
 }
 /// Whether a field is optional, required, or repeated.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Cardinality {
     /// For fields with unknown cardinality.
-    Unknown = 0,
+    Unknown,
     /// For optional fields.
-    Optional = 1,
+    Optional,
     /// For required fields. Proto2 syntax only.
-    Required = 2,
+    Required,
     /// For repeated fields.
-    Repeated = 3,
+    Repeated,
 }
 impl ::std::convert::TryFrom<i32> for self::Field_Cardinality {
     type Error = crate::VariantUndefinedError;
@@ -778,7 +798,12 @@ impl ::std::convert::TryFrom<i32> for self::Field_Cardinality {
 }
 impl ::std::convert::From<self::Field_Cardinality> for i32 {
     fn from(value: self::Field_Cardinality) -> i32 {
-        value as i32
+        match value {
+            Field_Cardinality::Unknown => 0,
+            Field_Cardinality::Optional => 1,
+            Field_Cardinality::Required => 2,
+            Field_Cardinality::Repeated => 3,
+        }
     }
 }
 /// Enum type definition.
@@ -1198,9 +1223,9 @@ impl self::Option {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Syntax {
     /// Syntax `proto2`.
-    Proto2 = 0,
+    Proto2,
     /// Syntax `proto3`.
-    Proto3 = 1,
+    Proto3,
 }
 impl ::std::convert::TryFrom<i32> for self::Syntax {
     type Error = crate::VariantUndefinedError;
@@ -1214,6 +1239,9 @@ impl ::std::convert::TryFrom<i32> for self::Syntax {
 }
 impl ::std::convert::From<self::Syntax> for i32 {
     fn from(value: self::Syntax) -> i32 {
-        value as i32
+        match value {
+            Syntax::Proto2 => 0,
+            Syntax::Proto3 => 1,
+        }
     }
 }
