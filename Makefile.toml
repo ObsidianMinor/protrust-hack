@@ -104,8 +104,19 @@ script_extension = "sh"
 script = [
 '''
 ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
 DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/osx'
+
+if [ ! -d $BuildPath ] 
+    then
+        mkdir $BuildPath
+fi
+
+if [ ! -d $DownloadPath ] 
+    then
+        mkdir $DownloadPath
+fi
 
 if [ ! -d $UnpackPath ] 
     then
@@ -127,8 +138,19 @@ script_extension = "sh"
 script = [
 '''
 ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
 DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/linux'
+
+if [ ! -d $BuildPath ] 
+    then
+        mkdir $BuildPath
+fi
+
+if [ ! -d $DownloadPath ] 
+    then
+        mkdir $DownloadPath
+fi
 
 if [ ! -d $UnpackPath ] 
     then
