@@ -9,6 +9,7 @@
 #[cfg_attr(checked_size, path = "generated/checked/mod.rs")]
 #[cfg_attr(not(checked_size), path = "generated/unchecked/mod.rs")]
 #[rustfmt::skip]
+#[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case)]
 pub(crate) mod generated;
 
 /// The protrust prelude

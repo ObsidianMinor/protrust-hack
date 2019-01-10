@@ -53,23 +53,6 @@ args = [
     "addressbook.proto"
 ]
 
-[tasks.gen-conformance]
-command = "protoc"
-args = [
-    "--proto_path=protos",
-    "--rust_out=src/bin/conformance/gen",
-    "conformance.proto"
-]
-
-[tasks.gen-test-messages]
-command = "protoc"
-args = [
-    "--proto_path=protos",
-    "--rust_out=tests/gen",
-    "test_messages_proto2.proto",
-    "test_messages_proto3.proto"
-]
-
 [tasks.protoc-check.windows]
 script_runner = "powershell"
 script_extension = "ps1"
@@ -82,18 +65,18 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 }
 
 $ProtocUri = "https://github.com/protocolbuffers/protobuf/releases/download/v$($env:PROTOC_VER)/protoc-$($env:PROTOC_VER)-win32.zip"
-$DownloadPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build\protoc"
-$UnpackPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build\protoc\windows"
+$BuildPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build"
+$ProtocPath = "$($env:CARGO_MAKE_WORKING_DIRECTORY)\build\protoc"
 
-if (!(Test-Path -Path $UnpackPath)) {
-    New-Item -Path $UnpackPath -ItemType "directory" | Out-Null
+if (!(Test-Path -Path $ProtocPath)) {
+    New-Item -Path $ProtocPath -ItemType "directory" | Out-Null
 }
 
-if (!(Test-Path -Path "$($UnpackPath)\bin\protoc.exe")) {
-    Write-Host "Downloading $($ProtocUri) to $($DownloadPath)"
-    Invoke-WebRequest -OutFile "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip" -Uri $ProtocUri
-    Expand-Archive -LiteralPath "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip" -DestinationPath $UnpackPath -Force
-    Remove-Item "$($DownloadPath)\protoc-$($env:PROTOC_VER)-win32.zip"
+if (!(Test-Path -Path "$($ProtocPath)\bin\protoc.exe")) {
+    Write-Host "Downloading $($ProtocUri) to $($BuildPath)"
+    Invoke-WebRequest -OutFile "$($BuildPath)\protoc-$($env:PROTOC_VER)-win32.zip" -Uri $ProtocUri
+    Expand-Archive -LiteralPath "$($BuildPath)\protoc-$($env:PROTOC_VER)-win32.zip" -DestinationPath $ProtocPath -Force
+    Remove-Item "$($BuildPath)\protoc-$($env:PROTOC_VER)-win32.zip"
 }
 '''
 ]
@@ -105,29 +88,23 @@ script = [
 '''
 ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
 BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
-DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
-UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/osx'
+ProtocPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 
 if [ ! -d $BuildPath ] 
     then
         mkdir $BuildPath
 fi
 
-if [ ! -d $DownloadPath ] 
+if [ ! -d $ProtocPath ] 
     then
-        mkdir $DownloadPath
+        mkdir $ProtocPath
 fi
 
-if [ ! -d $UnpackPath ] 
+if [ ! -f "$ProtocPath"'/bin/protoc' ] 
     then
-        mkdir $UnpackPath
-fi
-
-if [ ! -f "$UnpackPath"'/bin/protoc' ] 
-    then
-        curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
-        unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip' -d $UnpackPath
-        rm "$DownloadPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip' -d $ProtocPath
+        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
 fi
 '''
 ]
@@ -139,29 +116,23 @@ script = [
 '''
 ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
 BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
-DownloadPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
-UnpackPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc/linux'
+ProtocPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 
 if [ ! -d $BuildPath ] 
     then
         mkdir $BuildPath
 fi
 
-if [ ! -d $DownloadPath ] 
+if [ ! -d $ProtocPath ] 
     then
-        mkdir $DownloadPath
+        mkdir $ProtocPath
 fi
 
-if [ ! -d $UnpackPath ] 
+if [ ! -f "$ProtocPath"'/bin/protoc' ] 
     then
-        mkdir $UnpackPath
-fi
-
-if [ ! -f "$UnpackPath"'/bin/protoc' ] 
-    then
-        curl -L $ProtocUri -o "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
-        unzip "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip' -d $UnpackPath
-        rm "$DownloadPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip' -d $ProtocPath
+        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
 fi
 '''
 ]
@@ -214,46 +185,12 @@ script = [
     'New-Item "examples\gen" -ItemType "directory" | Out-Null'
 ]
 
-[tasks.gen-move-conformance]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [
-    'mv "src/bin/conformance/gen" "src/bin/conformance/gen.old"',
-    'mkdir "src/bin/conformance/gen"'
-]
-
-[tasks.gen-move-conformance.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [
-    'Rename-Item "src\bin\conformance\gen" "gen.old"',
-    'New-Item "src\bin\conformance\gen" -ItemType "directory" | Out-Null'
-]
-
-[tasks.gen-move-test-messages]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [
-    'mv "tests/gen" "tests/gen.old"',
-    'mkdir "tests/gen"'
-]
-
-[tasks.gen-move-test-messages.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [
-    'Rename-Item "tests\gen" "gen.old"',
-    'New-Item "tests\gen" -ItemType "directory" | Out-Null'
-]
-
 [tasks.pre-gen]
 description = "Moves old generated code to .old directories to be reverted or commited later"
 dependencies = [
     "gen-move-included-checked",
     "gen-move-included-unchecked",
     "gen-move-sample",
-    "gen-move-conformance",
-    "gen-move-test-messages"
 ]
 
 [tasks.gen]
@@ -268,18 +205,16 @@ dependencies = [
     "gen-included-checked",
     "gen-included-unchecked",
     "gen-sample",
-    "gen-conformance",
-    "gen-test-messages"
 ]
 
 [tasks.gen.windows]
-env = { PATH = '${PATH};${CARGO_MAKE_WORKING_DIRECTORY}\build\protoc\windows\bin;${CARGO_MAKE_WORKING_DIRECTORY}\target\debug' }
+env = { PATH = '${PATH};${CARGO_MAKE_WORKING_DIRECTORY}\build\protoc\bin;${CARGO_MAKE_WORKING_DIRECTORY}\target\debug' }
 
 [tasks.gen.mac]
-env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/osx/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
+env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
 
 [tasks.gen.linux]
-env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/linux/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
+env = { PATH = '${PATH}:${CARGO_MAKE_WORKING_DIRECTORY}/build/protoc/bin:${CARGO_MAKE_WORKING_DIRECTORY}/target/debug' }
 
 [tasks.build-gen]
 dependencies = [
@@ -292,8 +227,6 @@ dependencies = [
     "gen-revert-included-checked",
     "gen-revert-included-unchecked",
     "gen-revert-sample",
-    "gen-revert-conformance",
-    "gen-revert-test-messages"
 ]
 
 [tasks.gen-revert-included-checked]
@@ -344,45 +277,11 @@ script = [
     'Rename-Item "examples\gen.old" "gen"'
 ]
 
-[tasks.gen-revert-conformance]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [
-    'rm -rf "src/bin/conformance/gen"',
-    'mv "src/bin/conformance/gen.old" "src/bin/conformance/gen"'
-]
-
-[tasks.gen-revert-conformance.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [
-    'Remove-Item -Force -Recurse "src\bin\conformance\gen"',
-    'Rename-Item "src\bin\conformance\gen.old" "gen"'
-]
-
-[tasks.gen-revert-test-messages]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [
-    'rm -rf "tests/gen"',
-    'mv "tests/gen.old" "tests/gen"'
-]
-
-[tasks.gen-revert-test-messages.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [
-    'Remove-Item -Force -Recurse "tests\gen"',
-    'Rename-Item "tests\gen.old" "gen"'
-]
-
 [tasks.gen-commit]
 dependencies = [
     "gen-commit-included-checked",
     "gen-commit-included-unchecked",
     "gen-commit-sample",
-    "gen-commit-conformance",
-    "gen-commit-test-messages"
 ]
 
 [tasks.gen-commit-included-checked]
@@ -415,26 +314,6 @@ script_runner = "powershell"
 script_extension = "ps1"
 script = [ 'Remove-Item -Recurse -Force "examples\gen.old"' ]
 
-[tasks.gen-commit-conformance]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [ 'rm -rf "src/bin/conformance/gen.old"' ]
-
-[tasks.gen-commit-conformance.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [ 'Remove-Item -Recurse -Force "src\bin\conformance\gen.old"' ]
-
-[tasks.gen-commit-test-messages]
-script_runner = "/bin/bash"
-script_extension = "sh"
-script = [ 'rm -rf "tests/gen.old"' ]
-
-[tasks.gen-commit-test-messages.windows]
-script_runner = "powershell"
-script_extension = "ps1"
-script = [ 'Remove-Item -Recurse -Force "tests\gen.old"' ]
-
 [tasks.gen-git-add-included-checked]
 command = "git"
 args = [ "add", "src/generated/checked" ]
@@ -447,19 +326,9 @@ args = [ "add", "src/generated/unchecked" ]
 command = "git"
 args = [ "add", "examples/gen" ]
 
-[tasks.gen-git-add-conformance]
-command = "git"
-args = [ "add", "src/bin/conformance/gen" ]
-
-[tasks.gen-git-add-test-messages]
-command = "git"
-args = [ "add", "tests/gen" ]
-
 [tasks.gen-git-add]
 dependencies = [
     "gen-git-add-included-checked",
     "gen-git-add-included-unchecked",
     "gen-git-add-sample",
-    "gen-git-add-conformance",
-    "gen-git-add-test-messages"
 ]

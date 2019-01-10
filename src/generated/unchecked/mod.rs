@@ -1,5 +1,3 @@
-#![allow(unused_variables, dead_code, non_camel_case_types, non_snake_case)]
-
 #[path = "google/protobuf/any.proto.rs"]
 pub mod google_protobuf_any_proto;
 #[path = "google/protobuf/api.proto.rs"]

@@ -54,8 +54,7 @@ fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
         Err(s) => return error(response, s),
     };
 
-    let mut mod_file_content =
-        "#![allow(unused_variables, dead_code, non_camel_case_types, non_snake_case)]\n\n".to_string();
+    let mut mod_file_content = String::new();
     let pool = reflect::DescriptorPool::build_from_files(request.proto_file().as_slice());
     for file in request.file_to_generate().iter() {
         let descriptor: &reflect::FileDescriptor = pool
