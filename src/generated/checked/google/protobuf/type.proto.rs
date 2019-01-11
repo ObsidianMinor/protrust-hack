@@ -150,7 +150,7 @@ impl crate::CodedMessage for self::Type {
                 18 => self.fields.add_entries(tag.get(), input, &TYPE_FIELDS_CODEC)?,
                 26 => self.oneofs.add_entries(tag.get(), input, &TYPE_ONEOFS_CODEC)?,
                 34 => self.options.add_entries(tag.get(), input, &TYPE_OPTIONS_CODEC)?,
-                42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 48 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -162,7 +162,7 @@ impl crate::CodedMessage for self::Type {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         size = size.checked_add(self.fields.calculate_size(&TYPE_FIELDS_CODEC)?)?;
         size = size.checked_add(self.oneofs.calculate_size(&TYPE_ONEOFS_CODEC)?)?;
@@ -170,12 +170,12 @@ impl crate::CodedMessage for self::Type {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(source_context)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**source_context));
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
+            size = size.checked_add(crate::io::sizes::enum_value(syntax));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -192,7 +192,7 @@ impl crate::CodedMessage for self::Type {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -221,7 +221,7 @@ impl crate::LiteMessage for self::Type {
         self.oneofs.merge(&other.oneofs);
         self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.syntax = other.syntax;
         self.unknown_fields.merge(&other.unknown_fields);
@@ -366,48 +366,48 @@ impl crate::CodedMessage for self::Field {
         let kind = self.kind;
         if kind != Self::KIND_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(kind))?;
+            size = size.checked_add(crate::io::sizes::enum_value(kind));
         }
         let cardinality = self.cardinality;
         if cardinality != Self::CARDINALITY_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(cardinality))?;
+            size = size.checked_add(crate::io::sizes::enum_value(cardinality));
         }
         let number = self.number;
         if number != Self::NUMBER_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int32(number))?;
+            size = size.checked_add(crate::io::sizes::int32(number));
         }
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         let type_url = &self.type_url;
         if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(type_url)?)?;
+            size = size.checked_add(crate::io::sizes::string(type_url));
         }
         let oneof_index = self.oneof_index;
         if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int32(oneof_index))?;
+            size = size.checked_add(crate::io::sizes::int32(oneof_index));
         }
         let packed = self.packed;
         if packed != Self::PACKED_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bool(packed))?;
+            size = size.checked_add(crate::io::sizes::bool(packed));
         }
         size = size.checked_add(self.options.calculate_size(&FIELD_OPTIONS_CODEC)?)?;
         let json_name = &self.json_name;
         if json_name != Self::JSON_NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(json_name)?)?;
+            size = size.checked_add(crate::io::sizes::string(json_name));
         }
         let default_value = &self.default_value;
         if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(default_value)?)?;
+            size = size.checked_add(crate::io::sizes::string(default_value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -825,7 +825,7 @@ impl crate::CodedMessage for self::Enum {
                 10 => self.name = input.read_string()?,
                 18 => self.enumvalue.add_entries(tag.get(), input, &ENUM_ENUMVALUE_CODEC)?,
                 26 => self.options.add_entries(tag.get(), input, &ENUM_OPTIONS_CODEC)?,
-                34 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                34 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -837,19 +837,19 @@ impl crate::CodedMessage for self::Enum {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         size = size.checked_add(self.enumvalue.calculate_size(&ENUM_ENUMVALUE_CODEC)?)?;
         size = size.checked_add(self.options.calculate_size(&ENUM_OPTIONS_CODEC)?)?;
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(source_context)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**source_context));
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
+            size = size.checked_add(crate::io::sizes::enum_value(syntax));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -865,7 +865,7 @@ impl crate::CodedMessage for self::Enum {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[34])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -892,7 +892,7 @@ impl crate::LiteMessage for self::Enum {
         self.enumvalue.merge(&other.enumvalue);
         self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.syntax = other.syntax;
         self.unknown_fields.merge(&other.unknown_fields);
@@ -1009,12 +1009,12 @@ impl crate::CodedMessage for self::EnumValue {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         let number = self.number;
         if number != Self::NUMBER_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int32(number))?;
+            size = size.checked_add(crate::io::sizes::int32(number));
         }
         size = size.checked_add(self.options.calculate_size(&ENUM_VALUE_OPTIONS_CODEC)?)?;
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -1122,7 +1122,7 @@ impl crate::CodedMessage for self::Option {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
-                18 => input.read_message(self.value.get_or_insert_with(crate::LiteMessage::new))?,
+                18 => input.read_message(&mut **self.value.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1133,12 +1133,12 @@ impl crate::CodedMessage for self::Option {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         let value = &self.value;
         if let ::std::option::Option::Some(value) = value {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(value)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -1152,7 +1152,7 @@ impl crate::CodedMessage for self::Option {
         let value = &self.value;
         if let ::std::option::Option::Some(value) = value {
             output.write_raw_tag_bytes(&[18])?;
-            output.write_message(value)?;
+            output.write_message(&**value)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1169,7 +1169,7 @@ impl crate::LiteMessage for self::Option {
     fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         if let ::std::option::Option::Some(value) = &other.value {
-            self.value.get_or_insert_with(crate::LiteMessage::new).merge(value);
+            self.value.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(value);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }

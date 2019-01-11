@@ -150,12 +150,12 @@ impl crate::CodedMessage for self::Any {
         let type_url = &self.type_url;
         if type_url != Self::TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(type_url)?)?;
+            size = size.checked_add(crate::io::sizes::string(type_url));
         }
         let value = &self.value;
         if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bytes(value)?)?;
+            size = size.checked_add(crate::io::sizes::bytes(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -204,8 +204,7 @@ impl self::Any {
     /// [`type_url`]: #method.type_url
     pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
     /// A URL/resource name that uniquely identifies the type of the serialized
-    /// protocol buffer message. This string must contain at least
-    /// one "/" character. The last segment of the URL's path must represent
+    /// protocol buffer message. The last segment of the URL's path must represent
     /// the fully qualified name of the type (as in
     /// `path/google.protobuf.Duration`). The name should be in a canonical form
     /// (e.g., leading "." is not accepted).

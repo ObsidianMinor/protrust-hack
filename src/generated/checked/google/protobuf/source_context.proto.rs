@@ -72,7 +72,7 @@ impl crate::CodedMessage for self::SourceContext {
         let file_name = &self.file_name;
         if file_name != Self::FILE_NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(file_name)?)?;
+            size = size.checked_add(crate::io::sizes::string(file_name));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)

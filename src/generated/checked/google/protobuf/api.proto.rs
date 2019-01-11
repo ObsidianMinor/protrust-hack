@@ -113,7 +113,7 @@ impl crate::CodedMessage for self::Api {
                 18 => self.methods.add_entries(tag.get(), input, &API_METHODS_CODEC)?,
                 26 => self.options.add_entries(tag.get(), input, &API_OPTIONS_CODEC)?,
                 34 => self.version = input.read_string()?,
-                42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 50 => self.mixins.add_entries(tag.get(), input, &API_MIXINS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -126,25 +126,25 @@ impl crate::CodedMessage for self::Api {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         size = size.checked_add(self.methods.calculate_size(&API_METHODS_CODEC)?)?;
         size = size.checked_add(self.options.calculate_size(&API_OPTIONS_CODEC)?)?;
         let version = &self.version;
         if version != Self::VERSION_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(version)?)?;
+            size = size.checked_add(crate::io::sizes::string(version));
         }
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(source_context)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**source_context));
         }
         size = size.checked_add(self.mixins.calculate_size(&API_MIXINS_CODEC)?)?;
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
+            size = size.checked_add(crate::io::sizes::enum_value(syntax));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -165,7 +165,7 @@ impl crate::CodedMessage for self::Api {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         self.mixins.write_to(output, &API_MIXINS_CODEC)?;
         let syntax = self.syntax;
@@ -196,7 +196,7 @@ impl crate::LiteMessage for self::Api {
         self.options.merge(&other.options);
         self.version = other.version.clone();
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.mixins.merge(&other.mixins);
         self.syntax = other.syntax;
@@ -376,33 +376,33 @@ impl crate::CodedMessage for self::Method {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         let request_type_url = &self.request_type_url;
         if request_type_url != Self::REQUEST_TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(request_type_url)?)?;
+            size = size.checked_add(crate::io::sizes::string(request_type_url));
         }
         let request_streaming = self.request_streaming;
         if request_streaming != Self::REQUEST_STREAMING_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bool(request_streaming))?;
+            size = size.checked_add(crate::io::sizes::bool(request_streaming));
         }
         let response_type_url = &self.response_type_url;
         if response_type_url != Self::RESPONSE_TYPE_URL_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(response_type_url)?)?;
+            size = size.checked_add(crate::io::sizes::string(response_type_url));
         }
         let response_streaming = self.response_streaming;
         if response_streaming != Self::RESPONSE_STREAMING_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bool(response_streaming))?;
+            size = size.checked_add(crate::io::sizes::bool(response_streaming));
         }
         size = size.checked_add(self.options.calculate_size(&METHOD_OPTIONS_CODEC)?)?;
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(syntax))?;
+            size = size.checked_add(crate::io::sizes::enum_value(syntax));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -696,12 +696,12 @@ impl crate::CodedMessage for self::Mixin {
         let name = &self.name;
         if name != Self::NAME_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(name)?)?;
+            size = size.checked_add(crate::io::sizes::string(name));
         }
         let root = &self.root;
         if root != Self::ROOT_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(root)?)?;
+            size = size.checked_add(crate::io::sizes::string(root));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)

@@ -514,8 +514,8 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 42 => self.enum_type.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 50 => self.service.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_SERVICE_CODEC)?,
                 58 => self.extension.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC)?,
-                66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                74 => input.read_message(self.source_code_info.get_or_insert_with(crate::LiteMessage::new))?,
+                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                74 => input.read_message(&mut **self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 98 => self.syntax = ::std::option::Option::Some(input.read_string()?),
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -548,12 +548,12 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
             size += 1;
-            size += crate::io::sizes::message(source_code_info);
+            size += crate::io::sizes::message(&**source_code_info);
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
@@ -590,12 +590,12 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
             output.write_raw_tag_bytes(&[74])?;
-            output.write_message(source_code_info)?;
+            output.write_message(&**source_code_info)?;
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
@@ -637,10 +637,10 @@ impl crate::LiteMessage for self::FileDescriptorProto {
         self.service.merge(&other.service);
         self.extension.merge(&other.extension);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         if let ::std::option::Option::Some(source_code_info) = &other.source_code_info {
-            self.source_code_info.get_or_insert_with(crate::LiteMessage::new).merge(source_code_info);
+            self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_code_info);
         }
         self.syntax = other.syntax.clone();
         self.unknown_fields.merge(&other.unknown_fields);
@@ -857,7 +857,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::FileOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -898,7 +898,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`source_code_info`]: #method.source_code_info
     pub fn source_code_info_mut(&mut self) -> &mut self::SourceCodeInfo {
-        self.source_code_info.get_or_insert_with(crate::LiteMessage::new)
+        self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`source_code_info`] field
     ///
@@ -1009,7 +1009,7 @@ impl crate::CodedMessage for self::DescriptorProto {
                 34 => self.enum_type.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 42 => self.extension_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC)?,
                 66 => self.oneof_decl.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_ONEOF_DECL_CODEC)?,
-                58 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                58 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => self.reserved_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 82 => self.reserved_name.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -1035,7 +1035,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.reserved_range.calculate_size(&DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC);
         size += self.reserved_name.calculate_size(&DESCRIPTOR_PROTO_RESERVED_NAME_CODEC);
@@ -1059,7 +1059,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[58])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.reserved_range.write_to(output, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -1092,7 +1092,7 @@ impl crate::LiteMessage for self::DescriptorProto {
         self.extension_range.merge(&other.extension_range);
         self.oneof_decl.merge(&other.oneof_decl);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.reserved_range.merge(&other.reserved_range);
         self.reserved_name.merge(&other.reserved_name);
@@ -1242,7 +1242,7 @@ impl self::DescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::MessageOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -1310,7 +1310,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
             match tag.get() {
                 8 => self.start = ::std::option::Option::Some(input.read_int32()?),
                 16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1335,7 +1335,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -1358,7 +1358,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1377,7 +1377,7 @@ impl crate::LiteMessage for self::DescriptorProto_ExtensionRange {
         self.start = other.start;
         self.end = other.end;
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -1471,7 +1471,7 @@ impl self::DescriptorProto_ExtensionRange {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::ExtensionRangeOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -1740,7 +1740,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
                 58 => self.default_value = ::std::option::Option::Some(input.read_string()?),
                 72 => self.oneof_index = ::std::option::Option::Some(input.read_int32()?),
                 82 => self.json_name = ::std::option::Option::Some(input.read_string()?),
-                66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1814,7 +1814,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -1886,7 +1886,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1919,7 +1919,7 @@ impl crate::LiteMessage for self::FieldDescriptorProto {
         self.oneof_index = other.oneof_index;
         self.json_name = other.json_name.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -2345,7 +2345,7 @@ impl self::FieldDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::FieldOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -2496,7 +2496,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                18 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                18 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2514,7 +2514,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -2530,7 +2530,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[18])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -2547,7 +2547,7 @@ impl crate::LiteMessage for self::OneofDescriptorProto {
     fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -2617,7 +2617,7 @@ impl self::OneofDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::OneofOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -2663,7 +2663,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.value.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_VALUE_CODEC)?,
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 34 => self.reserved_range.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 42 => self.reserved_name.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -2684,7 +2684,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.reserved_range.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC);
         size += self.reserved_name.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC);
@@ -2703,7 +2703,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.reserved_range.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -2726,7 +2726,7 @@ impl crate::LiteMessage for self::EnumDescriptorProto {
         self.name = other.name.clone();
         self.value.merge(&other.value);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.reserved_range.merge(&other.reserved_range);
         self.reserved_name.merge(&other.reserved_name);
@@ -2811,7 +2811,7 @@ impl self::EnumDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::EnumOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3039,7 +3039,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 16 => self.number = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3064,7 +3064,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -3087,7 +3087,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3106,7 +3106,7 @@ impl crate::LiteMessage for self::EnumValueDescriptorProto {
         self.name = other.name.clone();
         self.number = other.number;
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -3212,7 +3212,7 @@ impl self::EnumValueDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::EnumValueOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3254,7 +3254,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.method.add_entries(tag.get(), input, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?,
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3273,7 +3273,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -3290,7 +3290,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3309,7 +3309,7 @@ impl crate::LiteMessage for self::ServiceDescriptorProto {
         self.name = other.name.clone();
         self.method.merge(&other.method);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -3392,7 +3392,7 @@ impl self::ServiceDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::ServiceOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3437,7 +3437,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.input_type = ::std::option::Option::Some(input.read_string()?),
                 26 => self.output_type = ::std::option::Option::Some(input.read_string()?),
-                34 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                34 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.client_streaming = ::std::option::Option::Some(input.read_bool()?),
                 48 => self.server_streaming = ::std::option::Option::Some(input.read_bool()?),
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -3471,7 +3471,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size += 1;
-            size += crate::io::sizes::message(options);
+            size += crate::io::sizes::message(&**options);
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
@@ -3515,7 +3515,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[34])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
@@ -3552,7 +3552,7 @@ impl crate::LiteMessage for self::MethodDescriptorProto {
         self.input_type = other.input_type.clone();
         self.output_type = other.output_type.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.client_streaming = other.client_streaming;
         self.server_streaming = other.server_streaming;
@@ -3722,7 +3722,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::MethodOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///

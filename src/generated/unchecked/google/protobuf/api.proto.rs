@@ -113,7 +113,7 @@ impl crate::CodedMessage for self::Api {
                 18 => self.methods.add_entries(tag.get(), input, &API_METHODS_CODEC)?,
                 26 => self.options.add_entries(tag.get(), input, &API_OPTIONS_CODEC)?,
                 34 => self.version = input.read_string()?,
-                42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 50 => self.mixins.add_entries(tag.get(), input, &API_MIXINS_CODEC)?,
                 56 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -138,7 +138,7 @@ impl crate::CodedMessage for self::Api {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size += 1;
-            size += crate::io::sizes::message(source_context);
+            size += crate::io::sizes::message(&**source_context);
         }
         size += self.mixins.calculate_size(&API_MIXINS_CODEC);
         let syntax = self.syntax;
@@ -165,7 +165,7 @@ impl crate::CodedMessage for self::Api {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         self.mixins.write_to(output, &API_MIXINS_CODEC)?;
         let syntax = self.syntax;
@@ -196,7 +196,7 @@ impl crate::LiteMessage for self::Api {
         self.options.merge(&other.options);
         self.version = other.version.clone();
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.mixins.merge(&other.mixins);
         self.syntax = other.syntax;

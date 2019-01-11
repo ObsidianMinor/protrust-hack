@@ -613,7 +613,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         genln!(self.printer; "if let ::std::option::Option::Some({field_name}) = &other.{field_name} {{" => self.vars, field_name);
                         indent!(self.printer, {
-                            genln!(self.printer; "self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new).merge({field_name});" => self.vars, crate_name, field_name);
+                            genln!(self.printer; "self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())).merge({field_name});" => self.vars, crate_name, field_name);
                         });
                         genln!(self.printer, "}}");
                     }
@@ -649,7 +649,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
             _ => match self.proto.scope() {
                 FieldScope::Message(_) => match self.proto.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.printer; "input.read_message(self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new))?" => self.vars, field_name, crate_name)
+                        gen!(self.printer; "input.read_message(&mut **self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())))?" => self.vars, field_name, crate_name)
                     }
                     _ => {
                         gen!(self.printer; "self.{field_name} = " => self.vars, field_name);
@@ -740,21 +740,27 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
 
             if self.options.size_checks {
                 genln!(self.printer; "size = size.checked_add({tag_size})?;" => self.vars, tag_size);
-                genln!(self.printer; "size = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name})" => self.vars, field_name, crate_name, proto_type);
+
+                match self.proto.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        genln!(self.printer; "size = size.checked_add({crate_name}::io::sizes::{proto_type}(&**{field_name}));" => self.vars, field_name, crate_name, proto_type);
+                    },
+                    _ => {
+                        genln!(self.printer; "size = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name}));" => self.vars, field_name, crate_name, proto_type);
+                    }
+                }
             } else {
                 genln!(self.printer; "size += {tag_size};" => self.vars, tag_size);
-                genln!(self.printer; "size += {crate_name}::io::sizes::{proto_type}({field_name})" => self.vars, field_name, crate_name, proto_type);
-            }
 
-            if self.options.size_checks {
-                if is_copy_type(self.proto.field_type()) {
-                    gen!(self.printer, ")?");
-                } else {
-                    gen!(self.printer, "?)?");
+                match self.proto.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        genln!(self.printer; "size += {crate_name}::io::sizes::{proto_type}(&**{field_name});" => self.vars, field_name, crate_name, proto_type);
+                    },
+                    _ => {
+                        genln!(self.printer; "size += {crate_name}::io::sizes::{proto_type}({field_name});" => self.vars, field_name, crate_name, proto_type);
+                    }
                 }
             }
-
-            gen!(self.printer, ";");
 
             if let FieldScope::Oneof(_) = self.proto.scope() {
                 self.printer.unindent();
@@ -822,7 +828,14 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
             }
 
             genln!(self.printer; "output.write_raw_tag_bytes(&{tag_bytes})?;" => self.vars, tag_bytes);
-            genln!(self.printer; "output.write_{proto_type}({field_name})?;" => self.vars, proto_type, field_name);
+            match self.proto.field_type() {
+                FieldType::Message(_) | FieldType::Group(_) => {
+                    genln!(self.printer; "output.write_{proto_type}(&**{field_name})?;" => self.vars, proto_type, field_name);
+                },
+                _ => {
+                    genln!(self.printer; "output.write_{proto_type}({field_name})?;" => self.vars, proto_type, field_name);
+                }
+            }
 
             if let FieldType::Group(_) = self.proto.field_type() {
                 genln!(self.printer; "output.write_raw_tag_bytes(&{end_tag_bytes})?;" => self.vars, end_tag_bytes);
@@ -953,7 +966,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                                 genln!(self.printer; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
                                 genln!(self.printer; "pub fn {name}_mut(&mut self) -> &mut {base_type} {{" => self.vars, name, base_type);
                                 indent!(self.printer, {
-                                    genln!(self.printer; "self.{field_name}.get_or_insert_with({crate_name}::LiteMessage::new)" => self.vars, crate_name, field_name);
+                                    genln!(self.printer; "self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())).as_mut()" => self.vars, crate_name, field_name);
                                 });
                                 genln!(self.printer, "}}");
                                 genln!(self.printer; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);

@@ -364,7 +364,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
                 10 => self.file_to_generate.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?,
                 18 => self.parameter = ::std::option::Option::Some(input.read_string()?),
                 122 => self.proto_file.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
-                26 => input.read_message(self.compiler_version.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -384,7 +384,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         let compiler_version = &self.compiler_version;
         if let ::std::option::Option::Some(compiler_version) = compiler_version {
             size += 1;
-            size += crate::io::sizes::message(compiler_version);
+            size += crate::io::sizes::message(&**compiler_version);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -402,7 +402,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         let compiler_version = &self.compiler_version;
         if let ::std::option::Option::Some(compiler_version) = compiler_version {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(compiler_version)?;
+            output.write_message(&**compiler_version)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -423,7 +423,7 @@ impl crate::LiteMessage for self::CodeGeneratorRequest {
         self.parameter = other.parameter.clone();
         self.proto_file.merge(&other.proto_file);
         if let ::std::option::Option::Some(compiler_version) = &other.compiler_version {
-            self.compiler_version.get_or_insert_with(crate::LiteMessage::new).merge(compiler_version);
+            self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(compiler_version);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -538,7 +538,7 @@ impl self::CodeGeneratorRequest {
     ///
     /// [`compiler_version`]: #method.compiler_version
     pub fn compiler_version_mut(&mut self) -> &mut self::Version {
-        self.compiler_version.get_or_insert_with(crate::LiteMessage::new)
+        self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`compiler_version`] field
     ///

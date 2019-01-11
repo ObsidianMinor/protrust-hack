@@ -82,7 +82,7 @@ impl ::protrust::CodedMessage for self::Person {
                 16 => self.id = input.read_int32()?,
                 26 => self.email = input.read_string()?,
                 34 => self.phones.add_entries(tag.get(), input, &PERSON_PHONES_CODEC)?,
-                42 => input.read_message(self.last_updated.get_or_insert_with(::protrust::LiteMessage::new))?,
+                42 => input.read_message(&mut **self.last_updated.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -109,7 +109,7 @@ impl ::protrust::CodedMessage for self::Person {
         let last_updated = &self.last_updated;
         if let ::std::option::Option::Some(last_updated) = last_updated {
             size += 1;
-            size += ::protrust::io::sizes::message(last_updated);
+            size += ::protrust::io::sizes::message(&**last_updated);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -134,7 +134,7 @@ impl ::protrust::CodedMessage for self::Person {
         let last_updated = &self.last_updated;
         if let ::std::option::Option::Some(last_updated) = last_updated {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(last_updated)?;
+            output.write_message(&**last_updated)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -157,7 +157,7 @@ impl ::protrust::LiteMessage for self::Person {
         self.email = other.email.clone();
         self.phones.merge(&other.phones);
         if let ::std::option::Option::Some(last_updated) = &other.last_updated {
-            self.last_updated.get_or_insert_with(::protrust::LiteMessage::new).merge(last_updated);
+            self.last_updated.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())).merge(last_updated);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }

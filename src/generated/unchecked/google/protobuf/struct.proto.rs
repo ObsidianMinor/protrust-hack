@@ -220,11 +220,11 @@ impl crate::CodedMessage for self::Value {
         }
         if let self::Value_Kind::StructValue(kind) = &self.kind {
             size += 1;
-            size += crate::io::sizes::message(kind);
+            size += crate::io::sizes::message(&**kind);
         }
         if let self::Value_Kind::ListValue(kind) = &self.kind {
             size += 1;
-            size += crate::io::sizes::message(kind);
+            size += crate::io::sizes::message(&**kind);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -248,11 +248,11 @@ impl crate::CodedMessage for self::Value {
         }
         if let self::Value_Kind::StructValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(kind)?;
+            output.write_message(&**kind)?;
         }
         if let self::Value_Kind::ListValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[50])?;
-            output.write_message(kind)?;
+            output.write_message(&**kind)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())

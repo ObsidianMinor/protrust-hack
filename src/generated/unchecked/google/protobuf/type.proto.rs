@@ -150,7 +150,7 @@ impl crate::CodedMessage for self::Type {
                 18 => self.fields.add_entries(tag.get(), input, &TYPE_FIELDS_CODEC)?,
                 26 => self.oneofs.add_entries(tag.get(), input, &TYPE_ONEOFS_CODEC)?,
                 34 => self.options.add_entries(tag.get(), input, &TYPE_OPTIONS_CODEC)?,
-                42 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 48 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -170,7 +170,7 @@ impl crate::CodedMessage for self::Type {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size += 1;
-            size += crate::io::sizes::message(source_context);
+            size += crate::io::sizes::message(&**source_context);
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -192,7 +192,7 @@ impl crate::CodedMessage for self::Type {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -221,7 +221,7 @@ impl crate::LiteMessage for self::Type {
         self.oneofs.merge(&other.oneofs);
         self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.syntax = other.syntax;
         self.unknown_fields.merge(&other.unknown_fields);
@@ -825,7 +825,7 @@ impl crate::CodedMessage for self::Enum {
                 10 => self.name = input.read_string()?,
                 18 => self.enumvalue.add_entries(tag.get(), input, &ENUM_ENUMVALUE_CODEC)?,
                 26 => self.options.add_entries(tag.get(), input, &ENUM_OPTIONS_CODEC)?,
-                34 => input.read_message(self.source_context.get_or_insert_with(crate::LiteMessage::new))?,
+                34 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.syntax = input.read_enum_value()?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -844,7 +844,7 @@ impl crate::CodedMessage for self::Enum {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             size += 1;
-            size += crate::io::sizes::message(source_context);
+            size += crate::io::sizes::message(&**source_context);
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -865,7 +865,7 @@ impl crate::CodedMessage for self::Enum {
         let source_context = &self.source_context;
         if let ::std::option::Option::Some(source_context) = source_context {
             output.write_raw_tag_bytes(&[34])?;
-            output.write_message(source_context)?;
+            output.write_message(&**source_context)?;
         }
         let syntax = self.syntax;
         if syntax != Self::SYNTAX_DEFAULT_VALUE {
@@ -892,7 +892,7 @@ impl crate::LiteMessage for self::Enum {
         self.enumvalue.merge(&other.enumvalue);
         self.options.merge(&other.options);
         if let ::std::option::Option::Some(source_context) = &other.source_context {
-            self.source_context.get_or_insert_with(crate::LiteMessage::new).merge(source_context);
+            self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_context);
         }
         self.syntax = other.syntax;
         self.unknown_fields.merge(&other.unknown_fields);
@@ -1122,7 +1122,7 @@ impl crate::CodedMessage for self::Option {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
-                18 => input.read_message(self.value.get_or_insert_with(crate::LiteMessage::new))?,
+                18 => input.read_message(&mut **self.value.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1138,7 +1138,7 @@ impl crate::CodedMessage for self::Option {
         let value = &self.value;
         if let ::std::option::Option::Some(value) = value {
             size += 1;
-            size += crate::io::sizes::message(value);
+            size += crate::io::sizes::message(&**value);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -1152,7 +1152,7 @@ impl crate::CodedMessage for self::Option {
         let value = &self.value;
         if let ::std::option::Option::Some(value) = value {
             output.write_raw_tag_bytes(&[18])?;
-            output.write_message(value)?;
+            output.write_message(&**value)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1169,7 +1169,7 @@ impl crate::LiteMessage for self::Option {
     fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         if let ::std::option::Option::Some(value) = &other.value {
-            self.value.get_or_insert_with(crate::LiteMessage::new).merge(value);
+            self.value.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(value);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }

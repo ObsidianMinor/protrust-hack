@@ -85,7 +85,7 @@ impl crate::CodedMessage for self::DoubleValue {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::double(value))?;
+            size = size.checked_add(crate::io::sizes::double(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -160,7 +160,7 @@ impl crate::CodedMessage for self::FloatValue {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::float(value))?;
+            size = size.checked_add(crate::io::sizes::float(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -235,7 +235,7 @@ impl crate::CodedMessage for self::Int64Value {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int64(value))?;
+            size = size.checked_add(crate::io::sizes::int64(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -310,7 +310,7 @@ impl crate::CodedMessage for self::UInt64Value {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::uint64(value))?;
+            size = size.checked_add(crate::io::sizes::uint64(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -385,7 +385,7 @@ impl crate::CodedMessage for self::Int32Value {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int32(value))?;
+            size = size.checked_add(crate::io::sizes::int32(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -460,7 +460,7 @@ impl crate::CodedMessage for self::UInt32Value {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::uint32(value))?;
+            size = size.checked_add(crate::io::sizes::uint32(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -535,7 +535,7 @@ impl crate::CodedMessage for self::BoolValue {
         let value = self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bool(value))?;
+            size = size.checked_add(crate::io::sizes::bool(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -610,7 +610,7 @@ impl crate::CodedMessage for self::StringValue {
         let value = &self.value;
         if value != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(value)?)?;
+            size = size.checked_add(crate::io::sizes::string(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -685,7 +685,7 @@ impl crate::CodedMessage for self::BytesValue {
         let value = &self.value;
         if value.as_slice() != Self::VALUE_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bytes(value)?)?;
+            size = size.checked_add(crate::io::sizes::bytes(value));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)

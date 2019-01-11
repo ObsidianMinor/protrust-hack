@@ -204,27 +204,27 @@ impl crate::CodedMessage for self::Value {
         let mut size = 0i32;
         if let self::Value_Kind::NullValue(kind) = self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::enum_value(kind))?;
+            size = size.checked_add(crate::io::sizes::enum_value(kind));
         }
         if let self::Value_Kind::NumberValue(kind) = self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::double(kind))?;
+            size = size.checked_add(crate::io::sizes::double(kind));
         }
         if let self::Value_Kind::StringValue(kind) = &self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::string(kind)?)?;
+            size = size.checked_add(crate::io::sizes::string(kind));
         }
         if let self::Value_Kind::BoolValue(kind) = self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::bool(kind))?;
+            size = size.checked_add(crate::io::sizes::bool(kind));
         }
         if let self::Value_Kind::StructValue(kind) = &self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(kind)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**kind));
         }
         if let self::Value_Kind::ListValue(kind) = &self.kind {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(kind)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**kind));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -248,11 +248,11 @@ impl crate::CodedMessage for self::Value {
         }
         if let self::Value_Kind::StructValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[42])?;
-            output.write_message(kind)?;
+            output.write_message(&**kind)?;
         }
         if let self::Value_Kind::ListValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[50])?;
-            output.write_message(kind)?;
+            output.write_message(&**kind)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())

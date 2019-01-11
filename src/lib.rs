@@ -122,35 +122,6 @@ pub trait Message: LiteMessage {
     fn descriptor() -> &'static reflect::MessageDescriptor;
 }
 
-impl<T: CodedMessage> CodedMessage for Box<T> {
-    fn merge_from(&mut self, input: &mut io::CodedInput) -> io::InputResult<()> {
-        self.as_mut().merge_from(input)
-    }
-    #[cfg(checked_size)]
-    fn calculate_size(&self) -> Option<i32> {
-        self.as_ref().calculate_size()
-    }
-    #[cfg(not(checked_size))]
-    fn calculate_size(&self) -> i32 {
-        self.as_ref().calculate_size()
-    }
-    fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult {
-        self.as_ref().write_to(output)
-    }
-    fn is_initialized(&self) -> bool {
-        self.as_ref().is_initialized()
-    }
-}
-
-impl<T: LiteMessage> LiteMessage for Box<T> {
-    fn new() -> Box<T> {
-        Box::new(T::new())
-    }
-    fn merge(&mut self, other: &Self) {
-        self.as_mut().merge(other)
-    }
-}
-
 /// The error result for when an enum value is undefined
 pub struct VariantUndefinedError;
 

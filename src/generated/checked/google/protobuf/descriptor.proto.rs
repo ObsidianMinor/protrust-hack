@@ -514,8 +514,8 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 42 => self.enum_type.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 50 => self.service.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_SERVICE_CODEC)?,
                 58 => self.extension.add_entries(tag.get(), input, &FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC)?,
-                66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
-                74 => input.read_message(self.source_code_info.get_or_insert_with(crate::LiteMessage::new))?,
+                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                74 => input.read_message(&mut **self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 98 => self.syntax = ::std::option::Option::Some(input.read_string()?),
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
@@ -528,14 +528,14 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let package = &self.package;
         if let ::std::option::Option::Some(package) = package {
             if package != Self::PACKAGE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(package)?)?;
+                size = size.checked_add(crate::io::sizes::string(package));
             }
         }
         size = size.checked_add(self.dependency.calculate_size(&FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC)?)?;
@@ -548,18 +548,18 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(source_code_info)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**source_code_info));
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
             if syntax != Self::SYNTAX_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(syntax)?)?;
+                size = size.checked_add(crate::io::sizes::string(syntax));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -590,12 +590,12 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
             output.write_raw_tag_bytes(&[74])?;
-            output.write_message(source_code_info)?;
+            output.write_message(&**source_code_info)?;
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
@@ -637,10 +637,10 @@ impl crate::LiteMessage for self::FileDescriptorProto {
         self.service.merge(&other.service);
         self.extension.merge(&other.extension);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         if let ::std::option::Option::Some(source_code_info) = &other.source_code_info {
-            self.source_code_info.get_or_insert_with(crate::LiteMessage::new).merge(source_code_info);
+            self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(source_code_info);
         }
         self.syntax = other.syntax.clone();
         self.unknown_fields.merge(&other.unknown_fields);
@@ -857,7 +857,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::FileOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -898,7 +898,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`source_code_info`]: #method.source_code_info
     pub fn source_code_info_mut(&mut self) -> &mut self::SourceCodeInfo {
-        self.source_code_info.get_or_insert_with(crate::LiteMessage::new)
+        self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`source_code_info`] field
     ///
@@ -1009,7 +1009,7 @@ impl crate::CodedMessage for self::DescriptorProto {
                 34 => self.enum_type.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 42 => self.extension_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC)?,
                 66 => self.oneof_decl.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_ONEOF_DECL_CODEC)?,
-                58 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                58 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => self.reserved_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 82 => self.reserved_name.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -1023,7 +1023,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         size = size.checked_add(self.field.calculate_size(&DESCRIPTOR_PROTO_FIELD_CODEC)?)?;
@@ -1035,7 +1035,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.reserved_range.calculate_size(&DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
@@ -1059,7 +1059,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[58])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.reserved_range.write_to(output, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -1092,7 +1092,7 @@ impl crate::LiteMessage for self::DescriptorProto {
         self.extension_range.merge(&other.extension_range);
         self.oneof_decl.merge(&other.oneof_decl);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.reserved_range.merge(&other.reserved_range);
         self.reserved_name.merge(&other.reserved_name);
@@ -1242,7 +1242,7 @@ impl self::DescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::MessageOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -1310,7 +1310,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
             match tag.get() {
                 8 => self.start = ::std::option::Option::Some(input.read_int32()?),
                 16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1322,20 +1322,20 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         if let ::std::option::Option::Some(start) = start {
             if start != Self::START_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start))?;
+                size = size.checked_add(crate::io::sizes::int32(start));
             }
         }
         let end = self.end;
         if let ::std::option::Option::Some(end) = end {
             if end != Self::END_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end))?;
+                size = size.checked_add(crate::io::sizes::int32(end));
             }
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -1358,7 +1358,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1377,7 +1377,7 @@ impl crate::LiteMessage for self::DescriptorProto_ExtensionRange {
         self.start = other.start;
         self.end = other.end;
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -1471,7 +1471,7 @@ impl self::DescriptorProto_ExtensionRange {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::ExtensionRangeOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -1524,14 +1524,14 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
         if let ::std::option::Option::Some(start) = start {
             if start != Self::START_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start))?;
+                size = size.checked_add(crate::io::sizes::int32(start));
             }
         }
         let end = self.end;
         if let ::std::option::Option::Some(end) = end {
             if end != Self::END_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end))?;
+                size = size.checked_add(crate::io::sizes::int32(end));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -1740,7 +1740,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
                 58 => self.default_value = ::std::option::Option::Some(input.read_string()?),
                 72 => self.oneof_index = ::std::option::Option::Some(input.read_int32()?),
                 82 => self.json_name = ::std::option::Option::Some(input.read_string()?),
-                66 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1752,69 +1752,69 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
             if number != Self::NUMBER_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(number))?;
+                size = size.checked_add(crate::io::sizes::int32(number));
             }
         }
         let label = self.label;
         if let ::std::option::Option::Some(label) = label {
             if label != Self::LABEL_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::enum_value(label))?;
+                size = size.checked_add(crate::io::sizes::enum_value(label));
             }
         }
         let r#type = self.r#type;
         if let ::std::option::Option::Some(r#type) = r#type {
             if r#type != Self::TYPE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::enum_value(r#type))?;
+                size = size.checked_add(crate::io::sizes::enum_value(r#type));
             }
         }
         let type_name = &self.type_name;
         if let ::std::option::Option::Some(type_name) = type_name {
             if type_name != Self::TYPE_NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(type_name)?)?;
+                size = size.checked_add(crate::io::sizes::string(type_name));
             }
         }
         let extendee = &self.extendee;
         if let ::std::option::Option::Some(extendee) = extendee {
             if extendee != Self::EXTENDEE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(extendee)?)?;
+                size = size.checked_add(crate::io::sizes::string(extendee));
             }
         }
         let default_value = &self.default_value;
         if let ::std::option::Option::Some(default_value) = default_value {
             if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(default_value)?)?;
+                size = size.checked_add(crate::io::sizes::string(default_value));
             }
         }
         let oneof_index = self.oneof_index;
         if let ::std::option::Option::Some(oneof_index) = oneof_index {
             if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(oneof_index))?;
+                size = size.checked_add(crate::io::sizes::int32(oneof_index));
             }
         }
         let json_name = &self.json_name;
         if let ::std::option::Option::Some(json_name) = json_name {
             if json_name != Self::JSON_NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(json_name)?)?;
+                size = size.checked_add(crate::io::sizes::string(json_name));
             }
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -1886,7 +1886,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1919,7 +1919,7 @@ impl crate::LiteMessage for self::FieldDescriptorProto {
         self.oneof_index = other.oneof_index;
         self.json_name = other.json_name.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -2345,7 +2345,7 @@ impl self::FieldDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::FieldOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -2496,7 +2496,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                18 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                18 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2508,13 +2508,13 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -2530,7 +2530,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[18])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -2547,7 +2547,7 @@ impl crate::LiteMessage for self::OneofDescriptorProto {
     fn merge(&mut self, other: &Self) {
         self.name = other.name.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -2617,7 +2617,7 @@ impl self::OneofDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::OneofOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -2663,7 +2663,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.value.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_VALUE_CODEC)?,
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 34 => self.reserved_range.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 42 => self.reserved_name.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -2677,14 +2677,14 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         size = size.checked_add(self.value.calculate_size(&ENUM_DESCRIPTOR_PROTO_VALUE_CODEC)?)?;
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.reserved_range.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
@@ -2703,7 +2703,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.reserved_range.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -2726,7 +2726,7 @@ impl crate::LiteMessage for self::EnumDescriptorProto {
         self.name = other.name.clone();
         self.value.merge(&other.value);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.reserved_range.merge(&other.reserved_range);
         self.reserved_name.merge(&other.reserved_name);
@@ -2811,7 +2811,7 @@ impl self::EnumDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::EnumOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -2898,14 +2898,14 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
         if let ::std::option::Option::Some(start) = start {
             if start != Self::START_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start))?;
+                size = size.checked_add(crate::io::sizes::int32(start));
             }
         }
         let end = self.end;
         if let ::std::option::Option::Some(end) = end {
             if end != Self::END_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end))?;
+                size = size.checked_add(crate::io::sizes::int32(end));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -3039,7 +3039,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 16 => self.number = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3051,20 +3051,20 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
             if number != Self::NUMBER_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(number))?;
+                size = size.checked_add(crate::io::sizes::int32(number));
             }
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -3087,7 +3087,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3106,7 +3106,7 @@ impl crate::LiteMessage for self::EnumValueDescriptorProto {
         self.name = other.name.clone();
         self.number = other.number;
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -3212,7 +3212,7 @@ impl self::EnumValueDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::EnumValueOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3254,7 +3254,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.method.add_entries(tag.get(), input, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?,
-                26 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3266,14 +3266,14 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         size = size.checked_add(self.method.calculate_size(&SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?)?;
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -3290,7 +3290,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3309,7 +3309,7 @@ impl crate::LiteMessage for self::ServiceDescriptorProto {
         self.name = other.name.clone();
         self.method.merge(&other.method);
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -3392,7 +3392,7 @@ impl self::ServiceDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::ServiceOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3437,7 +3437,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.input_type = ::std::option::Option::Some(input.read_string()?),
                 26 => self.output_type = ::std::option::Option::Some(input.read_string()?),
-                34 => input.read_message(self.options.get_or_insert_with(crate::LiteMessage::new))?,
+                34 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.client_streaming = ::std::option::Option::Some(input.read_bool()?),
                 48 => self.server_streaming = ::std::option::Option::Some(input.read_bool()?),
                 tag => self.unknown_fields.merge_from(tag, input)?
@@ -3451,40 +3451,40 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let input_type = &self.input_type;
         if let ::std::option::Option::Some(input_type) = input_type {
             if input_type != Self::INPUT_TYPE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(input_type)?)?;
+                size = size.checked_add(crate::io::sizes::string(input_type));
             }
         }
         let output_type = &self.output_type;
         if let ::std::option::Option::Some(output_type) = output_type {
             if output_type != Self::OUTPUT_TYPE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(output_type)?)?;
+                size = size.checked_add(crate::io::sizes::string(output_type));
             }
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(options)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**options));
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
             if client_streaming != Self::CLIENT_STREAMING_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(client_streaming))?;
+                size = size.checked_add(crate::io::sizes::bool(client_streaming));
             }
         }
         let server_streaming = self.server_streaming;
         if let ::std::option::Option::Some(server_streaming) = server_streaming {
             if server_streaming != Self::SERVER_STREAMING_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(server_streaming))?;
+                size = size.checked_add(crate::io::sizes::bool(server_streaming));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -3515,7 +3515,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[34])?;
-            output.write_message(options)?;
+            output.write_message(&**options)?;
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
@@ -3552,7 +3552,7 @@ impl crate::LiteMessage for self::MethodDescriptorProto {
         self.input_type = other.input_type.clone();
         self.output_type = other.output_type.clone();
         if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(crate::LiteMessage::new).merge(options);
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
         }
         self.client_streaming = other.client_streaming;
         self.server_streaming = other.server_streaming;
@@ -3722,7 +3722,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub fn options_mut(&mut self) -> &mut self::MethodOptions {
-        self.options.get_or_insert_with(crate::LiteMessage::new)
+        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`options`] field
     ///
@@ -3885,140 +3885,140 @@ impl crate::CodedMessage for self::FileOptions {
         if let ::std::option::Option::Some(java_package) = java_package {
             if java_package != Self::JAVA_PACKAGE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(java_package)?)?;
+                size = size.checked_add(crate::io::sizes::string(java_package));
             }
         }
         let java_outer_classname = &self.java_outer_classname;
         if let ::std::option::Option::Some(java_outer_classname) = java_outer_classname {
             if java_outer_classname != Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(java_outer_classname)?)?;
+                size = size.checked_add(crate::io::sizes::string(java_outer_classname));
             }
         }
         let java_multiple_files = self.java_multiple_files;
         if let ::std::option::Option::Some(java_multiple_files) = java_multiple_files {
             if java_multiple_files != Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(java_multiple_files))?;
+                size = size.checked_add(crate::io::sizes::bool(java_multiple_files));
             }
         }
         let java_generate_equals_and_hash = self.java_generate_equals_and_hash;
         if let ::std::option::Option::Some(java_generate_equals_and_hash) = java_generate_equals_and_hash {
             if java_generate_equals_and_hash != Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(java_generate_equals_and_hash))?;
+                size = size.checked_add(crate::io::sizes::bool(java_generate_equals_and_hash));
             }
         }
         let java_string_check_utf8 = self.java_string_check_utf8;
         if let ::std::option::Option::Some(java_string_check_utf8) = java_string_check_utf8 {
             if java_string_check_utf8 != Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(java_string_check_utf8))?;
+                size = size.checked_add(crate::io::sizes::bool(java_string_check_utf8));
             }
         }
         let optimize_for = self.optimize_for;
         if let ::std::option::Option::Some(optimize_for) = optimize_for {
             if optimize_for != Self::OPTIMIZE_FOR_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::enum_value(optimize_for))?;
+                size = size.checked_add(crate::io::sizes::enum_value(optimize_for));
             }
         }
         let go_package = &self.go_package;
         if let ::std::option::Option::Some(go_package) = go_package {
             if go_package != Self::GO_PACKAGE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(go_package)?)?;
+                size = size.checked_add(crate::io::sizes::string(go_package));
             }
         }
         let cc_generic_services = self.cc_generic_services;
         if let ::std::option::Option::Some(cc_generic_services) = cc_generic_services {
             if cc_generic_services != Self::CC_GENERIC_SERVICES_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(cc_generic_services))?;
+                size = size.checked_add(crate::io::sizes::bool(cc_generic_services));
             }
         }
         let java_generic_services = self.java_generic_services;
         if let ::std::option::Option::Some(java_generic_services) = java_generic_services {
             if java_generic_services != Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(java_generic_services))?;
+                size = size.checked_add(crate::io::sizes::bool(java_generic_services));
             }
         }
         let py_generic_services = self.py_generic_services;
         if let ::std::option::Option::Some(py_generic_services) = py_generic_services {
             if py_generic_services != Self::PY_GENERIC_SERVICES_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(py_generic_services))?;
+                size = size.checked_add(crate::io::sizes::bool(py_generic_services));
             }
         }
         let php_generic_services = self.php_generic_services;
         if let ::std::option::Option::Some(php_generic_services) = php_generic_services {
             if php_generic_services != Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(php_generic_services))?;
+                size = size.checked_add(crate::io::sizes::bool(php_generic_services));
             }
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         let cc_enable_arenas = self.cc_enable_arenas;
         if let ::std::option::Option::Some(cc_enable_arenas) = cc_enable_arenas {
             if cc_enable_arenas != Self::CC_ENABLE_ARENAS_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(cc_enable_arenas))?;
+                size = size.checked_add(crate::io::sizes::bool(cc_enable_arenas));
             }
         }
         let objc_class_prefix = &self.objc_class_prefix;
         if let ::std::option::Option::Some(objc_class_prefix) = objc_class_prefix {
             if objc_class_prefix != Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(objc_class_prefix)?)?;
+                size = size.checked_add(crate::io::sizes::string(objc_class_prefix));
             }
         }
         let csharp_namespace = &self.csharp_namespace;
         if let ::std::option::Option::Some(csharp_namespace) = csharp_namespace {
             if csharp_namespace != Self::CSHARP_NAMESPACE_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(csharp_namespace)?)?;
+                size = size.checked_add(crate::io::sizes::string(csharp_namespace));
             }
         }
         let swift_prefix = &self.swift_prefix;
         if let ::std::option::Option::Some(swift_prefix) = swift_prefix {
             if swift_prefix != Self::SWIFT_PREFIX_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(swift_prefix)?)?;
+                size = size.checked_add(crate::io::sizes::string(swift_prefix));
             }
         }
         let php_class_prefix = &self.php_class_prefix;
         if let ::std::option::Option::Some(php_class_prefix) = php_class_prefix {
             if php_class_prefix != Self::PHP_CLASS_PREFIX_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(php_class_prefix)?)?;
+                size = size.checked_add(crate::io::sizes::string(php_class_prefix));
             }
         }
         let php_namespace = &self.php_namespace;
         if let ::std::option::Option::Some(php_namespace) = php_namespace {
             if php_namespace != Self::PHP_NAMESPACE_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(php_namespace)?)?;
+                size = size.checked_add(crate::io::sizes::string(php_namespace));
             }
         }
         let php_metadata_namespace = &self.php_metadata_namespace;
         if let ::std::option::Option::Some(php_metadata_namespace) = php_metadata_namespace {
             if php_metadata_namespace != Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(php_metadata_namespace)?)?;
+                size = size.checked_add(crate::io::sizes::string(php_metadata_namespace));
             }
         }
         let ruby_package = &self.ruby_package;
         if let ::std::option::Option::Some(ruby_package) = ruby_package {
             if ruby_package != Self::RUBY_PACKAGE_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::string(ruby_package)?)?;
+                size = size.checked_add(crate::io::sizes::string(ruby_package));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -5206,28 +5206,28 @@ impl crate::CodedMessage for self::MessageOptions {
         if let ::std::option::Option::Some(message_set_wire_format) = message_set_wire_format {
             if message_set_wire_format != Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(message_set_wire_format))?;
+                size = size.checked_add(crate::io::sizes::bool(message_set_wire_format));
             }
         }
         let no_standard_descriptor_accessor = self.no_standard_descriptor_accessor;
         if let ::std::option::Option::Some(no_standard_descriptor_accessor) = no_standard_descriptor_accessor {
             if no_standard_descriptor_accessor != Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(no_standard_descriptor_accessor))?;
+                size = size.checked_add(crate::io::sizes::bool(no_standard_descriptor_accessor));
             }
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         let map_entry = self.map_entry;
         if let ::std::option::Option::Some(map_entry) = map_entry {
             if map_entry != Self::MAP_ENTRY_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(map_entry))?;
+                size = size.checked_add(crate::io::sizes::bool(map_entry));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -5533,42 +5533,42 @@ impl crate::CodedMessage for self::FieldOptions {
         if let ::std::option::Option::Some(ctype) = ctype {
             if ctype != Self::CTYPE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::enum_value(ctype))?;
+                size = size.checked_add(crate::io::sizes::enum_value(ctype));
             }
         }
         let packed = self.packed;
         if let ::std::option::Option::Some(packed) = packed {
             if packed != Self::PACKED_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(packed))?;
+                size = size.checked_add(crate::io::sizes::bool(packed));
             }
         }
         let jstype = self.jstype;
         if let ::std::option::Option::Some(jstype) = jstype {
             if jstype != Self::JSTYPE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::enum_value(jstype))?;
+                size = size.checked_add(crate::io::sizes::enum_value(jstype));
             }
         }
         let lazy = self.lazy;
         if let ::std::option::Option::Some(lazy) = lazy {
             if lazy != Self::LAZY_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(lazy))?;
+                size = size.checked_add(crate::io::sizes::bool(lazy));
             }
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         let weak = self.weak;
         if let ::std::option::Option::Some(weak) = weak {
             if weak != Self::WEAK_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(weak))?;
+                size = size.checked_add(crate::io::sizes::bool(weak));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -6080,14 +6080,14 @@ impl crate::CodedMessage for self::EnumOptions {
         if let ::std::option::Option::Some(allow_alias) = allow_alias {
             if allow_alias != Self::ALLOW_ALIAS_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(allow_alias))?;
+                size = size.checked_add(crate::io::sizes::bool(allow_alias));
             }
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -6253,7 +6253,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -6372,7 +6372,7 @@ impl crate::CodedMessage for self::ServiceOptions {
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -6493,14 +6493,14 @@ impl crate::CodedMessage for self::MethodOptions {
         if let ::std::option::Option::Some(deprecated) = deprecated {
             if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::bool(deprecated))?;
+                size = size.checked_add(crate::io::sizes::bool(deprecated));
             }
         }
         let idempotency_level = self.idempotency_level;
         if let ::std::option::Option::Some(idempotency_level) = idempotency_level {
             if idempotency_level != Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
                 size = size.checked_add(2)?;
-                size = size.checked_add(crate::io::sizes::enum_value(idempotency_level))?;
+                size = size.checked_add(crate::io::sizes::enum_value(idempotency_level));
             }
         }
         size = size.checked_add(self.uninterpreted_option.calculate_size(&METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?)?;
@@ -6712,42 +6712,42 @@ impl crate::CodedMessage for self::UninterpretedOption {
         if let ::std::option::Option::Some(identifier_value) = identifier_value {
             if identifier_value != Self::IDENTIFIER_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(identifier_value)?)?;
+                size = size.checked_add(crate::io::sizes::string(identifier_value));
             }
         }
         let positive_int_value = self.positive_int_value;
         if let ::std::option::Option::Some(positive_int_value) = positive_int_value {
             if positive_int_value != Self::POSITIVE_INT_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::uint64(positive_int_value))?;
+                size = size.checked_add(crate::io::sizes::uint64(positive_int_value));
             }
         }
         let negative_int_value = self.negative_int_value;
         if let ::std::option::Option::Some(negative_int_value) = negative_int_value {
             if negative_int_value != Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int64(negative_int_value))?;
+                size = size.checked_add(crate::io::sizes::int64(negative_int_value));
             }
         }
         let double_value = self.double_value;
         if let ::std::option::Option::Some(double_value) = double_value {
             if double_value != Self::DOUBLE_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::double(double_value))?;
+                size = size.checked_add(crate::io::sizes::double(double_value));
             }
         }
         let string_value = &self.string_value;
         if let ::std::option::Option::Some(string_value) = string_value {
             if string_value.as_slice() != Self::STRING_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bytes(string_value)?)?;
+                size = size.checked_add(crate::io::sizes::bytes(string_value));
             }
         }
         let aggregate_value = &self.aggregate_value;
         if let ::std::option::Option::Some(aggregate_value) = aggregate_value {
             if aggregate_value != Self::AGGREGATE_VALUE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(aggregate_value)?)?;
+                size = size.checked_add(crate::io::sizes::string(aggregate_value));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -7127,14 +7127,14 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
         if let ::std::option::Option::Some(name_part) = name_part {
             if name_part != Self::NAME_PART_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name_part)?)?;
+                size = size.checked_add(crate::io::sizes::string(name_part));
             }
         }
         let is_extension = self.is_extension;
         if let ::std::option::Option::Some(is_extension) = is_extension {
             if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(is_extension))?;
+                size = size.checked_add(crate::io::sizes::bool(is_extension));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -7403,14 +7403,14 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
         if let ::std::option::Option::Some(leading_comments) = leading_comments {
             if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(leading_comments)?)?;
+                size = size.checked_add(crate::io::sizes::string(leading_comments));
             }
         }
         let trailing_comments = &self.trailing_comments;
         if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
             if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(trailing_comments)?)?;
+                size = size.checked_add(crate::io::sizes::string(trailing_comments));
             }
         }
         size = size.checked_add(self.leading_detached_comments.calculate_size(&SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?)?;
@@ -7770,21 +7770,21 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
         if let ::std::option::Option::Some(source_file) = source_file {
             if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(source_file)?)?;
+                size = size.checked_add(crate::io::sizes::string(source_file));
             }
         }
         let begin = self.begin;
         if let ::std::option::Option::Some(begin) = begin {
             if begin != Self::BEGIN_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(begin))?;
+                size = size.checked_add(crate::io::sizes::int32(begin));
             }
         }
         let end = self.end;
         if let ::std::option::Option::Some(end) = end {
             if end != Self::END_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end))?;
+                size = size.checked_add(crate::io::sizes::int32(end));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;

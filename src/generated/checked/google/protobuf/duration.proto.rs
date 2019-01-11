@@ -131,12 +131,12 @@ impl crate::CodedMessage for self::Duration {
         let seconds = self.seconds;
         if seconds != Self::SECONDS_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int64(seconds))?;
+            size = size.checked_add(crate::io::sizes::int64(seconds));
         }
         let nanos = self.nanos;
         if nanos != Self::NANOS_DEFAULT_VALUE {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::int32(nanos))?;
+            size = size.checked_add(crate::io::sizes::int32(nanos));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)

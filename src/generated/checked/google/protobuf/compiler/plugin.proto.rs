@@ -103,28 +103,28 @@ impl crate::CodedMessage for self::Version {
         if let ::std::option::Option::Some(major) = major {
             if major != Self::MAJOR_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(major))?;
+                size = size.checked_add(crate::io::sizes::int32(major));
             }
         }
         let minor = self.minor;
         if let ::std::option::Option::Some(minor) = minor {
             if minor != Self::MINOR_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(minor))?;
+                size = size.checked_add(crate::io::sizes::int32(minor));
             }
         }
         let patch = self.patch;
         if let ::std::option::Option::Some(patch) = patch {
             if patch != Self::PATCH_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(patch))?;
+                size = size.checked_add(crate::io::sizes::int32(patch));
             }
         }
         let suffix = &self.suffix;
         if let ::std::option::Option::Some(suffix) = suffix {
             if suffix != Self::SUFFIX_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(suffix)?)?;
+                size = size.checked_add(crate::io::sizes::string(suffix));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
@@ -364,7 +364,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
                 10 => self.file_to_generate.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?,
                 18 => self.parameter = ::std::option::Option::Some(input.read_string()?),
                 122 => self.proto_file.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
-                26 => input.read_message(self.compiler_version.get_or_insert_with(crate::LiteMessage::new))?,
+                26 => input.read_message(&mut **self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 tag => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -377,14 +377,14 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         if let ::std::option::Option::Some(parameter) = parameter {
             if parameter != Self::PARAMETER_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(parameter)?)?;
+                size = size.checked_add(crate::io::sizes::string(parameter));
             }
         }
         size = size.checked_add(self.proto_file.calculate_size(&CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?)?;
         let compiler_version = &self.compiler_version;
         if let ::std::option::Option::Some(compiler_version) = compiler_version {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(compiler_version)?)?;
+            size = size.checked_add(crate::io::sizes::message(&**compiler_version));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -402,7 +402,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         let compiler_version = &self.compiler_version;
         if let ::std::option::Option::Some(compiler_version) = compiler_version {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(compiler_version)?;
+            output.write_message(&**compiler_version)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -423,7 +423,7 @@ impl crate::LiteMessage for self::CodeGeneratorRequest {
         self.parameter = other.parameter.clone();
         self.proto_file.merge(&other.proto_file);
         if let ::std::option::Option::Some(compiler_version) = &other.compiler_version {
-            self.compiler_version.get_or_insert_with(crate::LiteMessage::new).merge(compiler_version);
+            self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(compiler_version);
         }
         self.unknown_fields.merge(&other.unknown_fields);
     }
@@ -538,7 +538,7 @@ impl self::CodeGeneratorRequest {
     ///
     /// [`compiler_version`]: #method.compiler_version
     pub fn compiler_version_mut(&mut self) -> &mut self::Version {
-        self.compiler_version.get_or_insert_with(crate::LiteMessage::new)
+        self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
     }
     /// Returns a bool indicating the presence of the [`compiler_version`] field
     ///
@@ -590,7 +590,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
         if let ::std::option::Option::Some(error) = error {
             if error != Self::ERROR_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(error)?)?;
+                size = size.checked_add(crate::io::sizes::string(error));
             }
         }
         size = size.checked_add(self.file.calculate_size(&CODE_GENERATOR_RESPONSE_FILE_CODEC)?)?;
@@ -726,21 +726,21 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
         if let ::std::option::Option::Some(name) = name {
             if name != Self::NAME_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name)?)?;
+                size = size.checked_add(crate::io::sizes::string(name));
             }
         }
         let insertion_point = &self.insertion_point;
         if let ::std::option::Option::Some(insertion_point) = insertion_point {
             if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(insertion_point)?)?;
+                size = size.checked_add(crate::io::sizes::string(insertion_point));
             }
         }
         let content = &self.content;
         if let ::std::option::Option::Some(content) = content {
             if content != Self::CONTENT_DEFAULT_VALUE {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(content)?)?;
+                size = size.checked_add(crate::io::sizes::string(content));
             }
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
