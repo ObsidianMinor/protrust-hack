@@ -236,14 +236,7 @@ generator_new!(MessageDescriptor, proto, options;
 impl<W: Write> Generator<'_, MessageDescriptor, W> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
         if let Some(source_info) = self.proto.source_code_info() {
-            if let Some(comments) = source_info
-                .leading_comments()
-                .or(source_info.trailing_comments())
-            {
-                for line in comments.lines() {
-                    genln!(self.printer, "///{}", line);
-                }
-            }
+            generate_rustdoc_comments(self.printer, source_info)?;
         }
 
         Ok(())
@@ -1352,13 +1345,71 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum CodeBlock {
+    None,
+    Spaces,
+    Tab
+}
+
 fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source_info: &SourceCodeInfo) -> Result {
     if let Some(comments) = source_info
         .leading_comments()
         .or(source_info.trailing_comments())
     {
-        for line in comments.lines() {
-            genln!(printer, "///{}", line);
+        let mut lines = comments.lines().peekable();
+        let mut code_block = CodeBlock::None;
+        while let Some(line) = lines.next() {
+            fn write_line<W: Write>(printer: &mut printer::Printer<W>, block: CodeBlock, line: &str) -> Result {
+                match block {
+                    CodeBlock::None => {
+                        genln!(printer, "///{}", line);
+                    },
+                    CodeBlock::Spaces => {
+                        genln!(printer, "///{}", &line[4..]);
+                    },
+                    CodeBlock::Tab => {
+                        genln!(printer, "///{}", &line[1..]);
+                    }
+                }
+
+                Ok(())
+            }
+
+            if let Some(peek) = lines.peek() {
+                match code_block {
+                    CodeBlock::None if line.is_empty() && peek.starts_with("    ") => {
+                        code_block = CodeBlock::Spaces;
+                        genln!(printer, "/// ```text");
+                    },
+                    CodeBlock::Spaces if peek.starts_with("    ") => {
+                        write_line(printer, code_block, line)?;
+                    },
+                    CodeBlock::None if line.is_empty() && peek.starts_with('\t') => {
+                        code_block = CodeBlock::Tab;
+                        genln!(printer, "/// ```text");
+                    },
+                    CodeBlock::Tab if peek.starts_with('\t') => {
+                        write_line(printer, code_block, line)?;
+                     },
+                    CodeBlock::Spaces | CodeBlock::Tab => {
+                        write_line(printer, code_block, line)?;
+                        genln!(printer, "/// ```");
+                        code_block = CodeBlock::None;
+                    },
+                    CodeBlock::None => {
+                        write_line(printer, code_block, line)?;
+                    }
+                }
+            } else {
+                if code_block == CodeBlock::Spaces || code_block == CodeBlock::Tab {
+                    write_line(printer, code_block, line)?;
+                    genln!(printer, "/// ```");
+                    code_block = CodeBlock::None;
+                } else {
+                    write_line(printer, code_block, line)?;
+                }
+            }
         }
     }
 

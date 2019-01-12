@@ -7,8 +7,8 @@
 /// # use protrust::wkt::timestamp::Timestamp;
 /// # fn main() {
 /// let mut msg = Timestamp::new();
-/// msg.seconds = 25;
-/// msg.nanos = 56;
+/// *msg.seconds_mut() = 25;
+/// *msg.nanos_mut() = 56;
 /// let packed = Any::pack(&msg).expect("Could not pack");
 ///
 /// assert!(packed.is::<Timestamp>());
