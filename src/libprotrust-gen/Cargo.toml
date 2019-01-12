@@ -1,0 +1,13 @@
+[package]
+name = "protrust-gen"
+version = "0.0.0"
+authors = ["Sydney Acksman <obsidianminor@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "protoc-gen-rust"
+path = "src/main.rs"
+
+[dependencies]
+pulldown-cmark = "0.2.0"
+protrust = { path = "../libprotrust" }
