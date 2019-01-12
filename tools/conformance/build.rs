@@ -14,12 +14,15 @@ fn main() {
         Err(e) => panic!("{}", e)
     }
 
-    Command::new("../../build/protoc/bin/protoc")
-        .arg(format!("--rust_out={}", dest_path.to_str().unwrap()))
-        .arg("--proto_path=../../protos")
-        .arg("conformance.proto")
-        .arg("test_messages_proto2.proto")
-        .arg("test_messages_proto3.proto")
-        .spawn()
-        .expect("failed to run protoc");
+    let status = 
+        Command::new("../../build/protoc/bin/protoc")
+            .arg(format!("--rust_out={}", dest_path.to_str().unwrap()))
+            .arg("--proto_path=../../protos")
+            .arg("conformance.proto")
+            .arg("test_messages_proto2.proto")
+            .arg("test_messages_proto3.proto")
+            .status()
+            .expect("could not run protoc");
+
+    assert!(status.success());
 }

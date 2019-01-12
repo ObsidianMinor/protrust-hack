@@ -86,7 +86,14 @@ script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
 '''
-ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+if [[ $(uname -m) -eq "x86_64" ]]; 
+then
+    OsArch="x86_64"
+else
+    OsArch="x86_32"
+fi
+
+ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-osx-'"$OsArch"'.zip'
 BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
 ProtocPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 
@@ -102,9 +109,9 @@ fi
 
 if [ ! -f "$ProtocPath"'/bin/protoc' ] 
     then
-        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
-        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip' -d $ProtocPath
-        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-x86_32.zip'
+        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-'"$OsArch"'.zip'
+        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-'"$OsArch"'.zip' -d $ProtocPath
+        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-osx-'"$OsArch"'.zip'
 fi
 '''
 ]
@@ -114,7 +121,14 @@ script_runner = "/bin/bash"
 script_extension = "sh"
 script = [
 '''
-ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+if [[ $(uname -m) -eq "x86_64" ]]; 
+then
+    OsArch="x86_64"
+else
+    OsArch="x86_32"
+fi
+
+ProtocUri='https://github.com/protocolbuffers/protobuf/releases/download/v'"$PROTOC_VER"'/protoc-'"$PROTOC_VER"'-linux-'"$OsArch"'.zip'
 BuildPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build'
 ProtocPath="$CARGO_MAKE_WORKING_DIRECTORY"'/build/protoc'
 
@@ -130,9 +144,9 @@ fi
 
 if [ ! -f "$ProtocPath"'/bin/protoc' ] 
     then
-        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
-        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip' -d $ProtocPath
-        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-x86_32.zip'
+        curl -L $ProtocUri -o "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-'"$OsArch"'.zip'
+        unzip "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-'"$OsArch"'.zip' -d $ProtocPath
+        rm "$BuildPath"'/protoc-'"$PROTOC_VER"'-linux-'"$OsArch"'.zip'
 fi
 '''
 ]

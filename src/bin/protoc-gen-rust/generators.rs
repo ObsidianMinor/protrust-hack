@@ -136,31 +136,29 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
         genln!(self.printer; "static mut FILE_PROTO: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;" => self.vars, crate_name);
         genln!(self.printer; "static mut FILE_DESCRIPTOR: ::std::option::Option<&'static {crate_name}::reflect::FileDescriptor> = ::std::option::Option::None;" => self.vars, crate_name);
         genln!(self.printer; "static mut FILE_DEPS: ::std::option::Option<[&'static {crate_name}::reflect::DescriptorPool<'static>; {dep_count}]> = ::std::option::Option::None;" => self.vars, crate_name, dep_count);
+        genln!(self.printer, "static FILE_BINARY: &'static [u8] = &[");
+        indent!(self.printer, {
+            genln!(self.printer);
+            let mut new_proto = self.proto.proto().clone();
+            new_proto.clear_source_code_info();
+            let vec = new_proto.write_to_vec().unwrap();
+            let mut bytes_on_line = 0;
+            for byte in vec {
+                gen!(self.printer, "{}, ", byte);
+                bytes_on_line += 1;
+                if bytes_on_line == 20 {
+                    genln!(self.printer);
+                    bytes_on_line = 0;
+                }
+            }
+        });
+        genln!(self.printer, "];");
         genln!(self.printer);
         genln!(self.printer, "fn file_once_init() {{");
         indent!(self.printer, {
             genln!(self.printer, "unsafe {{");
             indent!(self.printer, {
-                genln!(self.printer; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut [" => self.vars, crate_name);
-                indent!(self.printer, {
-                    genln!(self.printer);
-                    let mut new_proto = self.proto.proto().clone();
-                    new_proto.clear_source_code_info();
-                    let vec = new_proto.write_to_vec().unwrap();
-                    let mut bytes_on_line = 0;
-                    for byte in vec {
-                        gen!(self.printer, "{}, ", byte);
-                        bytes_on_line += 1;
-                        if bytes_on_line == 20 {
-                            genln!(self.printer);
-                            bytes_on_line = 0;
-                        }
-                    }
-                });
-                genln!(
-                    self.printer,
-                    "].as_ref()).expect(\"Could not read file descriptor\")]);"
-                );
+                genln!(self.printer; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect(\"Could not read file descriptor\")]);" => self.vars, crate_name);
                 genln!(self.printer, "FILE_DEPS = ::std::option::Option::Some([");
                 for file in self.proto.dependencies() {
                     gen!(
@@ -173,7 +171,22 @@ impl<W: Write> Generator<'_, FileDescriptor, W> {
                 genln!(self.printer; "FILE_POOL = ::std::option::Option::Some({crate_name}::reflect::DescriptorPool::build_generated_pool(" => self.vars, crate_name);
                 indent!(self.printer, {
                     genln!(self.printer, "FILE_PROTO.as_ref().unwrap(),");
-                    genln!(self.printer, "FILE_DEPS.as_ref().unwrap()");
+                    genln!(self.printer, "FILE_DEPS.as_ref().unwrap(),");
+                    genln!(self.printer; "{crate_name}::reflect::GeneratedCodeInfo {{" => self.vars, crate_name);
+                    indent!(self.printer, {
+                        if self.proto.messages().len() == 0 {
+                            genln!(self.printer, "structs: ::std::option::Option::None,");
+                        } else {
+                            genln!(self.printer, "structs: ::std::option::Option::Some(::std::boxed::Box::new([");
+                            indent!(self.printer, {
+                                for message in self.proto.messages().iter().filter(|m| !m.map_entry()) {
+                                    Generator::<MessageDescriptor, _>::from_other(self, message).generate_struct_info()?;
+                                }
+                            });
+                            genln!(self.printer, "])),");
+                        }
+                    });
+                    genln!(self.printer, "}}");
                 });
                 genln!(self.printer, "));");
                 genln!(self.printer; "FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name(\"{file}\").unwrap());" => self.vars, file);
@@ -233,6 +246,26 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
             }
         }
 
+        Ok(())
+    }
+
+    pub fn generate_struct_info(&mut self) -> Result {
+        genln!(self.printer; "{crate_name}::reflect::GeneratedStructInfo {{" => self.vars, crate_name);
+        indent!(self.printer, {
+            genln!(self.printer; "new: || ::std::boxed::Box::new(<{full_type_name} as {crate_name}::LiteMessage>::new())," => self.vars, full_type_name, crate_name);
+            if self.proto.messages().len() == 0 {
+                genln!(self.printer, "structs: ::std::option::Option::None,");
+            } else {
+                genln!(self.printer, "structs: ::std::option::Option::Some(::std::boxed::Box::new([");
+                indent!(self.printer, {
+                    for message in self.proto.messages().iter().filter(|m| !m.map_entry()) {
+                        Generator::<MessageDescriptor, _>::from_other(self, message).generate_struct_info()?;
+                    }
+                });
+                genln!(self.printer, "])),");
+            }
+        });
+        genln!(self.printer, "}},");
         Ok(())
     }
 

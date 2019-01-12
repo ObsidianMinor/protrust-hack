@@ -8,41 +8,82 @@ static mut FILE_POOL: ::std::option::Option<crate::reflect::DescriptorPool<'stat
 static mut FILE_PROTO: ::std::option::Option<[crate::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
 static mut FILE_DESCRIPTOR: ::std::option::Option<&'static crate::reflect::FileDescriptor> = ::std::option::Option::None;
 static mut FILE_DEPS: ::std::option::Option<[&'static crate::reflect::DescriptorPool<'static>; 0]> = ::std::option::Option::None;
+static FILE_BINARY: &'static [u8] = &[
+    10, 30, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 102, 47, 119, 114, 
+    97, 112, 112, 101, 114, 115, 46, 112, 114, 111, 116, 111, 18, 15, 103, 111, 111, 103, 108, 101, 
+    46, 112, 114, 111, 116, 111, 98, 117, 102, 34, 35, 10, 11, 68, 111, 117, 98, 108, 101, 86, 
+    97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 1, 82, 
+    5, 118, 97, 108, 117, 101, 34, 34, 10, 10, 70, 108, 111, 97, 116, 86, 97, 108, 117, 101, 
+    18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 2, 82, 5, 118, 97, 108, 
+    117, 101, 34, 34, 10, 10, 73, 110, 116, 54, 52, 86, 97, 108, 117, 101, 18, 20, 10, 5, 
+    118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 3, 82, 5, 118, 97, 108, 117, 101, 34, 35, 
+    10, 11, 85, 73, 110, 116, 54, 52, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 
+    117, 101, 24, 1, 32, 1, 40, 4, 82, 5, 118, 97, 108, 117, 101, 34, 34, 10, 10, 73, 
+    110, 116, 51, 50, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 
+    32, 1, 40, 5, 82, 5, 118, 97, 108, 117, 101, 34, 35, 10, 11, 85, 73, 110, 116, 51, 
+    50, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 
+    13, 82, 5, 118, 97, 108, 117, 101, 34, 33, 10, 9, 66, 111, 111, 108, 86, 97, 108, 117, 
+    101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 8, 82, 5, 118, 97, 
+    108, 117, 101, 34, 35, 10, 11, 83, 116, 114, 105, 110, 103, 86, 97, 108, 117, 101, 18, 20, 
+    10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 9, 82, 5, 118, 97, 108, 117, 101, 
+    34, 34, 10, 10, 66, 121, 116, 101, 115, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 
+    108, 117, 101, 24, 1, 32, 1, 40, 12, 82, 5, 118, 97, 108, 117, 101, 66, 124, 10, 19, 
+    99, 111, 109, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 66, 
+    13, 87, 114, 97, 112, 112, 101, 114, 115, 80, 114, 111, 116, 111, 80, 1, 90, 42, 103, 105, 
+    116, 104, 117, 98, 46, 99, 111, 109, 47, 103, 111, 108, 97, 110, 103, 47, 112, 114, 111, 116, 
+    111, 98, 117, 102, 47, 112, 116, 121, 112, 101, 115, 47, 119, 114, 97, 112, 112, 101, 114, 115, 
+    248, 1, 1, 162, 2, 3, 71, 80, 66, 170, 2, 30, 71, 111, 111, 103, 108, 101, 46, 80, 
+    114, 111, 116, 111, 98, 117, 102, 46, 87, 101, 108, 108, 75, 110, 111, 119, 110, 84, 121, 112, 
+    101, 115, 98, 6, 112, 114, 111, 116, 111, 51, 
+];
 
 fn file_once_init() {
     unsafe {
-        FILE_PROTO = ::std::option::Option::Some([crate::LiteMessage::read_new(&mut [
-            10, 30, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 102, 47, 119, 114, 
-            97, 112, 112, 101, 114, 115, 46, 112, 114, 111, 116, 111, 18, 15, 103, 111, 111, 103, 108, 101, 
-            46, 112, 114, 111, 116, 111, 98, 117, 102, 34, 35, 10, 11, 68, 111, 117, 98, 108, 101, 86, 
-            97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 1, 82, 
-            5, 118, 97, 108, 117, 101, 34, 34, 10, 10, 70, 108, 111, 97, 116, 86, 97, 108, 117, 101, 
-            18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 2, 82, 5, 118, 97, 108, 
-            117, 101, 34, 34, 10, 10, 73, 110, 116, 54, 52, 86, 97, 108, 117, 101, 18, 20, 10, 5, 
-            118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 3, 82, 5, 118, 97, 108, 117, 101, 34, 35, 
-            10, 11, 85, 73, 110, 116, 54, 52, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 
-            117, 101, 24, 1, 32, 1, 40, 4, 82, 5, 118, 97, 108, 117, 101, 34, 34, 10, 10, 73, 
-            110, 116, 51, 50, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 
-            32, 1, 40, 5, 82, 5, 118, 97, 108, 117, 101, 34, 35, 10, 11, 85, 73, 110, 116, 51, 
-            50, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 
-            13, 82, 5, 118, 97, 108, 117, 101, 34, 33, 10, 9, 66, 111, 111, 108, 86, 97, 108, 117, 
-            101, 18, 20, 10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 8, 82, 5, 118, 97, 
-            108, 117, 101, 34, 35, 10, 11, 83, 116, 114, 105, 110, 103, 86, 97, 108, 117, 101, 18, 20, 
-            10, 5, 118, 97, 108, 117, 101, 24, 1, 32, 1, 40, 9, 82, 5, 118, 97, 108, 117, 101, 
-            34, 34, 10, 10, 66, 121, 116, 101, 115, 86, 97, 108, 117, 101, 18, 20, 10, 5, 118, 97, 
-            108, 117, 101, 24, 1, 32, 1, 40, 12, 82, 5, 118, 97, 108, 117, 101, 66, 124, 10, 19, 
-            99, 111, 109, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 66, 
-            13, 87, 114, 97, 112, 112, 101, 114, 115, 80, 114, 111, 116, 111, 80, 1, 90, 42, 103, 105, 
-            116, 104, 117, 98, 46, 99, 111, 109, 47, 103, 111, 108, 97, 110, 103, 47, 112, 114, 111, 116, 
-            111, 98, 117, 102, 47, 112, 116, 121, 112, 101, 115, 47, 119, 114, 97, 112, 112, 101, 114, 115, 
-            248, 1, 1, 162, 2, 3, 71, 80, 66, 170, 2, 30, 71, 111, 111, 103, 108, 101, 46, 80, 
-            114, 111, 116, 111, 98, 117, 102, 46, 87, 101, 108, 108, 75, 110, 111, 119, 110, 84, 121, 112, 
-            101, 115, 98, 6, 112, 114, 111, 116, 111, 51, 
-        ].as_ref()).expect("Could not read file descriptor")]);
+        FILE_PROTO = ::std::option::Option::Some([crate::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect("Could not read file descriptor")]);
         FILE_DEPS = ::std::option::Option::Some([]);
         FILE_POOL = ::std::option::Option::Some(crate::reflect::DescriptorPool::build_generated_pool(
             FILE_PROTO.as_ref().unwrap(),
-            FILE_DEPS.as_ref().unwrap()
+            FILE_DEPS.as_ref().unwrap(),
+            crate::reflect::GeneratedCodeInfo {
+                structs: ::std::option::Option::Some(::std::boxed::Box::new([
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::DoubleValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::FloatValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::Int64Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::UInt64Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::Int32Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::UInt32Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::BoolValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::StringValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::BytesValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                ])),
+            }
         ));
         FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name("google/protobuf/wrappers.proto").unwrap());
     }

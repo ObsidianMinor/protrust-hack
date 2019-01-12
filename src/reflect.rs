@@ -1,6 +1,22 @@
 pub use crate::descriptor::FieldDescriptorProto_Label as FieldLabel;
 
-use crate::descriptor::*;
+use crate::descriptor::{
+    DescriptorProto, 
+    EnumDescriptorProto, 
+    EnumOptions, 
+    EnumValueDescriptorProto, 
+    EnumValueOptions, 
+    FieldDescriptorProto, 
+    FieldOptions, 
+    FileDescriptorProto, 
+    FileOptions, 
+    MessageOptions, 
+    MethodDescriptorProto, 
+    MethodOptions, 
+    OneofDescriptorProto, 
+    ServiceDescriptorProto, 
+    ServiceOptions
+};
 use crate::io::WireType;
 use std::collections::HashMap;
 use std::fmt::{self, Debug, Formatter};
@@ -66,6 +82,7 @@ pub struct DescriptorPool<'a> {
 }
 
 static EMPTY_POOLS: &'static [&'static DescriptorPool<'static>] = &[];
+static EMPTY_FILES: &'static [FileDescriptorProto] = &[];
 
 impl DescriptorPool<'_> {
     /// Builds a descriptor pool from the slice of file descriptors
@@ -75,31 +92,37 @@ impl DescriptorPool<'_> {
             protos: files,
             symbols: HashMap::new(),
         };
-        pool.build();
+        pool.build(None);
         pool
     }
 
     pub fn build_generated_pool(
         file: &'static [FileDescriptorProto; 1],
         pools: &'static [&'static DescriptorPool],
+        info: GeneratedCodeInfo
     ) -> DescriptorPool<'static> {
         let mut pool = DescriptorPool {
             pools,
             protos: file,
             symbols: HashMap::new(),
         };
-        pool.build();
+        pool.build(Some(info));
         pool
     }
 
-    fn build(&mut self) {
+    fn build(&mut self, code_info: Option<GeneratedCodeInfo>) {
         // insert the symbol for each file
-        for file in self.protos.iter() {
-            let file = FileDescriptor::new(file as *const FileDescriptorProto, self);
+        if code_info.is_some() && self.protos.len() == 1 {
+            let file = FileDescriptor::new(&self.protos[0] as *const FileDescriptorProto, self);
             unsafe {
-                let file = &mut (*file);
-                file.cross_ref(self);
-                file.parse_source_code_info();
+                (*file).cross_ref(self, code_info);
+            }
+        } else {
+            for file in self.protos.iter() {
+                let file = FileDescriptor::new(file as *const FileDescriptorProto, self);
+                unsafe {
+                    (*file).cross_ref(self, None);
+                }
             }
         }
     }
@@ -195,6 +218,16 @@ impl DescriptorPool<'_> {
     }
 }
 
+impl<'a> DescriptorPool<'a> {
+    pub fn build_from_pools(pools: &'a [&'a DescriptorPool<'a>]) -> DescriptorPool<'a> {
+        DescriptorPool {
+            pools,
+            protos: EMPTY_FILES,
+            symbols: HashMap::new(),
+        }
+    }
+}
+
 impl Drop for DescriptorPool<'_> {
     fn drop(&mut self) {
         for (_, value) in self.symbols.drain() {
@@ -244,13 +277,13 @@ impl SourceCodeInfo {
     }
 }
 
-pub struct GeneratedCodeInfo<'a> {
-    pub structs: &'a [GeneratedStructInfo<'a>]
+pub struct GeneratedCodeInfo {
+    pub structs: Option<Box<[GeneratedStructInfo]>>
 }
 
-pub struct GeneratedStructInfo<'a> {
-    pub new: fn() -> Box<crate::CodedMessage + 'static>,
-    pub structs: &'a [GeneratedStructInfo<'a>]
+pub struct GeneratedStructInfo {
+    pub new: fn() -> Box<(dyn crate::CodedMessage + 'static)>,
+    pub structs: Option<Box<[GeneratedStructInfo]>>
 }
 
 /// Specifies the syntax of a proto file
@@ -454,18 +487,28 @@ impl FileDescriptor {
         descriptor_raw
     }
 
-    fn cross_ref(&mut self, pool: &mut DescriptorPool) {
-        for mut message in self.messages.iter_mut() {
-            unsafe { Ref::get_mut(&mut message).cross_ref(pool) }
+    unsafe fn cross_ref(&mut self, pool: &mut DescriptorPool, code_info: Option<GeneratedCodeInfo>) {
+        if let Some(code_info) = code_info {
+            if let Some(structs) = code_info.structs {
+                for (message, message_info) in self.messages.iter_mut().zip(structs.iter()) {
+                    Ref::get_mut(message).cross_ref(pool, Some(message_info));
+                }
+            }
+        } else {
+            for message in self.messages.iter_mut() {
+                Ref::get_mut(message).cross_ref(pool, None);
+            }
         }
 
         for mut service in self.services.iter_mut() {
-            unsafe { Ref::get_mut(&mut service).cross_ref(pool) }
+            Ref::get_mut(&mut service).cross_ref(pool);
         }
 
         for mut extension in self.extensions.iter_mut() {
-            unsafe { Ref::get_mut(&mut extension).cross_ref(pool) }
+            Ref::get_mut(&mut extension).cross_ref(pool);
         }
+
+        self.parse_source_code_info();
     }
 
     unsafe fn parse_source_code_info(&mut self) {
@@ -784,28 +827,39 @@ impl MessageDescriptor {
         Ref::new(descriptor_raw)
     }
 
-    fn cross_ref(&mut self, pool: &mut DescriptorPool) {
-        for mut message in self.messages.iter_mut() {
-            unsafe {
-                Ref::get_mut(&mut message).cross_ref(pool);
+    fn cross_ref(&mut self, pool: &mut DescriptorPool, struct_info: Option<&GeneratedStructInfo>) {
+        if let Some(struct_info) = struct_info {
+            self.new = Some(struct_info.new);
+            if let Some(structs) = &struct_info.structs {
+                for (message, message_info) in self.messages.iter_mut().zip(structs.iter()) {
+                    unsafe {
+                        Ref::get_mut(message).cross_ref(pool, Some(message_info));
+                    }
+                }
+            }
+        } else {
+            for message in self.messages.iter_mut() {
+                unsafe {
+                    Ref::get_mut(message).cross_ref(pool, None);
+                }
             }
         }
 
-        for mut field in self.fields.iter_mut() {
+        for field in self.fields.iter_mut() {
             unsafe {
-                Ref::get_mut(&mut field).cross_ref(pool);
+                Ref::get_mut(field).cross_ref(pool);
             }
         }
 
-        for mut oneof in self.oneofs.iter_mut() {
+        for oneof in self.oneofs.iter_mut() {
             unsafe {
-                Ref::get_mut(&mut oneof).cross_ref();
+                Ref::get_mut(oneof).cross_ref();
             }
         }
 
-        for mut extension in self.extensions.iter_mut() {
+        for extension in self.extensions.iter_mut() {
             unsafe {
-                Ref::get_mut(&mut extension).cross_ref(pool);
+                Ref::get_mut(extension).cross_ref(pool);
             }
         }
     }
@@ -1212,9 +1266,9 @@ impl ServiceDescriptor {
     }
 
     fn cross_ref(&mut self, pool: &mut DescriptorPool) {
-        for mut method in self.methods.iter_mut() {
+        for method in self.methods.iter_mut() {
             unsafe {
-                Ref::get_mut(&mut method).cross_ref(pool);
+                Ref::get_mut(method).cross_ref(pool);
             }
         }
     }
