@@ -2,7 +2,7 @@
 "PROTOC_VER" = "3.6.1"
 
 [tasks.build]
-args = ["build"]
+args = ["build", "--features=plugin"]
 
 [tasks.test]
 args = ["test"]

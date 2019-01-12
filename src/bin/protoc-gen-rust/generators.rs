@@ -5,6 +5,7 @@ use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::WireType;
 use protrust::prelude::*;
 use protrust::reflect::*;
+use pulldown_cmark::{Parser, Event, Tag};
 use std::collections::HashMap;
 use std::fmt::Write;
 
@@ -17,19 +18,22 @@ macro_rules! var {
 }
 
 macro_rules! gen {
-    ($target:expr; $fmt:expr => $vars:expr, $($arg:ident),*)
-        => (write!($target, $fmt, $($arg = var!($vars, $arg)),*)?);
+    ($target:expr; $fmt:expr => $vars:expr, $($arg:ident),*) => (write!($target, $fmt, $($arg = var!($vars, $arg)),*)?);
     ($dst:expr, $($arg:tt)*) => (write!($dst, $($arg)*)?);
 }
 
 macro_rules! genln {
     ($target:expr; $fmt:expr => $vars:expr, $($arg:ident),*) => {
-        writeln!($target)?;
-        write!($target, $fmt, $($arg = var!($vars, $arg)),*)?;
+        {
+            writeln!($target)?; 
+            write!($target, $fmt, $($arg = var!($vars, $arg)),*)?;
+        }
     };
     ($dst:expr, $($arg:tt)*) => {
-        writeln!($dst)?;
-        write!($dst, $($arg)*)?;
+        {
+            writeln!($dst)?; 
+            write!($dst, $($arg)*)?;
+        }
     };
     ($dst:expr) => (writeln!($dst)?)
 }
@@ -1345,70 +1349,27 @@ impl<W: Write> Generator<'_, OneofDescriptor, W> {
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum CodeBlock {
-    None,
-    Spaces,
-    Tab
-}
-
 fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source_info: &SourceCodeInfo) -> Result {
     if let Some(comments) = source_info
         .leading_comments()
         .or(source_info.trailing_comments())
     {
-        let mut lines = comments.lines().peekable();
-        let mut code_block = CodeBlock::None;
-        while let Some(line) = lines.next() {
-            fn write_line<W: Write>(printer: &mut printer::Printer<W>, block: CodeBlock, line: &str) -> Result {
-                match block {
-                    CodeBlock::None => {
-                        genln!(printer, "///{}", line);
-                    },
-                    CodeBlock::Spaces => {
-                        genln!(printer, "///{}", &line[4..]);
-                    },
-                    CodeBlock::Tab => {
-                        genln!(printer, "///{}", &line[1..]);
-                    }
-                }
-
-                Ok(())
-            }
-
-            if let Some(peek) = lines.peek() {
-                match code_block {
-                    CodeBlock::None if line.is_empty() && peek.starts_with("    ") => {
-                        code_block = CodeBlock::Spaces;
-                        genln!(printer, "/// ```text");
-                    },
-                    CodeBlock::Spaces if peek.starts_with("    ") => {
-                        write_line(printer, code_block, line)?;
-                    },
-                    CodeBlock::None if line.is_empty() && peek.starts_with('\t') => {
-                        code_block = CodeBlock::Tab;
-                        genln!(printer, "/// ```text");
-                    },
-                    CodeBlock::Tab if peek.starts_with('\t') => {
-                        write_line(printer, code_block, line)?;
-                     },
-                    CodeBlock::Spaces | CodeBlock::Tab => {
-                        write_line(printer, code_block, line)?;
-                        genln!(printer, "/// ```");
-                        code_block = CodeBlock::None;
-                    },
-                    CodeBlock::None => {
-                        write_line(printer, code_block, line)?;
-                    }
-                }
-            } else {
-                if code_block == CodeBlock::Spaces || code_block == CodeBlock::Tab {
-                    write_line(printer, code_block, line)?;
-                    genln!(printer, "/// ```");
-                    code_block = CodeBlock::None;
-                } else {
-                    write_line(printer, code_block, line)?;
-                }
+        for event in Parser::new(comments) {
+            match event {
+                Event::Start(Tag::Paragraph) => gen!(printer, "/// "),
+                Event::End(Tag::Paragraph) => gen!(printer, "\n///\n"),
+                Event::Start(Tag::Code) | Event::End(Tag::Code) => gen!(printer, "`"),
+                Event::Text(std::borrow::Cow::Borrowed("\n")) => gen!(printer, "\n///"),
+                Event::Text(val) |
+                Event::FootnoteReference(val) |
+                Event::Html(val) |
+                Event::InlineHtml(val) => gen!(printer, "{}", val),
+                Event::SoftBreak | Event::HardBreak => genln!(printer, "/// "),
+                Event::Start(Tag::CodeBlock(std::borrow::Cow::Borrowed(""))) => gen!(printer, "```text"),
+                Event::Start(Tag::CodeBlock(code)) => gen!(printer, "```{}", code),
+                Event::End(Tag::CodeBlock(_)) => gen!(printer, "```\n"),
+                Event::Start(Tag::Header(i)) => gen!(printer, " {}", "#".repeat(i as usize)),
+                _ => panic!("Unknown event / tag")
             }
         }
     }
