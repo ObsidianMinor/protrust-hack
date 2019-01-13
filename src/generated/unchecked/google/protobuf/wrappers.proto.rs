@@ -106,7 +106,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// Wrapper message for `double`.
 /// 
 /// The JSON representation for `DoubleValue` is JSON number.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct DoubleValue {
     value: f64,
@@ -168,8 +167,7 @@ impl self::DoubleValue {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: f64 = 0.0;
-        /// The double value.
-        /// 
+    /// The double value.
     pub fn value(&self) -> f64 {
         self.value
     }
@@ -183,7 +181,6 @@ impl self::DoubleValue {
 /// Wrapper message for `float`.
 /// 
 /// The JSON representation for `FloatValue` is JSON number.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FloatValue {
     value: f32,
@@ -245,8 +242,7 @@ impl self::FloatValue {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: f32 = 0.0;
-        /// The float value.
-        /// 
+    /// The float value.
     pub fn value(&self) -> f32 {
         self.value
     }
@@ -260,7 +256,6 @@ impl self::FloatValue {
 /// Wrapper message for `int64`.
 /// 
 /// The JSON representation for `Int64Value` is JSON string.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int64Value {
     value: i64,
@@ -322,8 +317,7 @@ impl self::Int64Value {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: i64 = 0;
-        /// The int64 value.
-        /// 
+    /// The int64 value.
     pub fn value(&self) -> i64 {
         self.value
     }
@@ -337,7 +331,6 @@ impl self::Int64Value {
 /// Wrapper message for `uint64`.
 /// 
 /// The JSON representation for `UInt64Value` is JSON string.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt64Value {
     value: u64,
@@ -399,8 +392,7 @@ impl self::UInt64Value {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: u64 = 0;
-        /// The uint64 value.
-        /// 
+    /// The uint64 value.
     pub fn value(&self) -> u64 {
         self.value
     }
@@ -414,7 +406,6 @@ impl self::UInt64Value {
 /// Wrapper message for `int32`.
 /// 
 /// The JSON representation for `Int32Value` is JSON number.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int32Value {
     value: i32,
@@ -476,8 +467,7 @@ impl self::Int32Value {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: i32 = 0;
-        /// The int32 value.
-        /// 
+    /// The int32 value.
     pub fn value(&self) -> i32 {
         self.value
     }
@@ -491,7 +481,6 @@ impl self::Int32Value {
 /// Wrapper message for `uint32`.
 /// 
 /// The JSON representation for `UInt32Value` is JSON number.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt32Value {
     value: u32,
@@ -553,8 +542,7 @@ impl self::UInt32Value {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: u32 = 0;
-        /// The uint32 value.
-        /// 
+    /// The uint32 value.
     pub fn value(&self) -> u32 {
         self.value
     }
@@ -568,7 +556,6 @@ impl self::UInt32Value {
 /// Wrapper message for `bool`.
 /// 
 /// The JSON representation for `BoolValue` is JSON `true` and `false`.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct BoolValue {
     value: bool,
@@ -630,8 +617,7 @@ impl self::BoolValue {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: bool = false;
-        /// The bool value.
-        /// 
+    /// The bool value.
     pub fn value(&self) -> bool {
         self.value
     }
@@ -645,7 +631,6 @@ impl self::BoolValue {
 /// Wrapper message for `string`.
 /// 
 /// The JSON representation for `StringValue` is JSON string.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct StringValue {
     value: ::std::string::String,
@@ -707,8 +692,7 @@ impl self::StringValue {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: &'static str = "";
-        /// The string value.
-        /// 
+    /// The string value.
     pub fn value(&self) -> &::std::string::String {
         &self.value
     }
@@ -722,7 +706,6 @@ impl self::StringValue {
 /// Wrapper message for `bytes`.
 /// 
 /// The JSON representation for `BytesValue` is JSON string.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytesValue {
     value: ::std::vec::Vec<u8>,
@@ -784,8 +767,7 @@ impl self::BytesValue {
     ///
     /// [`value`]: #method.value
     pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-        /// The bytes value.
-        /// 
+    /// The bytes value.
     pub fn value(&self) -> &::std::vec::Vec<u8> {
         &self.value
     }

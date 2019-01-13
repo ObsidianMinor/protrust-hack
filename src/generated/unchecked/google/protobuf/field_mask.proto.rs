@@ -70,7 +70,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// Field masks are used to specify a subset of fields that should be
 /// returned by a get operation or modified by an update operation.
 /// Field masks also have a custom JSON encoding (see below).
-/// #Field Masks in Projections
+/// # Field Masks in Projections
 /// 
 /// When used in the context of a projection, a response message or
 /// sub-message is filtered by the API to only contain those fields as
@@ -116,7 +116,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// clearly documented together with its declaration in the API.  In
 /// any case, the effect on the returned resource/resources is required
 /// behavior for APIs.
-/// #Field Masks in Update Operations
+/// # Field Masks in Update Operations
 /// 
 /// A field mask in update operations specifies which fields of the
 /// targeted resource are going to be updated. The API is required
@@ -199,12 +199,12 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// describes the updated values in the request message depends on the
 /// operation kind. In any case, the effect of the field mask is
 /// required to be honored by the API.
-/// ##Considerations for HTTP REST
+/// ## Considerations for HTTP REST
 /// 
 /// The HTTP kind of an update operation which uses a field mask must
 /// be set to PATCH instead of PUT in order to satisfy HTTP semantics
 /// (PUT must only be used for full updates).
-/// #JSON Encoding of Field Masks
+/// # JSON Encoding of Field Masks
 /// 
 /// In JSON, a field mask is encoded as a single string where paths are
 /// separated by a comma. Fields name in each path are converted
@@ -236,7 +236,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///    mask: "user.displayName,photo"
 ///  }
 /// ```
-/// #Field Masks and Oneof Fields
+/// # Field Masks and Oneof Fields
 /// 
 /// Field masks treat fields in oneofs just as regular fields. Consider the
 /// following message:
@@ -265,12 +265,11 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// 
 /// Note that oneof type names ("test_oneof" in this case) cannot be used in
 /// paths.
-/// ##Field Mask Verification
+/// ## Field Mask Verification
 /// 
 /// The implementation of any API method which has a FieldMask type field in the
 /// request should verify the included field paths, and return an
 /// `INVALID_ARGUMENT` error if any path is duplicated or unmappable.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldMask {
     paths: crate::collections::RepeatedField<::std::string::String>,
@@ -321,8 +320,7 @@ impl self::FieldMask {
     ///
     /// [`paths`]: #method.paths
     pub const PATHS_FIELD_NUMBER: i32 = 1;
-        /// The set of field mask paths.
-        /// 
+    /// The set of field mask paths.
     pub fn paths(&self) -> &crate::collections::RepeatedField<::std::string::String> {
         &self.paths
     }

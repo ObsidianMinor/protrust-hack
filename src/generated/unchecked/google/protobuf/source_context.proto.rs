@@ -61,7 +61,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 }
 /// `SourceContext` represents information about the source of a
 /// protobuf element, like the file in which it is defined.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct SourceContext {
     file_name: ::std::string::String,
@@ -123,9 +122,8 @@ impl self::SourceContext {
     ///
     /// [`file_name`]: #method.file_name
     pub const FILE_NAME_DEFAULT_VALUE: &'static str = "";
-        /// The path-qualified name of the .proto file that contained the associated
-        /// protobuf element.  For example: `"google/protobuf/source_context.proto"`.
-        /// 
+    /// The path-qualified name of the .proto file that contained the associated
+    /// protobuf element.  For example: `"google/protobuf/source_context.proto"`.
     pub fn file_name(&self) -> &::std::string::String {
         &self.file_name
     }

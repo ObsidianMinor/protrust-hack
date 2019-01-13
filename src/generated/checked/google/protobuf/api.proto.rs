@@ -108,7 +108,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// sometimes simply referred to as "APIs" in other contexts, such as the name of
 /// this message itself. See https://cloud.google.com/apis/design/glossary for
 /// detailed terminology.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Api {
     name: ::std::string::String,
@@ -235,9 +234,8 @@ impl self::Api {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The fully qualified name of this interface, including package name
-        /// followed by the interface's simple name.
-        /// 
+    /// The fully qualified name of this interface, including package name
+    /// followed by the interface's simple name.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -251,8 +249,7 @@ impl self::Api {
     ///
     /// [`methods`]: #method.methods
     pub const METHODS_FIELD_NUMBER: i32 = 2;
-        /// The methods of this interface, in unspecified order.
-        /// 
+    /// The methods of this interface, in unspecified order.
     pub fn methods(&self) -> &crate::collections::RepeatedField<self::Method> {
         &self.methods
     }
@@ -266,8 +263,7 @@ impl self::Api {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        /// Any metadata attached to the interface.
-        /// 
+    /// Any metadata attached to the interface.
     pub fn options(&self) -> &crate::collections::RepeatedField<crate::wkt::r#type::Option> {
         &self.options
     }
@@ -285,26 +281,25 @@ impl self::Api {
     ///
     /// [`version`]: #method.version
     pub const VERSION_DEFAULT_VALUE: &'static str = "";
-        /// A version string for this interface. If specified, must have the form
-        /// `major-version.minor-version`, as in `1.10`. If the minor version is
-        /// omitted, it defaults to zero. If the entire version field is empty, the
-        /// major version is derived from the package name, as outlined below. If the
-        /// field is not empty, the version in the package name will be verified to be
-        /// consistent with what is provided here.
-        /// 
-        /// The versioning schema uses (semantic
-        /// versioning)[http://semver.org] where the major version number
-        /// indicates a breaking change and the minor version an additive,
-        /// non-breaking change. Both version numbers are signals to users
-        /// what to expect from different versions, and should be carefully
-        /// chosen based on the product plan.
-        /// 
-        /// The major version is also reflected in the package name of the
-        /// interface, which must end in `v<major-version>`, as in
-        /// `google.feature.v1`. For major versions 0 and 1, the suffix can
-        /// be omitted. Zero major versions must only be used for
-        /// experimental, non-GA interfaces.
-        /// 
+    /// A version string for this interface. If specified, must have the form
+    /// `major-version.minor-version`, as in `1.10`. If the minor version is
+    /// omitted, it defaults to zero. If the entire version field is empty, the
+    /// major version is derived from the package name, as outlined below. If the
+    /// field is not empty, the version in the package name will be verified to be
+    /// consistent with what is provided here.
+    /// 
+    /// The versioning schema uses [semantic
+    /// versioning](http://semver.org) where the major version number
+    /// indicates a breaking change and the minor version an additive,
+    /// non-breaking change. Both version numbers are signals to users
+    /// what to expect from different versions, and should be carefully
+    /// chosen based on the product plan.
+    /// 
+    /// The major version is also reflected in the package name of the
+    /// interface, which must end in `v<major-version>`, as in
+    /// `google.feature.v1`. For major versions 0 and 1, the suffix can
+    /// be omitted. Zero major versions must only be used for
+    /// experimental, non-GA interfaces.
     pub fn version(&self) -> &::std::string::String {
         &self.version
     }
@@ -318,9 +313,8 @@ impl self::Api {
     ///
     /// [`source_context`]: #method.source_context
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-        /// Source context for the protocol buffer service represented by this
-        /// message.
-        /// 
+    /// Source context for the protocol buffer service represented by this
+    /// message.
     pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &self.source_context
     }
@@ -334,8 +328,7 @@ impl self::Api {
     ///
     /// [`mixins`]: #method.mixins
     pub const MIXINS_FIELD_NUMBER: i32 = 6;
-        /// Included interfaces. See [Mixin][].
-        /// 
+    /// Included interfaces. See [Mixin][].
     pub fn mixins(&self) -> &crate::collections::RepeatedField<self::Mixin> {
         &self.mixins
     }
@@ -353,8 +346,7 @@ impl self::Api {
     ///
     /// [`syntax`]: #method.syntax
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<crate::wkt::r#type::Syntax> = crate::EnumValue::Defined(crate::wkt::r#type::Syntax::Proto2);
-        /// The source syntax of the service.
-        /// 
+    /// The source syntax of the service.
     pub fn syntax(&self) -> crate::EnumValue<crate::wkt::r#type::Syntax> {
         self.syntax
     }
@@ -366,7 +358,6 @@ impl self::Api {
     }
 }
 /// Method represents a method of an API interface.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Method {
     name: ::std::string::String,
@@ -505,8 +496,7 @@ impl self::Method {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The simple name of this method.
-        /// 
+    /// The simple name of this method.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -524,8 +514,7 @@ impl self::Method {
     ///
     /// [`request_type_url`]: #method.request_type_url
     pub const REQUEST_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        /// A URL of the input message type.
-        /// 
+    /// A URL of the input message type.
     pub fn request_type_url(&self) -> &::std::string::String {
         &self.request_type_url
     }
@@ -543,8 +532,7 @@ impl self::Method {
     ///
     /// [`request_streaming`]: #method.request_streaming
     pub const REQUEST_STREAMING_DEFAULT_VALUE: bool = false;
-        /// If true, the request is streamed.
-        /// 
+    /// If true, the request is streamed.
     pub fn request_streaming(&self) -> bool {
         self.request_streaming
     }
@@ -562,8 +550,7 @@ impl self::Method {
     ///
     /// [`response_type_url`]: #method.response_type_url
     pub const RESPONSE_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        /// The URL of the output message type.
-        /// 
+    /// The URL of the output message type.
     pub fn response_type_url(&self) -> &::std::string::String {
         &self.response_type_url
     }
@@ -581,8 +568,7 @@ impl self::Method {
     ///
     /// [`response_streaming`]: #method.response_streaming
     pub const RESPONSE_STREAMING_DEFAULT_VALUE: bool = false;
-        /// If true, the response is streamed.
-        /// 
+    /// If true, the response is streamed.
     pub fn response_streaming(&self) -> bool {
         self.response_streaming
     }
@@ -596,8 +582,7 @@ impl self::Method {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 6;
-        /// Any metadata attached to the method.
-        /// 
+    /// Any metadata attached to the method.
     pub fn options(&self) -> &crate::collections::RepeatedField<crate::wkt::r#type::Option> {
         &self.options
     }
@@ -615,8 +600,7 @@ impl self::Method {
     ///
     /// [`syntax`]: #method.syntax
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<crate::wkt::r#type::Syntax> = crate::EnumValue::Defined(crate::wkt::r#type::Syntax::Proto2);
-        /// The source syntax of this method.
-        /// 
+    /// The source syntax of this method.
     pub fn syntax(&self) -> crate::EnumValue<crate::wkt::r#type::Syntax> {
         self.syntax
     }
@@ -648,7 +632,6 @@ impl self::Method {
 ///   specified.
 ///   
 ///   
-/// 
 /// Example of a simple mixin:
 /// ```text
 ///  package google.acl.v1;
@@ -791,8 +774,7 @@ impl self::Mixin {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The fully qualified name of the interface which is included.
-        /// 
+    /// The fully qualified name of the interface which is included.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -810,9 +792,8 @@ impl self::Mixin {
     ///
     /// [`root`]: #method.root
     pub const ROOT_DEFAULT_VALUE: &'static str = "";
-        /// If non-empty specifies a path under which inherited HTTP paths
-        /// are rooted.
-        /// 
+    /// If non-empty specifies a path under which inherited HTTP paths
+    /// are rooted.
     pub fn root(&self) -> &::std::string::String {
         &self.root
     }

@@ -68,8 +68,8 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z.
 /// By restricting to that range, we ensure that we can convert to
 /// and from  RFC 3339 date strings.
-/// See (https://www.ietf.org/rfc/rfc3339.txt)[https://www.ietf.org/rfc/rfc3339.txt].
-/// #Examples
+/// See [https://www.ietf.org/rfc/rfc3339.txt](https://www.ietf.org/rfc/rfc3339.txt).
+/// # Examples
 /// 
 /// Example 1: Compute Timestamp from POSIX `time()`.
 /// ```text
@@ -114,10 +114,10 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 ///  timestamp = Timestamp()
 ///  timestamp.GetCurrentTime()
 /// ```
-/// #JSON Mapping
+/// # JSON Mapping
 /// 
 /// In JSON format, the Timestamp type is encoded as a string in the
-/// (RFC 3339)[https://www.ietf.org/rfc/rfc3339.txt] format. That is, the
+/// [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
 /// format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
 /// where {year} is always expressed using four digits while {month}, {day},
 /// {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
@@ -133,10 +133,9 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// In JavaScript, one can convert a Date object to this format using the
 /// standard [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString]
 /// method. In Python, a standard `datetime.datetime` object can be converted
-/// to this format using (`strftime`)[https://docs.python.org/2/library/time.html#time.strftime]
+/// to this format using [`strftime`](https://docs.python.org/2/library/time.html#time.strftime)
 /// with the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one
-/// can use the Joda Time's (`ISODateTimeFormat.dateTime()`)[http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime--] to obtain a formatter capable of generating timestamps in this format.
-/// 
+/// can use the Joda Time's [`ISODateTimeFormat.dateTime()`](http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime--) to obtain a formatter capable of generating timestamps in this format.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Timestamp {
     seconds: i64,
@@ -212,10 +211,9 @@ impl self::Timestamp {
     ///
     /// [`seconds`]: #method.seconds
     pub const SECONDS_DEFAULT_VALUE: i64 = 0;
-        /// Represents seconds of UTC time since Unix epoch
-        /// 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
-        /// 9999-12-31T23:59:59Z inclusive.
-        /// 
+    /// Represents seconds of UTC time since Unix epoch
+    /// 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+    /// 9999-12-31T23:59:59Z inclusive.
     pub fn seconds(&self) -> i64 {
         self.seconds
     }
@@ -233,11 +231,10 @@ impl self::Timestamp {
     ///
     /// [`nanos`]: #method.nanos
     pub const NANOS_DEFAULT_VALUE: i32 = 0;
-        /// Non-negative fractions of a second at nanosecond resolution. Negative
-        /// second values with fractions must still have non-negative nanos values
-        /// that count forward in time. Must be from 0 to 999,999,999
-        /// inclusive.
-        /// 
+    /// Non-negative fractions of a second at nanosecond resolution. Negative
+    /// second values with fractions must still have non-negative nanos values
+    /// that count forward in time. Must be from 0 to 999,999,999
+    /// inclusive.
     pub fn nanos(&self) -> i32 {
         self.nanos
     }

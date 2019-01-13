@@ -65,7 +65,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// ```
 /// 
 /// The JSON representation for `Empty` is empty JSON object `{}`.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Empty {
     unknown_fields: crate::UnknownFieldSet

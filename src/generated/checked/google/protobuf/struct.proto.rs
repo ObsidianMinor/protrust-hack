@@ -99,7 +99,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// with the proto support for the language.
 /// 
 /// The JSON representation for `Struct` is JSON object.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Struct {
     fields: crate::collections::MapField<::std::string::String, self::Value>,
@@ -150,8 +149,7 @@ impl self::Struct {
     ///
     /// [`fields`]: #method.fields
     pub const FIELDS_FIELD_NUMBER: i32 = 1;
-        /// Unordered map of dynamically typed values.
-        /// 
+    /// Unordered map of dynamically typed values.
     pub fn fields(&self) -> &crate::collections::MapField<::std::string::String, self::Value> {
         &self.fields
     }
@@ -168,35 +166,27 @@ impl self::Struct {
 /// variants, absence of any variant indicates an error.
 /// 
 /// The JSON representation for `Value` is JSON value.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Value {
     kind: self::Value_Kind,
     unknown_fields: crate::UnknownFieldSet
 }
 /// The kind of value.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Value_Kind {
     /// No value
     None,
-        /// Represents a null value.
-        /// 
+    /// Represents a null value.
     NullValue(crate::EnumValue<self::NullValue>),
-        /// Represents a double value.
-        /// 
+    /// Represents a double value.
     NumberValue(f64),
-        /// Represents a string value.
-        /// 
+    /// Represents a string value.
     StringValue(::std::string::String),
-        /// Represents a boolean value.
-        /// 
+    /// Represents a boolean value.
     BoolValue(bool),
-        /// Represents a structured value.
-        /// 
+    /// Represents a structured value.
     StructValue(::std::boxed::Box<self::Struct>),
-        /// Represents a repeated `Value`.
-        /// 
+    /// Represents a repeated `Value`.
     ListValue(::std::boxed::Box<self::ListValue>),
 }
 impl crate::CodedMessage for self::Value {
@@ -345,7 +335,6 @@ impl self::Value {
 /// `ListValue` is a wrapper around a repeated field of values.
 /// 
 /// The JSON representation for `ListValue` is JSON array.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct ListValue {
     values: crate::collections::RepeatedField<self::Value>,
@@ -396,8 +385,7 @@ impl self::ListValue {
     ///
     /// [`values`]: #method.values
     pub const VALUES_FIELD_NUMBER: i32 = 1;
-        /// Repeated field of dynamically typed values.
-        /// 
+    /// Repeated field of dynamically typed values.
     pub fn values(&self) -> &crate::collections::RepeatedField<self::Value> {
         &self.values
     }
@@ -412,11 +400,9 @@ impl self::ListValue {
 /// `Value` type union.
 /// 
 /// The JSON representation for `NullValue` is JSON `null`.
-/// 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum NullValue {
-        /// Null value.
-        /// 
+    /// Null value.
     NullValue,
 }
 impl ::std::convert::TryFrom<i32> for self::NullValue {

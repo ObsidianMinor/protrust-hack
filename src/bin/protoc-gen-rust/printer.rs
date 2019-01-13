@@ -89,13 +89,14 @@ impl<'a, W: Write> Write for DocPrinter<'a, W> {
         self.inner.write_str(lines.next().unwrap())?;
         let indent = "    ".repeat(self.inner.indent);
         let list_indent = "  ".repeat(self.list_stack.len());
+        let inner = &mut self.inner.inner;
 
         while let Some(line) = lines.next() {
-            self.inner.write_char('\n')?;
-            self.inner.write_str(&indent)?;
-            self.inner.write_str("/// ")?;
-            self.inner.write_str(&list_indent)?;
-            self.inner.write_str(line)?;
+            inner.write_char('\n')?;
+            inner.write_str(&indent)?;
+            inner.write_str("/// ")?;
+            inner.write_str(&list_indent)?;
+            inner.write_str(line)?;
         }
 
         Ok(())

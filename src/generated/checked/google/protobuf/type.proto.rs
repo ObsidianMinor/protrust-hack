@@ -154,7 +154,6 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     }
 }
 /// A protocol buffer message type.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Type {
     name: ::std::string::String,
@@ -267,8 +266,7 @@ impl self::Type {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The fully qualified message name.
-        /// 
+    /// The fully qualified message name.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -282,8 +280,7 @@ impl self::Type {
     ///
     /// [`fields`]: #method.fields
     pub const FIELDS_FIELD_NUMBER: i32 = 2;
-        /// The list of fields.
-        /// 
+    /// The list of fields.
     pub fn fields(&self) -> &crate::collections::RepeatedField<self::Field> {
         &self.fields
     }
@@ -297,8 +294,7 @@ impl self::Type {
     ///
     /// [`oneofs`]: #method.oneofs
     pub const ONEOFS_FIELD_NUMBER: i32 = 3;
-        /// The list of types appearing in `oneof` definitions in this type.
-        /// 
+    /// The list of types appearing in `oneof` definitions in this type.
     pub fn oneofs(&self) -> &crate::collections::RepeatedField<::std::string::String> {
         &self.oneofs
     }
@@ -312,8 +308,7 @@ impl self::Type {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
-        /// The protocol buffer options.
-        /// 
+    /// The protocol buffer options.
     pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
         &self.options
     }
@@ -327,8 +322,7 @@ impl self::Type {
     ///
     /// [`source_context`]: #method.source_context
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-        /// The source context.
-        /// 
+    /// The source context.
     pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &self.source_context
     }
@@ -346,8 +340,7 @@ impl self::Type {
     ///
     /// [`syntax`]: #method.syntax
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
-        /// The source syntax.
-        /// 
+    /// The source syntax.
     pub fn syntax(&self) -> crate::EnumValue<self::Syntax> {
         self.syntax
     }
@@ -359,7 +352,6 @@ impl self::Type {
     }
 }
 /// A single field of a message type.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Field {
     kind: crate::EnumValue<self::Field_Kind>,
@@ -540,8 +532,7 @@ impl self::Field {
     ///
     /// [`kind`]: #method.kind
     pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::Field_Kind> = crate::EnumValue::Defined(self::Field_Kind::TypeUnknown);
-        /// The field type.
-        /// 
+    /// The field type.
     pub fn kind(&self) -> crate::EnumValue<self::Field_Kind> {
         self.kind
     }
@@ -559,8 +550,7 @@ impl self::Field {
     ///
     /// [`cardinality`]: #method.cardinality
     pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::Field_Cardinality> = crate::EnumValue::Defined(self::Field_Cardinality::Unknown);
-        /// The field cardinality.
-        /// 
+    /// The field cardinality.
     pub fn cardinality(&self) -> crate::EnumValue<self::Field_Cardinality> {
         self.cardinality
     }
@@ -578,8 +568,7 @@ impl self::Field {
     ///
     /// [`number`]: #method.number
     pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-        /// The field number.
-        /// 
+    /// The field number.
     pub fn number(&self) -> i32 {
         self.number
     }
@@ -597,8 +586,7 @@ impl self::Field {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The field name.
-        /// 
+    /// The field name.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -616,9 +604,8 @@ impl self::Field {
     ///
     /// [`type_url`]: #method.type_url
     pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        /// The field type URL, without the scheme, for message or enumeration
-        /// types. Example: `"type.googleapis.com/google.protobuf.Timestamp"`.
-        /// 
+    /// The field type URL, without the scheme, for message or enumeration
+    /// types. Example: `"type.googleapis.com/google.protobuf.Timestamp"`.
     pub fn type_url(&self) -> &::std::string::String {
         &self.type_url
     }
@@ -636,9 +623,8 @@ impl self::Field {
     ///
     /// [`oneof_index`]: #method.oneof_index
     pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-        /// The index of the field type in `Type.oneofs`, for message or enumeration
-        /// types. The first type has index 1; zero means the type is not in the list.
-        /// 
+    /// The index of the field type in `Type.oneofs`, for message or enumeration
+    /// types. The first type has index 1; zero means the type is not in the list.
     pub fn oneof_index(&self) -> i32 {
         self.oneof_index
     }
@@ -656,8 +642,7 @@ impl self::Field {
     ///
     /// [`packed`]: #method.packed
     pub const PACKED_DEFAULT_VALUE: bool = false;
-        /// Whether to use alternative packed wire representation.
-        /// 
+    /// Whether to use alternative packed wire representation.
     pub fn packed(&self) -> bool {
         self.packed
     }
@@ -671,8 +656,7 @@ impl self::Field {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 9;
-        /// The protocol buffer options.
-        /// 
+    /// The protocol buffer options.
     pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
         &self.options
     }
@@ -690,8 +674,7 @@ impl self::Field {
     ///
     /// [`json_name`]: #method.json_name
     pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
-        /// The field JSON name.
-        /// 
+    /// The field JSON name.
     pub fn json_name(&self) -> &::std::string::String {
         &self.json_name
     }
@@ -709,8 +692,7 @@ impl self::Field {
     ///
     /// [`default_value`]: #method.default_value
     pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-        /// The string value of the default value of this field. Proto2 syntax only.
-        /// 
+    /// The string value of the default value of this field. Proto2 syntax only.
     pub fn default_value(&self) -> &::std::string::String {
         &self.default_value
     }
@@ -722,65 +704,45 @@ impl self::Field {
     }
 }
 /// Basic field types.
-/// 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Kind {
-        /// Field type unknown.
-        /// 
+    /// Field type unknown.
     TypeUnknown,
-        /// Field type double.
-        /// 
+    /// Field type double.
     TypeDouble,
-        /// Field type float.
-        /// 
+    /// Field type float.
     TypeFloat,
-        /// Field type int64.
-        /// 
+    /// Field type int64.
     TypeInt64,
-        /// Field type uint64.
-        /// 
+    /// Field type uint64.
     TypeUint64,
-        /// Field type int32.
-        /// 
+    /// Field type int32.
     TypeInt32,
-        /// Field type fixed64.
-        /// 
+    /// Field type fixed64.
     TypeFixed64,
-        /// Field type fixed32.
-        /// 
+    /// Field type fixed32.
     TypeFixed32,
-        /// Field type bool.
-        /// 
+    /// Field type bool.
     TypeBool,
-        /// Field type string.
-        /// 
+    /// Field type string.
     TypeString,
-        /// Field type group. Proto2 syntax only, and deprecated.
-        /// 
+    /// Field type group. Proto2 syntax only, and deprecated.
     TypeGroup,
-        /// Field type message.
-        /// 
+    /// Field type message.
     TypeMessage,
-        /// Field type bytes.
-        /// 
+    /// Field type bytes.
     TypeBytes,
-        /// Field type uint32.
-        /// 
+    /// Field type uint32.
     TypeUint32,
-        /// Field type enum.
-        /// 
+    /// Field type enum.
     TypeEnum,
-        /// Field type sfixed32.
-        /// 
+    /// Field type sfixed32.
     TypeSfixed32,
-        /// Field type sfixed64.
-        /// 
+    /// Field type sfixed64.
     TypeSfixed64,
-        /// Field type sint32.
-        /// 
+    /// Field type sint32.
     TypeSint32,
-        /// Field type sint64.
-        /// 
+    /// Field type sint64.
     TypeSint64,
 }
 impl ::std::convert::TryFrom<i32> for self::Field_Kind {
@@ -836,20 +798,15 @@ impl ::std::convert::From<self::Field_Kind> for i32 {
     }
 }
 /// Whether a field is optional, required, or repeated.
-/// 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field_Cardinality {
-        /// For fields with unknown cardinality.
-        /// 
+    /// For fields with unknown cardinality.
     Unknown,
-        /// For optional fields.
-        /// 
+    /// For optional fields.
     Optional,
-        /// For required fields. Proto2 syntax only.
-        /// 
+    /// For required fields. Proto2 syntax only.
     Required,
-        /// For repeated fields.
-        /// 
+    /// For repeated fields.
     Repeated,
 }
 impl ::std::convert::TryFrom<i32> for self::Field_Cardinality {
@@ -875,7 +832,6 @@ impl ::std::convert::From<self::Field_Cardinality> for i32 {
     }
 }
 /// Enum type definition.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Enum {
     name: ::std::string::String,
@@ -981,8 +937,7 @@ impl self::Enum {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// Enum type name.
-        /// 
+    /// Enum type name.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -996,8 +951,7 @@ impl self::Enum {
     ///
     /// [`enumvalue`]: #method.enumvalue
     pub const ENUMVALUE_FIELD_NUMBER: i32 = 2;
-        /// Enum value definitions.
-        /// 
+    /// Enum value definitions.
     pub fn enumvalue(&self) -> &crate::collections::RepeatedField<self::EnumValue> {
         &self.enumvalue
     }
@@ -1011,8 +965,7 @@ impl self::Enum {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        /// Protocol buffer options.
-        /// 
+    /// Protocol buffer options.
     pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
         &self.options
     }
@@ -1026,8 +979,7 @@ impl self::Enum {
     ///
     /// [`source_context`]: #method.source_context
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
-        /// The source context.
-        /// 
+    /// The source context.
     pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
         &self.source_context
     }
@@ -1045,8 +997,7 @@ impl self::Enum {
     ///
     /// [`syntax`]: #method.syntax
     pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> = crate::EnumValue::Defined(self::Syntax::Proto2);
-        /// The source syntax.
-        /// 
+    /// The source syntax.
     pub fn syntax(&self) -> crate::EnumValue<self::Syntax> {
         self.syntax
     }
@@ -1058,7 +1009,6 @@ impl self::Enum {
     }
 }
 /// Enum value definition.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumValue {
     name: ::std::string::String,
@@ -1141,8 +1091,7 @@ impl self::EnumValue {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// Enum value name.
-        /// 
+    /// Enum value name.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -1160,8 +1109,7 @@ impl self::EnumValue {
     ///
     /// [`number`]: #method.number
     pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-        /// Enum value number.
-        /// 
+    /// Enum value number.
     pub fn number(&self) -> i32 {
         self.number
     }
@@ -1175,8 +1123,7 @@ impl self::EnumValue {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        /// Protocol buffer options.
-        /// 
+    /// Protocol buffer options.
     pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
         &self.options
     }
@@ -1189,7 +1136,6 @@ impl self::EnumValue {
 }
 /// A protocol buffer option, which can be attached to a message, field,
 /// enumeration, etc.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Option {
     name: ::std::string::String,
@@ -1267,11 +1213,10 @@ impl self::Option {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-        /// The option's name. For protobuf built-in options (options defined in
-        /// descriptor.proto), this is the short name. For example, `"map_entry"`.
-        /// For custom options, it should be the fully-qualified name. For example,
-        /// `"google.api.http"`.
-        /// 
+    /// The option's name. For protobuf built-in options (options defined in
+    /// descriptor.proto), this is the short name. For example, `"map_entry"`.
+    /// For custom options, it should be the fully-qualified name. For example,
+    /// `"google.api.http"`.
     pub fn name(&self) -> &::std::string::String {
         &self.name
     }
@@ -1285,11 +1230,10 @@ impl self::Option {
     ///
     /// [`value`]: #method.value
     pub const VALUE_FIELD_NUMBER: i32 = 2;
-        /// The option's value packed in an Any message. If the value is a primitive,
-        /// the corresponding wrapper type defined in google/protobuf/wrappers.proto
-        /// should be used. If the value is an enum, it should be stored as an int32
-        /// value using the google.protobuf.Int32Value type.
-        /// 
+    /// The option's value packed in an Any message. If the value is a primitive,
+    /// the corresponding wrapper type defined in google/protobuf/wrappers.proto
+    /// should be used. If the value is an enum, it should be stored as an int32
+    /// value using the google.protobuf.Int32Value type.
     pub fn value(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>> {
         &self.value
     }
@@ -1301,14 +1245,11 @@ impl self::Option {
     }
 }
 /// The syntax in which a protocol buffer element is defined.
-/// 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Syntax {
-        /// Syntax `proto2`.
-        /// 
+    /// Syntax `proto2`.
     Proto2,
-        /// Syntax `proto3`.
-        /// 
+    /// Syntax `proto3`.
     Proto3,
 }
 impl ::std::convert::TryFrom<i32> for self::Syntax {

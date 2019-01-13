@@ -1355,8 +1355,11 @@ fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source
         .or(source_info.trailing_comments())
     {
         let mut printer = printer::DocPrinter::new(printer);
-        for event in Parser::new(comments) {
+        let mut events = Parser::new(comments).peekable();
+        while let Some(event) = events.next() {
+            let peek = events.peek();
             match event {
+                Event::End(Tag::Paragraph) if peek == None => { },
                 Event::Start(Tag::Paragraph) | Event::End(Tag::Paragraph) => genln!(printer),
                 Event::Start(Tag::Code) | Event::End(Tag::Code) => gen!(printer, "`"),
                 Event::Text(val) |
@@ -1367,14 +1370,13 @@ fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source
                 Event::Start(Tag::CodeBlock(std::borrow::Cow::Borrowed(""))) => gen!(printer, "```text\n"),
                 Event::Start(Tag::CodeBlock(code)) => gen!(printer, "```{}\n", code),
                 Event::End(Tag::CodeBlock(_)) => gen!(printer, "```\n"),
-                Event::Start(Tag::Header(i)) => gen!(printer, "{}", "#".repeat(i as usize)),
+                Event::Start(Tag::Header(i)) => gen!(printer, "{} ", "#".repeat(i as usize)),
                 Event::Start(Tag::List(start)) => {
                     printer.start_list(start);
                     genln!(printer);
                 },
                 Event::End(Tag::List(_)) => {
                     printer.end_list();
-                    genln!(printer);
                 },
                 Event::Start(Tag::Item) => {
                     printer.start_item();
@@ -1387,9 +1389,9 @@ fn generate_rustdoc_comments<W: Write>(printer: &mut printer::Printer<W>, source
                     printer.end_item();
                     genln!(printer);
                 },
-                Event::Start(Tag::Link(_, ref title)) if title.is_empty() => gen!(printer, "("),
+                Event::Start(Tag::Link(_, ref title)) if title.is_empty() => gen!(printer, "["),
                 Event::Start(Tag::Link(_, _)) => gen!(printer, "["),
-                Event::End(Tag::Link(ref link, ref title)) if title.is_empty() => gen!(printer, ")[{}]", link),
+                Event::End(Tag::Link(ref link, ref title)) if title.is_empty() => gen!(printer, "]({})", link),
                 Event::End(Tag::Link(_, ref title)) => gen!(printer, "][{}]", title),
                 Event::End(Tag::Header(_)) => genln!(printer),
                 Event::Start(Tag::Emphasis) | Event::End(Tag::Emphasis) => gen!(printer, "*"),

@@ -82,7 +82,6 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     }
 }
 /// [START messages]
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Person {
     name: ::std::string::String,
@@ -212,8 +211,7 @@ impl self::Person {
     ///
     /// [`id`]: #method.id
     pub const ID_DEFAULT_VALUE: i32 = 0;
-        /// Unique ID number for this person.
-        /// 
+    /// Unique ID number for this person.
     pub fn id(&self) -> i32 {
         self.id
     }
@@ -396,7 +394,6 @@ impl ::std::convert::From<self::Person_PhoneType> for i32 {
     }
 }
 /// Our address book file is just one of these.
-/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct AddressBook {
     people: ::protrust::collections::RepeatedField<self::Person>,
