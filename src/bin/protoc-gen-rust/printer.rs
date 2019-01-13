@@ -39,3 +39,65 @@ impl<W: Write> Write for Printer<W> {
         Ok(())
     }
 }
+
+pub struct DocPrinter<'a, W> {
+    inner: &'a mut Printer<W>,
+    list_stack: Vec<Option<usize>>,
+}
+
+impl<'a, W> DocPrinter<'a, W> {
+    pub fn new(inner: &'a mut Printer<W>) -> DocPrinter<'a, W> {
+        DocPrinter {
+            inner,
+            list_stack: Vec::new()
+        }
+    }
+
+    pub fn start_list(&mut self, start: Option<usize>) {
+        self.list_stack.push(start)
+    }
+
+    pub fn end_list(&mut self) {
+        self.list_stack.pop();
+    }
+
+    pub fn start_item(&mut self) {
+        match self.list_stack.last_mut() {
+            Some(Some(ref mut position)) => *position += 1,
+            _ => { }
+        }
+    }
+
+    pub fn end_item(&mut self) {
+        match self.list_stack.last_mut() {
+            Some(Some(ref mut position)) => *position -= 1,
+            _ => { }
+        }
+    }
+
+    pub fn current_item_number(&self) -> Option<usize> {
+        match self.list_stack.last() {
+            Some(x) => *x,
+            None => None
+        }
+    }
+}
+
+impl<'a, W: Write> Write for DocPrinter<'a, W> {
+    fn write_str(&mut self, s: &str) -> std::fmt::Result {
+        let mut lines = s.split('\n');
+        self.inner.write_str(lines.next().unwrap())?;
+        let indent = "    ".repeat(self.inner.indent);
+        let list_indent = "  ".repeat(self.list_stack.len());
+
+        while let Some(line) = lines.next() {
+            self.inner.write_char('\n')?;
+            self.inner.write_str(&indent)?;
+            self.inner.write_str("/// ")?;
+            self.inner.write_str(&list_indent)?;
+            self.inner.write_str(line)?;
+        }
+
+        Ok(())
+    }
+} 

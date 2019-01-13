@@ -64,58 +64,52 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// or "month". It is related to Timestamp in that the difference between
 /// two Timestamp values is a Duration and it can be added or subtracted
 /// from a Timestamp. Range is approximately +-10,000 years.
-///
-/// # Examples
-///
+/// #Examples
+/// 
 /// Example 1: Compute Duration from two Timestamps in pseudo code.
 /// ```text
-/// Timestamp start = ...;
-/// Timestamp end = ...;
-/// Duration duration = ...;
+///  Timestamp start = ...;
+///  Timestamp end = ...;
+///  Duration duration = ...;
+/// 
+///  duration.seconds = end.seconds - start.seconds;
+///  duration.nanos = end.nanos - start.nanos;
+/// 
+///  if (duration.seconds < 0 && duration.nanos > 0) {
+///    duration.seconds += 1;
+///    duration.nanos -= 1000000000;
+///  } else if (durations.seconds > 0 && duration.nanos < 0) {
+///    duration.seconds -= 1;
+///    duration.nanos += 1000000000;
+///  }
 /// ```
-/// ```text
-/// duration.seconds = end.seconds - start.seconds;
-/// duration.nanos = end.nanos - start.nanos;
-/// ```
-/// ```text
-/// if (duration.seconds < 0 && duration.nanos > 0) {
-///   duration.seconds += 1;
-///   duration.nanos -= 1000000000;
-/// } else if (durations.seconds > 0 && duration.nanos < 0) {
-///   duration.seconds -= 1;
-///   duration.nanos += 1000000000;
-/// }
-/// ```
-///
+/// 
 /// Example 2: Compute Timestamp from Timestamp + Duration in pseudo code.
 /// ```text
-/// Timestamp start = ...;
-/// Duration duration = ...;
-/// Timestamp end = ...;
+///  Timestamp start = ...;
+///  Duration duration = ...;
+///  Timestamp end = ...;
+/// 
+///  end.seconds = start.seconds + duration.seconds;
+///  end.nanos = start.nanos + duration.nanos;
+/// 
+///  if (end.nanos < 0) {
+///    end.seconds -= 1;
+///    end.nanos += 1000000000;
+///  } else if (end.nanos >= 1000000000) {
+///    end.seconds += 1;
+///    end.nanos -= 1000000000;
+///  }
 /// ```
-/// ```text
-/// end.seconds = start.seconds + duration.seconds;
-/// end.nanos = start.nanos + duration.nanos;
-/// ```
-/// ```text
-/// if (end.nanos < 0) {
-///   end.seconds -= 1;
-///   end.nanos += 1000000000;
-/// } else if (end.nanos >= 1000000000) {
-///   end.seconds += 1;
-///   end.nanos -= 1000000000;
-/// }
-/// ```
-///
+/// 
 /// Example 3: Compute Duration from datetime.timedelta in Python.
 /// ```text
-/// td = datetime.timedelta(days=3, minutes=10)
-/// duration = Duration()
-/// duration.FromTimedelta(td)
+///  td = datetime.timedelta(days=3, minutes=10)
+///  duration = Duration()
+///  duration.FromTimedelta(td)
 /// ```
-///
-/// # JSON Mapping
-///
+/// #JSON Mapping
+/// 
 /// In JSON format, the Duration type is encoded as a string rather than an
 /// object, where the string ends in the suffix "s" (indicating seconds) and
 /// is preceded by the number of seconds, with nanoseconds expressed as
@@ -123,8 +117,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// encoded in JSON format as "3s", while 3 seconds and 1 nanosecond should
 /// be expressed in JSON format as "3.000000001s", and 3 seconds and 1
 /// microsecond should be expressed in JSON format as "3.000001s".
-///
-///
+/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Duration {
     seconds: i64,
@@ -200,9 +193,10 @@ impl self::Duration {
     ///
     /// [`seconds`]: #method.seconds
     pub const SECONDS_DEFAULT_VALUE: i64 = 0;
-    /// Signed seconds of the span of time. Must be from -315,576,000,000
-    /// to +315,576,000,000 inclusive. Note: these bounds are computed from:
-    /// 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+        /// Signed seconds of the span of time. Must be from -315,576,000,000
+        /// to +315,576,000,000 inclusive. Note: these bounds are computed from:
+        /// 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+        /// 
     pub fn seconds(&self) -> i64 {
         self.seconds
     }
@@ -220,12 +214,13 @@ impl self::Duration {
     ///
     /// [`nanos`]: #method.nanos
     pub const NANOS_DEFAULT_VALUE: i32 = 0;
-    /// Signed fractions of a second at nanosecond resolution of the span
-    /// of time. Durations less than one second are represented with a 0
-    /// `seconds` field and a positive or negative `nanos` field. For durations
-    /// of one second or more, a non-zero value for the `nanos` field must be
-    /// of the same sign as the `seconds` field. Must be from -999,999,999
-    /// to +999,999,999 inclusive.
+        /// Signed fractions of a second at nanosecond resolution of the span
+        /// of time. Durations less than one second are represented with a 0
+        /// `seconds` field and a positive or negative `nanos` field. For durations
+        /// of one second or more, a non-zero value for the `nanos` field must be
+        /// of the same sign as the `seconds` field. Must be from -999,999,999
+        /// to +999,999,999 inclusive.
+        /// 
     pub fn nanos(&self) -> i32 {
         self.nanos
     }

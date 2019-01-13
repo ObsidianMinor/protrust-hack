@@ -11,7 +11,7 @@ doc = false
 required-features = ["plugin"]
 
 [features]
-default = ["reflection", "json"]
+default = ["reflection", "json", "plugin"]
 
 # Reflection is optional, you can remove reflection if you are only using LITE_RUNTIME files
 reflection = []

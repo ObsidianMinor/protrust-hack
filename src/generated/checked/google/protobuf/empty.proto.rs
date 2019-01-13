@@ -59,12 +59,13 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// empty messages in your APIs. A typical example is to use it as the request
 /// or the response type of an API method. For instance:
 /// ```text
-/// service Foo {
-///   rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-/// }
+///  service Foo {
+///    rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+///  }
 /// ```
-///
+/// 
 /// The JSON representation for `Empty` is empty JSON object `{}`.
+/// 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Empty {
     unknown_fields: crate::UnknownFieldSet
