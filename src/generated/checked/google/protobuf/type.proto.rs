@@ -177,7 +177,7 @@ impl crate::CodedMessage for self::Type {
                 34 => self.options.add_entries(tag.get(), input, &TYPE_OPTIONS_CODEC)?,
                 42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 48 => self.syntax = input.read_enum_value()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -381,7 +381,7 @@ impl crate::CodedMessage for self::Field {
                 74 => self.options.add_entries(tag.get(), input, &FIELD_OPTIONS_CODEC)?,
                 82 => self.json_name = input.read_string()?,
                 90 => self.default_value = input.read_string()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -852,7 +852,7 @@ impl crate::CodedMessage for self::Enum {
                 26 => self.options.add_entries(tag.get(), input, &ENUM_OPTIONS_CODEC)?,
                 34 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.syntax = input.read_enum_value()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1024,7 +1024,7 @@ impl crate::CodedMessage for self::EnumValue {
                 10 => self.name = input.read_string()?,
                 16 => self.number = input.read_int32()?,
                 26 => self.options.add_entries(tag.get(), input, &ENUM_VALUE_OPTIONS_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1148,7 +1148,7 @@ impl crate::CodedMessage for self::Option {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => input.read_message(&mut **self.value.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

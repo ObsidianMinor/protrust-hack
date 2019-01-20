@@ -1,15 +1,13 @@
-//! A Protocol Buffers implementation in Rust focused on being a complete implementation with support
-//! for proto3 json mapping, reflection, and being easy to use.
-
 #![feature(const_fn)]
 #![feature(const_string_new)]
 #![feature(const_vec_new)]
 #![feature(try_from)]
+#![feature(get_type_id)]
 
 #[cfg_attr(checked_size, path = "generated/checked/mod.rs")]
 #[cfg_attr(not(checked_size), path = "generated/unchecked/mod.rs")]
 #[rustfmt::skip]
-#[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case)]
+#[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case, missing_docs)]
 pub(crate) mod generated;
 
 /// The protrust prelude
@@ -34,10 +32,14 @@ pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
 #[cfg(feature = "reflection")]
 pub mod reflect;
 
-use crate::io::WireType;
+use crate::io::{Tag, WireType};
 use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::num::NonZeroU32;
+
+mod internal {
+    pub trait Sealed { }
+}
 
 /// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
 pub trait CodedMessage {
@@ -71,6 +73,7 @@ pub trait CodedMessage {
 
     /// Writes the message to a new Vec<u8> or Err(io::OutputError::ValueTooLarge) if the message is too large
     #[cfg(checked_size)]
+    #[inline]
     fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
         if let Some(size) = self.calculate_size() {
             let mut out = Vec::with_capacity(size as usize);
@@ -81,7 +84,9 @@ pub trait CodedMessage {
         }
     }
 
+    /// Writes the message to a new `Vec<u8>`
     #[cfg(not(checked_size))]
+    #[inline]
     fn write_to_vec(&self) -> Result<Vec<u8>, io::OutputError> {
         let mut out = Vec::with_capacity(self.calculate_size() as usize);
         self.write(&mut out)?;
@@ -89,6 +94,7 @@ pub trait CodedMessage {
     }
 
     /// Gets whether all the required fields and messages are initialized
+    #[inline]
     fn is_initialized(&self) -> bool {
         true
     }
@@ -99,9 +105,10 @@ pub trait LiteMessage: CodedMessage + Clone + PartialEq {
     /// Creates a new instance of the message
     fn new() -> Self;
 
+    /// Merges the fields from another message into this one via copy assignment
     fn merge(&mut self, other: &Self);
 
-    /// Reads a new instance of Self from the specified Read using a CodedInputReader
+    /// Reads a new instance of Self from the specified Read using a CodedInput
     fn read_new(read: &mut std::io::Read) -> io::InputResult<Self> {
         let mut reader = io::CodedInput::new(read);
         Self::read_new_from_input(&mut reader)
@@ -125,6 +132,9 @@ pub trait Message: LiteMessage {
 /// The error result for when an enum value is undefined
 pub struct VariantUndefinedError;
 
+#[doc(hidden)]
+pub unsafe trait Enum { }
+
 /// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
 ///
 /// In Rust, an enum value without an associated discriminant is undefined behavior.
@@ -139,6 +149,22 @@ pub enum EnumValue<E> {
 }
 
 impl<E> EnumValue<E> {
+    /// Converts from an EnumValue<E> to Option<E>, discarding the undefined value if it exists
+    pub fn defined(self) -> Option<E> {
+        match self {
+            EnumValue::Defined(e) => Some(e),
+            EnumValue::Undefined(_) => None
+        }
+    }
+
+    /// Converts from an EnumValue<E> to Option<i32>, discarding the defined value if it exists
+    pub fn undefined(self) -> Option<i32> {
+        match self {
+            EnumValue::Defined(_) => None,
+            EnumValue::Undefined(u) => Some(u)
+        }
+    }
+
     /// Returns a Defined value, panics if Undefined
     pub fn unwrap(self) -> E {
         match self {
@@ -189,9 +215,13 @@ impl<E: Into<i32> + Clone> From<EnumValue<E>> for i32 {
     }
 }
 
-/// A structure detailing all the required information to read, write, and calculate the size of a field.
-///
-/// Consumers will rarely use this outside of generated code
+impl<E: Enum> From<E> for EnumValue<E> {
+    fn from(value: E) -> EnumValue<E> {
+        EnumValue::Defined(value)
+    }
+}
+
+#[doc(hidden)]
 pub struct Codec<T> {
     default: Option<T>,
     start: u32,
@@ -216,42 +246,36 @@ const fn is_packed(tag: u32) -> bool {
 }
 
 impl<T: Clone + PartialEq> Codec<T> {
-    /// Gets a Some bool indicating if this type is packed or not, or None if the tag is invalid
-    pub fn is_packed_tag(&self, tag: u32) -> Option<bool> {
+    fn is_packed_tag(&self, tag: u32) -> Option<bool> {
         Some(self.packable && io::WireType::get_type(tag)? == io::WireType::LengthDelimited)
     }
 
-    /// Gets whether this field is packed or not
     #[inline]
-    pub fn is_packed(&self) -> bool {
+    fn is_packed(&self) -> bool {
         self.packed
     }
 
-    /// Gets the tag of the codec or the start tag for groups
     #[inline]
-    pub fn tag(&self) -> u32 {
+    fn tag(&self) -> u32 {
         self.start
     }
 
-    /// Gets the end tag of the codec (groups only)
     #[inline]
-    pub fn end_tag(&self) -> Option<NonZeroU32> {
+    fn end_tag(&self) -> Option<NonZeroU32> {
         self.end
     }
 
-    /// Gets whether the value is default and should be written to an output
     #[inline]
-    pub fn is_default(&self, value: &T) -> bool {
+    fn is_default(&self, value: &T) -> bool {
         match &self.default {
             None => false,
             Some(default) => default == value,
         }
     }
 
-    /// Calculates the size of the value
     #[cfg(checked_size)]
     #[inline]
-    pub fn calculate_size(&self, value: &T) -> Option<i32> {
+    fn calculate_size(&self, value: &T) -> Option<i32> {
         match self.size {
             ValueSize::Fixed(s) => Some(s),
             ValueSize::Func(f) => (f)(value),
@@ -260,21 +284,19 @@ impl<T: Clone + PartialEq> Codec<T> {
 
     #[cfg(not(checked_size))]
     #[inline]
-    pub fn calculate_size(&self, value: &T) -> i32 {
+    fn calculate_size(&self, value: &T) -> i32 {
         match self.size {
             ValueSize::Fixed(s) => s,
             ValueSize::Func(f) => (f)(value),
         }
     }
 
-    /// Writes the value to the provided output
     #[inline]
-    pub fn write_to(&self, output: &mut io::CodedOutput, value: &T) -> io::OutputResult {
+    fn write_to(&self, output: &mut io::CodedOutput, value: &T) -> io::OutputResult {
         (self.write)(output, value)
     }
 
-    /// Reads a value from the provided input
-    pub fn read_from(&self, input: &mut io::CodedInput) -> io::InputResult<T> {
+    fn read_from(&self, input: &mut io::CodedInput) -> io::InputResult<T> {
         let mut value = None;
         self.merge_from(input, &mut value)?;
         if let Some(value) = value {
@@ -284,9 +306,8 @@ impl<T: Clone + PartialEq> Codec<T> {
         }
     }
 
-    /// Merges a value from the provided input into the the given Option instance
     #[inline]
-    pub fn merge_from(
+    fn merge_from(
         &self,
         input: &mut io::CodedInput,
         value: &mut Option<T>,
@@ -295,6 +316,7 @@ impl<T: Clone + PartialEq> Codec<T> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<f32> {
     pub const fn float(tag: u32) -> Codec<f32> {
         Codec {
@@ -316,6 +338,7 @@ impl Codec<f32> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<f64> {
     pub const fn double(tag: u32) -> Codec<f64> {
         Codec {
@@ -337,6 +360,7 @@ impl Codec<f64> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<i32> {
     pub const fn int32(tag: u32) -> Codec<i32> {
         Codec {
@@ -393,6 +417,7 @@ impl Codec<i32> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<u32> {
     pub const fn uint32(tag: u32) -> Codec<u32> {
         Codec {
@@ -430,6 +455,7 @@ impl Codec<u32> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<i64> {
     pub const fn int64(tag: u32) -> Codec<i64> {
         Codec {
@@ -486,6 +512,7 @@ impl Codec<i64> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<u64> {
     pub const fn uint64(tag: u32) -> Codec<u64> {
         Codec {
@@ -523,6 +550,7 @@ impl Codec<u64> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<bool> {
     pub const fn bool(tag: u32) -> Codec<bool> {
         Codec {
@@ -541,6 +569,7 @@ impl Codec<bool> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<String> {
     pub const fn string(tag: u32) -> Codec<String> {
         Codec {
@@ -559,6 +588,7 @@ impl Codec<String> {
     }
 }
 
+#[doc(hidden)]
 impl Codec<Vec<u8>> {
     pub const fn bytes(tag: u32) -> Codec<Vec<u8>> {
         Codec {
@@ -577,6 +607,7 @@ impl Codec<Vec<u8>> {
     }
 }
 
+#[doc(hidden)]
 impl<M: LiteMessage> Codec<M> {
     pub const fn message(tag: u32) -> Codec<M> {
         Codec {
@@ -623,6 +654,7 @@ impl<M: LiteMessage> Codec<M> {
     }
 }
 
+#[doc(hidden)]
 impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> Codec<EnumValue<E>> {
     pub const fn enum_value(tag: u32) -> Codec<EnumValue<E>> {
         Codec {
@@ -644,8 +676,9 @@ impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> Codec<E
     }
 }
 
+/// Contains a collection of unknown fields encountered when reading a protobuf message
 #[derive(Clone, Debug, PartialEq)]
-pub struct UnknownFieldSet(HashMap<i32, UnknownField>);
+pub struct UnknownFieldSet(HashMap<Tag, UnknownField>);
 
 #[derive(Clone, Debug, PartialEq)]
 enum UnknownField {
@@ -657,32 +690,31 @@ enum UnknownField {
 }
 
 impl UnknownFieldSet {
+    #[doc(hidden)]
     pub fn new() -> UnknownFieldSet {
         UnknownFieldSet(HashMap::new())
     }
 
+    #[doc(hidden)]
     pub fn write_to(&self, output: &mut io::CodedOutput) -> io::OutputResult {
         for field in &self.0 {
+            output.write_tag(*field.0)?;
             match field.1 {
                 UnknownField::Varint(v) => {
-                    output.write_tag(*field.0, WireType::Varint)?;
                     output.write_uint64(*v)?;
                 }
                 UnknownField::Bit64(v) => {
-                    output.write_tag(*field.0, WireType::Bit64)?;
                     output.write_fixed64(*v)?;
                 }
                 UnknownField::LengthDelimited(v) => {
-                    output.write_tag(*field.0, WireType::LengthDelimited)?;
                     output.write_bytes(v)?;
                 }
                 UnknownField::Group(v) => {
-                    output.write_tag(*field.0, WireType::StartGroup)?;
                     v.write_to(output)?;
-                    output.write_tag(*field.0, WireType::EndGroup)?;
+                    output.write_tag(Tag::new(field.0.number(), WireType::EndGroup))?;
                 }
                 UnknownField::Bit32(v) => {
-                    output.write_tag(*field.0, WireType::Bit32)?;
+                    output.write_tag(*field.0)?;
                     output.write_fixed32(*v)?;
                 }
             }
@@ -690,48 +722,27 @@ impl UnknownFieldSet {
         Ok(())
     }
 
+    #[doc(hidden)]
     #[cfg(checked_size)]
     pub fn calculate_size(&self) -> Option<i32> {
         let mut size = 0i32;
         for field in &self.0 {
+            size = size.checked_add(io::sizes::uint32(field.0.get()))?;
             match field.1 {
                 UnknownField::Varint(v) => {
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::Varint,
-                    )))?;
                     size = size.checked_add(io::sizes::uint64(*v))?;
                 }
                 UnknownField::Bit64(v) => {
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::Bit64,
-                    )))?;
                     size = size.checked_add(io::sizes::fixed64(*v))?;
                 }
                 UnknownField::LengthDelimited(v) => {
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::LengthDelimited,
-                    )))?;
                     size = size.checked_add(io::sizes::bytes(v)?)?;
                 }
                 UnknownField::Group(v) => {
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::StartGroup,
-                    )))?;
                     size = size.checked_add(v.calculate_size()?)?;
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::EndGroup,
-                    )))?;
+                    size = size.checked_add(io::sizes::uint32(Tag::new(field.0.number(), WireType::EndGroup)))?;
                 }
                 UnknownField::Bit32(v) => {
-                    size = size.checked_add(io::sizes::uint32(WireType::make_tag(
-                        *field.0,
-                        WireType::Bit32,
-                    )))?;
                     size = size.checked_add(io::sizes::fixed32(*v))?;
                 }
             }
@@ -739,31 +750,27 @@ impl UnknownFieldSet {
         Some(size)
     }
 
+    #[doc(hidden)]
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
         for field in &self.0 {
+            size += io::sizes::uint32(field.0.get());
             match field.1 {
                 UnknownField::Varint(v) => {
-                    size += io::sizes::uint32(WireType::make_tag(*field.0, WireType::Varint));
                     size += io::sizes::uint64(*v);
                 }
                 UnknownField::Bit64(v) => {
-                    size += io::sizes::uint32(WireType::make_tag(*field.0, WireType::Bit64));
                     size += io::sizes::fixed64(*v);
                 }
                 UnknownField::LengthDelimited(v) => {
-                    size +=
-                        io::sizes::uint32(WireType::make_tag(*field.0, WireType::LengthDelimited));
                     size += io::sizes::bytes(v);
                 }
                 UnknownField::Group(v) => {
-                    size += io::sizes::uint32(WireType::make_tag(*field.0, WireType::StartGroup));
                     size += v.calculate_size();
-                    size += io::sizes::uint32(WireType::make_tag(*field.0, WireType::EndGroup));
+                    size += io::sizes::uint32(Tag::new(field.0.number(), WireType::EndGroup).get());
                 }
                 UnknownField::Bit32(v) => {
-                    size += io::sizes::uint32(WireType::make_tag(*field.0, WireType::Bit32));
                     size += io::sizes::fixed32(*v);
                 }
             }
@@ -771,46 +778,44 @@ impl UnknownFieldSet {
         size
     }
 
-    pub fn merge_from(&mut self, tag: u32, input: &mut io::CodedInput) -> io::InputResult<()> {
-        let wt = match WireType::get_type(tag) {
-            Some(tag) => tag,
-            None => return Err(io::InputError::InvalidTag),
-        };
-        let num = WireType::get_num(tag);
+    #[doc(hidden)]
+    pub fn merge_from(&mut self, tag: Tag, input: &mut io::CodedInput) -> io::InputResult<()> {
+        let wt = tag.wire_type();
         match wt {
             WireType::Varint => {
                 self.0
-                    .insert(num, UnknownField::Varint(input.read_uint64()?));
+                    .insert(tag, UnknownField::Varint(input.read_uint64()?));
             }
             WireType::Bit64 => {
                 self.0
-                    .insert(num, UnknownField::Bit64(input.read_fixed64()?));
+                    .insert(tag, UnknownField::Bit64(input.read_fixed64()?));
             }
             WireType::LengthDelimited => {
                 self.0
-                    .insert(num, UnknownField::LengthDelimited(input.read_bytes()?));
+                    .insert(tag, UnknownField::LengthDelimited(input.read_bytes()?));
             }
             WireType::StartGroup => {
-                let end = WireType::make_tag(num, WireType::EndGroup);
+                let end = Tag::new(tag.number(), WireType::EndGroup);
                 let mut set = UnknownFieldSet::new();
                 while let Some(tag) = input.read_tag()? {
                     match tag.get() {
-                        end_tag if end == end_tag => break,
-                        tag => set.merge_from(tag, input)?,
+                        _ if end == tag => break,
+                        _ => set.merge_from(tag, input)?,
                     }
                 }
-                self.0.insert(num, UnknownField::Group(set));
+                self.0.insert(tag, UnknownField::Group(set));
             }
-            WireType::EndGroup => return Err(io::InputError::InvalidTag),
+            WireType::EndGroup => return Err(io::InputError::InvalidTag(tag.get())),
             WireType::Bit32 => {
                 self.0
-                    .insert(num, UnknownField::Bit32(input.read_fixed32()?));
+                    .insert(tag, UnknownField::Bit32(input.read_fixed32()?));
             }
         }
 
         Ok(())
     }
 
+    #[doc(hidden)]
     pub fn merge(&mut self, other: &Self) {
         for field in &other.0 {
             self.0.insert(*field.0, field.1.clone());

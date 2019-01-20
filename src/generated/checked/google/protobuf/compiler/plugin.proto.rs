@@ -114,7 +114,7 @@ impl crate::CodedMessage for self::Version {
                 16 => self.minor = ::std::option::Option::Some(input.read_int32()?),
                 24 => self.patch = ::std::option::Option::Some(input.read_int32()?),
                 34 => self.suffix = ::std::option::Option::Some(input.read_string()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -387,7 +387,7 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
                 18 => self.parameter = ::std::option::Option::Some(input.read_string()?),
                 122 => self.proto_file.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
                 26 => input.read_message(&mut **self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -601,7 +601,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
             match tag.get() {
                 10 => self.error = ::std::option::Option::Some(input.read_string()?),
                 122 => self.file.add_entries(tag.get(), input, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -737,7 +737,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse_File {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.insertion_point = ::std::option::Option::Some(input.read_string()?),
                 122 => self.content = ::std::option::Option::Some(input.read_string()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

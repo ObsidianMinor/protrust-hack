@@ -110,7 +110,7 @@ impl crate::CodedMessage for self::Struct {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.fields.add_entries(input, &STRUCT_FIELDS_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -213,7 +213,7 @@ impl crate::CodedMessage for self::Value {
                         kind.merge_from(input)?;
                         self.kind = self::Value_Kind::ListValue(kind)
                     },
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -346,7 +346,7 @@ impl crate::CodedMessage for self::ListValue {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.values.add_entries(tag.get(), input, &LIST_VALUE_VALUES_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

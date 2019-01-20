@@ -546,7 +546,7 @@ impl crate::CodedMessage for self::FileDescriptorSet {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.file.add_entries(tag.get(), input, &FILE_DESCRIPTOR_SET_FILE_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -635,7 +635,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => input.read_message(&mut **self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 98 => self.syntax = ::std::option::Option::Some(input.read_string()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1130,7 +1130,7 @@ impl crate::CodedMessage for self::DescriptorProto {
                 58 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => self.reserved_range.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 82 => self.reserved_name.add_entries(tag.get(), input, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1429,7 +1429,7 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
                 8 => self.start = ::std::option::Option::Some(input.read_int32()?),
                 16 => self.end = ::std::option::Option::Some(input.read_int32()?),
                 26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1631,7 +1631,7 @@ impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
             match tag.get() {
                 8 => self.start = ::std::option::Option::Some(input.read_int32()?),
                 16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1780,7 +1780,7 @@ impl crate::CodedMessage for self::ExtensionRangeOptions {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -1859,7 +1859,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
                 72 => self.oneof_index = ::std::option::Option::Some(input.read_int32()?),
                 82 => self.json_name = ::std::option::Option::Some(input.read_string()?),
                 66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -2615,7 +2615,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -2784,7 +2784,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
                 26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 34 => self.reserved_range.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 42 => self.reserved_name.add_entries(tag.get(), input, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -3005,7 +3005,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
             match tag.get() {
                 8 => self.start = ::std::option::Option::Some(input.read_int32()?),
                 16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -3158,7 +3158,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 16 => self.number = ::std::option::Option::Some(input.read_int32()?),
                 26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -3373,7 +3373,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.method.add_entries(tag.get(), input, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?,
                 26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -3558,7 +3558,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 34 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 40 => self.client_streaming = ::std::option::Option::Some(input.read_bool()?),
                 48 => self.server_streaming = ::std::option::Option::Some(input.read_bool()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -3992,7 +3992,7 @@ impl crate::CodedMessage for self::FileOptions {
                 354 => self.php_metadata_namespace = ::std::option::Option::Some(input.read_string()?),
                 362 => self.ruby_package = ::std::option::Option::Some(input.read_string()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -5315,7 +5315,7 @@ impl crate::CodedMessage for self::MessageOptions {
                 24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 56 => self.map_entry = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -5642,7 +5642,7 @@ impl crate::CodedMessage for self::FieldOptions {
                 24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 80 => self.weak = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6123,7 +6123,7 @@ impl crate::CodedMessage for self::OneofOptions {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6188,7 +6188,7 @@ impl crate::CodedMessage for self::EnumOptions {
                 16 => self.allow_alias = ::std::option::Option::Some(input.read_bool()?),
                 24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6361,7 +6361,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
             match tag.get() {
                 8 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6480,7 +6480,7 @@ impl crate::CodedMessage for self::ServiceOptions {
             match tag.get() {
                 264 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6601,7 +6601,7 @@ impl crate::CodedMessage for self::MethodOptions {
                 264 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 272 => self.idempotency_level = ::std::option::Option::Some(input.read_enum_value()?),
                 7994 => self.uninterpreted_option.add_entries(tag.get(), input, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -6819,7 +6819,7 @@ impl crate::CodedMessage for self::UninterpretedOption {
                 49 => self.double_value = ::std::option::Option::Some(input.read_double()?),
                 58 => self.string_value = ::std::option::Option::Some(input.read_bytes()?),
                 66 => self.aggregate_value = ::std::option::Option::Some(input.read_string()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -7235,7 +7235,7 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
             match tag.get() {
                 10 => self.name_part = ::std::option::Option::Some(input.read_string()?),
                 16 => self.is_extension = ::std::option::Option::Some(input.read_bool()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -7396,7 +7396,7 @@ impl crate::CodedMessage for self::SourceCodeInfo {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.location.add_entries(tag.get(), input, &SOURCE_CODE_INFO_LOCATION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -7506,12 +7506,12 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 | 10 => self.path.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_PATH_CODEC)?,
-                16 | 18 => self.span.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?,
+                10 | 8 => self.path.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_PATH_CODEC)?,
+                18 | 16 => self.span.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?,
                 26 => self.leading_comments = ::std::option::Option::Some(input.read_string()?),
                 34 => self.trailing_comments = ::std::option::Option::Some(input.read_string()?),
                 50 => self.leading_detached_comments.add_entries(tag.get(), input, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -7811,7 +7811,7 @@ impl crate::CodedMessage for self::GeneratedCodeInfo {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.annotation.add_entries(tag.get(), input, &GENERATED_CODE_INFO_ANNOTATION_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -7875,11 +7875,11 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 | 10 => self.path.add_entries(tag.get(), input, &GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?,
+                10 | 8 => self.path.add_entries(tag.get(), input, &GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?,
                 18 => self.source_file = ::std::option::Option::Some(input.read_string()?),
                 24 => self.begin = ::std::option::Option::Some(input.read_int32()?),
                 32 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

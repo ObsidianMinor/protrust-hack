@@ -1,3 +1,5 @@
+//! Provides reflection and dynamic message access to protobuf messages
+
 pub use crate::descriptor::FieldDescriptorProto_Label as FieldLabel;
 
 use crate::descriptor::{
@@ -17,7 +19,7 @@ use crate::descriptor::{
     ServiceDescriptorProto, 
     ServiceOptions
 };
-use crate::io::WireType;
+use crate::io::{FieldNumber, WireType};
 use std::collections::HashMap;
 use std::fmt::{self, Debug, Formatter};
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
@@ -34,7 +36,8 @@ enum Symbol {
     Method(*mut MethodDescriptor),
 }
 
-/// Represents an immutable reference to a descriptor value
+/// Represents an immutable reference to a descriptor value. 
+/// This structure will always be behind another lifetime, such as a borrowed slice or iterator, and can't be owned.
 #[derive(PartialEq, Eq)]
 pub struct Ref<T>(*mut T);
 
@@ -75,6 +78,57 @@ fn raw_box<T>(value: T) -> *mut T {
     Box::into_raw(Box::new(value))
 }
 
+/// A pool of Descriptor symbols aggregated in via a slice of `FileDescriptorProto`s or a slice of borrowed pools
+/// 
+/// Unlike Google's C++ implementation of Protocol Buffers, this pool is immutable once created. It is not possible
+/// to add, remove, or modify any descriptors once they have been added.
+/// 
+/// # Examples
+/// 
+/// ## Building a pool from a selection of files
+/// 
+/// ```
+/// use protrust::reflect::DescriptorPool;
+/// 
+/// let files = [
+///     protrust::descriptor::file().proto().clone(),
+///     protrust::plugin::file().proto().clone()
+/// ];
+/// 
+/// let pool = DescriptorPool::build_from_files(&files);
+/// ```
+/// 
+/// ## Using a pool from generated code
+/// 
+/// ```
+/// use protrust::{CodedMessage, LiteMessage, Message};
+/// use protrust::descriptor::FileDescriptorProto;
+/// use protrust::reflect::AnyMessage;
+/// 
+/// let file_descriptor = &protrust::descriptor::file().messages()[1];
+/// assert!(file_descriptor.full_name() == ".google.protobuf.FileDescriptorProto");
+/// 
+/// let mut instance = file_descriptor.new_message().unwrap();
+/// assert!(instance.calculate_size() == 0);
+/// 
+/// let other = protrust::descriptor::file().proto();
+/// let file_instance = &mut *instance.downcast_mut::<FileDescriptorProto>().expect("Could not unwrap FileDescriptorProto");
+/// file_instance.merge(other);
+/// 
+/// assert_eq!(file_instance, other);
+/// ```
+/// 
+/// ## Creating a pool from multiple existing pools
+/// 
+/// ```
+/// use protrust::reflect::DescriptorPool;
+/// 
+/// let pools = [protrust::wkt::any::pool(), protrust::wkt::timestamp::pool()];
+/// let pool = DescriptorPool::build_from_pools(&pools);
+/// 
+/// assert!(pool.find_message_by_name(".google.protobuf.Any").is_some());
+/// assert!(pool.find_message_by_name(".google.protobuf.Timestamp").is_some());
+/// ```
 pub struct DescriptorPool<'a> {
     pools: &'a [&'a DescriptorPool<'a>],
     protos: &'a [FileDescriptorProto],
@@ -251,12 +305,17 @@ unsafe impl Send for DescriptorPool<'_> {}
 
 unsafe impl Sync for DescriptorPool<'_> {}
 
+/// A trait containing all the shared items of a descriptor
 pub trait Descriptor {
+    /// Gets the name of this descriptor
     fn name(&self) -> &str;
+    /// Gets the full name of this descriptor
     fn full_name(&self) -> &str;
+    /// Gets the file that defined this descriptor
     fn file(&self) -> &FileDescriptor;
 }
 
+/// A structure containing the comments for a particular file's message, field, oneof, service, or method definition
 pub struct SourceCodeInfo {
     leading_comments: Option<*const str>,
     trailing_comments: Option<*const str>,
@@ -264,33 +323,41 @@ pub struct SourceCodeInfo {
 }
 
 impl SourceCodeInfo {
+    /// Gets the leading comments of a descriptor
     pub fn leading_comments(&self) -> Option<&str> {
         unsafe { self.leading_comments.map(|s| &*s) }
     }
 
+    /// Gets the trailing comments of a descriptor
     pub fn trailing_comments(&self) -> Option<&str> {
         unsafe { self.trailing_comments.map(|s| &*s) }
     }
 
+    /// Gets the leading detached comments of a descriptor
     pub fn leading_detached_comments(&self) -> &[String] {
         unsafe { &*self.leading_detached_comments }
     }
 }
 
+#[doc(hidden)]
 pub struct GeneratedCodeInfo {
     pub structs: Option<Box<[GeneratedStructInfo]>>
 }
 
+#[doc(hidden)]
 pub struct GeneratedStructInfo {
-    pub new: fn() -> Box<(dyn crate::CodedMessage + 'static)>,
+    pub new: fn() -> Box<dyn AnyMessage>,
     pub structs: Option<Box<[GeneratedStructInfo]>>
 }
 
 /// Specifies the syntax of a proto file
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub enum Syntax {
+    /// Proto2 syntax. See the [official Google docs](https://developers.google.com/protocol-buffers/docs/proto) for more information about this syntax
     Proto2,
+    /// Proto3 syntax. See the [official Google docs](https://developers.google.com/protocol-buffers/docs/proto3) for more information about this syntax
     Proto3,
+    /// Unknown syntax. This may be a new version, or the proto file may be invalid
     Unknown,
 }
 
@@ -335,10 +402,12 @@ impl FileDescriptor {
         unsafe { &*self.proto }
     }
 
+    /// Gets the dependencies of this file
     pub fn dependencies(&self) -> &[Ref<FileDescriptor>] {
         &self.dependencies
     }
 
+    /// Gets the dependencies in this file that were marked as `public`
     pub fn public_dependencies(&self) -> &[Ref<FileDescriptor>] {
         &self.public_dependencies
     }
@@ -620,10 +689,81 @@ impl CompositeScope {
     }
 }
 
+/// A message type to emulate dynamic typing.
+/// This type is like Any and allows for downcasting the type to a concrete type.
+/// 
+/// It also has the methods of CodedMessage, allowing for reading, merging, and calculating the size of an unknown message
+pub trait AnyMessage : crate::CodedMessage + std::any::Any { }
+
+impl<T: crate::CodedMessage + std::any::Any> AnyMessage for T { }
+
+impl dyn AnyMessage {
+    #[inline]
+    pub fn is<T: AnyMessage>(&self) -> bool {
+        let t = std::any::TypeId::of::<T>();
+        let boxed = self.get_type_id();
+        t == boxed
+    }
+
+    #[inline]
+    pub fn downcast_ref<T: AnyMessage>(&self) -> Option<&T> {
+        if self.is::<T>() {
+            unsafe {
+                Some(&*(self as *const dyn AnyMessage as *const T))
+            }
+        } else {
+            None
+        }
+    }
+
+    #[inline]
+    pub fn downcast_mut<T: AnyMessage>(&mut self) -> Option<&mut T> {
+        if self.is::<T>() {
+            unsafe {
+                Some(&mut *(self as *mut dyn AnyMessage as *mut T))
+            }
+        } else {
+            None
+        }
+    }
+}
+
+/// Provides the [`downcast`](#method.downcast) extension method for `Box`
+pub trait AnyBoxExt : Sized + crate::internal::Sealed {
+    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Self>;
+}
+
+impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> { }
+
+impl AnyBoxExt for Box<dyn AnyMessage + 'static> {
+    #[inline]
+    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Box<dyn AnyMessage>> {
+        if self.is::<T>() {
+            unsafe {
+                let raw: *mut dyn AnyMessage = Box::into_raw(self);
+                Ok(Box::from_raw(raw as *mut T))
+            }
+        } else {
+            Err(self)
+        }
+    }
+}
+
+impl crate::internal::Sealed for Box<dyn AnyMessage + 'static + Send> { }
+
+impl AnyBoxExt for Box<dyn AnyMessage + 'static + Send> {
+    #[inline]
+    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Box<dyn AnyMessage + Send>> {
+        <Box<dyn AnyMessage>>::downcast(self).map_err(|s| unsafe {
+            Box::from_raw(Box::into_raw(s) as *mut (dyn AnyMessage + Send))
+        })
+    }
+}
+
 /// A message descriptor
 pub struct MessageDescriptor {
     proto: *const DescriptorProto,
-    new: Option<fn() -> Box<crate::CodedMessage + 'static>>,
+    new: Option<fn() -> Box<AnyMessage>>,
     scope: CompositeScope,
     scope_index: usize,
     full_name: String,
@@ -653,7 +793,7 @@ impl MessageDescriptor {
     }
 
     /// Creates a new instance of the type represented by this descriptor
-    pub fn new_message(&self) -> Option<Box<crate::CodedMessage + 'static>> {
+    pub fn new_message(&self) -> Option<Box<AnyMessage>> {
         Some((self.new?)())
     }
 
@@ -1476,6 +1616,24 @@ pub enum FieldType {
     Group(Ref<MessageDescriptor>),
 }
 
+impl FieldType {
+    /// Gets the wire type of this field type.
+    /// 
+    /// This function does not consider if the field is packed.
+    /// For the wire type of fields considering packed, use `FieldDescriptor::wire_type`
+    pub fn wire_type(&self) -> WireType {
+        match self {
+            FieldType::Message(_) | FieldType::String | FieldType::Bytes => {
+                WireType::LengthDelimited
+            }
+            FieldType::Group(_) => WireType::StartGroup,
+            FieldType::Fixed32 | FieldType::Sfixed32 | FieldType::Float => WireType::Bit32,
+            FieldType::Fixed64 | FieldType::Sfixed64 | FieldType::Double => WireType::Bit64,
+            _ => WireType::Varint,
+        }
+    }
+}
+
 impl Debug for FieldType {
     fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
         use crate::reflect::FieldType::*;
@@ -1536,6 +1694,7 @@ impl Debug for DefaultValue {
 pub struct FieldDescriptor {
     proto: *const FieldDescriptorProto,
     full_name: String,
+    number: FieldNumber,
     scope: FieldScope,
     scope_index: usize,
     value_type: FieldType,
@@ -1557,8 +1716,8 @@ impl FieldDescriptor {
         &self.full_name
     }
 
-    pub fn number(&self) -> i32 {
-        self.proto().number()
+    pub fn number(&self) -> FieldNumber {
+        self.number
     }
 
     pub fn label(&self) -> FieldLabel {
@@ -1595,7 +1754,7 @@ impl FieldDescriptor {
     }
 
     pub fn packed(&self) -> bool {
-        if self.label() == FieldLabel::Repeated && self.wire_type().is_packable() {
+        if self.label() == FieldLabel::Repeated && self.field_type().wire_type().is_packable() {
             if let Some(options) = self.options() {
                 if options.has_packed() {
                     return options.packed();
@@ -1608,14 +1767,10 @@ impl FieldDescriptor {
     }
 
     pub fn wire_type(&self) -> WireType {
-        match self.field_type() {
-            FieldType::Message(_) | FieldType::String | FieldType::Bytes => {
-                WireType::LengthDelimited
-            }
-            FieldType::Group(_) => WireType::StartGroup,
-            FieldType::Fixed32 | FieldType::Sfixed32 | FieldType::Float => WireType::Bit32,
-            FieldType::Fixed64 | FieldType::Sfixed64 | FieldType::Double => WireType::Bit64,
-            _ => WireType::Varint,
+        if self.packed() {
+            WireType::LengthDelimited
+        } else {
+            self.field_type().wire_type()
         }
     }
 
@@ -1644,6 +1799,7 @@ impl FieldDescriptor {
         descriptor.proto = proto;
         descriptor.scope = scope;
         descriptor.scope_index = index;
+        descriptor.number = FieldNumber::new(descriptor.proto().number() as u32).expect("invalid field number");
         descriptor.full_name = match &descriptor.scope {
             FieldScope::File(f) => format!(".{}.{}", f.package(), descriptor.name()),
             FieldScope::Message(m) => format!("{}.{}", m.full_name(), descriptor.name()),

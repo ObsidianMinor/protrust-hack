@@ -73,7 +73,7 @@ impl crate::CodedMessage for self::Empty {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

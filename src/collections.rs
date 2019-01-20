@@ -70,7 +70,7 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
             }
             Ok(())
         } else {
-            Err(InputError::InvalidTag)
+            Err(InputError::InvalidTag(tag))
         }
     }
     #[doc(hidden)]
@@ -339,7 +339,7 @@ impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapRead
                 tag if tag == self.codec.value.tag() => {
                     self.codec.value.merge_from(input, &mut self.value)?
                 }
-                tag => input.skip(tag)?,
+                _ => input.skip(tag)?,
             }
         }
         Ok(())

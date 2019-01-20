@@ -14,7 +14,7 @@ fn get_type_url(descriptor: &MessageDescriptor, prefix: &str) -> String {
     }
 }
 
-/// Gets the type name from a type url in an Any value
+/// Gets the type name from a type url in an Any value or None if the url is invalid
 ///
 /// # Examples
 /// ```
@@ -30,10 +30,48 @@ pub fn get_type_name(url: &str) -> Option<&str> {
 }
 
 impl Any {
+    /// Creates a new `Any` value from a message of type `T`. 
+    /// 
+    /// This uses the default prefix "type.googleapis.com". A different prefix can be used with `pack_with_prefix`
+    /// 
+    /// # Examples
+    /// ```
+    /// use protrust::LiteMessage;
+    /// use protrust::wkt::{any::Any, timestamp::Timestamp};
+    /// # use std::error::Error;
+    /// 
+    /// # fn main() -> Result<(), Box<Error>> {
+    /// let time = Timestamp::new();
+    /// let any = Any::pack(&time)?;
+    /// 
+    /// assert_eq!(any.type_url(), "type.googleapis.com/google.protobuf.Timestamp");
+    /// assert_ne!(any.type_url(), "example.com/google.protobuf.Timestamp");
+    /// 
+    /// # Ok(())
+    /// # }
+    /// ```
     pub fn pack<T: Message>(message: &T) -> Result<Any, crate::io::OutputError> {
         Any::pack_with_prefix(message, DEFAULT_PREFIX)
     }
 
+    /// Creates a new `Any` value from a message of type `T` with the specified url prefix
+    /// 
+    /// # Examples
+    /// ```
+    /// use protrust::LiteMessage;
+    /// use protrust::wkt::{any::Any, timestamp::Timestamp};
+    /// # use std::error::Error;
+    /// 
+    /// # fn main() -> Result<(), Box<Error>> {
+    /// let time = Timestamp::new();
+    /// let any = Any::pack_with_prefix(&time, "example.com")?;
+    ///
+    /// assert_eq!(any.type_url(), "example.com/google.protobuf.Timestamp");
+    /// assert_ne!(any.type_url(), "type.googleapis.com/google.protobuf.Timestamp");
+    /// 
+    /// # Ok(())
+    /// # }
+    /// ```
     pub fn pack_with_prefix<T: Message>(message: &T, prefix: &str) -> Result<Any, OutputError> {
         let mut value = Any::new();
         *value.type_url_mut() = get_type_url(T::descriptor(), prefix);
@@ -42,6 +80,24 @@ impl Any {
         Ok(value)
     }
 
+    /// Returns a bool indicating if this `Any` value is of the specified message type `T`.
+    /// 
+    /// # Examples
+    /// ```
+    /// use protrust::LiteMessage;
+    /// use protrust::wkt::{any::Any, timestamp::Timestamp};
+    /// # use std::error::Error;
+    /// 
+    /// # fn main() -> Result<(), Box<Error>> {
+    /// let time = Timestamp::new();
+    /// let any = Any::pack(&time)?;
+    /// 
+    /// assert!(any.is::<Timestamp>());
+    /// assert!(!any.is::<Any>());
+    /// 
+    /// # Ok(())
+    /// # }
+    /// ```
     pub fn is<T: Message>(&self) -> bool {
         match get_type_name(self.type_url()) {
             Some(msg_type) => *msg_type == T::descriptor().full_name()[1..],
@@ -49,27 +105,54 @@ impl Any {
         }
     }
 
-    /// Unpacks a message of the specified type
-    ///
+    /// Unpacks a message of the specified type, returning None if
+    /// the message is not of the specified message type `T`.
+    /// 
     /// # Examples
-    /// ```text
-    /// let msg = Timestamp::from_system_time(&SystemTime::now())?;
-    /// let packed = Any::pack(msg);
-    ///
-    /// if let Some(timestamp) = packed.unpack<Timestamp>()? {
-    ///     assert!(timestamp.eq(msg));
-    /// }
     /// ```
-    pub fn unpack<T: Message>(&self) -> Result<Option<T>, crate::io::InputError> {
+    /// use protrust::LiteMessage;
+    /// use protrust::wkt::{any::Any, timestamp::Timestamp};
+    /// 
+    /// # fn main() -> Result<(), Box<std::error::Error>> {
+    /// let time = Timestamp::new();
+    /// let any = Any::pack(&time)?;
+    /// 
+    /// if let Some(result) = any.unpack::<Timestamp>() {
+    ///     assert_eq!(result?, time);
+    /// }
+    /// 
+    /// assert!(any.unpack::<Any>().is_none());
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn unpack<T: Message>(&self) -> Option<crate::io::InputResult<T>> {
         if self.is::<T>() {
-            Ok(Some(self.unpack_unchecked::<T>()?))
+            Some(self.unpack_unchecked::<T>())
         } else {
-            Ok(None)
+            None
         }
     }
 
-    #[inline]
-    pub fn unpack_unchecked<T: Message>(&self) -> Result<T, crate::io::InputError> {
+    /// Unpacks a message of the specified type without 
+    /// checking if this Any instance is an instance of the type.
+    /// 
+    /// This is useful if you've already checked that this is
+    /// instance of the specified type
+    /// 
+    /// # Examples
+    /// ```
+    /// use protrust::LiteMessage;
+    /// use protrust::wkt::{any::Any, timestamp::Timestamp};
+    /// 
+    /// # fn main() -> Result<(), Box<std::error::Error>> {
+    /// let time = Timestamp::new();
+    /// let any = Any::pack(&time)?;
+    /// 
+    /// assert_eq!(any.unpack_unchecked::<Timestamp>()?, time);
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn unpack_unchecked<T: Message>(&self) -> crate::io::InputResult<T> {
         T::read_new(&mut self.value().as_slice())
     }
 }

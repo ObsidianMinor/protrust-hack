@@ -7,12 +7,12 @@ mod gen {
 }
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
-use crate::gen::{conformance_proto::*, test_messages_proto2_proto, test_messages_proto3_proto};
+use crate::gen::{conformance_proto::*, test_messages_proto2_proto as proto2_messages, test_messages_proto3_proto as proto3_messages};
 use protrust::prelude::*;
 use protrust::reflect::DescriptorPool;
 use std::io::{Write, Read, stdin, stdout, ErrorKind};
 
-fn main() {
+fn main() -> Result<(), Box<std::error::Error>> {
     let stdin = stdin();
     let stdout = stdout();
 
@@ -23,30 +23,27 @@ fn main() {
         match stdinlock.read_i32::<LittleEndian>() {
             Ok(len) => {
                 let mut take = (&mut stdinlock).take(len as u64);
-                let response = process_request(ConformanceRequest::read_new(&mut take).expect("Could not read request"));
-                stdoutlock.write_i32::<LittleEndian>(response.calculate_size()).expect("Could not write response length to stdout");
-                response.write(&mut stdoutlock).expect("Could not write response to stdout");
-                stdoutlock.flush().expect("Could not flush response");
+                let response = process_request(ConformanceRequest::read_new(&mut take)?);
+                stdoutlock.write_i32::<LittleEndian>(response.calculate_size())?;
+                response.write(&mut stdoutlock)?;
+                stdoutlock.flush()?;
             },
             Err(ref e) if e.kind() == ErrorKind::UnexpectedEof => {
                 break;
             },
-            Err(e) => {
-                panic!("Could not read request length: {}", e)
-            },
+            Err(e) => return Err(Box::new(e)),
         }
     }
+
+    Ok(())
 }
 
 fn process_request(request: ConformanceRequest) -> ConformanceResponse {
-    let proto2_pool = test_messages_proto2_proto::pool();
-    let proto3_pool = test_messages_proto3_proto::pool();
-    let pools = [proto2_pool, proto3_pool];
+    let pools = [proto2_messages::pool(), proto3_messages::pool()];
     let pool = DescriptorPool::build_from_pools(&pools);
 
     let mut msg_type = request.message_type().clone();
     msg_type.insert(0, '.');
-    eprintln!("Finding descriptor for {}", msg_type);
     let descriptor: &protrust::reflect::MessageDescriptor;
     if let Some(found) = pool.find_message_by_name(&msg_type) {
         descriptor = found;

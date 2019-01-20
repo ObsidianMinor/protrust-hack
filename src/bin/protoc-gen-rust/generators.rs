@@ -1,8 +1,6 @@
-use crate::names;
-use crate::printer;
-use crate::Options;
+use crate::{names, printer, Options};
 use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
-use protrust::io::WireType;
+use protrust::io::{self, WireType};
 use protrust::prelude::*;
 use protrust::reflect::*;
 use pulldown_cmark::{Parser, Event, Tag};
@@ -331,7 +329,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
                         }
                         genln!(
                             self.printer,
-                            "tag => self.unknown_fields.merge_from(tag, input)?"
+                            "_ => self.unknown_fields.merge_from(tag, input)?"
                         );
                     });
                     genln!(self.printer, "}}");
@@ -481,7 +479,7 @@ generator_new!(FieldDescriptor, proto, options;
     "crate_name", options.crate_name.clone(),
     "new_value", default_field_value(proto, &options.crate_name),
     "field_number_const", names::get_field_number_const_name(proto),
-    "number", proto.number().to_string(),
+    "number", proto.number().get().to_string(),
     "default", names::get_field_default_value_name(proto),
     "default_type", match proto.field_type() {
         FieldType::String => format!("&'static str"),
@@ -526,40 +524,24 @@ generator_new!(FieldDescriptor, proto, options;
             _ => String::new()
         }
     },
-    "tag_size", {
-        let wt = proto.wire_type();
-        let tag = WireType::make_tag(proto.number(), wt);
-
-        protrust::io::sizes::uint32(tag).to_string()
-    },
-    "tag", {
-        if proto.packed() {
-            WireType::make_tag(proto.number(), WireType::LengthDelimited).to_string()
-        } else {
-            WireType::make_tag(proto.number(), proto.wire_type()).to_string()
-        }
-    },
+    "tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), proto.wire_type()).get()).to_string(),
+    "tag", io::Tag::new(proto.number(), proto.wire_type()).get().to_string(),
     "tags", {
         if proto.packed() {
-            format!("{} | {}", WireType::make_tag(proto.number(), proto.wire_type()), WireType::make_tag(proto.number(), WireType::LengthDelimited))
+            format!("{} | {}", io::Tag::new(proto.number(), proto.wire_type()).get(), io::Tag::new(proto.number(), proto.field_type().wire_type()).get())
         } else {
-            WireType::make_tag(proto.number(), proto.wire_type()).to_string()
+            io::Tag::new(proto.number(), proto.wire_type()).get().to_string()
         }
     },
     "end_tag", {
         if let FieldType::Group(_) = proto.field_type() {
-            WireType::make_tag(proto.number(), WireType::EndGroup).to_string()
+            io::Tag::new(proto.number(), WireType::EndGroup).get().to_string()
         } else {
             String::new()
         }
     },
     "tag_bytes", {
-        let tag;
-        if proto.packed() {
-            tag = WireType::make_tag(proto.number(), WireType::LengthDelimited);
-        } else {
-            tag = WireType::make_tag(proto.number(), proto.wire_type()).to_le();
-        }
+        let tag = io::Tag::new(proto.number(), proto.wire_type()).get().to_le();
 
         let mut bytes = Vec::with_capacity(protrust::io::sizes::uint32(tag) as usize);
         let mut output = protrust::io::CodedOutput::new(&mut bytes);
@@ -569,7 +551,7 @@ generator_new!(FieldDescriptor, proto, options;
     },
     "end_tag_bytes", {
         if let FieldType::Group(_) = proto.field_type() {
-            let tag = WireType::make_tag(proto.number(), WireType::EndGroup);
+            let tag = io::Tag::new(proto.number(), WireType::EndGroup).get().to_le();
 
             let mut bytes = Vec::with_capacity(protrust::io::sizes::uint32(tag) as usize);
             let mut output = protrust::io::CodedOutput::new(&mut bytes);

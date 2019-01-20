@@ -101,7 +101,7 @@ impl ::protrust::CodedMessage for self::Person {
                 26 => self.email = input.read_string()?,
                 34 => self.phones.add_entries(tag.get(), input, &PERSON_PHONES_CODEC)?,
                 42 => input.read_message(&mut **self.last_updated.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -277,7 +277,7 @@ impl ::protrust::CodedMessage for self::Person_PhoneNumber {
             match tag.get() {
                 10 => self.number = input.read_string()?,
                 16 => self.r#type = input.read_enum_value()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())
@@ -405,7 +405,7 @@ impl ::protrust::CodedMessage for self::AddressBook {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.people.add_entries(tag.get(), input, &ADDRESS_BOOK_PEOPLE_CODEC)?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

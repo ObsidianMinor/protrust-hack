@@ -153,7 +153,7 @@ impl crate::CodedMessage for self::Any {
             match tag.get() {
                 10 => self.type_url = input.read_string()?,
                 18 => self.value = input.read_bytes()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

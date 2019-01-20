@@ -148,7 +148,7 @@ impl crate::CodedMessage for self::Timestamp {
             match tag.get() {
                 8 => self.seconds = input.read_int64()?,
                 16 => self.nanos = input.read_int32()?,
-                tag => self.unknown_fields.merge_from(tag, input)?
+                _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
         ::std::result::Result::Ok(())

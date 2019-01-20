@@ -4,5 +4,5 @@ version = "0.0.0"
 edition = "2018"
 
 [dependencies]
-protrust = { path = "../../src/libprotrust" }
+protrust = { path = "../.." }
 byteorder = { version = "1.2.*" }

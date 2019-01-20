@@ -1,18 +1,32 @@
+//! Contains types for reading and writing Protocol Buffer streams
+
 use crate::CodedMessage;
 use std::cmp::min;
 use std::convert::TryInto;
+use std::fmt::{Display, Formatter, Error};
 use std::io::{Read, Write};
 use std::mem;
 use std::num::NonZeroU32;
 
-/// The wire type of a protobuf value
+/// The wire type of a protobuf value. 
+/// 
+/// A wire type is paired with a field number between 1 and 536,870,911 to create a tag, 
+/// a unique identifier for a field on the wire.
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug)]
 pub enum WireType {
+    /// A value read a variable length integer. 
+    /// 
+    /// See the protobuf docs for more information on this encoding: https://developers.google.com/protocol-buffers/docs/encoding#varints
     Varint = 0,
+    /// A 64-bit value encoded as 8 little endian bytes
     Bit64 = 1,
+    /// A length delimited value. The length is encoded as a varint
     LengthDelimited = 2,
+    /// A start group tag, deprecated in proto3.
     StartGroup = 3,
+    /// An end group tag, deprecated in proto3.
     EndGroup = 4,
+    /// A 32-bit value encoded as 4 little endian bytes
     Bit32 = 5,
 }
 
@@ -43,26 +57,120 @@ impl WireType {
         }
     }
 
-    pub const fn get_num(value: u32) -> i32 {
-        (value >> 3) as i32
-    }
-
-    pub const fn make_tag(num: i32, wt: WireType) -> u32 {
-        (num << 3) as u32 | wt as u32
-    }
-
-    /// Gets whether a wire type is eligable for repeated field packing
+    /// Gets whether a wire type is eligible for repeated field packing
     pub fn is_packable(self) -> bool {
         return self == WireType::Bit32 || self == WireType::Bit64 || self == WireType::Varint;
     }
 }
 
-/// Provides helper functions for calculating the size of values
-pub mod sizes {
+/// A protobuf field number. Its value is known to be less than 536870911 and not 0.
+#[repr(transparent)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct FieldNumber(NonZeroU32);
+
+impl FieldNumber {
+    /// The max value of a field number
+    pub const MAX_VALUE: u32 = 536870911;
+
+    /// Create a field number without checking the value.
+    /// 
+    /// # Safety
+    /// 
+    /// The value must be a valid field number
+    #[inline]
+    pub const unsafe fn new_unchecked(n: u32) -> FieldNumber {
+        FieldNumber(NonZeroU32::new_unchecked(n))
+    }
+
+    /// Creates a field number if the given value is not zero or more than 536870911
+    #[inline]
+    pub fn new(n: u32) -> Option<FieldNumber> {
+        if n != 0 && n < Self::MAX_VALUE {
+            unsafe {
+                Some(FieldNumber(NonZeroU32::new_unchecked(n)))
+            }
+        } else {
+            None
+        }
+    }
+
+    /// Returns the value as a primitive type
+    #[inline]
+    pub fn get(self) -> u32 {
+        self.0.get()
+    }
+}
+
+/// A tag containing a wire type and field number. Its value is known to not be 0, and both field number and wire type are valid values
+#[repr(transparent)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Tag(NonZeroU32);
+
+impl Tag {
+    /// Create a tag without checking the value.
+    /// 
+    /// # Safety
+    /// 
+    /// The value must be a valid tag
+    #[inline]
+    pub const unsafe fn new_unchecked(n: u32) -> Tag {
+        Tag(NonZeroU32::new_unchecked(n))
+    }
+
+    /// Creates a new tag if the value is not zero and has a valid field number and wire type
+    /// 
+    /// # Examples
+    /// 
+    /// ```
+    /// use protrust::io::Tag;
+    /// 
+    /// assert!(Tag::new_from_raw(1).is_none());
+    /// assert!(Tag::new_from_raw(8).is_some());
+    /// assert!(Tag::new_from_raw(16).is_some());
+    /// assert!(Tag::new_from_raw(14).is_none());
+    /// ```
+    #[inline]
+    pub fn new_from_raw(n: u32) -> Option<Tag> {
+        match (n & 0b111, n >> 3) { // (wire type, field number)
+            (6, _) | (7, _) | (_, 0) => None,
+            _ => unsafe { Some(Tag(NonZeroU32::new_unchecked(n))) }
+        }
+    }
+
+    /// Creates a new tag value
+    #[inline]
+    pub fn new(f: FieldNumber, wt: WireType) -> Tag {
+        unsafe {
+            Tag(NonZeroU32::new_unchecked((f.get() << 3) | wt as u32))
+        }
+    }
+
+    /// Gets the wire type from this tag
+    #[inline]
+    pub fn wire_type(self) -> WireType {
+        WireType::get_type(self.get() & 0b111).unwrap()
+    }
+
+    /// Gets the field number from this tag
+    #[inline]
+    pub fn number(self) -> FieldNumber {
+        unsafe {
+            FieldNumber::new_unchecked(self.get() >> 3)
+        }
+    }
+
+    /// Returns the value as a primitive type
+    #[inline]
+    pub fn get(self) -> u32 {
+        self.0.get()
+    }
+}
+
+#[doc(hidden)]
+pub mod sizes { // a helper module for calculating sizes in generated code
     use crate::CodedMessage;
 
     #[inline]
-    /// Gets the size of a given int32 value
     pub fn int32(value: i32) -> i32 {
         if value >= 0 {
             raw_varint32_size(value as u32)
@@ -77,7 +185,6 @@ pub mod sizes {
     }
 
     #[inline]
-    /// Gets the size of a given
     pub fn int64(value: i64) -> i32 {
         raw_varint64_size(value as u64)
     }
@@ -210,7 +317,6 @@ pub mod sizes {
         4
     }
 
-    /// Gets the size of float values
     #[inline]
     pub fn float(_value: f32) -> i32 {
         4
@@ -267,13 +373,18 @@ pub mod sizes {
     }
 }
 
-/// The error in a [InputResult](#InputResult`1)
+/// The error type for [`CodedInput`](struct.CodedInput.html) and associated read operations
 #[derive(Debug)]
 pub enum InputError {
+    /// The input contained a malformed variable length integer
     MalformedVarint,
+    /// The input contained a length delimited value which reported it had a negative size
     NegativeSize,
-    InvalidTag,
+    /// The input contained an invalid tag (zero or the tag had an invalid wire format)
+    InvalidTag(u32),
+    /// An error occured while reading from the underlying `Read` object
     IoError(std::io::Error),
+    /// The input contained an invalid UTF8 string
     InvalidString(std::string::FromUtf8Error),
 }
 
@@ -289,57 +400,24 @@ impl From<std::string::FromUtf8Error> for InputError {
     }
 }
 
-/// The result of a read from a [CodedInput](#CodedInput)
-pub type InputResult<T> = Result<T, InputError>;
-/*
-/// A protocol buffer input stream.
-pub trait CodedInput {
-    /// Reads a double from the coded input
-    fn read_double(&mut self) -> InputResult<f64>;
-    /// Reads a float from the coded input
-    fn read_float(&mut self) -> InputResult<f32>;
-    /// Reads an int32 from the coded input
-    fn read_int32(&mut self) -> InputResult<i32>;
-    /// Reads an int64 from the coded input
-    fn read_int64(&mut self) -> InputResult<i64>;
-    /// Reads a uint32 from the coded input
-    fn read_uint32(&mut self) -> InputResult<u32>;
-    /// Reads a uint64 from the coded input
-    fn read_uint64(&mut self) -> InputResult<u64>;
-    /// Reads an sint32 from the coded input
-    fn read_sint32(&mut self) -> InputResult<i32>;
-    /// Reads an sint64 from the coded input
-    fn read_sint64(&mut self) -> InputResult<i64>;
-    /// Reads a fixed32 from the coded input
-    fn read_fixed32(&mut self) -> InputResult<u32>;
-    /// Reads a fixed64 from the coded input
-    fn read_fixed64(&mut self) -> InputResult<u64>;
-    /// Reads an sfixed32 from the coded input
-    fn read_sfixed32(&mut self) -> InputResult<i32>;
-    /// Reads an sfixed64 from the coded input
-    fn read_sfixed64(&mut self) -> InputResult<i64>;
-    /// Reads a bool from the coded input
-    fn read_bool(&mut self) -> InputResult<bool>;
-    /// Reads a string from the coded input
-    fn read_string(&mut self) -> InputResult<String>;
-    /// Reads a bytes value from the coded input
-    fn read_bytes(&mut self) -> InputResult<Vec<u8>>;
-    /// Merges the coded input into the given message
-    fn read_message(&mut self, value: &mut CodedMessage) -> InputResult<()>;
-    /// Merges the coded input into the given group
-    fn read_group(&mut self, value: &mut CodedMessage) -> InputResult<()>;
-
-    /// Reads a tag from the coded input
-    fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>>;
-
-    /// Pushes a limit, returning the previous limit
-    fn push_limit(&mut self, limit: i32) -> Option<i32>;
-    /// Returns a bool indicating which the read limit has been reached
-    fn reached_limit(&self) -> bool;
-    /// Pops the current limit, reapplying the previous limit
-    fn pop_limit(&mut self, previous: Option<i32>);
+impl Display for InputError {
+    fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
+        use self::InputError::*;
+        match self {
+            MalformedVarint => write!(fmt, "the input contained an invalid variable length integer"),
+            NegativeSize => write!(fmt, "the input contained a length delimited value which reported it had a negative size"),
+            InvalidTag(val) => write!(fmt, "the input contained an tag that was either invalid or was unexpected at this point in the input: {}", val),
+            IoError(e) => write!(fmt, "{}", e),
+            InvalidString(e) => write!(fmt, "{}", e)
+        }
+    }
 }
-*/
+
+impl std::error::Error for InputError { }
+
+/// The result of a read from a CodedInput
+pub type InputResult<T> = Result<T, InputError>;
+
 /// A protocol buffers input stream
 pub struct CodedInput<'a> {
     inner: &'a mut Read,
@@ -347,12 +425,16 @@ pub struct CodedInput<'a> {
 }
 
 impl<'a> CodedInput<'a> {
+    /// Creates a new CodedInput from the specified Read instance
+    /// 
+    /// # Examples
+    /// ## Read from stdin
+    /// ```
+    /// let stdin = std::io::stdin();
+    /// let mut input = CodedInput::new(&mut stdin.lock());
+    /// ```
     pub fn new(inner: &'a mut Read) -> Self {
         CodedInput { inner, limit: None }
-    }
-
-    pub fn into_inner(self) -> &'a mut Read {
-        self.inner
     }
 
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
@@ -385,6 +467,7 @@ impl<'a> CodedInput<'a> {
             self.inner.read_exact(buf)
         }
     }
+
     pub(crate) fn push_limit(&mut self, limit: i32) -> Option<i32> {
         let old = {
             if let Some(existing) = self.limit {
@@ -402,43 +485,56 @@ impl<'a> CodedInput<'a> {
     pub(crate) fn pop_limit(&mut self, previous: Option<i32>) {
         mem::replace(&mut self.limit, previous);
     }
-    pub(crate) fn skip(&mut self, tag: u32) -> InputResult<()> {
-        match WireType::get_type(tag) {
-            Some(WireType::Varint) => {
+    pub(crate) fn skip(&mut self, tag: Tag) -> InputResult<()> {
+        match tag.wire_type() {
+            WireType::Varint => {
                 self.read_uint64()?;
             }
-            Some(WireType::Bit64) => {
+            WireType::Bit64 => {
                 self.read_fixed64()?;
             }
-            Some(WireType::LengthDelimited) => {
+            WireType::LengthDelimited => {
                 self.read_bytes()?;
             }
-            Some(WireType::StartGroup) => {
+            WireType::StartGroup => {
                 while let Some(tag) = self.read_tag()? {
-                    self.skip(tag.get())?;
+                    self.skip(tag)?;
                 }
             }
-            Some(WireType::Bit32) => {
+            WireType::Bit32 => {
                 self.read_fixed32()?;
+            },
+            WireType::EndGroup => {
+                return Err(InputError::InvalidTag(tag.get()))
             }
-            _ => return Err(InputError::InvalidTag),
         }
 
         Ok(())
     }
+
+    /// Reads a bool value from the input
     pub fn read_bool(&mut self) -> InputResult<bool> {
         Ok(self.read_uint32()? != 0)
     }
-    pub fn read_message(&mut self, message: &mut CodedMessage) -> InputResult<()> {
+    /// Reads a message from the input, merging it with an existing coded message
+    pub fn read_message(&mut self, message: &mut dyn CodedMessage) -> InputResult<()> {
         let len = self.read_int32()?;
         let old = self.push_limit(len);
         message.merge_from(self)?;
-        self.pop_limit(old);
-        Ok(())
+        if !self.reached_limit() {
+            Err(InputError::IoError(std::io::Error::new(
+                    std::io::ErrorKind::UnexpectedEof,
+                    "the input ended in the middle of a field")))
+        } else {
+            self.pop_limit(old);
+            Ok(())
+        }
     }
-    pub fn read_group(&mut self, message: &mut CodedMessage) -> InputResult<()> {
+    /// Reads a group message from the input, merging it with an existing coded message
+    pub fn read_group(&mut self, message: &mut dyn CodedMessage) -> InputResult<()> {
         message.merge_from(self)
     }
+    /// Reads a length delimited `bytes` value from the input
     pub fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
         let len = self.read_uint32()? as usize;
         let mut buf = Vec::with_capacity(len);
@@ -448,50 +544,62 @@ impl<'a> CodedInput<'a> {
         self.read_exact(&mut buf)?;
         Ok(buf)
     }
+    /// Reads a length delimited `string` value from the input
     pub fn read_string(&mut self) -> InputResult<String> {
         let bytes = self.read_bytes()?;
         Ok(String::from_utf8(bytes)?)
     }
+    /// Reads a `fixed32` value from the input
     pub fn read_fixed32(&mut self) -> InputResult<u32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
-        unsafe { Ok(u32::from_le(mem::transmute(buf))) }
+        Ok(u32::from_le_bytes(buf))
     }
+    /// Reads an `sfixed32` value from the input
     pub fn read_sfixed32(&mut self) -> InputResult<i32> {
         let mut buf = [0u8; 4];
         self.read_exact(&mut buf)?;
-        unsafe { Ok(i32::from_le(mem::transmute(buf))) }
+        Ok(i32::from_le_bytes(buf))
     }
+    /// Reads a `float` value from the input
     pub fn read_float(&mut self) -> InputResult<f32> {
         Ok(f32::from_bits(self.read_fixed32()?))
     }
+    /// Reads a `fixed64` value from the input
     pub fn read_fixed64(&mut self) -> InputResult<u64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
-        unsafe { Ok(u64::from_le(mem::transmute(buf))) }
+        Ok(u64::from_le_bytes(buf))
     }
+    /// Reads an `sfixed64` value from the input
     pub fn read_sfixed64(&mut self) -> InputResult<i64> {
         let mut buf = [0u8; 8];
         self.read_exact(&mut buf)?;
-        unsafe { Ok(i64::from_le(mem::transmute(buf))) }
+        Ok(i64::from_le_bytes(buf))
     }
+    /// Reads a `double` value from the input
     pub fn read_double(&mut self) -> InputResult<f64> {
         Ok(f64::from_bits(self.read_fixed64()?))
     }
+    /// Reads an `sint32` value from the input
     pub fn read_sint32(&mut self) -> InputResult<i32> {
         let val = self.read_uint32()?;
         Ok(((val >> 1) as i32) ^ -((val & 1) as i32))
     }
+    /// Reads an `sint64` value from the input
     pub fn read_sint64(&mut self) -> InputResult<i64> {
         let val = self.read_uint64()?;
         Ok(((val >> 1) as i64) ^ -((val & 1) as i64))
     }
+    /// Reads an `int32` value from the input
     pub fn read_int32(&mut self) -> InputResult<i32> {
         Ok(self.read_uint32()? as i32)
     }
+    /// Reads an `int64` value from the input
     pub fn read_int64(&mut self) -> InputResult<i64> {
         Ok(self.read_uint64()? as i64)
     }
+    /// Reads a `uint32` value from the input
     pub fn read_uint32(&mut self) -> InputResult<u32> {
         let mut shift = 0i32;
         let mut result = 0i32;
@@ -513,6 +621,7 @@ impl<'a> CodedInput<'a> {
         }
         Err(InputError::MalformedVarint)
     }
+    /// Reads a `uint64` value from the input
     pub fn read_uint64(&mut self) -> InputResult<u64> {
         let mut shift = 0i32;
         let mut result = 0u64;
@@ -527,7 +636,8 @@ impl<'a> CodedInput<'a> {
         }
         Err(InputError::MalformedVarint)
     }
-    pub fn read_tag(&mut self) -> InputResult<Option<NonZeroU32>> {
+    /// Reads a tag from the input
+    pub fn read_tag(&mut self) -> InputResult<Option<Tag>> {
         let mut shift = 0i32;
         let mut result = 0i32;
         let mut buf = [0u8; 1];
@@ -544,10 +654,9 @@ impl<'a> CodedInput<'a> {
             }
             result |= ((buf[0] & 0x7F) as i32) << shift;
             if (buf[0] & 0x80) == 0 {
-                if result == 0 {
-                    return Err(InputError::InvalidTag);
-                } else {
-                    return Ok(NonZeroU32::new(result as u32));
+                return match Tag::new_from_raw(result as u32) {
+                    Some(tag) => Ok(Some(tag)),
+                    None => Err(InputError::InvalidTag(result as u32))
                 }
             }
             shift += 7;
@@ -555,12 +664,16 @@ impl<'a> CodedInput<'a> {
         while shift < 64 {
             self.read_exact(&mut buf)?;
             if (buf[0] & 0x80) == 0 {
-                return Ok(NonZeroU32::new(result as u32));
+                return match Tag::new_from_raw(result as u32) {
+                    Some(tag) => Ok(Some(tag)),
+                    None => Err(InputError::InvalidTag(result as u32))
+                }
             }
             shift += 7;
         }
         Err(InputError::MalformedVarint)
     }
+    /// Reads an enum value from the input
     pub fn read_enum_value<E: std::convert::TryFrom<i32, Error = crate::VariantUndefinedError>>(
         &mut self,
     ) -> InputResult<crate::EnumValue<E>> {
@@ -571,7 +684,9 @@ impl<'a> CodedInput<'a> {
 /// The error of an [OutputResult](#OutputResult)
 #[derive(Debug)]
 pub enum OutputError {
+    /// The input message contained a length delimited field that was larger than the max value 
     ValueTooLarge,
+    /// An error occured while writing to the underlying `Write` object
     IoError(std::io::Error),
 }
 
@@ -581,85 +696,53 @@ impl From<std::io::Error> for OutputError {
     }
 }
 
+impl Display for OutputError {
+    fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
+        use self::OutputError::*;
+        match self {
+            ValueTooLarge => write!(fmt, "a contained value reported it's length in bytes exceeds 2147483647 and is too large to write as an length delimited field"),
+            IoError(e) => write!(fmt, "{}", e)
+        }
+    }
+}
+
+impl std::error::Error for OutputError { }
+
 /// The result of a write to a [CodedOutput](#CodedOutput)
 pub type OutputResult = Result<(), OutputError>;
 
-/*
-/// A protocol buffer output stream
-pub trait CodedOutput {
-    /// Writes a double value to the coded output
-    fn write_double(&mut self, value: f64) -> OutputResult;
-    /// Writes a float value to the coded output
-    fn write_float(&mut self, value: f32) -> OutputResult;
-    /// Writes an int32 value to the coded output
-    fn write_int32(&mut self, value: i32) -> OutputResult;
-    /// Writes an int64 value to the coded output
-    fn write_int64(&mut self, value: i64) -> OutputResult;
-    /// Writes a uint32 value to the coded output
-    fn write_uint32(&mut self, value: u32) -> OutputResult;
-    /// Writes a uint64 value to the coded output
-    fn write_uint64(&mut self, value: u64) -> OutputResult;
-    /// Writes an sint32 value to the coded output
-    fn write_sint32(&mut self, value: i32) -> OutputResult;
-    /// Writes an sint64 value to the coded output
-    fn write_sint64(&mut self, value: i64) -> OutputResult;
-    /// Writes a fixed32 value to the coded output
-    fn write_fixed32(&mut self, value: u32) -> OutputResult;
-    /// Writes a fixed64 value to the coded output
-    fn write_fixed64(&mut self, value: u64) -> OutputResult;
-    /// Writes an sfixed32 value to the coded output
-    fn write_sfixed32(&mut self, value: i32) -> OutputResult;
-    /// Writes an sfixed64 value to the coded output
-    fn write_sfixed64(&mut self, value: i64) -> OutputResult;
-    /// Writes a bool value to the coded output
-    fn write_bool(&mut self, value: bool) -> OutputResult;
-    /// Writes a string value to the coded output
-    fn write_string(&mut self, value: &String) -> OutputResult;
-    /// Writes a bytes value to the coded output
-    fn write_bytes(&mut self, value: &Vec<u8>) -> OutputResult;
-    /// Writes a message to the coded output
-    fn write_message(&mut self, value: &CodedMessage) -> OutputResult;
-    /// Writes a group to the coded output
-    fn write_group(&mut self, value: &CodedMessage) -> OutputResult;
-
-    /// Writes a float value to the coded output
-    fn write_tag(&mut self, num: i32, wtype: WireType) -> OutputResult;
-    /// Writes a float value to the coded output
-    fn write_raw_tag(&mut self, value: u32) -> OutputResult;
-    /// Writes a float value to the coded output
-    fn write_raw_tag_bytes(&mut self, value: &[u8]) -> OutputResult;
-}
-*/
-
+/// A protocol buffers output stream
 pub struct CodedOutput<'a> {
     inner: &'a mut Write,
 }
 
 impl<'a> CodedOutput<'a> {
+    /// Creates a new CodedOutput using the specified Write object
     pub fn new(inner: &'a mut Write) -> Self {
         CodedOutput { inner }
     }
 
-    pub fn into_inner(self) -> &'a mut Write {
-        self.inner
-    }
-
+    #[doc(hidden)]
     pub fn write_raw_tag_bytes(&mut self, value: &[u8]) -> OutputResult {
         Ok(self.inner.write_all(value)?)
     }
 
+    #[doc(hidden)]
     pub fn write_raw_tag(&mut self, value: u32) -> OutputResult {
         self.write_uint32(value)
     }
 
-    pub fn write_tag(&mut self, num: i32, wtype: WireType) -> OutputResult {
-        self.write_uint32(WireType::make_tag(num, wtype))
+    /// Writes a `Tag` value to the output
+    pub fn write_tag(&mut self, tag: Tag) -> OutputResult {
+        self.write_uint32(tag.get())
     }
 
+    /// Writes a group message to the output
     pub fn write_group(&mut self, value: &CodedMessage) -> OutputResult {
         value.write_to(self)
     }
 
+    /// Writes a message value to the output
     #[cfg(checked_size)]
     pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
         if let Some(len) = value.calculate_size() {
@@ -670,12 +753,14 @@ impl<'a> CodedOutput<'a> {
         }
     }
 
+    /// Writes a message value to the output
     #[cfg(not(checked_size))]
     pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
         self.write_int32(value.calculate_size())?;
         value.write_to(self)
     }
 
+    /// Writes a length delimited `bytes` value to the output
     pub fn write_bytes(&mut self, value: &Vec<u8>) -> OutputResult {
         if let Some(len) = value.len().try_into().ok() {
             self.write_int32(len)?;
@@ -685,6 +770,7 @@ impl<'a> CodedOutput<'a> {
         }
     }
 
+    /// Writes a length delimited `string` value to the output
     pub fn write_string(&mut self, value: &String) -> OutputResult {
         let slice = value.as_bytes();
         if let Some(len) = slice.len().try_into().ok() {
@@ -695,34 +781,42 @@ impl<'a> CodedOutput<'a> {
         }
     }
 
+    /// Writes a `bool` value to the output
     pub fn write_bool(&mut self, value: bool) -> OutputResult {
         Ok(self.inner.write_all(&[if value { 1 } else { 0 }])?)
     }
 
+    /// Writes a `sfixed64` value to the output
     pub fn write_sfixed64(&mut self, value: i64) -> OutputResult {
         Ok(self.inner.write_all(&value.to_le_bytes())?)
     }
 
+    /// Writes a `sfixed32` value to the output
     pub fn write_sfixed32(&mut self, value: i32) -> OutputResult {
         Ok(self.inner.write_all(&value.to_le_bytes())?)
     }
 
+    /// Writes a `fixed64` value to the output
     pub fn write_fixed64(&mut self, value: u64) -> OutputResult {
         Ok(self.inner.write_all(&value.to_le_bytes())?)
     }
 
+    /// Writes a `fixed32` value to the output
     pub fn write_fixed32(&mut self, value: u32) -> OutputResult {
         Ok(self.inner.write_all(&value.to_le_bytes())?)
     }
 
+    /// Writes a `sint64` value to the output
     pub fn write_sint64(&mut self, value: i64) -> OutputResult {
         unsafe { self.write_int64(mem::transmute((value << 1) ^ (value >> 63))) }
     }
 
+    /// Writes a `sint32` value to the output
     pub fn write_sint32(&mut self, value: i32) -> OutputResult {
         unsafe { self.write_int32(mem::transmute((value << 1) ^ (value >> 31))) }
     }
 
+    /// Writes a `uint64` value to the output
     pub fn write_uint64(&mut self, value: u64) -> OutputResult {
         let mut value = value.to_le();
         let mut buf: [u8; 1] = [0];
@@ -736,6 +830,7 @@ impl<'a> CodedOutput<'a> {
         Ok(())
     }
 
+    /// Writes a `uint32` value to the output
     pub fn write_uint32(&mut self, value: u32) -> OutputResult {
         let mut value = value.to_le();
         let mut buf: [u8; 1] = [0];
@@ -749,10 +844,12 @@ impl<'a> CodedOutput<'a> {
         Ok(())
     }
 
+    /// Writes an `int64` value to the output
     pub fn write_int64(&mut self, value: i64) -> OutputResult {
         unsafe { self.write_uint64(mem::transmute(value)) }
     }
 
+    /// Writes an `int32` value to the output
     pub fn write_int32(&mut self, value: i32) -> OutputResult {
         if value >= 0 {
             self.write_uint32(value as u32)
@@ -761,14 +858,17 @@ impl<'a> CodedOutput<'a> {
         }
     }
 
+    /// Writes a `float` value to the output
     pub fn write_float(&mut self, value: f32) -> OutputResult {
         self.write_fixed32(value.to_bits())
     }
 
+    /// Writes a `double` value to the output
     pub fn write_double(&mut self, value: f64) -> OutputResult {
         self.write_fixed64(value.to_bits())
     }
 
+    /// Writes an enum value to the output
     pub fn write_enum_value<E: Into<i32> + Clone>(
         &mut self,
         value: crate::EnumValue<E>,
