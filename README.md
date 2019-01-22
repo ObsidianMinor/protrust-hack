@@ -27,3 +27,16 @@ assert_eq!(*address_book.people()[0], person);
 ```
 
 ## [Contributing](CONTRIBUTING.md)
+
+## Roadmap
+
+ 1. Extensions
+ 2. Full reflection
+ 3. Dynamic messages
+ 4. JSON support
+ 5. Conformance
+ 6. Code size optimization
+ 7. Finish markdown filter
+ 8. Plugin module
+ 9. Docs everywhere
+ 10. Tests everywhere
