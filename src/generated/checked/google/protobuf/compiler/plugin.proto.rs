@@ -429,6 +429,17 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.proto_file.is_initialized() {
+            return false;
+        }
+        if let Some(compiler_version) = &self.compiler_version {
+            if !crate::CodedMessage::is_initialized(&**compiler_version) {
+                return false;
+            }
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::CodeGeneratorRequest {
     fn new() -> Self {
@@ -630,6 +641,12 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
         self.file.write_to(output, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.file.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::CodeGeneratorResponse {

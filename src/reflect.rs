@@ -1632,6 +1632,30 @@ impl FieldType {
             _ => WireType::Varint,
         }
     }
+
+    #[inline]
+    pub fn is_message(&self) -> bool {
+        match self {
+            FieldType::Message(_) => true,
+            _ => false
+        }
+    }
+
+    #[inline]
+    pub fn is_group(&self) -> bool {
+        match self {
+            FieldType::Group(_) => true,
+            _ => false
+        }
+    }
+
+    #[inline]
+    pub fn is_enum(&self) -> bool {
+        match self {
+            FieldType::Enum(_) => true,
+            _ => false
+        }
+    }
 }
 
 impl Debug for FieldType {

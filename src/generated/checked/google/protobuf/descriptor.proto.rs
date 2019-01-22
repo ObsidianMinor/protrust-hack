@@ -562,6 +562,12 @@ impl crate::CodedMessage for self::FileDescriptorSet {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.file.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::FileDescriptorSet {
     fn new() -> Self {
@@ -724,6 +730,31 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.message_type.is_initialized() {
+            return false;
+        }
+        if !self.enum_type.is_initialized() {
+            return false;
+        }
+        if !self.service.is_initialized() {
+            return false;
+        }
+        if !self.extension.is_initialized() {
+            return false;
+        }
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        if let Some(source_code_info) = &self.source_code_info {
+            if !crate::CodedMessage::is_initialized(&**source_code_info) {
+                return false;
+            }
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::FileDescriptorProto {
@@ -1184,6 +1215,35 @@ impl crate::CodedMessage for self::DescriptorProto {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.field.is_initialized() {
+            return false;
+        }
+        if !self.extension.is_initialized() {
+            return false;
+        }
+        if !self.nested_type.is_initialized() {
+            return false;
+        }
+        if !self.enum_type.is_initialized() {
+            return false;
+        }
+        if !self.extension_range.is_initialized() {
+            return false;
+        }
+        if !self.oneof_decl.is_initialized() {
+            return false;
+        }
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        if !self.reserved_range.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::DescriptorProto {
     fn new() -> Self {
@@ -1480,6 +1540,14 @@ impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::DescriptorProto_ExtensionRange {
@@ -1796,6 +1864,12 @@ impl crate::CodedMessage for self::ExtensionRangeOptions {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::ExtensionRangeOptions {
     fn new() -> Self {
@@ -2008,6 +2082,14 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::FieldDescriptorProto {
@@ -2653,6 +2735,14 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::OneofDescriptorProto {
     fn new() -> Self {
@@ -2827,6 +2917,20 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         self.reserved_name.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.value.is_initialized() {
+            return false;
+        }
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        if !self.reserved_range.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::EnumDescriptorProto {
@@ -3210,6 +3314,14 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::EnumValueDescriptorProto {
     fn new() -> Self {
@@ -3412,6 +3524,17 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.method.is_initialized() {
+            return false;
+        }
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::ServiceDescriptorProto {
@@ -3651,6 +3774,14 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if let Some(options) = &self.options {
+            if !crate::CodedMessage::is_initialized(&**options) {
+                return false;
+            }
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::MethodDescriptorProto {
@@ -4287,6 +4418,12 @@ impl crate::CodedMessage for self::FileOptions {
         self.uninterpreted_option.write_to(output, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::FileOptions {
@@ -5387,6 +5524,12 @@ impl crate::CodedMessage for self::MessageOptions {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::MessageOptions {
     fn new() -> Self {
@@ -5741,6 +5884,12 @@ impl crate::CodedMessage for self::FieldOptions {
         self.uninterpreted_option.write_to(output, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::FieldOptions {
@@ -6139,6 +6288,12 @@ impl crate::CodedMessage for self::OneofOptions {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::OneofOptions {
     fn new() -> Self {
@@ -6231,6 +6386,12 @@ impl crate::CodedMessage for self::EnumOptions {
         self.uninterpreted_option.write_to(output, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::EnumOptions {
@@ -6391,6 +6552,12 @@ impl crate::CodedMessage for self::EnumValueOptions {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::EnumValueOptions {
     fn new() -> Self {
@@ -6509,6 +6676,12 @@ impl crate::CodedMessage for self::ServiceOptions {
         self.uninterpreted_option.write_to(output, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::ServiceOptions {
@@ -6644,6 +6817,12 @@ impl crate::CodedMessage for self::MethodOptions {
         self.uninterpreted_option.write_to(output, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.uninterpreted_option.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::MethodOptions {
@@ -6918,6 +7097,12 @@ impl crate::CodedMessage for self::UninterpretedOption {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.name.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::UninterpretedOption {
@@ -7277,6 +7462,15 @@ impl crate::CodedMessage for self::UninterpretedOption_NamePart {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if self.name_part.is_none() {
+            return false;
+        }
+        if self.is_extension.is_none() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::UninterpretedOption_NamePart {
     fn new() -> Self {
@@ -7411,6 +7605,12 @@ impl crate::CodedMessage for self::SourceCodeInfo {
         self.location.write_to(output, &SOURCE_CODE_INFO_LOCATION_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        if !self.location.is_initialized() {
+            return false;
+        }
+        true
     }
 }
 impl crate::LiteMessage for self::SourceCodeInfo {
@@ -7558,6 +7758,9 @@ impl crate::CodedMessage for self::SourceCodeInfo_Location {
         self.leading_detached_comments.write_to(output, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?;
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        true
     }
 }
 impl crate::LiteMessage for self::SourceCodeInfo_Location {
@@ -7827,6 +8030,12 @@ impl crate::CodedMessage for self::GeneratedCodeInfo {
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
     }
+    fn is_initialized(&self) -> bool {
+        if !self.annotation.is_initialized() {
+            return false;
+        }
+        true
+    }
 }
 impl crate::LiteMessage for self::GeneratedCodeInfo {
     fn new() -> Self {
@@ -7936,6 +8145,9 @@ impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
+    }
+    fn is_initialized(&self) -> bool {
+        true
     }
 }
 impl crate::LiteMessage for self::GeneratedCodeInfo_Annotation {

@@ -378,6 +378,17 @@ impl<W: Write> Generator<'_, MessageDescriptor, W> {
                 genln!(self.printer, "::std::result::Result::Ok(())");
             });
             genln!(self.printer, "}}");
+
+            if self.proto.file().syntax() == Syntax::Proto2 && self.proto.fields().iter().any(|i| i.label() == FieldLabel::Required || i.label() == FieldLabel::Repeated || i.field_type().is_message() || i.field_type().is_group()) {
+                genln!(self.printer, "fn is_initialized(&self) -> bool {{");
+                indent!(self.printer, {
+                    for field in self.proto.fields().iter().filter(|i| i.label() == FieldLabel::Required || i.field_type().is_message() || i.field_type().is_group()) {
+                        Generator::<FieldDescriptor, _>::from_other(self, field).generate_is_initialized()?;
+                    }
+                    genln!(self.printer, "true");
+                });
+                genln!(self.printer, "}}");
+            }
         });
         genln!(self.printer, "}}");
 
@@ -925,6 +936,39 @@ impl<W: Write> Generator<'_, FieldDescriptor, W> {
                     genln!(self.printer; "static {codec}: {crate_name}::Codec<{base_type}> = " => self.vars, codec, crate_name, base_type);
                     self.generate_codec_new()?;
                     gen!(self.printer, ";");
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn generate_is_initialized(&mut self) -> Result {
+        match self.proto.label() {
+            FieldLabel::Repeated => {
+                genln!(self.printer; "if !self.{field_name}.is_initialized() {{" => self.vars, field_name);
+                indent!(self.printer, {
+                    genln!(self.printer, "return false;");
+                });
+                genln!(self.printer, "}}");
+            },
+            _ => {
+                if self.proto.field_type().is_message() || self.proto.field_type().is_group() {
+                    genln!(self.printer; "if let Some({field_name}) = &self.{field_name} {{" => self.vars, field_name);
+                    indent!(self.printer, {
+                        genln!(self.printer; "if !{crate_name}::CodedMessage::is_initialized(&**{field_name}) {{" => self.vars, crate_name, field_name);
+                        indent!(self.printer, {
+                            genln!(self.printer, "return false;");
+                        });
+                        genln!(self.printer, "}}");
+                    });
+                    genln!(self.printer, "}}");
+                } else {
+                    genln!(self.printer; "if self.{field_name}.is_none() {{" => self.vars, field_name);
+                    indent!(self.printer, {
+                        genln!(self.printer, "return false;");
+                    });
+                    genln!(self.printer, "}}");
                 }
             }
         }
