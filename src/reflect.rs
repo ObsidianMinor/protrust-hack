@@ -164,6 +164,14 @@ impl DescriptorPool<'_> {
         pool
     }
 
+    pub fn build_from_generated_code(
+        file: &'static [FileDescriptorProto], 
+        extern_pools: &'static [&'static DescriptorPool<'static>], 
+        info: Box<[GeneratedCodeInfo]>
+    ) -> DescriptorPool<'static> {
+        unimplemented!()
+    }
+
     fn build(&mut self, code_info: Option<GeneratedCodeInfo>) {
         // insert the symbol for each file
         if code_info.is_some() && self.protos.len() == 1 {
