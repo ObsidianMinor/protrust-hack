@@ -36,6 +36,7 @@
 #[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case, missing_docs)]
 mod generated;
 mod internal;
+mod extend;
 
 /// The protrust prelude
 ///
@@ -45,6 +46,7 @@ pub mod prelude {
     pub use crate::CodedMessage;
     pub use crate::EnumValue;
     pub use crate::LiteMessage;
+    pub use crate::ExtensionMessage;
     #[cfg(feature = "reflection")]
     pub use crate::Message;
 }
@@ -58,6 +60,8 @@ pub use crate::generated::google_protobuf_compiler_plugin_proto as plugin;
 pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
 #[cfg(feature = "reflection")]
 pub mod reflect;
+
+pub use extend::{ExtensionMessage, Extension, ExtensionField, ExtensionRegistry, ExtensionSet, RepeatedExtension};
 
 use crate::io::{Tag, WireType};
 use std::collections::HashMap;

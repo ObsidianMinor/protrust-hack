@@ -243,6 +243,32 @@ impl DescriptorPool<'_> {
         }
     }
 
+    pub fn find_extensions_for_message_by_name<'a>(&'a self, name: &str) -> Option<Box<(dyn Iterator<Item = &'a FieldDescriptor> + 'a)>> {
+        let message = self.find_message_by_name(name)?;
+
+        fn deref_ref<T>(value: &Ref<T>) -> &T { &**value }
+
+        Some(Box::new(self.files()
+                .flat_map(|f| f
+                    .extensions()
+                    .iter()
+                    .map(deref_ref)
+                    .chain(f
+                        .flatten_messages()
+                        .flat_map(|m| m.extensions().iter().map(deref_ref))))
+                .filter(move |e| e.message() as *const MessageDescriptor == message as *const MessageDescriptor)))
+    }
+
+    fn files<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a FileDescriptor> + 'a)> {
+        Box::new(self.symbols.values()
+            .filter_map(|s|
+                match s {
+                    Symbol::File(f) => unsafe { Some(&**f) },
+                    _ => None
+                })
+            .chain(self.pools.iter().flat_map(|p| p.files())))
+    }
+
     fn get_file_ref(&self, name: &str) -> Ref<FileDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::File(symbol)) => Ref::new(*symbol),
@@ -424,6 +450,14 @@ impl FileDescriptor {
     /// Gets the messages defined in this file
     pub fn messages(&self) -> &[Ref<MessageDescriptor>] {
         &self.messages
+    }
+
+    /// Flattens all the messages in this file as an iterator
+    pub fn flatten_messages<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
+        Box::new(self.messages
+            .iter()
+            .map(|r| &**r)
+            .chain(self.messages.iter().flat_map(|m| m.flatten_messages())))
     }
 
     pub fn enums(&self) -> &[Ref<EnumDescriptor>] {
@@ -816,6 +850,11 @@ impl MessageDescriptor {
 
     pub fn messages(&self) -> &[Ref<MessageDescriptor>] {
         &self.messages
+    }
+
+    /// Flattens the submessages declared in this message
+    pub fn flatten_messages<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
+        Box::new(self.messages.iter().map(|r| &**r).chain(self.messages.iter().flat_map(|m| m.flatten_messages())))
     }
 
     pub fn enums(&self) -> &[Ref<EnumDescriptor>] {
