@@ -73,31 +73,27 @@ fn process_request(request: ConformanceRequest) -> ConformanceResponse {
 }
 
 fn skip(reason: &str) -> ConformanceResponse {
-    let mut response = ConformanceResponse::new();
-    *response.result_mut() = ConformanceResponse_Result::Skipped(reason.to_string());
-    response
+    respond(ConformanceResponse_Result::Skipped(reason.to_string()))
 }
 
 fn runtime_error(reason: &str) -> ConformanceResponse {
-    let mut response = ConformanceResponse::new();
-    *response.result_mut() = ConformanceResponse_Result::RuntimeError(reason.to_string());
-    response
+    respond(ConformanceResponse_Result::RuntimeError(reason.to_string()))
 }
 
 fn parse_error(reason: &str) -> ConformanceResponse {
-    let mut response = ConformanceResponse::new();
-    *response.result_mut() = ConformanceResponse_Result::ParseError(reason.to_string());
-    response
+    respond(ConformanceResponse_Result::ParseError(reason.to_string()))
 }
 
 fn serialize_error(reason: &str) -> ConformanceResponse {
-    let mut response = ConformanceResponse::new();
-    *response.result_mut() = ConformanceResponse_Result::ParseError(reason.to_string());
-    response
+    respond(ConformanceRequest_Result::SerializeError(reason.to_string()))
 }
 
 fn protobuf_payload(payload: Vec<u8>) -> ConformanceResponse {
+    respond(ConformanceRequest_Result::Payload(payload))
+}
+
+fn respond(result: ConformanceResponse_Result) -> ConformanceResponse {
     let mut response = ConformanceResponse::new();
-    *response.result_mut() = ConformanceResponse_Result::ProtobufPayload(payload);
+    *response.result_mut() = result;
     response
 }

@@ -345,7 +345,7 @@ impl crate::CodedMessage for self::ListValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                10 => self.values.add_entries(tag.get(), input, &LIST_VALUE_VALUES_CODEC)?,
+                10 => self.values.add_entries(input, &LIST_VALUE_VALUES_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

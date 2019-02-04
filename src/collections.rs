@@ -5,10 +5,8 @@
 //! [`RepeatedField`]: collections/struct.RepeatedField.html
 //! [`MapField`]: collections/struct.MapField.html
 
-use crate::io::{CodedInput, CodedOutput, InputError, InputResult, OutputResult};
-use crate::Codec;
-use crate::LiteMessage;
-use crate::ValueSize;
+use crate::{Codec, LiteMessage, ValueSize};
+use crate::io::{CodedInput, CodedOutput, WireType, InputResult, OutputResult};
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::hash::Hash;
@@ -42,23 +40,22 @@ impl<T> DerefMut for RepeatedField<T> {
     }
 }
 
+#[doc(hidden)]
 impl<T> RepeatedField<T> {
-    #[doc(hidden)]
     pub fn new() -> RepeatedField<T> {
         RepeatedField(Vec::new())
     }
 }
 
-impl<T: Clone + PartialEq> RepeatedField<T> {
-    #[doc(hidden)]
+#[doc(hidden)]
+impl<T: Clone> RepeatedField<T> {
     pub fn add_entries(
         &mut self,
-        tag: u32,
         input: &mut CodedInput,
         codec: &Codec<T>,
     ) -> InputResult<()> {
-        if let Some(packed) = codec.is_packed_tag(tag) {
-            if packed {
+        if let Some(tag) = input.last_tag() {
+            if tag.wire_type() == WireType::LengthDelimited && codec.is_packed() {
                 let new_limit = input.read_int32()?;
                 let old = input.push_limit(new_limit);
                 while !input.reached_limit() {
@@ -68,12 +65,10 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
             } else {
                 self.push(codec.read_from(input)?);
             }
-            Ok(())
-        } else {
-            Err(InputError::InvalidTag(tag))
         }
+        
+        Ok(())
     }
-    #[doc(hidden)]
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &Codec<T>) -> Option<i32> {
         if self.len() == 0 {
@@ -91,7 +86,6 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
-    #[doc(hidden)]
     #[cfg(checked_size)]
     fn calculate_packed_size(&self, codec: &Codec<T>) -> Option<i32> {
         match codec.size {
@@ -105,7 +99,6 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
-    #[doc(hidden)]
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &Codec<T>) -> i32 {
         if self.len() == 0 {
@@ -113,16 +106,15 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
         if codec.is_packed() {
             let length = self.calculate_packed_size(codec);
-            crate::io::sizes::uint32(codec.tag()) + crate::io::sizes::int32(length) + length
+            crate::io::sizes::uint32(codec.tag().get()) + crate::io::sizes::int32(length) + length
         } else {
             self.iter().fold(
-                (crate::io::sizes::uint32(codec.tag()) as usize * self.len()) as i32,
+                (crate::io::sizes::uint32(codec.tag().get()) as usize * self.len()) as i32,
                 |last, value| last + codec.calculate_size(value),
             )
         }
     }
 
-    #[doc(hidden)]
     #[cfg(not(checked_size))]
     fn calculate_packed_size(&self, codec: &Codec<T>) -> i32 {
         match codec.size {
@@ -131,7 +123,6 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         }
     }
 
-    #[doc(hidden)]
     pub fn write_to(&self, output: &mut CodedOutput, codec: &Codec<T>) -> OutputResult {
         if !self.is_empty() {
             if codec.is_packed() {
@@ -141,14 +132,14 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
                 #[cfg(not(checked_size))]
                 let size = self.calculate_packed_size(codec);
 
-                output.write_raw_tag(codec.tag())?;
+                output.write_raw_tag(codec.tag().get())?;
                 output.write_int32(size)?;
                 for value in self.iter() {
                     codec.write_to(output, value)?;
                 }
             } else {
                 for value in self.iter() {
-                    output.write_raw_tag(codec.tag())?;
+                    output.write_raw_tag(codec.tag().get())?;
                     codec.write_to(output, value)?;
                     if let Some(end_tag) = codec.end_tag() {
                         output.write_raw_tag(end_tag.get())?;
@@ -159,14 +150,13 @@ impl<T: Clone + PartialEq> RepeatedField<T> {
         Ok(())
     }
 
-    #[doc(hidden)]
     pub fn merge(&mut self, other: &Self) {
         self.extend_from_slice(other.as_slice())
     }
 }
 
+#[doc(hidden)]
 impl<T: LiteMessage> RepeatedField<T> {
-    #[doc(hidden)]
     pub fn is_initialized(&self) -> bool {
         for msg in self.iter() {
             if !msg.is_initialized() {
@@ -191,6 +181,7 @@ impl<T: LiteMessage> RepeatedField<T> {
 #[derive(Clone)]
 pub struct MapField<K, V>(HashMap<K, V>);
 
+#[doc(hidden)]
 impl<K: Eq + Hash, V: PartialEq> MapField<K, V> {
     pub fn new() -> MapField<K, V> {
         MapField(HashMap::new())
@@ -223,8 +214,8 @@ impl<K, V> DerefMut for MapField<K, V> {
     }
 }
 
-impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
-    #[doc(hidden)]
+#[doc(hidden)]
+impl<K: Eq + Hash + Clone + crate::internal::Primitive, V: PartialEq + Clone + crate::internal::Primitive> MapField<K, V> {
     pub fn add_entries(
         &mut self,
         input: &mut CodedInput,
@@ -240,7 +231,6 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         Ok(())
     }
 
-    #[doc(hidden)]
     #[cfg(checked_size)]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> Option<i32> {
         if self.is_empty() {
@@ -258,7 +248,6 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         Some(size)
     }
 
-    #[doc(hidden)]
     #[cfg(not(checked_size))]
     pub fn calculate_size(&self, codec: &MapCodec<K, V>) -> i32 {
         if self.is_empty() {
@@ -276,7 +265,6 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         size
     }
 
-    #[doc(hidden)]
     pub fn write_to(&self, output: &mut CodedOutput, codec: &MapCodec<K, V>) -> OutputResult {
         let mut adapter = MapWriteAdapter::new(codec);
         for field in &self.0 {
@@ -288,7 +276,6 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
         Ok(())
     }
 
-    #[doc(hidden)]
     pub fn merge(&mut self, other: &Self) {
         for entry in &other.0 {
             match self.get_mut(entry.0) {
@@ -301,8 +288,8 @@ impl<K: Eq + Hash + Clone, V: PartialEq + Clone> MapField<K, V> {
     }
 }
 
+#[doc(hidden)]
 impl<K: Eq + Hash + Clone, V: LiteMessage> MapField<K, V> {
-    #[doc(hidden)]
     pub fn is_initialized(&self) -> bool {
         for msg in self.values() {
             if !msg.is_initialized() {
@@ -329,10 +316,10 @@ impl<'a, K, V> MapReadAdapter<'a, K, V> {
     }
 }
 
-impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapReadAdapter<'_, K, V> {
+impl<K, V> crate::CodedMessage for MapReadAdapter<'_, K, V> {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let Some(tag) = input.read_tag()? {
-            match tag.get() {
+            match tag {
                 tag if tag == self.codec.key.tag() => {
                     self.codec.key.merge_from(input, &mut self.key)?
                 }
@@ -373,35 +360,45 @@ impl<'a, K, V> MapWriteAdapter<'a, K, V> {
     }
 }
 
-impl<K: Clone + PartialEq, V: Clone + PartialEq> crate::CodedMessage for MapWriteAdapter<'_, K, V> {
+impl<K: crate::internal::Primitive, V: crate::internal::Primitive> crate::CodedMessage for MapWriteAdapter<'_, K, V> {
     fn merge_from(&mut self, _input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         unreachable!()
     }
     #[cfg(checked_size)]
     fn calculate_size(&self) -> Option<i32> {
         let mut size = 0i32;
-        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag()))?;
-        size = size.checked_add(self.codec.key.calculate_size(self.key.unwrap())?)?;
-        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag()))?;
-        size = size.checked_add(self.codec.value.calculate_size(self.value.unwrap())?)?;
-
+        if !self.key.unwrap().is_default() {
+            size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
+            size = size.checked_add(self.codec.value.calculate_size(self.value.unwrap())?)?;
+        }
+        if !self.value.unwrap().is_default() {
+            size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
+            size = size.checked_add(self.codec.key.calculate_size(self.key.unwrap())?)?;
+        }
         Some(size)
     }
     #[cfg(not(checked_size))]
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
-        size += crate::io::sizes::uint32(self.codec.key.tag());
-        size += self.codec.key.calculate_size(self.key.unwrap());
-        size += crate::io::sizes::uint32(self.codec.key.tag());
-        size += self.codec.value.calculate_size(self.value.unwrap());
+        if !self.key.unwrap().is_default() {
+            size += crate::io::sizes::uint32(self.codec.key.tag().get());
+            size += self.codec.key.calculate_size(self.key.unwrap());
+        }
+        if !self.value.unwrap().is_default() {
+            size += crate::io::sizes::uint32(self.codec.key.tag().get());
+            size += self.codec.value.calculate_size(self.value.unwrap());
+        }
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        output.write_raw_tag(self.codec.key.tag())?;
-        self.codec.key.write_to(output, self.key.unwrap())?;
-        output.write_raw_tag(self.codec.value.tag())?;
-        self.codec.value.write_to(output, self.value.unwrap())?;
-
+        if !self.key.unwrap().is_default() {
+            output.write_tag(self.codec.key.tag())?;
+            self.codec.key.write_to(output, self.key.unwrap())?;
+        }
+        if !self.value.unwrap().is_default() {
+            output.write_tag(self.codec.value.tag())?;
+            self.codec.value.write_to(output, self.value.unwrap())?;
+        }
         Ok(())
     }
 }

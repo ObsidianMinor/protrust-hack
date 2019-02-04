@@ -280,7 +280,7 @@ impl crate::CodedMessage for self::FieldMask {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                10 => self.paths.add_entries(tag.get(), input, &FIELD_MASK_PATHS_CODEC)?,
+                10 => self.paths.add_entries(input, &FIELD_MASK_PATHS_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

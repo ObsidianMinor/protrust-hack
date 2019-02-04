@@ -383,9 +383,9 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                10 => self.file_to_generate.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?,
+                10 => self.file_to_generate.add_entries(input, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?,
                 18 => self.parameter = ::std::option::Option::Some(input.read_string()?),
-                122 => self.proto_file.add_entries(tag.get(), input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
+                122 => self.proto_file.add_entries(input, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?,
                 26 => input.read_message(&mut **self.compiler_version.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -611,7 +611,7 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.error = ::std::option::Option::Some(input.read_string()?),
-                122 => self.file.add_entries(tag.get(), input, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?,
+                122 => self.file.add_entries(input, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

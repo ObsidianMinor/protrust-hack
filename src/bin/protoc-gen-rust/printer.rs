@@ -17,10 +17,6 @@ impl<W> Printer<W> {
     pub fn unindent(&mut self) {
         self.indent -= 1
     }
-
-    pub fn into_inner(self) -> W {
-        self.inner
-    }
 }
 
 impl<W: Write> Write for Printer<W> {

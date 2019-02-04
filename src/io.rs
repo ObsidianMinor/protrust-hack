@@ -422,6 +422,7 @@ pub type InputResult<T> = Result<T, InputError>;
 pub struct CodedInput<'a> {
     inner: &'a mut Read,
     limit: Option<i32>,
+    last_tag: Option<Tag>
 }
 
 impl<'a> CodedInput<'a> {
@@ -434,7 +435,7 @@ impl<'a> CodedInput<'a> {
     /// let mut input = CodedInput::new(&mut stdin.lock());
     /// ```
     pub fn new(inner: &'a mut Read) -> Self {
-        CodedInput { inner, limit: None }
+        CodedInput { inner, limit: None, last_tag: None }
     }
 
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
@@ -467,7 +468,9 @@ impl<'a> CodedInput<'a> {
             self.inner.read_exact(buf)
         }
     }
-
+    pub(crate) fn last_tag(&self) -> Option<Tag> {
+        self.last_tag
+    }
     pub(crate) fn push_limit(&mut self, limit: i32) -> Option<i32> {
         let old = {
             if let Some(existing) = self.limit {
@@ -646,7 +649,9 @@ impl<'a> CodedInput<'a> {
             if !in_tag {
                 let result = self.read(&mut buf)?;
                 if result == 0 {
-                    return Ok(None);
+                    let tag = None;
+                    self.last_tag = tag;
+                    return Ok(tag);
                 }
                 in_tag = true;
             } else {
@@ -655,8 +660,14 @@ impl<'a> CodedInput<'a> {
             result |= ((buf[0] & 0x7F) as i32) << shift;
             if (buf[0] & 0x80) == 0 {
                 return match Tag::new_from_raw(result as u32) {
-                    Some(tag) => Ok(Some(tag)),
-                    None => Err(InputError::InvalidTag(result as u32))
+                    None => {
+                        self.last_tag = None;
+                        Err(InputError::InvalidTag(result as u32))
+                    },
+                    tag => {
+                        self.last_tag = tag;
+                        Ok(tag)
+                    }
                 }
             }
             shift += 7;
@@ -665,8 +676,14 @@ impl<'a> CodedInput<'a> {
             self.read_exact(&mut buf)?;
             if (buf[0] & 0x80) == 0 {
                 return match Tag::new_from_raw(result as u32) {
-                    Some(tag) => Ok(Some(tag)),
-                    None => Err(InputError::InvalidTag(result as u32))
+                    None => {
+                        self.last_tag = None;
+                        Err(InputError::InvalidTag(result as u32))
+                    },
+                    tag => {
+                        self.last_tag = tag;
+                        Ok(tag)
+                    }
                 }
             }
             shift += 7;

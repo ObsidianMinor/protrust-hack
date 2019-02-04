@@ -1,12 +1,13 @@
+#![feature(result_map_or_else)]
+
 mod generators;
 mod names;
 mod printer;
 
-use protrust::plugin;
+use protrust::plugin::{CodeGeneratorRequest, CodeGeneratorResponse};
 use protrust::prelude::*;
-use protrust::reflect;
-use std::fmt::Write;
 use std::io::{stdin, stdout};
+use std::convert::identity as id;
 
 pub struct Options {
     /// Allows users to change the name of the crate for referencing the codegen modules.
@@ -30,73 +31,26 @@ impl Default for Options {
 }
 
 fn main() {
-    match plugin::CodeGeneratorRequest::read_new(&mut stdin()) {
-        Ok(request) => run(request)
-            .write(&mut stdout())
-            .expect("Could not write response to stdout!"),
+    match CodeGeneratorRequest::read_new(&mut stdin()) {
+        Ok(request) => 
+            parse_options(request.parameter())
+                .and_then(|options| {
+                    let mut response = CodeGeneratorResponse::new();
+                    generators::Generator::<CodeGeneratorRequest, CodeGeneratorResponse>::new(&mut response, &request, &options)
+                        .generate()
+                        .map(|_| response)
+                        .map_err(|e| format!("{:?}", e))
+                })
+                .map_or_else(error, id)
+                .write(&mut stdout())
+                .expect("Could not write response to stdout!"),
         Err(e) => panic!("{:?}", e),
     }
 }
 
-fn run(request: plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
-    fn error(
-        mut response: plugin::CodeGeneratorResponse,
-        msg: String,
-    ) -> plugin::CodeGeneratorResponse {
-        response.file_mut().clear();
-        response.set_error(msg);
-        response
-    }
-
-    let mut response = plugin::CodeGeneratorResponse::new();
-    let options = match parse_options(request.parameter()) {
-        Ok(k) => k,
-        Err(s) => return error(response, s),
-    };
-
-    let mut mod_file_content = String::new();
-    let pool = reflect::DescriptorPool::build_from_files(request.proto_file().as_slice());
-    for file in request.file_to_generate().iter() {
-        let descriptor: &reflect::FileDescriptor = pool
-            .find_file_by_name(file)
-            .expect("proto_file did not contain file to generate");
-
-        let mut printer = printer::Printer::new(String::new());
-        let mut generator = generators::Generator::<reflect::FileDescriptor, _>::new(
-            &mut printer,
-            descriptor,
-            &options,
-        );
-        match generator.generate() {
-            Ok(()) => {
-                let mut gen_file = plugin::CodeGeneratorResponse_File::new();
-                gen_file.set_name(names::get_rust_file_name(descriptor));
-                gen_file.set_content(printer.into_inner());
-
-                response.file_mut().push(gen_file);
-            }
-            Err(err) => return error(response, format!("{:?}", err)),
-        }
-
-        writeln!(
-            mod_file_content,
-            "#[path = \"{}\"]",
-            names::get_rust_file_name(descriptor)
-        )
-        .expect("Could not format generated mod file"); // write the path override
-        writeln!(
-            mod_file_content,
-            "pub mod {};",
-            names::get_rust_file_mod_name(descriptor)
-        )
-        .expect("Could not format generated mod file"); // write the mod definition
-    }
-
-    let mut mod_file = plugin::CodeGeneratorResponse_File::new();
-    mod_file.set_content(mod_file_content);
-    mod_file.set_name("mod.rs".to_string());
-
-    response.file_mut().push(mod_file);
+fn error(msg: String) -> CodeGeneratorResponse {
+    let mut response = CodeGeneratorResponse::new();
+    response.set_error(msg);
     response
 }
 
