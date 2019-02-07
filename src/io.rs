@@ -2,7 +2,7 @@
 
 use crate::CodedMessage;
 use std::cmp::min;
-use std::convert::TryInto;
+use std::convert::{TryInto, TryFrom};
 use std::fmt::{Display, Formatter, Error};
 use std::io::{Read, Write};
 use std::mem;
@@ -30,36 +30,29 @@ pub enum WireType {
     Bit32 = 5,
 }
 
-impl WireType {
-    /// Gets the wire type of a constructed tag value or None if the value does not have a valid wire type
-    ///
-    /// # Examples
-    /// ```
-    /// # use protrust::io::WireType;
-    /// assert_eq!(Some(WireType::Varint), WireType::get_type(8));
-    /// assert_eq!(Some(WireType::Bit64), WireType::get_type(8388609));
-    /// assert_eq!(Some(WireType::LengthDelimited), WireType::get_type(536870914));
-    /// assert_eq!(Some(WireType::StartGroup), WireType::get_type(772603539));
-    /// assert_eq!(Some(WireType::EndGroup), WireType::get_type(772603540));
-    /// assert_eq!(Some(WireType::Bit32), WireType::get_type(13));
-    /// assert_eq!(None, WireType::get_type(14));
-    /// assert_eq!(None, WireType::get_type(15));
-    /// ```
-    pub fn get_type(value: u32) -> Option<WireType> {
-        match value & 0b111 {
-            0 => Some(WireType::Varint),
-            1 => Some(WireType::Bit64),
-            2 => Some(WireType::LengthDelimited),
-            3 => Some(WireType::StartGroup),
-            4 => Some(WireType::EndGroup),
-            5 => Some(WireType::Bit32),
-            _ => None,
-        }
-    }
+#[derive(Debug)]
+pub struct InvalidWireType;
 
+impl WireType {
     /// Gets whether a wire type is eligible for repeated field packing
     pub fn is_packable(self) -> bool {
         return self == WireType::Bit32 || self == WireType::Bit64 || self == WireType::Varint;
+    }
+}
+
+impl TryFrom<u8> for WireType {
+    type Error = InvalidWireType;
+
+    fn try_from(value: u8) -> Result<WireType, InvalidWireType> {
+        match value & 0b111 {
+            0 => Ok(WireType::Varint),
+            1 => Ok(WireType::Bit64),
+            2 => Ok(WireType::LengthDelimited),
+            3 => Ok(WireType::StartGroup),
+            4 => Ok(WireType::EndGroup),
+            5 => Ok(WireType::Bit32),
+            _ => Err(InvalidWireType),
+        }
     }
 }
 
@@ -148,7 +141,7 @@ impl Tag {
     /// Gets the wire type from this tag
     #[inline]
     pub fn wire_type(self) -> WireType {
-        WireType::get_type(self.get() & 0b111).unwrap()
+        WireType::try_from((self.get() & 0b111) as u8).unwrap()
     }
 
     /// Gets the field number from this tag
@@ -892,4 +885,9 @@ impl<'a> CodedOutput<'a> {
     ) -> OutputResult {
         self.write_int32(value.into())
     }
+}
+
+#[cfg(test)]
+mod tests {
+
 }
