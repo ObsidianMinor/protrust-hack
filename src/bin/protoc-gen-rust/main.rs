@@ -6,8 +6,8 @@ mod printer;
 
 use protrust::plugin::{CodeGeneratorRequest, CodeGeneratorResponse};
 use protrust::prelude::*;
-use std::io::{stdin, stdout};
 use std::convert::identity as id;
+use std::io::{stdin, stdout};
 
 pub struct Options {
     /// Allows users to change the name of the crate for referencing the codegen modules.
@@ -32,18 +32,21 @@ impl Default for Options {
 
 fn main() {
     match CodeGeneratorRequest::read_new(&mut stdin()) {
-        Ok(request) => 
-            parse_options(request.parameter())
-                .and_then(|options| {
-                    let mut response = CodeGeneratorResponse::new();
-                    generators::Generator::<CodeGeneratorRequest, CodeGeneratorResponse>::new(&mut response, &request, &options)
-                        .generate()
-                        .map(|_| response)
-                        .map_err(|e| format!("{:?}", e))
-                })
-                .map_or_else(error, id)
-                .write(&mut stdout())
-                .expect("Could not write response to stdout!"),
+        Ok(request) => parse_options(request.parameter())
+            .and_then(|options| {
+                let mut response = CodeGeneratorResponse::new();
+                generators::Generator::<CodeGeneratorRequest, CodeGeneratorResponse>::new(
+                    &mut response,
+                    &request,
+                    &options,
+                )
+                .generate()
+                .map(|_| response)
+                .map_err(|e| format!("{:?}", e))
+            })
+            .map_or_else(error, id)
+            .write(&mut stdout())
+            .expect("Could not write response to stdout!"),
         Err(e) => panic!("{:?}", e),
     }
 }

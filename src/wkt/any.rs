@@ -30,23 +30,23 @@ pub fn get_type_name(url: &str) -> Option<&str> {
 }
 
 impl Any {
-    /// Creates a new `Any` value from a message of type `T`. 
-    /// 
+    /// Creates a new `Any` value from a message of type `T`.
+    ///
     /// This uses the default prefix "type.googleapis.com". A different prefix can be used with `pack_with_prefix`
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use protrust::LiteMessage;
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
-    /// 
+    ///
     /// # fn main() -> Result<(), Box<Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
-    /// 
+    ///
     /// assert_eq!(any.type_url(), "type.googleapis.com/google.protobuf.Timestamp");
     /// assert_ne!(any.type_url(), "example.com/google.protobuf.Timestamp");
-    /// 
+    ///
     /// # Ok(())
     /// # }
     /// ```
@@ -55,20 +55,20 @@ impl Any {
     }
 
     /// Creates a new `Any` value from a message of type `T` with the specified url prefix
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use protrust::LiteMessage;
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
-    /// 
+    ///
     /// # fn main() -> Result<(), Box<Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack_with_prefix(&time, "example.com")?;
     ///
     /// assert_eq!(any.type_url(), "example.com/google.protobuf.Timestamp");
     /// assert_ne!(any.type_url(), "type.googleapis.com/google.protobuf.Timestamp");
-    /// 
+    ///
     /// # Ok(())
     /// # }
     /// ```
@@ -81,20 +81,20 @@ impl Any {
     }
 
     /// Returns a bool indicating if this `Any` value is of the specified message type `T`.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use protrust::LiteMessage;
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
-    /// 
+    ///
     /// # fn main() -> Result<(), Box<Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
-    /// 
+    ///
     /// assert!(any.is::<Timestamp>());
     /// assert!(!any.is::<Any>());
-    /// 
+    ///
     /// # Ok(())
     /// # }
     /// ```
@@ -107,20 +107,20 @@ impl Any {
 
     /// Unpacks a message of the specified type, returning None if
     /// the message is not of the specified message type `T`.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use protrust::LiteMessage;
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
-    /// 
+    ///
     /// # fn main() -> Result<(), Box<std::error::Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
-    /// 
+    ///
     /// if let Some(result) = any.unpack::<Timestamp>() {
     ///     assert_eq!(result?, time);
     /// }
-    /// 
+    ///
     /// assert!(any.unpack::<Any>().is_none());
     /// # Ok(())
     /// # }
@@ -133,21 +133,21 @@ impl Any {
         }
     }
 
-    /// Unpacks a message of the specified type without 
+    /// Unpacks a message of the specified type without
     /// checking if this Any instance is an instance of the type.
-    /// 
+    ///
     /// This is useful if you've already checked that this is
     /// instance of the specified type
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use protrust::LiteMessage;
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
-    /// 
+    ///
     /// # fn main() -> Result<(), Box<std::error::Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
-    /// 
+    ///
     /// assert_eq!(any.unpack_unchecked::<Timestamp>()?, time);
     /// # Ok(())
     /// # }

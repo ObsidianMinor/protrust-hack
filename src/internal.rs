@@ -68,4 +68,4 @@ impl<E: Into<i32> + Clone> Primitive for crate::EnumValue<E> {
     }
 }
 
-pub trait Sealed { }
+pub trait Sealed {}

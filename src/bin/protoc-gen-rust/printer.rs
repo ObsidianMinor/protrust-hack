@@ -45,7 +45,7 @@ impl<'a, W> DocPrinter<'a, W> {
     pub fn new(inner: &'a mut Printer<W>) -> DocPrinter<'a, W> {
         DocPrinter {
             inner,
-            list_stack: Vec::new()
+            list_stack: Vec::new(),
         }
     }
 
@@ -60,21 +60,21 @@ impl<'a, W> DocPrinter<'a, W> {
     pub fn start_item(&mut self) {
         match self.list_stack.last_mut() {
             Some(Some(ref mut position)) => *position += 1,
-            _ => { }
+            _ => {}
         }
     }
 
     pub fn end_item(&mut self) {
         match self.list_stack.last_mut() {
             Some(Some(ref mut position)) => *position -= 1,
-            _ => { }
+            _ => {}
         }
     }
 
     pub fn current_item_number(&self) -> Option<usize> {
         match self.list_stack.last() {
             Some(x) => *x,
-            None => None
+            None => None,
         }
     }
 }
@@ -97,4 +97,4 @@ impl<'a, W: Write> Write for DocPrinter<'a, W> {
 
         Ok(())
     }
-} 
+}

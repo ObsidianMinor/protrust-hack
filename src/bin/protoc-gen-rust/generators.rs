@@ -1,10 +1,16 @@
-use crate::{names, printer::{self, Printer}, Options};
+use crate::{
+    names,
+    printer::{self, Printer},
+    Options,
+};
 use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
 use protrust::io::{self, WireType};
-use protrust::plugin::{CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponse_File as File};
+use protrust::plugin::{
+    CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponse_File as File,
+};
 use protrust::prelude::*;
 use protrust::reflect::*;
-use pulldown_cmark::{Parser, Event, Tag};
+use pulldown_cmark::{Event, Parser, Tag};
 use std::collections::HashMap;
 use std::fmt::Write;
 
@@ -24,13 +30,13 @@ macro_rules! gen {
 macro_rules! genln {
     ($target:expr; $fmt:expr => $vars:expr, $($arg:ident),*) => {
         {
-            writeln!($target)?; 
+            writeln!($target)?;
             write!($target, $fmt, $($arg = var!($vars, $arg)),*)?;
         }
     };
     ($dst:expr, $($arg:tt)*) => {
         {
-            writeln!($dst)?; 
+            writeln!($dst)?;
             write!($dst, $($arg)*)?;
         }
     };
@@ -89,7 +95,11 @@ impl std::fmt::Display for Error {
         match self {
             Error::FormatError => write!(f, "An error occured while generating the result"),
             Error::MissingInputFile(i) => write!(f, "Could not find file to generate '{}'", i),
-            Error::MissingVariable(line, column, var) => write!(f, "Could not find var named '{}' on line {}, column {}", var, line, column)
+            Error::MissingVariable(line, column, var) => write!(
+                f,
+                "Could not find var named '{}' on line {}, column {}",
+                var, line, column
+            ),
         }
     }
 }
@@ -102,7 +112,8 @@ pub struct Generator<'a, T, U> {
 }
 
 generator_new!(CodeGeneratorRequest, request, options;
-    "crate_name", options.crate_name.clone());
+    "crate_name", options.crate_name.clone(),
+    "file_count", request.file_to_generate().len().to_string());
 
 impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
     pub fn generate(&mut self) -> Result {
@@ -111,34 +122,144 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
         mod_file.set_name("mod.rs".to_string());
         let mut printer = Printer::new(mod_file.content_mut());
 
-        for file in self.input.file_to_generate().iter().map(|file| pool.find_file_by_name(file).ok_or_else(|| Error::MissingInputFile(file.clone()))) {
-            let file = file?;
+        let files = {
+            let mut files = Vec::with_capacity(self.input.file_to_generate().len());
+            for file in self.input.file_to_generate().iter().map(|file| {
+                pool.find_file_by_name(file)
+                    .ok_or_else(|| Error::MissingInputFile(file.clone()))
+            }) {
+                files.push(file?);
+            }
+            files
+        };
 
-            Generator::<FileDescriptor, _>::new(&mut printer, file, self.options).generate_mod_info()?;
+        for file in &files {
+            Generator::<FileDescriptor, _>::new(&mut printer, file, self.options)
+                .generate_mod_info()?;
 
             let mut code_file = File::new();
             code_file.set_name(names::get_rust_file_name(file));
-            Generator::<FileDescriptor, _>::new(&mut Printer::new(code_file.content_mut()), file, self.options).generate()?;
+            Generator::<FileDescriptor, _>::new(
+                &mut Printer::new(code_file.content_mut()),
+                file,
+                self.options,
+            )
+            .generate()?;
 
             self.output.file_mut().push(code_file);
         }
+
+        self.generate_extension_registry(&files, &mut printer)?;
+        self.generate_pool(&files, &mut printer)?;
 
         self.output.file_mut().push(mod_file);
 
         Ok(())
     }
 
-    pub fn generate_extension_registry<W: Write>(&mut self, mod_file: Printer<W>) -> Result {
+    pub fn generate_extension_registry<W: Write>(
+        &mut self,
+        files: &[&FileDescriptor],
+        mod_file: &mut Printer<W>,
+    ) -> Result {
         Ok(())
     }
 
-    pub fn generate_pool<W: Write>(&mut self, mod_file: Printer<W>) -> Result {
+    pub fn generate_pool<W: Write>(
+        &mut self,
+        files: &[&FileDescriptor],
+        mod_file: &mut Printer<W>,
+    ) -> Result {
+        let contains_included_files = files
+            .iter()
+            .flat_map(|f| f.dependencies()) // include the direct dependencies
+            .chain(files.iter().flat_map(|f| {
+                f.public_dependencies()
+                    .iter()
+                    .flat_map(|p| p.dependencies()) // include the direct dependencies of our dependents public dependencies
+            }))
+            .map(|r| &**r) // make them standard shared references
+            .collect::<std::collections::HashSet<_>>() // remove equal items
+            .difference(&files.iter().map(|r| *r).collect::<std::collections::HashSet<_>>()) // get the difference (the depended items not generated)
+            .any(|f| match f.name() {
+                "google/protobuf/descriptor.proto"
+                | "google/protobuf/compiler/plugin.proto"
+                | "google/protobuf/any.proto"
+                | "google/protobuf/api.proto"
+                | "google/protobuf/duration.proto"
+                | "google/protobuf/empty.proto"
+                | "google/protobuf/field_mask.proto"
+                | "google/protobuf/source_context.proto"
+                | "google/protobuf/struct.proto"
+                | "google/protobuf/timestamp.proto"
+                | "google/protobuf/type.proto"
+                | "google/protobuf/wrappers.proto" => true,
+                _ => false,
+            });
+        let mut dep_count = 0;
+        if contains_included_files {
+            dep_count += 1;
+        }
+
+        genln!(mod_file; "static mut FILES: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; {file_count}]> = ::std::option::Option::None;" => self.vars, crate_name, file_count);
+        genln!(mod_file, "static mut EXTERNAL_DEPS: ::std::option::Option<[&'static {}::reflect::DescriptorPool<'static>; {}]> = ::std::option::Option::None;", var!(self.vars, crate_name), dep_count);
+        genln!(mod_file; "static mut POOL: ::std::option::Option<{crate_name}::reflect::DescriptorPool<'static>> = ::std::option::Option::None;" => self.vars, crate_name);
+        genln!(
+            mod_file,
+            "static POOL_INIT: ::std::sync::Once = ::std::sync::Once::new();"
+        );
+
+        genln!(mod_file, "fn pool_init() {{");
+        indent!(mod_file, {
+            genln!(mod_file, "unsafe {{");
+            indent!(mod_file, {
+                genln!(mod_file, "self::FILES = ::std::option::Option::Some([");
+                indent!(mod_file, {
+                    for file in files {
+                        Generator::<FileDescriptor, _>::new(mod_file, file, self.options)
+                            .generate_blob_read()?;
+                    }
+                });
+                genln!(mod_file, "]);");
+                genln!(mod_file, "self::EXTERNAL_DEPS = ::std::option::Option::Some([");
+                indent!(mod_file, {
+                    if contains_included_files {
+                        genln!(mod_file; "{}::pool()," => self.vars, crate_name);
+                    }
+                });
+                genln!(mod_file, "]);");
+                genln!(mod_file; "self::POOL = ::std::option::Option::Some({}::reflect::DescriptorPool::build_from_generated_code(self::FILES.as_ref().unwrap().as_ref(), self::EXTERNAL_DEPS.as_ref().unwrap(), ::std::boxed::Box::new([" => self.vars, crate_name);
+                indent!(mod_file, {
+                    for file in files {
+                        Generator::<FileDescriptor, _>::new(mod_file, file, self.options)
+                            .generate_code_info()?;
+                    }
+                });
+                genln!(mod_file, "])));");
+            });
+            genln!(mod_file, "}}");
+        });
+        genln!(mod_file, "}}");
+
+        genln!(mod_file; "pub fn pool() -> &'static {}::reflect::DescriptorPool<'static> {{" => self.vars, crate_name);
+        indent!(mod_file, {
+            genln!(mod_file, "unsafe {{");
+            indent!(mod_file, {
+                genln!(mod_file, "POOL_INIT.call_once(pool_init);");
+                genln!(mod_file, "POOL.as_ref().unwrap()");
+            });
+            genln!(mod_file, "}}");
+        });
+        genln!(mod_file, "}}");
         Ok(())
     }
 }
 
 generator_new!(FileDescriptor, proto, options;
     "file", proto.name().to_string(),
+    "file_path", names::get_rust_file_name(proto),
+    "file_mod_name", names::get_rust_file_mod_name(proto),
+    "file_blob_name", names::get_rust_file_mod_name(proto).to_uppercase() + "_BINARY",
     "crate_name", options.crate_name.clone(),
     "dep_count", proto.dependencies().len().to_string());
 
@@ -151,6 +272,13 @@ impl<W: Write> Generator<'_, FileDescriptor, Printer<W>> {
         );
         genln!(self.output, "//");
         genln!(self.output; "// Source: {file}\n" => self.vars, file);
+        genln!(self.output);
+        genln!(self.output; "pub fn file() -> &'static {}::reflect::FileDescriptor {{" => self.vars, crate_name);
+        indent!(self.output, {
+            genln!(self.output; "super::pool().find_file_by_name(\"{}\").unwrap()" => self.vars, file);
+        });
+        genln!(self.output, "}}");
+        genln!(self.output);
 
         // extensions
         //for _extension in self.input.extensions() {
@@ -171,114 +299,58 @@ impl<W: Write> Generator<'_, FileDescriptor, Printer<W>> {
     }
 
     pub fn generate_mod_info(&mut self) -> Result {
-
-        Ok(())
-    }
-
-    pub fn generate_descriptor_code(&mut self) -> Result {
-        genln!(
-            self.output,
-            "static FILE_ONCE: ::std::sync::Once = ::std::sync::Once::new();"
-        );
-        genln!(self.output; "static mut FILE_POOL: ::std::option::Option<{crate_name}::reflect::DescriptorPool<'static>> = ::std::option::Option::None;" => self.vars, crate_name);
-        genln!(self.output; "static mut FILE_PROTO: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;" => self.vars, crate_name);
-        genln!(self.output; "static mut FILE_DESCRIPTOR: ::std::option::Option<&'static {crate_name}::reflect::FileDescriptor> = ::std::option::Option::None;" => self.vars, crate_name);
-        genln!(self.output; "static mut FILE_DEPS: ::std::option::Option<[&'static {crate_name}::reflect::DescriptorPool<'static>; {dep_count}]> = ::std::option::Option::None;" => self.vars, crate_name, dep_count);
-        genln!(self.output, "static FILE_BINARY: &'static [u8] = &[");
+        genln!(self.output; "#[path = \"{}\"]" => self.vars, file_path);
+        genln!(self.output; "pub mod {};" => self.vars, file_mod_name);
+        genln!(self.output; "static {}: &'static [u8] = &[" => self.vars, file_blob_name);
         indent!(self.output, {
-            genln!(self.output);
             let mut new_proto = self.input.proto().clone();
             new_proto.clear_source_code_info();
             let vec = new_proto.write_to_vec().unwrap();
-            let mut bytes_on_line = 0;
-            for byte in vec {
-                gen!(self.output, "{}, ", byte);
-                bytes_on_line += 1;
-                if bytes_on_line == 20 {
-                    genln!(self.output);
-                    bytes_on_line = 0;
+            for chunk in vec.chunks(20) {
+                genln!(self.output);
+                for byte in chunk {
+                    gen!(self.output, "{}, ", byte);
                 }
             }
         });
         genln!(self.output, "];");
-        genln!(self.output);
-        genln!(self.output, "fn file_once_init() {{");
-        indent!(self.output, {
-            genln!(self.output, "unsafe {{");
-            indent!(self.output, {
-                genln!(self.output; "FILE_PROTO = ::std::option::Option::Some([{crate_name}::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect(\"Could not read file descriptor\")]);" => self.vars, crate_name);
-                genln!(self.output, "FILE_DEPS = ::std::option::Option::Some([");
-                for file in self.input.dependencies() {
-                    gen!(
-                        self.output,
-                        "{}::pool(), ",
-                        names::get_rust_external_mod_name(file, &self.options.crate_name)
-                    );
-                }
-                gen!(self.output, "]);");
-                genln!(self.output; "FILE_POOL = ::std::option::Option::Some({crate_name}::reflect::DescriptorPool::build_generated_pool(" => self.vars, crate_name);
-                indent!(self.output, {
-                    genln!(self.output, "FILE_PROTO.as_ref().unwrap(),");
-                    genln!(self.output, "FILE_DEPS.as_ref().unwrap(),");
-                    genln!(self.output; "{crate_name}::reflect::GeneratedCodeInfo {{" => self.vars, crate_name);
-                    indent!(self.output, {
-                        if self.input.messages().len() == 0 {
-                            genln!(self.output, "structs: ::std::option::Option::None,");
-                        } else {
-                            genln!(self.output, "structs: ::std::option::Option::Some(::std::boxed::Box::new([");
-                            indent!(self.output, {
-                                for message in self.input.messages().iter().filter(|m| !m.map_entry()) {
-                                    Generator::<MessageDescriptor, _>::from_other(self, message).generate_struct_info()?;
-                                }
-                            });
-                            genln!(self.output, "])),");
-                        }
-                    });
-                    genln!(self.output, "}}");
-                });
-                genln!(self.output, "));");
-                genln!(self.output; "FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name(\"{file}\").unwrap());" => self.vars, file);
-            });
-            genln!(self.output, "}}");
-        });
-        genln!(self.output, "}}");
-        genln!(self.output);
-        genln!(
-            self.output,
-            "/// Gets the pool containing all the symbols in this proto file and its dependencies"
-        );
-        genln!(self.output; "pub fn pool() -> &'static {crate_name}::reflect::DescriptorPool<'static> {{" => self.vars, crate_name);
-        indent!(self.output, {
-            genln!(self.output, "unsafe {{");
-            indent!(self.output, {
-                genln!(self.output, "FILE_ONCE.call_once(file_once_init);");
-                genln!(self.output, "FILE_POOL.as_ref().unwrap()");
-            });
-            genln!(self.output, "}}");
-        });
-        genln!(self.output, "}}");
-        genln!(
-            self.output,
-            "/// Gets the file descriptor representing the proto that created this generated file"
-        );
-        genln!(self.output; "pub fn file() -> &'static {crate_name}::reflect::FileDescriptor {{" => self.vars, crate_name);
-        indent!(self.output, {
-            genln!(self.output, "unsafe {{");
-            indent!(self.output, {
-                genln!(self.output, "FILE_ONCE.call_once(file_once_init);");
-                genln!(self.output, "FILE_DESCRIPTOR.as_ref().unwrap()");
-            });
-            genln!(self.output, "}}");
-        });
-        genln!(self.output, "}}");
+        Ok(())
+    }
 
+    pub fn generate_code_info(&mut self) -> Result {
+        genln!(self.output; "{crate_name}::reflect::GeneratedCodeInfo {{" => self.vars, crate_name);
+        indent!(self.output, {
+            if self.input.messages().len() == 0 {
+                genln!(self.output, "structs: ::std::option::Option::None,");
+            } else {
+                genln!(
+                    self.output,
+                    "structs: ::std::option::Option::Some(::std::boxed::Box::new(["
+                );
+                indent!(self.output, {
+                    for message in self.input.messages().iter().filter(|m| !m.map_entry()) {
+                        Generator::<MessageDescriptor, _>::from_other(self, message)
+                            .generate_struct_info()?;
+                    }
+                });
+                genln!(self.output, "])),");
+            }
+        });
+        genln!(self.output, "}},");
+
+        Ok(())
+    }
+
+    pub fn generate_blob_read(&mut self) -> Result {
+        genln!(self.output; "{}::LiteMessage::read_new(&mut {}.as_ref()).expect(\"Could not read file descriptor\")," => self.vars, crate_name, file_blob_name);
         Ok(())
     }
 }
 
 generator_new!(MessageDescriptor, proto, options;
     "type_name", names::get_message_type_name(proto),
-    "full_type_name", names::get_full_message_type_name(proto, proto.file(), &options.crate_name),
+    "full_type_name", names::get_full_message_type_name(proto, Some(proto.file()), &options.crate_name),
+    "full_type_mod_name", names::get_full_message_type_name(proto, None, &options.crate_name),
     "crate_name", options.crate_name.clone());
 
 impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
@@ -293,14 +365,18 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
     pub fn generate_struct_info(&mut self) -> Result {
         genln!(self.output; "{crate_name}::reflect::GeneratedStructInfo {{" => self.vars, crate_name);
         indent!(self.output, {
-            genln!(self.output; "new: || ::std::boxed::Box::new(<{full_type_name} as {crate_name}::LiteMessage>::new())," => self.vars, full_type_name, crate_name);
+            genln!(self.output; "new: || ::std::boxed::Box::new(<{full_type_mod_name} as {crate_name}::LiteMessage>::new())," => self.vars, full_type_mod_name, crate_name);
             if self.input.messages().len() == 0 {
                 genln!(self.output, "structs: ::std::option::Option::None,");
             } else {
-                genln!(self.output, "structs: ::std::option::Option::Some(::std::boxed::Box::new([");
+                genln!(
+                    self.output,
+                    "structs: ::std::option::Option::Some(::std::boxed::Box::new(["
+                );
                 indent!(self.output, {
                     for message in self.input.messages().iter().filter(|m| !m.map_entry()) {
-                        Generator::<MessageDescriptor, _>::from_other(self, message).generate_struct_info()?;
+                        Generator::<MessageDescriptor, _>::from_other(self, message)
+                            .generate_struct_info()?;
                     }
                 });
                 genln!(self.output, "])),");
@@ -406,10 +482,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                     );
                     genln!(self.output, "::std::option::Option::Some(size)");
                 } else {
-                    genln!(
-                        self.output,
-                        "size += self.unknown_fields.calculate_size();"
-                    );
+                    genln!(self.output, "size += self.unknown_fields.calculate_size();");
                     genln!(self.output, "size");
                 }
             });
@@ -425,11 +498,23 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
             });
             genln!(self.output, "}}");
 
-            if self.input.file().syntax() == Syntax::Proto2 && self.input.fields().iter().any(|i| i.label() == FieldLabel::Required || i.label() == FieldLabel::Repeated || i.field_type().is_message() || i.field_type().is_group()) {
+            if self.input.file().syntax() == Syntax::Proto2
+                && self.input.fields().iter().any(|i| {
+                    i.label() == FieldLabel::Required
+                        || i.label() == FieldLabel::Repeated
+                        || i.field_type().is_message()
+                        || i.field_type().is_group()
+                })
+            {
                 genln!(self.output, "fn is_initialized(&self) -> bool {{");
                 indent!(self.output, {
-                    for field in self.input.fields().iter().filter(|i| i.label() == FieldLabel::Required || i.field_type().is_message() || i.field_type().is_group()) {
-                        Generator::<FieldDescriptor, _>::from_other(self, field).generate_is_initialized()?;
+                    for field in self.input.fields().iter().filter(|i| {
+                        i.label() == FieldLabel::Required
+                            || i.field_type().is_message()
+                            || i.field_type().is_group()
+                    }) {
+                        Generator::<FieldDescriptor, _>::from_other(self, field)
+                            .generate_is_initialized()?;
                     }
                     genln!(self.output, "true");
                 });
@@ -551,7 +636,7 @@ generator_new!(FieldDescriptor, proto, options;
                     FieldType::Enum(e) => {
                         match e.values().iter().find(|f| f.number() == 0) {
                             Some(defined) => {
-                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, proto.file(), &options.crate_name))
+                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, Some(proto.file()), &options.crate_name))
                             },
                             None => {
                                 format!("{}::EnumValue::Undefined(0)", options.crate_name)
@@ -570,7 +655,7 @@ generator_new!(FieldDescriptor, proto, options;
             DefaultValue::Double(d) => d.to_string(),
             DefaultValue::SignedInt(s) => s.to_string(),
             DefaultValue::UnsignedInt(u) => u.to_string(),
-            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, proto.file(), &options.crate_name)),
+            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, Some(proto.file()), &options.crate_name)),
             DefaultValue::Bytes(b) => format!("&{:?}", b)
         }
     },
@@ -707,8 +792,9 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
         genln!(self.output; "{tags} => " => self.vars, tags);
 
         match self.input.label() {
-            FieldLabel::Repeated => 
-                gen!(self.output; "self.{field_name}.add_entries(input, &{codec})?" => self.vars, field_name, codec),
+            FieldLabel::Repeated => {
+                gen!(self.output; "self.{field_name}.add_entries(input, &{codec})?" => self.vars, field_name, codec)
+            }
             _ => match self.input.scope() {
                 FieldScope::Message(_) => match self.input.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
@@ -807,7 +893,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                 match self.input.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         genln!(self.output; "size = size.checked_add({crate_name}::io::sizes::{proto_type}(&**{field_name}));" => self.vars, field_name, crate_name, proto_type);
-                    },
+                    }
                     _ => {
                         genln!(self.output; "size = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name}));" => self.vars, field_name, crate_name, proto_type);
                     }
@@ -818,7 +904,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                 match self.input.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         genln!(self.output; "size += {crate_name}::io::sizes::{proto_type}(&**{field_name});" => self.vars, field_name, crate_name, proto_type);
-                    },
+                    }
                     _ => {
                         genln!(self.output; "size += {crate_name}::io::sizes::{proto_type}({field_name});" => self.vars, field_name, crate_name, proto_type);
                     }
@@ -894,7 +980,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
             match self.input.field_type() {
                 FieldType::Message(_) | FieldType::Group(_) => {
                     genln!(self.output; "output.write_{proto_type}(&**{field_name})?;" => self.vars, proto_type, field_name);
-                },
+                }
                 _ => {
                     genln!(self.output; "output.write_{proto_type}({field_name})?;" => self.vars, proto_type, field_name);
                 }
@@ -991,7 +1077,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                     genln!(self.output, "return false;");
                 });
                 genln!(self.output, "}}");
-            },
+            }
             _ => {
                 if self.input.field_type().is_message() || self.input.field_type().is_group() {
                     genln!(self.output; "if let Some({field_name}) = &self.{field_name} {{" => self.vars, field_name);
@@ -1045,166 +1131,165 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                     genln!(self.output; "&mut self.{field_name}" => self.vars, field_name);
                 });
                 genln!(self.output, "}}");
-            },
-            _ => 
+            }
+            _ => {
                 match self.input.file().syntax() {
-                    Syntax::Proto2 =>
-                        match self.input.field_type() {
-                            FieldType::Message(_) | FieldType::Group(_) => {
-                                self.generate_rustdoc_comments()?;
-                                genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.as_ref().map(|b| &**b)" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns a unique reference to the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn {name}_mut(&mut self) -> &mut {base_type} {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())).as_mut()" => self.vars, crate_name, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.is_some()" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn set_{name}(&mut self, value: {base_type}) {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::Some(::std::boxed::Box::new(value))" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Takes the value of the [`{proto_name}`] field, leaving it empty" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn take_{name}(&mut self) -> ::std::option::Option<{base_type}> {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.take().map(|b| *b)" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
+                    Syntax::Proto2 => match self.input.field_type() {
+                        FieldType::Message(_) | FieldType::Group(_) => {
+                            self.generate_rustdoc_comments()?;
+                            genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.as_ref().map(|b| &**b)" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns a unique reference to the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn {name}_mut(&mut self) -> &mut {base_type} {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())).as_mut()" => self.vars, crate_name, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.is_some()" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn set_{name}(&mut self, value: {base_type}) {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::Some(::std::boxed::Box::new(value))" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Takes the value of the [`{proto_name}`] field, leaving it empty" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn take_{name}(&mut self) -> ::std::option::Option<{base_type}> {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.take().map(|b| *b)" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                        }
+                        FieldType::String | FieldType::Bytes => {
+                            self.generate_rustdoc_comments()?;
+                            if *self.input.field_type() == FieldType::String {
+                                genln!(self.output; "pub fn {field_name}(&self) -> &str {{" => self.vars, field_name);
+                            } else {
+                                genln!(self.output; "pub fn {field_name}(&self) -> &[u8] {{" => self.vars, field_name);
                             }
-                            FieldType::String | FieldType::Bytes => {
-                                self.generate_rustdoc_comments()?;
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.as_ref().map(|v| &**v).unwrap_or(Self::{default})" => self.vars, default, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
+                            genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.as_ref()" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns a unique reference to the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn {name}_mut(&mut self) -> &mut {base_type} {{" => self.vars, name, base_type);
+                            indent!(self.output, {
                                 if *self.input.field_type() == FieldType::String {
-                                    genln!(self.output; "pub fn {field_name}(&self) -> &str {{" => self.vars, field_name);
+                                    genln!(self.output; "self.{field_name}.get_or_insert_with(::std::string::String::new)" => self.vars, field_name);
                                 } else {
-                                    genln!(self.output; "pub fn {field_name}(&self) -> &[u8] {{" => self.vars, field_name);
+                                    genln!(self.output; "self.{field_name}.get_or_insert_with(::std::vec::Vec::new)" => self.vars, field_name);
                                 }
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.as_ref().map(|v| &**v).unwrap_or(Self::{default})" => self.vars, default, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
-                                genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<&{base_type}> {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.as_ref()" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns a unique reference to the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn {name}_mut(&mut self) -> &mut {base_type} {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    if *self.input.field_type() == FieldType::String {
-                                        genln!(self.output; "self.{field_name}.get_or_insert_with(::std::string::String::new)" => self.vars, field_name);
-                                    } else {
-                                        genln!(self.output; "self.{field_name}.get_or_insert_with(::std::vec::Vec::new)" => self.vars, field_name);
-                                    }
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{name}.is_some()" => self.vars, name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn set_{name}(&mut self, value: {indirected_type}) {{" => self.vars, name, indirected_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::Some(value)" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Takes the value of the [`{proto_name}`] field, leaving it empty" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn take_{name}(&mut self) -> {field_type} {{" => self.vars, name, field_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.take()" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                            }
-                            _ => {
-                                self.generate_rustdoc_comments()?;
-                                genln!(self.output; "pub fn {field_name}(&self) -> {base_type} {{" => self.vars, field_name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.unwrap_or(Self::{default})" => self.vars, default, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
-                                genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<{base_type}> {{" => self.vars, name, base_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name}.is_some()" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn set_{name}(&mut self, value: {indirected_type}) {{" => self.vars, name, indirected_type);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::Some(value)" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                                genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
-                                genln!(self.output, "///");
-                                genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
-                                genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
-                                indent!(self.output, {
-                                    genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
-                                });
-                                genln!(self.output, "}}");
-                            }
-                        },
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{name}.is_some()" => self.vars, name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn set_{name}(&mut self, value: {indirected_type}) {{" => self.vars, name, indirected_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::Some(value)" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Takes the value of the [`{proto_name}`] field, leaving it empty" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn take_{name}(&mut self) -> {field_type} {{" => self.vars, name, field_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.take()" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                        }
+                        _ => {
+                            self.generate_rustdoc_comments()?;
+                            genln!(self.output; "pub fn {field_name}(&self) -> {base_type} {{" => self.vars, field_name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.unwrap_or(Self::{default})" => self.vars, default, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns an [`Option`] representing the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output, "/// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html");
+                            genln!(self.output; "pub fn {name}_option(&self) -> ::std::option::Option<{base_type}> {{" => self.vars, name, base_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Returns a bool indicating the presence of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn has_{name}(&self) -> bool {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name}.is_some()" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Sets the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn set_{name}(&mut self, value: {indirected_type}) {{" => self.vars, name, indirected_type);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::Some(value)" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                            genln!(self.output; "/// Clears the value of the [`{proto_name}`] field" => self.vars, proto_name);
+                            genln!(self.output, "///");
+                            genln!(self.output; "/// [`{proto_name}`]: #method.{name}" => self.vars, proto_name, name);
+                            genln!(self.output; "pub fn clear_{name}(&mut self) {{" => self.vars, name);
+                            indent!(self.output, {
+                                genln!(self.output; "self.{field_name} = ::std::option::Option::None" => self.vars, field_name);
+                            });
+                            genln!(self.output, "}}");
+                        }
+                    },
                     Syntax::Proto3 => {
                         self.generate_rustdoc_comments()?;
                         if is_copy_type(self.input.field_type()) {
@@ -1228,9 +1313,10 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                             genln!(self.output; "&mut self.{field_name}" => self.vars, field_name);
                         });
                         genln!(self.output, "}}");
-                    },
+                    }
                     _ => panic!("Unknown syntax"),
                 }
+            }
         }
 
         Ok(())
@@ -1275,7 +1361,7 @@ fn is_copy_type(ft: &FieldType) -> bool {
 generator_new!(EnumDescriptor, proto, options;
     "type_name", names::get_enum_type_name(proto),
     "crate_name", options.crate_name.clone(),
-    "full_type_name", names::get_full_enum_type_name(proto, proto.file(), &options.crate_name));
+    "full_type_name", names::get_full_enum_type_name(proto, Some(proto.file()), &options.crate_name));
 
 impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
@@ -1315,7 +1401,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
             }
         });
         genln!(self.output, "}}");
-        genln!(self.output; "unsafe impl {crate_name}::Enum for {full_type_name} {{" => self.vars, crate_name, full_type_name);
+        genln!(self.output; "unsafe impl {crate_name}::Enum for {full_type_name} {{ }}" => self.vars, crate_name, full_type_name);
         genln!(self.output; "impl ::std::convert::TryFrom<i32> for {full_type_name} {{" => self.vars, full_type_name);
         indent!(self.output, {
             genln!(self.output; "type Error = {crate_name}::VariantUndefinedError;" => self.vars, crate_name);
@@ -1324,7 +1410,13 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
                 genln!(self.output, "match value {{");
                 indent!(self.output, {
                     for (name, value) in values.iter() {
-                        genln!(self.output, "{} => ::std::result::Result::Ok(self::{}::{}),", value.number(), names::get_enum_type_name(value.enum_type()), name);
+                        genln!(
+                            self.output,
+                            "{} => ::std::result::Result::Ok(self::{}::{}),",
+                            value.number(),
+                            names::get_enum_type_name(value.enum_type()),
+                            name
+                        );
                     }
                     genln!(self.output; "_ => ::std::result::Result::Err({crate_name}::VariantUndefinedError)" => self.vars, crate_name);
                 });
@@ -1340,7 +1432,13 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
                 genln!(self.output, "match value {{");
                 indent!(self.output, {
                     for (name, value) in values.iter() {
-                        genln!(self.output, "{}::{} => {},", names::get_enum_type_name(value.enum_type()), name, value.number());
+                        genln!(
+                            self.output,
+                            "{}::{} => {},",
+                            names::get_enum_type_name(value.enum_type()),
+                            name,
+                            value.number()
+                        );
                     }
                 });
                 genln!(self.output, "}}");
@@ -1416,7 +1514,10 @@ impl<W: Write> Generator<'_, OneofDescriptor, Printer<W>> {
     }
 }
 
-fn generate_rustdoc_comments<W: Write>(printer: &mut Printer<W>, source_info: &SourceCodeInfo) -> Result {
+fn generate_rustdoc_comments<W: Write>(
+    printer: &mut Printer<W>,
+    source_info: &SourceCodeInfo,
+) -> Result {
     if let Some(comments) = source_info
         .leading_comments()
         .or(source_info.trailing_comments())
@@ -1426,44 +1527,48 @@ fn generate_rustdoc_comments<W: Write>(printer: &mut Printer<W>, source_info: &S
         while let Some(event) = events.next() {
             let peek = events.peek();
             match event {
-                Event::End(Tag::Paragraph) if peek == None => { },
+                Event::End(Tag::Paragraph) if peek == None => {}
                 Event::Start(Tag::Paragraph) | Event::End(Tag::Paragraph) => genln!(printer),
                 Event::Start(Tag::Code) | Event::End(Tag::Code) => gen!(printer, "`"),
-                Event::Text(val) |
-                Event::FootnoteReference(val) |
-                Event::Html(val) |
-                Event::InlineHtml(val) => gen!(printer, "{}", val),
+                Event::Text(val)
+                | Event::FootnoteReference(val)
+                | Event::Html(val)
+                | Event::InlineHtml(val) => gen!(printer, "{}", val),
                 Event::SoftBreak | Event::HardBreak => genln!(printer),
-                Event::Start(Tag::CodeBlock(std::borrow::Cow::Borrowed(""))) => gen!(printer, "```text\n"),
+                Event::Start(Tag::CodeBlock(std::borrow::Cow::Borrowed(""))) => {
+                    gen!(printer, "```text\n")
+                }
                 Event::Start(Tag::CodeBlock(code)) => gen!(printer, "```{}\n", code),
                 Event::End(Tag::CodeBlock(_)) => gen!(printer, "```\n"),
                 Event::Start(Tag::Header(i)) => gen!(printer, "{} ", "#".repeat(i as usize)),
                 Event::Start(Tag::List(start)) => {
                     printer.start_list(start);
                     genln!(printer);
-                },
+                }
                 Event::End(Tag::List(_)) => {
                     printer.end_list();
-                },
+                }
                 Event::Start(Tag::Item) => {
                     printer.start_item();
                     match printer.current_item_number() {
                         Some(number) => gen!(printer, "{}. ", number),
-                        None => gen!(printer, "* ")
+                        None => gen!(printer, "* "),
                     }
-                },
+                }
                 Event::End(Tag::Item) => {
                     printer.end_item();
                     genln!(printer);
-                },
+                }
                 Event::Start(Tag::Link(_, ref title)) if title.is_empty() => gen!(printer, "["),
                 Event::Start(Tag::Link(_, _)) => gen!(printer, "["),
-                Event::End(Tag::Link(ref link, ref title)) if title.is_empty() => gen!(printer, "]({})", link),
+                Event::End(Tag::Link(ref link, ref title)) if title.is_empty() => {
+                    gen!(printer, "]({})", link)
+                }
                 Event::End(Tag::Link(_, ref title)) => gen!(printer, "][{}]", title),
                 Event::End(Tag::Header(_)) => genln!(printer),
                 Event::Start(Tag::Emphasis) | Event::End(Tag::Emphasis) => gen!(printer, "*"),
                 Event::Start(Tag::Strong) | Event::End(Tag::Strong) => gen!(printer, "**"),
-                u => panic!("Unknown event / tag: {:?}", u)
+                u => panic!("Unknown event / tag: {:?}", u),
             }
         }
     }

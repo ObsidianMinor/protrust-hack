@@ -3,84 +3,11 @@
 //
 // Source: addressbook.proto
 
-static FILE_ONCE: ::std::sync::Once = ::std::sync::Once::new();
-static mut FILE_POOL: ::std::option::Option<::protrust::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
-static mut FILE_PROTO: ::std::option::Option<[::protrust::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
-static mut FILE_DESCRIPTOR: ::std::option::Option<&'static ::protrust::reflect::FileDescriptor> = ::std::option::Option::None;
-static mut FILE_DEPS: ::std::option::Option<[&'static ::protrust::reflect::DescriptorPool<'static>; 1]> = ::std::option::Option::None;
-static FILE_BINARY: &'static [u8] = &[
-    10, 17, 97, 100, 100, 114, 101, 115, 115, 98, 111, 111, 107, 46, 112, 114, 111, 116, 111, 18, 
-    8, 116, 117, 116, 111, 114, 105, 97, 108, 26, 31, 103, 111, 111, 103, 108, 101, 47, 112, 114, 
-    111, 116, 111, 98, 117, 102, 47, 116, 105, 109, 101, 115, 116, 97, 109, 112, 46, 112, 114, 111, 
-    116, 111, 34, 185, 2, 10, 6, 80, 101, 114, 115, 111, 110, 18, 18, 10, 4, 110, 97, 109, 
-    101, 24, 1, 32, 1, 40, 9, 82, 4, 110, 97, 109, 101, 18, 14, 10, 2, 105, 100, 24, 
-    2, 32, 1, 40, 5, 82, 2, 105, 100, 18, 20, 10, 5, 101, 109, 97, 105, 108, 24, 3, 
-    32, 1, 40, 9, 82, 5, 101, 109, 97, 105, 108, 18, 52, 10, 6, 112, 104, 111, 110, 101, 
-    115, 24, 4, 32, 3, 40, 11, 50, 28, 46, 116, 117, 116, 111, 114, 105, 97, 108, 46, 80, 
-    101, 114, 115, 111, 110, 46, 80, 104, 111, 110, 101, 78, 117, 109, 98, 101, 114, 82, 6, 112, 
-    104, 111, 110, 101, 115, 18, 61, 10, 12, 108, 97, 115, 116, 95, 117, 112, 100, 97, 116, 101, 
-    100, 24, 5, 32, 1, 40, 11, 50, 26, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 
-    116, 111, 98, 117, 102, 46, 84, 105, 109, 101, 115, 116, 97, 109, 112, 82, 11, 108, 97, 115, 
-    116, 85, 112, 100, 97, 116, 101, 100, 26, 85, 10, 11, 80, 104, 111, 110, 101, 78, 117, 109, 
-    98, 101, 114, 18, 22, 10, 6, 110, 117, 109, 98, 101, 114, 24, 1, 32, 1, 40, 9, 82, 
-    6, 110, 117, 109, 98, 101, 114, 18, 46, 10, 4, 116, 121, 112, 101, 24, 2, 32, 1, 40, 
-    14, 50, 26, 46, 116, 117, 116, 111, 114, 105, 97, 108, 46, 80, 101, 114, 115, 111, 110, 46, 
-    80, 104, 111, 110, 101, 84, 121, 112, 101, 82, 4, 116, 121, 112, 101, 34, 41, 10, 9, 80, 
-    104, 111, 110, 101, 84, 121, 112, 101, 18, 8, 10, 6, 77, 79, 66, 73, 76, 69, 18, 8, 
-    10, 4, 72, 79, 77, 69, 16, 1, 18, 8, 10, 4, 87, 79, 82, 75, 16, 2, 34, 55, 
-    10, 11, 65, 100, 100, 114, 101, 115, 115, 66, 111, 111, 107, 18, 40, 10, 6, 112, 101, 111, 
-    112, 108, 101, 24, 1, 32, 3, 40, 11, 50, 16, 46, 116, 117, 116, 111, 114, 105, 97, 108, 
-    46, 80, 101, 114, 115, 111, 110, 82, 6, 112, 101, 111, 112, 108, 101, 66, 80, 10, 20, 99, 
-    111, 109, 46, 101, 120, 97, 109, 112, 108, 101, 46, 116, 117, 116, 111, 114, 105, 97, 108, 66, 
-    17, 65, 100, 100, 114, 101, 115, 115, 66, 111, 111, 107, 80, 114, 111, 116, 111, 115, 170, 2, 
-    36, 71, 111, 111, 103, 108, 101, 46, 80, 114, 111, 116, 111, 98, 117, 102, 46, 69, 120, 97, 
-    109, 112, 108, 101, 115, 46, 65, 100, 100, 114, 101, 115, 115, 66, 111, 111, 107, 98, 6, 112, 
-    114, 111, 116, 111, 51, 
-];
 
-fn file_once_init() {
-    unsafe {
-        FILE_PROTO = ::std::option::Option::Some([::protrust::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect("Could not read file descriptor")]);
-        FILE_DEPS = ::std::option::Option::Some([::protrust::wkt::timestamp::pool(), ]);
-        FILE_POOL = ::std::option::Option::Some(::protrust::reflect::DescriptorPool::build_generated_pool(
-            FILE_PROTO.as_ref().unwrap(),
-            FILE_DEPS.as_ref().unwrap(),
-            ::protrust::reflect::GeneratedCodeInfo {
-                structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                    ::protrust::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::Person as ::protrust::LiteMessage>::new()),
-                        structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                            ::protrust::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<self::Person_PhoneNumber as ::protrust::LiteMessage>::new()),
-                                structs: ::std::option::Option::None,
-                            },
-                        ])),
-                    },
-                    ::protrust::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::AddressBook as ::protrust::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                ])),
-            }
-        ));
-        FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name("addressbook.proto").unwrap());
-    }
-}
-
-/// Gets the pool containing all the symbols in this proto file and its dependencies
-pub fn pool() -> &'static ::protrust::reflect::DescriptorPool<'static> {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_POOL.as_ref().unwrap()
-    }
-}
-/// Gets the file descriptor representing the proto that created this generated file
 pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_DESCRIPTOR.as_ref().unwrap()
-    }
+    super::pool().find_file_by_name("addressbook.proto").unwrap()
 }
+
 /// [START messages]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Person {
@@ -99,7 +26,7 @@ impl ::protrust::CodedMessage for self::Person {
                 10 => self.name = input.read_string()?,
                 16 => self.id = input.read_int32()?,
                 26 => self.email = input.read_string()?,
-                34 => self.phones.add_entries(tag.get(), input, &PERSON_PHONES_CODEC)?,
+                34 => self.phones.add_entries(input, &PERSON_PHONES_CODEC)?,
                 42 => input.read_message(&mut **self.last_updated.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -373,6 +300,7 @@ pub enum Person_PhoneType {
     Home,
     Work,
 }
+unsafe impl ::protrust::Enum for self::Person_PhoneType { }
 impl ::std::convert::TryFrom<i32> for self::Person_PhoneType {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -404,7 +332,7 @@ impl ::protrust::CodedMessage for self::AddressBook {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                10 => self.people.add_entries(tag.get(), input, &ADDRESS_BOOK_PEOPLE_CODEC)?,
+                10 => self.people.add_entries(input, &ADDRESS_BOOK_PEOPLE_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

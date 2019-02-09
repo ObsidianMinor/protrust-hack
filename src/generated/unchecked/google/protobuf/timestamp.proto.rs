@@ -3,61 +3,11 @@
 //
 // Source: google/protobuf/timestamp.proto
 
-static FILE_ONCE: ::std::sync::Once = ::std::sync::Once::new();
-static mut FILE_POOL: ::std::option::Option<crate::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
-static mut FILE_PROTO: ::std::option::Option<[crate::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
-static mut FILE_DESCRIPTOR: ::std::option::Option<&'static crate::reflect::FileDescriptor> = ::std::option::Option::None;
-static mut FILE_DEPS: ::std::option::Option<[&'static crate::reflect::DescriptorPool<'static>; 0]> = ::std::option::Option::None;
-static FILE_BINARY: &'static [u8] = &[
-    10, 31, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 102, 47, 116, 105, 
-    109, 101, 115, 116, 97, 109, 112, 46, 112, 114, 111, 116, 111, 18, 15, 103, 111, 111, 103, 108, 
-    101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 34, 59, 10, 9, 84, 105, 109, 101, 115, 116, 
-    97, 109, 112, 18, 24, 10, 7, 115, 101, 99, 111, 110, 100, 115, 24, 1, 32, 1, 40, 3, 
-    82, 7, 115, 101, 99, 111, 110, 100, 115, 18, 20, 10, 5, 110, 97, 110, 111, 115, 24, 2, 
-    32, 1, 40, 5, 82, 5, 110, 97, 110, 111, 115, 66, 126, 10, 19, 99, 111, 109, 46, 103, 
-    111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 66, 14, 84, 105, 109, 101, 
-    115, 116, 97, 109, 112, 80, 114, 111, 116, 111, 80, 1, 90, 43, 103, 105, 116, 104, 117, 98, 
-    46, 99, 111, 109, 47, 103, 111, 108, 97, 110, 103, 47, 112, 114, 111, 116, 111, 98, 117, 102, 
-    47, 112, 116, 121, 112, 101, 115, 47, 116, 105, 109, 101, 115, 116, 97, 109, 112, 248, 1, 1, 
-    162, 2, 3, 71, 80, 66, 170, 2, 30, 71, 111, 111, 103, 108, 101, 46, 80, 114, 111, 116, 
-    111, 98, 117, 102, 46, 87, 101, 108, 108, 75, 110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 
-    6, 112, 114, 111, 116, 111, 51, 
-];
 
-fn file_once_init() {
-    unsafe {
-        FILE_PROTO = ::std::option::Option::Some([crate::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect("Could not read file descriptor")]);
-        FILE_DEPS = ::std::option::Option::Some([]);
-        FILE_POOL = ::std::option::Option::Some(crate::reflect::DescriptorPool::build_generated_pool(
-            FILE_PROTO.as_ref().unwrap(),
-            FILE_DEPS.as_ref().unwrap(),
-            crate::reflect::GeneratedCodeInfo {
-                structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::Timestamp as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                ])),
-            }
-        ));
-        FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name("google/protobuf/timestamp.proto").unwrap());
-    }
-}
-
-/// Gets the pool containing all the symbols in this proto file and its dependencies
-pub fn pool() -> &'static crate::reflect::DescriptorPool<'static> {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_POOL.as_ref().unwrap()
-    }
-}
-/// Gets the file descriptor representing the proto that created this generated file
 pub fn file() -> &'static crate::reflect::FileDescriptor {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_DESCRIPTOR.as_ref().unwrap()
-    }
+    super::pool().find_file_by_name("google/protobuf/timestamp.proto").unwrap()
 }
+
 /// A Timestamp represents a point in time independent of any time zone
 /// or calendar, represented as seconds and fractions of seconds at
 /// nanosecond resolution in UTC Epoch time. It is encoded using the

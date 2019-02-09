@@ -2,20 +2,20 @@
 
 use crate::CodedMessage;
 use std::cmp::min;
-use std::convert::{TryInto, TryFrom};
-use std::fmt::{Display, Formatter, Error};
+use std::convert::{TryFrom, TryInto};
+use std::fmt::{Display, Error, Formatter};
 use std::io::{Read, Write};
 use std::mem;
 use std::num::NonZeroU32;
 
-/// The wire type of a protobuf value. 
-/// 
-/// A wire type is paired with a field number between 1 and 536,870,911 to create a tag, 
+/// The wire type of a protobuf value.
+///
+/// A wire type is paired with a field number between 1 and 536,870,911 to create a tag,
 /// a unique identifier for a field on the wire.
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug)]
 pub enum WireType {
-    /// A value read a variable length integer. 
-    /// 
+    /// A value read a variable length integer.
+    ///
     /// See the protobuf docs for more information on this encoding: https://developers.google.com/protocol-buffers/docs/encoding#varints
     Varint = 0,
     /// A 64-bit value encoded as 8 little endian bytes
@@ -66,9 +66,9 @@ impl FieldNumber {
     pub const MAX_VALUE: u32 = 536870911;
 
     /// Create a field number without checking the value.
-    /// 
+    ///
     /// # Safety
-    /// 
+    ///
     /// The value must be a valid field number
     #[inline]
     pub const unsafe fn new_unchecked(n: u32) -> FieldNumber {
@@ -79,9 +79,7 @@ impl FieldNumber {
     #[inline]
     pub fn new(n: u32) -> Option<FieldNumber> {
         if n != 0 && n < Self::MAX_VALUE {
-            unsafe {
-                Some(FieldNumber(NonZeroU32::new_unchecked(n)))
-            }
+            unsafe { Some(FieldNumber(NonZeroU32::new_unchecked(n))) }
         } else {
             None
         }
@@ -101,9 +99,9 @@ pub struct Tag(NonZeroU32);
 
 impl Tag {
     /// Create a tag without checking the value.
-    /// 
+    ///
     /// # Safety
-    /// 
+    ///
     /// The value must be a valid tag
     #[inline]
     pub const unsafe fn new_unchecked(n: u32) -> Tag {
@@ -111,12 +109,12 @@ impl Tag {
     }
 
     /// Creates a new tag if the value is not zero and has a valid field number and wire type
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// use protrust::io::Tag;
-    /// 
+    ///
     /// assert!(Tag::new_from_raw(1).is_none());
     /// assert!(Tag::new_from_raw(8).is_some());
     /// assert!(Tag::new_from_raw(16).is_some());
@@ -124,18 +122,17 @@ impl Tag {
     /// ```
     #[inline]
     pub fn new_from_raw(n: u32) -> Option<Tag> {
-        match (n & 0b111, n >> 3) { // (wire type, field number)
+        match (n & 0b111, n >> 3) {
+            // (wire type, field number)
             (6, _) | (7, _) | (_, 0) => None,
-            _ => unsafe { Some(Tag(NonZeroU32::new_unchecked(n))) }
+            _ => unsafe { Some(Tag(NonZeroU32::new_unchecked(n))) },
         }
     }
 
     /// Creates a new tag value
     #[inline]
     pub fn new(f: FieldNumber, wt: WireType) -> Tag {
-        unsafe {
-            Tag(NonZeroU32::new_unchecked((f.get() << 3) | wt as u32))
-        }
+        unsafe { Tag(NonZeroU32::new_unchecked((f.get() << 3) | wt as u32)) }
     }
 
     /// Gets the wire type from this tag
@@ -147,9 +144,7 @@ impl Tag {
     /// Gets the field number from this tag
     #[inline]
     pub fn number(self) -> FieldNumber {
-        unsafe {
-            FieldNumber::new_unchecked(self.get() >> 3)
-        }
+        unsafe { FieldNumber::new_unchecked(self.get() >> 3) }
     }
 
     /// Returns the value as a primitive type
@@ -160,7 +155,8 @@ impl Tag {
 }
 
 #[doc(hidden)]
-pub mod sizes { // a helper module for calculating sizes in generated code
+pub mod sizes {
+    // a helper module for calculating sizes in generated code
     use crate::CodedMessage;
 
     #[inline]
@@ -406,7 +402,7 @@ impl Display for InputError {
     }
 }
 
-impl std::error::Error for InputError { }
+impl std::error::Error for InputError {}
 
 /// The result of a read from a CodedInput
 pub type InputResult<T> = Result<T, InputError>;
@@ -415,12 +411,12 @@ pub type InputResult<T> = Result<T, InputError>;
 pub struct CodedInput<'a> {
     inner: &'a mut Read,
     limit: Option<i32>,
-    last_tag: Option<Tag>
+    last_tag: Option<Tag>,
 }
 
 impl<'a> CodedInput<'a> {
     /// Creates a new CodedInput from the specified Read instance
-    /// 
+    ///
     /// # Examples
     /// ## Read from stdin
     /// ```
@@ -428,7 +424,11 @@ impl<'a> CodedInput<'a> {
     /// let mut input = CodedInput::new(&mut stdin.lock());
     /// ```
     pub fn new(inner: &'a mut Read) -> Self {
-        CodedInput { inner, limit: None, last_tag: None }
+        CodedInput {
+            inner,
+            limit: None,
+            last_tag: None,
+        }
     }
 
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
@@ -499,10 +499,8 @@ impl<'a> CodedInput<'a> {
             }
             WireType::Bit32 => {
                 self.read_fixed32()?;
-            },
-            WireType::EndGroup => {
-                return Err(InputError::InvalidTag(tag.get()))
             }
+            WireType::EndGroup => return Err(InputError::InvalidTag(tag.get())),
         }
 
         Ok(())
@@ -519,8 +517,9 @@ impl<'a> CodedInput<'a> {
         message.merge_from(self)?;
         if !self.reached_limit() {
             Err(InputError::IoError(std::io::Error::new(
-                    std::io::ErrorKind::UnexpectedEof,
-                    "the input ended in the middle of a field")))
+                std::io::ErrorKind::UnexpectedEof,
+                "the input ended in the middle of a field",
+            )))
         } else {
             self.pop_limit(old);
             Ok(())
@@ -656,12 +655,12 @@ impl<'a> CodedInput<'a> {
                     None => {
                         self.last_tag = None;
                         Err(InputError::InvalidTag(result as u32))
-                    },
+                    }
                     tag => {
                         self.last_tag = tag;
                         Ok(tag)
                     }
-                }
+                };
             }
             shift += 7;
         }
@@ -672,12 +671,12 @@ impl<'a> CodedInput<'a> {
                     None => {
                         self.last_tag = None;
                         Err(InputError::InvalidTag(result as u32))
-                    },
+                    }
                     tag => {
                         self.last_tag = tag;
                         Ok(tag)
                     }
-                }
+                };
             }
             shift += 7;
         }
@@ -694,7 +693,7 @@ impl<'a> CodedInput<'a> {
 /// The error of an [OutputResult](#OutputResult)
 #[derive(Debug)]
 pub enum OutputError {
-    /// The input message contained a length delimited field that was larger than the max value 
+    /// The input message contained a length delimited field that was larger than the max value
     ValueTooLarge,
     /// An error occured while writing to the underlying `Write` object
     IoError(std::io::Error),
@@ -716,7 +715,7 @@ impl Display for OutputError {
     }
 }
 
-impl std::error::Error for OutputError { }
+impl std::error::Error for OutputError {}
 
 /// The result of a write to a [CodedOutput](#CodedOutput)
 pub type OutputResult = Result<(), OutputError>;
@@ -888,6 +887,4 @@ impl<'a> CodedOutput<'a> {
 }
 
 #[cfg(test)]
-mod tests {
-
-}
+mod tests {}

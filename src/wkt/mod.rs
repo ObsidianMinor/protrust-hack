@@ -6,15 +6,15 @@
 /// ```
 /// use protrust::LiteMessage;
 /// use protrust::wkt::{any::Any, timestamp::Timestamp};
-/// 
+///
 /// # fn main() -> Result<(), Box<std::error::Error>> {
 /// let time = Timestamp::new();
 /// let any = Any::pack(&time)?;
-/// 
+///
 /// if let Some(result) = any.unpack::<Timestamp>() {
 ///     assert_eq!(result?, time);
 /// }
-/// 
+///
 /// assert!(any.unpack::<Any>().is_none());
 /// # Ok(())
 /// # }

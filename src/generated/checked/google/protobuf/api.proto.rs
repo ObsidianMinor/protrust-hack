@@ -3,102 +3,11 @@
 //
 // Source: google/protobuf/api.proto
 
-static FILE_ONCE: ::std::sync::Once = ::std::sync::Once::new();
-static mut FILE_POOL: ::std::option::Option<crate::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
-static mut FILE_PROTO: ::std::option::Option<[crate::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
-static mut FILE_DESCRIPTOR: ::std::option::Option<&'static crate::reflect::FileDescriptor> = ::std::option::Option::None;
-static mut FILE_DEPS: ::std::option::Option<[&'static crate::reflect::DescriptorPool<'static>; 2]> = ::std::option::Option::None;
-static FILE_BINARY: &'static [u8] = &[
-    10, 25, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 102, 47, 97, 112, 
-    105, 46, 112, 114, 111, 116, 111, 18, 15, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 
-    111, 98, 117, 102, 26, 36, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 
-    102, 47, 115, 111, 117, 114, 99, 101, 95, 99, 111, 110, 116, 101, 120, 116, 46, 112, 114, 111, 
-    116, 111, 26, 26, 103, 111, 111, 103, 108, 101, 47, 112, 114, 111, 116, 111, 98, 117, 102, 47, 
-    116, 121, 112, 101, 46, 112, 114, 111, 116, 111, 34, 193, 2, 10, 3, 65, 112, 105, 18, 18, 
-    10, 4, 110, 97, 109, 101, 24, 1, 32, 1, 40, 9, 82, 4, 110, 97, 109, 101, 18, 49, 
-    10, 7, 109, 101, 116, 104, 111, 100, 115, 24, 2, 32, 3, 40, 11, 50, 23, 46, 103, 111, 
-    111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 46, 77, 101, 116, 104, 111, 100, 
-    82, 7, 109, 101, 116, 104, 111, 100, 115, 18, 49, 10, 7, 111, 112, 116, 105, 111, 110, 115, 
-    24, 3, 32, 3, 40, 11, 50, 23, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 
-    111, 98, 117, 102, 46, 79, 112, 116, 105, 111, 110, 82, 7, 111, 112, 116, 105, 111, 110, 115, 
-    18, 24, 10, 7, 118, 101, 114, 115, 105, 111, 110, 24, 4, 32, 1, 40, 9, 82, 7, 118, 
-    101, 114, 115, 105, 111, 110, 18, 69, 10, 14, 115, 111, 117, 114, 99, 101, 95, 99, 111, 110, 
-    116, 101, 120, 116, 24, 5, 32, 1, 40, 11, 50, 30, 46, 103, 111, 111, 103, 108, 101, 46, 
-    112, 114, 111, 116, 111, 98, 117, 102, 46, 83, 111, 117, 114, 99, 101, 67, 111, 110, 116, 101, 
-    120, 116, 82, 13, 115, 111, 117, 114, 99, 101, 67, 111, 110, 116, 101, 120, 116, 18, 46, 10, 
-    6, 109, 105, 120, 105, 110, 115, 24, 6, 32, 3, 40, 11, 50, 22, 46, 103, 111, 111, 103, 
-    108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 46, 77, 105, 120, 105, 110, 82, 6, 109, 
-    105, 120, 105, 110, 115, 18, 47, 10, 6, 115, 121, 110, 116, 97, 120, 24, 7, 32, 1, 40, 
-    14, 50, 23, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 46, 
-    83, 121, 110, 116, 97, 120, 82, 6, 115, 121, 110, 116, 97, 120, 34, 178, 2, 10, 6, 77, 
-    101, 116, 104, 111, 100, 18, 18, 10, 4, 110, 97, 109, 101, 24, 1, 32, 1, 40, 9, 82, 
-    4, 110, 97, 109, 101, 18, 40, 10, 16, 114, 101, 113, 117, 101, 115, 116, 95, 116, 121, 112, 
-    101, 95, 117, 114, 108, 24, 2, 32, 1, 40, 9, 82, 14, 114, 101, 113, 117, 101, 115, 116, 
-    84, 121, 112, 101, 85, 114, 108, 18, 43, 10, 17, 114, 101, 113, 117, 101, 115, 116, 95, 115, 
-    116, 114, 101, 97, 109, 105, 110, 103, 24, 3, 32, 1, 40, 8, 82, 16, 114, 101, 113, 117, 
-    101, 115, 116, 83, 116, 114, 101, 97, 109, 105, 110, 103, 18, 42, 10, 17, 114, 101, 115, 112, 
-    111, 110, 115, 101, 95, 116, 121, 112, 101, 95, 117, 114, 108, 24, 4, 32, 1, 40, 9, 82, 
-    15, 114, 101, 115, 112, 111, 110, 115, 101, 84, 121, 112, 101, 85, 114, 108, 18, 45, 10, 18, 
-    114, 101, 115, 112, 111, 110, 115, 101, 95, 115, 116, 114, 101, 97, 109, 105, 110, 103, 24, 5, 
-    32, 1, 40, 8, 82, 17, 114, 101, 115, 112, 111, 110, 115, 101, 83, 116, 114, 101, 97, 109, 
-    105, 110, 103, 18, 49, 10, 7, 111, 112, 116, 105, 111, 110, 115, 24, 6, 32, 3, 40, 11, 
-    50, 23, 46, 103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 46, 79, 
-    112, 116, 105, 111, 110, 82, 7, 111, 112, 116, 105, 111, 110, 115, 18, 47, 10, 6, 115, 121, 
-    110, 116, 97, 120, 24, 7, 32, 1, 40, 14, 50, 23, 46, 103, 111, 111, 103, 108, 101, 46, 
-    112, 114, 111, 116, 111, 98, 117, 102, 46, 83, 121, 110, 116, 97, 120, 82, 6, 115, 121, 110, 
-    116, 97, 120, 34, 47, 10, 5, 77, 105, 120, 105, 110, 18, 18, 10, 4, 110, 97, 109, 101, 
-    24, 1, 32, 1, 40, 9, 82, 4, 110, 97, 109, 101, 18, 18, 10, 4, 114, 111, 111, 116, 
-    24, 2, 32, 1, 40, 9, 82, 4, 114, 111, 111, 116, 66, 117, 10, 19, 99, 111, 109, 46, 
-    103, 111, 111, 103, 108, 101, 46, 112, 114, 111, 116, 111, 98, 117, 102, 66, 8, 65, 112, 105, 
-    80, 114, 111, 116, 111, 80, 1, 90, 43, 103, 111, 111, 103, 108, 101, 46, 103, 111, 108, 97, 
-    110, 103, 46, 111, 114, 103, 47, 103, 101, 110, 112, 114, 111, 116, 111, 47, 112, 114, 111, 116, 
-    111, 98, 117, 102, 47, 97, 112, 105, 59, 97, 112, 105, 162, 2, 3, 71, 80, 66, 170, 2, 
-    30, 71, 111, 111, 103, 108, 101, 46, 80, 114, 111, 116, 111, 98, 117, 102, 46, 87, 101, 108, 
-    108, 75, 110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51, 
-];
 
-fn file_once_init() {
-    unsafe {
-        FILE_PROTO = ::std::option::Option::Some([crate::LiteMessage::read_new(&mut FILE_BINARY.as_ref()).expect("Could not read file descriptor")]);
-        FILE_DEPS = ::std::option::Option::Some([crate::wkt::source_context::pool(), crate::wkt::r#type::pool(), ]);
-        FILE_POOL = ::std::option::Option::Some(crate::reflect::DescriptorPool::build_generated_pool(
-            FILE_PROTO.as_ref().unwrap(),
-            FILE_DEPS.as_ref().unwrap(),
-            crate::reflect::GeneratedCodeInfo {
-                structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::Api as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::Method as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<self::Mixin as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                ])),
-            }
-        ));
-        FILE_DESCRIPTOR = ::std::option::Option::Some(FILE_POOL.as_ref().unwrap().find_file_by_name("google/protobuf/api.proto").unwrap());
-    }
-}
-
-/// Gets the pool containing all the symbols in this proto file and its dependencies
-pub fn pool() -> &'static crate::reflect::DescriptorPool<'static> {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_POOL.as_ref().unwrap()
-    }
-}
-/// Gets the file descriptor representing the proto that created this generated file
 pub fn file() -> &'static crate::reflect::FileDescriptor {
-    unsafe {
-        FILE_ONCE.call_once(file_once_init);
-        FILE_DESCRIPTOR.as_ref().unwrap()
-    }
+    super::pool().find_file_by_name("google/protobuf/api.proto").unwrap()
 }
+
 /// Api is a light-weight descriptor for an API Interface.
 /// 
 /// Interfaces are also described as "protocol buffer services" in some contexts,

@@ -9,20 +9,13 @@ pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
         .replace(|s| s == '/' || s == '-' || s == '.', "_")
 }
 
-pub fn get_rust_external_mod_name(file: &FileDescriptor, crate_name: &str) -> String {
-    match well_known_file(file) {
-        Some(f) => format!("{}::{}", crate_name, f),
-        None => format!("super::{}", get_rust_file_mod_name(file)),
-    }
-}
-
 pub fn get_message_type_name(message: &MessageDescriptor) -> String {
     get_type_name(message.name(), message.scope())
 }
 
 pub fn get_full_message_type_name(
     message: &MessageDescriptor,
-    file: &FileDescriptor,
+    file: Option<&FileDescriptor>,
     crate_name: &str,
 ) -> String {
     get_full_type_name(message.name(), message.scope(), file, crate_name)
@@ -34,7 +27,7 @@ pub fn get_enum_type_name(enum_type: &EnumDescriptor) -> String {
 
 pub fn get_full_enum_type_name(
     enum_type: &EnumDescriptor,
-    file: &FileDescriptor,
+    file: Option<&FileDescriptor>,
     crate_name: &str,
 ) -> String {
     get_full_type_name(enum_type.name(), enum_type.scope(), file, crate_name)
@@ -50,7 +43,7 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
 
 pub fn get_full_enum_variant_name(
     value: &EnumValueDescriptor,
-    file: &FileDescriptor,
+    file: Option<&FileDescriptor>,
     crate_name: &str,
 ) -> String {
     format!(
@@ -123,11 +116,11 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
     use protrust::reflect::FieldType::*;
     match res {
         TypeResolution::Base => match field.field_type() {
-            Message(m) | Group(m) => get_full_message_type_name(m, field.file(), crate_name),
+            Message(m) | Group(m) => get_full_message_type_name(m, Some(field.file()), crate_name),
             Enum(e) => format!(
                 "{}::EnumValue<{}>",
                 crate_name,
-                get_full_enum_type_name(e, field.file(), crate_name)
+                get_full_enum_type_name(e, Some(field.file()), crate_name)
             ),
             Bytes => format!("::std::vec::Vec<u8>"),
             String => format!("::std::string::String"),
@@ -245,25 +238,30 @@ fn get_type_name(name: &str, mut scope: &CompositeScope) -> String {
 fn get_full_type_name(
     name: &str,
     scope: &CompositeScope,
-    file: &FileDescriptor,
+    file: Option<&FileDescriptor>,
     crate_name: &str,
 ) -> String {
     let mut full = get_type_name(name, scope);
 
-    if scope.file() == file {
-        full.insert_str(0, "self::");
-    } else {
-        let file = scope.file();
-        if let Some(file) = well_known_file(file) {
-            full.insert_str(0, "::");
-            full.insert_str(0, file);
-            full.insert_str(0, "::");
-            full.insert_str(0, crate_name);
+    if let Some(file) = file {
+        if scope.file() == file {
+            full.insert_str(0, "self::");
         } else {
-            full.insert_str(0, "::");
-            full.insert_str(0, &get_rust_file_mod_name(file));
-            full.insert_str(0, "super::");
+            let file = scope.file();
+            if let Some(file) = well_known_file(file) {
+                full.insert_str(0, "::");
+                full.insert_str(0, file);
+                full.insert_str(0, "::");
+                full.insert_str(0, crate_name);
+            } else {
+                full.insert_str(0, "::");
+                full.insert_str(0, &get_rust_file_mod_name(file));
+                full.insert_str(0, "super::");
+            }
         }
+    } else {
+        full.insert_str(0, "::");
+        full.insert_str(0, &get_rust_file_mod_name(scope.file()))
     }
 
     full

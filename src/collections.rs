@@ -5,8 +5,8 @@
 //! [`RepeatedField`]: collections/struct.RepeatedField.html
 //! [`MapField`]: collections/struct.MapField.html
 
+use crate::io::{CodedInput, CodedOutput, InputResult, OutputResult, WireType};
 use crate::{Codec, LiteMessage, ValueSize};
-use crate::io::{CodedInput, CodedOutput, WireType, InputResult, OutputResult};
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::hash::Hash;
@@ -49,11 +49,7 @@ impl<T> RepeatedField<T> {
 
 #[doc(hidden)]
 impl<T: Clone> RepeatedField<T> {
-    pub fn add_entries(
-        &mut self,
-        input: &mut CodedInput,
-        codec: &Codec<T>,
-    ) -> InputResult<()> {
+    pub fn add_entries(&mut self, input: &mut CodedInput, codec: &Codec<T>) -> InputResult<()> {
         if let Some(tag) = input.last_tag() {
             if tag.wire_type() == WireType::LengthDelimited && codec.is_packed() {
                 let new_limit = input.read_int32()?;
@@ -66,7 +62,7 @@ impl<T: Clone> RepeatedField<T> {
                 self.push(codec.read_from(input)?);
             }
         }
-        
+
         Ok(())
     }
     #[cfg(checked_size)]
@@ -215,7 +211,11 @@ impl<K, V> DerefMut for MapField<K, V> {
 }
 
 #[doc(hidden)]
-impl<K: Eq + Hash + Clone + crate::internal::Primitive, V: PartialEq + Clone + crate::internal::Primitive> MapField<K, V> {
+impl<
+        K: Eq + Hash + Clone + crate::internal::Primitive,
+        V: PartialEq + Clone + crate::internal::Primitive,
+    > MapField<K, V>
+{
     pub fn add_entries(
         &mut self,
         input: &mut CodedInput,
@@ -360,7 +360,9 @@ impl<'a, K, V> MapWriteAdapter<'a, K, V> {
     }
 }
 
-impl<K: crate::internal::Primitive, V: crate::internal::Primitive> crate::CodedMessage for MapWriteAdapter<'_, K, V> {
+impl<K: crate::internal::Primitive, V: crate::internal::Primitive> crate::CodedMessage
+    for MapWriteAdapter<'_, K, V>
+{
     fn merge_from(&mut self, _input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         unreachable!()
     }

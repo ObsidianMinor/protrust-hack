@@ -3,21 +3,10 @@
 pub use crate::descriptor::FieldDescriptorProto_Label as FieldLabel;
 
 use crate::descriptor::{
-    DescriptorProto, 
-    EnumDescriptorProto, 
-    EnumOptions, 
-    EnumValueDescriptorProto, 
-    EnumValueOptions, 
-    FieldDescriptorProto, 
-    FieldOptions, 
-    FileDescriptorProto, 
-    FileOptions, 
-    MessageOptions, 
-    MethodDescriptorProto, 
-    MethodOptions, 
-    OneofDescriptorProto, 
-    ServiceDescriptorProto, 
-    ServiceOptions
+    DescriptorProto, EnumDescriptorProto, EnumOptions, EnumValueDescriptorProto, EnumValueOptions,
+    FieldDescriptorProto, FieldOptions, FileDescriptorProto, FileOptions, MessageOptions,
+    MethodDescriptorProto, MethodOptions, OneofDescriptorProto, ServiceDescriptorProto,
+    ServiceOptions,
 };
 use crate::io::{FieldNumber, WireType};
 use std::collections::HashMap;
@@ -36,9 +25,9 @@ enum Symbol {
     Method(*mut MethodDescriptor),
 }
 
-/// Represents an immutable reference to a descriptor value. 
+/// Represents an immutable reference to a descriptor value.
 /// This structure will always be behind another lifetime, such as a borrowed slice or iterator, and can't be owned.
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Ref<T>(*mut T);
 
 impl<T> Ref<T> {
@@ -79,55 +68,43 @@ fn raw_box<T>(value: T) -> *mut T {
 }
 
 /// A pool of Descriptor symbols aggregated in via a slice of `FileDescriptorProto`s or a slice of borrowed pools
-/// 
+///
 /// Unlike Google's C++ implementation of Protocol Buffers, this pool is immutable once created. It is not possible
 /// to add, remove, or modify any descriptors once they have been added.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ## Building a pool from a selection of files
-/// 
+///
 /// ```
 /// use protrust::reflect::DescriptorPool;
-/// 
+///
 /// let files = [
 ///     protrust::descriptor::file().proto().clone(),
 ///     protrust::plugin::file().proto().clone()
 /// ];
-/// 
+///
 /// let pool = DescriptorPool::build_from_files(&files);
 /// ```
-/// 
+///
 /// ## Using a pool from generated code
-/// 
+///
 /// ```
 /// use protrust::{CodedMessage, LiteMessage, Message};
 /// use protrust::descriptor::FileDescriptorProto;
 /// use protrust::reflect::AnyMessage;
-/// 
+///
 /// let file_descriptor = &protrust::descriptor::file().messages()[1];
 /// assert!(file_descriptor.full_name() == ".google.protobuf.FileDescriptorProto");
-/// 
+///
 /// let mut instance = file_descriptor.new_message().unwrap();
 /// assert!(instance.calculate_size() == 0);
-/// 
+///
 /// let other = protrust::descriptor::file().proto();
 /// let file_instance = &mut *instance.downcast_mut::<FileDescriptorProto>().expect("Could not unwrap FileDescriptorProto");
 /// file_instance.merge(other);
-/// 
+///
 /// assert_eq!(file_instance, other);
-/// ```
-/// 
-/// ## Creating a pool from multiple existing pools
-/// 
-/// ```
-/// use protrust::reflect::DescriptorPool;
-/// 
-/// let pools = [protrust::wkt::any::pool(), protrust::wkt::timestamp::pool()];
-/// let pool = DescriptorPool::build_from_pools(&pools);
-/// 
-/// assert!(pool.find_message_by_name(".google.protobuf.Any").is_some());
-/// assert!(pool.find_message_by_name(".google.protobuf.Timestamp").is_some());
 /// ```
 pub struct DescriptorPool<'a> {
     pools: &'a [&'a DescriptorPool<'a>],
@@ -136,7 +113,6 @@ pub struct DescriptorPool<'a> {
 }
 
 static EMPTY_POOLS: &'static [&'static DescriptorPool<'static>] = &[];
-static EMPTY_FILES: &'static [FileDescriptorProto] = &[];
 
 impl DescriptorPool<'_> {
     /// Builds a descriptor pool from the slice of file descriptors
@@ -150,13 +126,13 @@ impl DescriptorPool<'_> {
         pool
     }
 
-    pub fn build_generated_pool(
-        file: &'static [FileDescriptorProto; 1],
-        pools: &'static [&'static DescriptorPool],
-        info: GeneratedCodeInfo
+    pub fn build_from_generated_code(
+        file: &'static [FileDescriptorProto],
+        extern_pools: &'static [&'static DescriptorPool<'static>],
+        info: Box<[GeneratedCodeInfo]>,
     ) -> DescriptorPool<'static> {
         let mut pool = DescriptorPool {
-            pools,
+            pools: extern_pools,
             protos: file,
             symbols: HashMap::new(),
         };
@@ -164,26 +140,19 @@ impl DescriptorPool<'_> {
         pool
     }
 
-    pub fn build_from_generated_code(
-        file: &'static [FileDescriptorProto], 
-        extern_pools: &'static [&'static DescriptorPool<'static>], 
-        info: Box<[GeneratedCodeInfo]>
-    ) -> DescriptorPool<'static> {
-        unimplemented!()
-    }
-
-    fn build(&mut self, code_info: Option<GeneratedCodeInfo>) {
+    fn build(&mut self, code_info: Option<Box<[GeneratedCodeInfo]>>) {
+        let files: Vec<_> = self.protos.iter().map(|file| FileDescriptor::new(file as *const FileDescriptorProto, self)).collect();
         // insert the symbol for each file
-        if code_info.is_some() && self.protos.len() == 1 {
-            let file = FileDescriptor::new(&self.protos[0] as *const FileDescriptorProto, self);
-            unsafe {
-                (*file).cross_ref(self, code_info);
+        if let Some(code_info) = code_info {
+            for (file, code_info) in files.iter().zip(Vec::from(code_info).drain(..)) {
+                unsafe {
+                    (**file).cross_ref(self, Some(code_info));
+                }
             }
         } else {
-            for file in self.protos.iter() {
-                let file = FileDescriptor::new(file as *const FileDescriptorProto, self);
+            for file in &files {
                 unsafe {
-                    (*file).cross_ref(self, None);
+                    (**file).cross_ref(self, None);
                 }
             }
         }
@@ -254,38 +223,28 @@ impl DescriptorPool<'_> {
     fn get_file_ref(&self, name: &str) -> Ref<FileDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::File(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol: {}", name),
         }
     }
 
     fn get_message_ref(&self, name: &str) -> Ref<MessageDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::Message(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol: {}", name),
         }
     }
 
     fn get_enum_ref(&self, name: &str) -> Ref<EnumDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::Enum(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
+            _ => panic!("Pool did not contain referenced symbol: {}", name),
         }
     }
 
     fn get_enum_value_ref(&self, name: &str) -> Ref<EnumValueDescriptor> {
         match self.find_symbol(name) {
             Some(Symbol::EnumValue(symbol)) => Ref::new(*symbol),
-            _ => panic!("Pool did not contain referenced symbol"),
-        }
-    }
-}
-
-impl<'a> DescriptorPool<'a> {
-    pub fn build_from_pools(pools: &'a [&'a DescriptorPool<'a>]) -> DescriptorPool<'a> {
-        DescriptorPool {
-            pools,
-            protos: EMPTY_FILES,
-            symbols: HashMap::new(),
+            _ => panic!("Pool did not contain referenced symbol: {}", name),
         }
     }
 }
@@ -349,13 +308,13 @@ impl SourceCodeInfo {
 
 #[doc(hidden)]
 pub struct GeneratedCodeInfo {
-    pub structs: Option<Box<[GeneratedStructInfo]>>
+    pub structs: Option<Box<[GeneratedStructInfo]>>,
 }
 
 #[doc(hidden)]
 pub struct GeneratedStructInfo {
     pub new: fn() -> Box<dyn AnyMessage>,
-    pub structs: Option<Box<[GeneratedStructInfo]>>
+    pub structs: Option<Box<[GeneratedStructInfo]>>,
 }
 
 /// Specifies the syntax of a proto file
@@ -463,22 +422,6 @@ impl FileDescriptor {
         }
 
         descriptor.proto = proto;
-        descriptor.dependencies = descriptor
-            .proto()
-            .dependency()
-            .iter()
-            .map(|f| pool.get_file_ref(f))
-            .collect::<Vec<_>>()
-            .into();
-
-        descriptor.public_dependencies = descriptor
-            .proto()
-            .public_dependency()
-            .iter()
-            .map(|f| Ref::clone(&descriptor.dependencies[*f as usize]))
-            .collect::<Vec<_>>()
-            .into();
-
         descriptor.messages = descriptor
             .proto()
             .message_type()
@@ -543,16 +486,15 @@ impl FileDescriptor {
             .collect::<Vec<_>>()
             .into();
 
-        descriptor.syntax = 
-            if !descriptor.proto().has_syntax() {
-                Syntax::Proto2
-            } else {
-                match descriptor.proto().syntax() {
-                    "proto3" => Syntax::Proto3,
-                    "proto2" => Syntax::Proto2,
-                    _ => Syntax::Unknown,
-                }
-            };
+        descriptor.syntax = if !descriptor.proto().has_syntax() {
+            Syntax::Proto2
+        } else {
+            match descriptor.proto().syntax() {
+                "proto3" => Syntax::Proto3,
+                "proto2" => Syntax::Proto2,
+                _ => Syntax::Unknown,
+            }
+        };
 
         if let Some(_) = pool
             .symbols
@@ -564,7 +506,27 @@ impl FileDescriptor {
         descriptor_raw
     }
 
-    unsafe fn cross_ref(&mut self, pool: &mut DescriptorPool, code_info: Option<GeneratedCodeInfo>) {
+    unsafe fn cross_ref(
+        &mut self,
+        pool: &mut DescriptorPool,
+        code_info: Option<GeneratedCodeInfo>,
+    ) {
+        self.dependencies = self
+            .proto()
+            .dependency()
+            .iter()
+            .map(|f| pool.get_file_ref(f))
+            .collect::<Vec<_>>()
+            .into();
+
+        self.public_dependencies = self
+            .proto()
+            .public_dependency()
+            .iter()
+            .map(|f| Ref::clone(&self.dependencies[*f as usize]))
+            .collect::<Vec<_>>()
+            .into();
+
         if let Some(code_info) = code_info {
             if let Some(structs) = code_info.structs {
                 for (message, message_info) in self.messages.iter_mut().zip(structs.iter()) {
@@ -636,6 +598,24 @@ impl PartialEq for FileDescriptor {
 
 impl Eq for FileDescriptor {}
 
+impl PartialOrd for FileDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for FileDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for FileDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
+
 unsafe impl Send for FileDescriptor {}
 
 unsafe impl Sync for FileDescriptor {}
@@ -699,11 +679,11 @@ impl CompositeScope {
 
 /// A message type to emulate dynamic typing.
 /// This type is like Any and allows for downcasting the type to a concrete type.
-/// 
+///
 /// It also has the methods of CodedMessage, allowing for reading, merging, and calculating the size of an unknown message
-pub trait AnyMessage : crate::CodedMessage + std::any::Any { }
+pub trait AnyMessage: crate::CodedMessage + std::any::Any {}
 
-impl<T: crate::CodedMessage + std::any::Any> AnyMessage for T { }
+impl<T: crate::CodedMessage + std::any::Any> AnyMessage for T {}
 
 impl dyn AnyMessage {
     #[inline]
@@ -716,9 +696,7 @@ impl dyn AnyMessage {
     #[inline]
     pub fn downcast_ref<T: AnyMessage>(&self) -> Option<&T> {
         if self.is::<T>() {
-            unsafe {
-                Some(&*(self as *const dyn AnyMessage as *const T))
-            }
+            unsafe { Some(&*(self as *const dyn AnyMessage as *const T)) }
         } else {
             None
         }
@@ -727,9 +705,7 @@ impl dyn AnyMessage {
     #[inline]
     pub fn downcast_mut<T: AnyMessage>(&mut self) -> Option<&mut T> {
         if self.is::<T>() {
-            unsafe {
-                Some(&mut *(self as *mut dyn AnyMessage as *mut T))
-            }
+            unsafe { Some(&mut *(self as *mut dyn AnyMessage as *mut T)) }
         } else {
             None
         }
@@ -737,11 +713,11 @@ impl dyn AnyMessage {
 }
 
 /// Provides the [`downcast`](#method.downcast) extension method for `Box`
-pub trait AnyBoxExt : Sized + crate::internal::Sealed {
+pub trait AnyBoxExt: Sized + crate::internal::Sealed {
     fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Self>;
 }
 
-impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> { }
+impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> {}
 
 impl AnyBoxExt for Box<dyn AnyMessage + 'static> {
     #[inline]
@@ -757,14 +733,13 @@ impl AnyBoxExt for Box<dyn AnyMessage + 'static> {
     }
 }
 
-impl crate::internal::Sealed for Box<dyn AnyMessage + 'static + Send> { }
+impl crate::internal::Sealed for Box<dyn AnyMessage + 'static + Send> {}
 
 impl AnyBoxExt for Box<dyn AnyMessage + 'static + Send> {
     #[inline]
     fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Box<dyn AnyMessage + Send>> {
-        <Box<dyn AnyMessage>>::downcast(self).map_err(|s| unsafe {
-            Box::from_raw(Box::into_raw(s) as *mut (dyn AnyMessage + Send))
-        })
+        <Box<dyn AnyMessage>>::downcast(self)
+            .map_err(|s| unsafe { Box::from_raw(Box::into_raw(s) as *mut (dyn AnyMessage + Send)) })
     }
 }
 
@@ -1043,6 +1018,24 @@ impl PartialEq for MessageDescriptor {
 
 impl Eq for MessageDescriptor {}
 
+impl PartialOrd for MessageDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for MessageDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for MessageDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
+
 unsafe impl Send for MessageDescriptor {}
 
 unsafe impl Sync for MessageDescriptor {}
@@ -1187,6 +1180,24 @@ impl PartialEq for EnumDescriptor {
 
 impl Eq for EnumDescriptor {}
 
+impl PartialOrd for EnumDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for EnumDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for EnumDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
+
 unsafe impl Send for EnumDescriptor {}
 
 unsafe impl Sync for EnumDescriptor {}
@@ -1302,6 +1313,24 @@ impl PartialEq for EnumValueDescriptor {
 }
 
 impl Eq for EnumValueDescriptor {}
+
+impl PartialOrd for EnumValueDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for EnumValueDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for EnumValueDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
 
 unsafe impl Send for EnumValueDescriptor {}
 
@@ -1442,6 +1471,24 @@ impl PartialEq for ServiceDescriptor {
 
 impl Eq for ServiceDescriptor {}
 
+impl PartialOrd for ServiceDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for ServiceDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for ServiceDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
+
 unsafe impl Send for ServiceDescriptor {}
 
 unsafe impl Sync for ServiceDescriptor {}
@@ -1576,6 +1623,24 @@ impl PartialEq for MethodDescriptor {
 
 impl Eq for MethodDescriptor {}
 
+impl PartialOrd for MethodDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for MethodDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for MethodDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
+
 unsafe impl Send for MethodDescriptor {}
 
 unsafe impl Sync for MethodDescriptor {}
@@ -1626,7 +1691,7 @@ pub enum FieldType {
 
 impl FieldType {
     /// Gets the wire type of this field type.
-    /// 
+    ///
     /// This function does not consider if the field is packed.
     /// For the wire type of fields considering packed, use `FieldDescriptor::wire_type`
     pub fn wire_type(&self) -> WireType {
@@ -1645,7 +1710,7 @@ impl FieldType {
     pub fn is_message(&self) -> bool {
         match self {
             FieldType::Message(_) => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -1653,7 +1718,7 @@ impl FieldType {
     pub fn is_group(&self) -> bool {
         match self {
             FieldType::Group(_) => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -1661,7 +1726,7 @@ impl FieldType {
     pub fn is_enum(&self) -> bool {
         match self {
             FieldType::Enum(_) => true,
-            _ => false
+            _ => false,
         }
     }
 }
@@ -1831,7 +1896,8 @@ impl FieldDescriptor {
         descriptor.proto = proto;
         descriptor.scope = scope;
         descriptor.scope_index = index;
-        descriptor.number = FieldNumber::new(descriptor.proto().number() as u32).expect("invalid field number");
+        descriptor.number =
+            FieldNumber::new(descriptor.proto().number() as u32).expect("invalid field number");
         descriptor.full_name = match &descriptor.scope {
             FieldScope::File(f) => format!(".{}.{}", f.package(), descriptor.name()),
             FieldScope::Message(m) => format!("{}.{}", m.full_name(), descriptor.name()),
@@ -1964,6 +2030,24 @@ impl PartialEq for FieldDescriptor {
 }
 
 impl Eq for FieldDescriptor {}
+
+impl PartialOrd for FieldDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for FieldDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for FieldDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
+    }
+}
 
 unsafe impl Send for FieldDescriptor {}
 
@@ -2104,6 +2188,24 @@ impl OneofDescriptor {
 impl PartialEq for OneofDescriptor {
     fn eq(&self, other: &Self) -> bool {
         self.proto == other.proto
+    }
+}
+
+impl PartialOrd for OneofDescriptor {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.proto.partial_cmp(&other.proto)
+    }
+}
+
+impl Ord for OneofDescriptor {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.proto.cmp(&other.proto)
+    }
+}
+
+impl std::hash::Hash for OneofDescriptor {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.proto.hash(state)
     }
 }
 
