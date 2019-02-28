@@ -224,7 +224,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldMask {
     paths: crate::collections::RepeatedField<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static FIELD_MASK_PATHS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(10);
 impl crate::CodedMessage for self::FieldMask {
@@ -253,7 +253,7 @@ impl crate::LiteMessage for self::FieldMask {
     fn new() -> Self {
         Self {
             paths: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

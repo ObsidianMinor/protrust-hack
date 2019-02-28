@@ -1,7 +1,6 @@
 #![feature(try_from)]
 
 #[rustfmt::skip]
-#[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case, unreachable_patterns)]
 mod gen {
     include!(concat!(env!("OUT_DIR"), "/gen/mod.rs"));
 }

@@ -19,7 +19,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Struct {
     fields: crate::collections::MapField<::std::string::String, self::Value>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static STRUCT_FIELDS_CODEC: crate::collections::MapCodec<::std::string::String, self::Value> = crate::collections::MapCodec::new(crate::Codec::string(10), crate::Codec::message(18), 10);
 impl crate::CodedMessage for self::Struct {
@@ -48,7 +48,7 @@ impl crate::LiteMessage for self::Struct {
     fn new() -> Self {
         Self {
             fields: crate::collections::MapField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -85,50 +85,32 @@ impl self::Struct {
 /// The JSON representation for `Value` is JSON value.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Value {
-    kind: self::Value_Kind,
-    unknown_fields: crate::UnknownFieldSet
-}
-/// The kind of value.
-#[derive(Clone, Debug, PartialEq)]
-pub enum Value_Kind {
-    /// No value
-    None,
-    /// Represents a null value.
-    NullValue(crate::EnumValue<self::NullValue>),
-    /// Represents a double value.
-    NumberValue(f64),
-    /// Represents a string value.
-    StringValue(::std::string::String),
-    /// Represents a boolean value.
-    BoolValue(bool),
-    /// Represents a structured value.
-    StructValue(::std::boxed::Box<self::Struct>),
-    /// Represents a repeated `Value`.
-    ListValue(::std::boxed::Box<self::ListValue>),
+    kind: self::value::Kind,
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.kind = self::Value_Kind::NullValue(input.read_enum_value()?),
-                17 => self.kind = self::Value_Kind::NumberValue(input.read_double()?),
-                26 => self.kind = self::Value_Kind::StringValue(input.read_string()?),
-                32 => self.kind = self::Value_Kind::BoolValue(input.read_bool()?),
+                8 => self.kind = self::value::Kind::NullValue(input.read_enum_value()?),
+                17 => self.kind = self::value::Kind::NumberValue(input.read_double()?),
+                26 => self.kind = self::value::Kind::StringValue(input.read_string()?),
+                32 => self.kind = self::value::Kind::BoolValue(input.read_bool()?),
                 42 => 
-                    if let self::Value_Kind::StructValue(kind) = &mut self.kind {
+                    if let self::value::Kind::StructValue(kind) = &mut self.kind {
                         kind.merge_from(input)?;
                     } else {
                         let mut kind = ::std::boxed::Box::new(<self::Struct as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
-                        self.kind = self::Value_Kind::StructValue(kind)
+                        self.kind = self::value::Kind::StructValue(kind)
                     },
                 50 => 
-                    if let self::Value_Kind::ListValue(kind) = &mut self.kind {
+                    if let self::value::Kind::ListValue(kind) = &mut self.kind {
                         kind.merge_from(input)?;
                     } else {
                         let mut kind = ::std::boxed::Box::new(<self::ListValue as crate::LiteMessage>::new());
                         kind.merge_from(input)?;
-                        self.kind = self::Value_Kind::ListValue(kind)
+                        self.kind = self::value::Kind::ListValue(kind)
                     },
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -137,27 +119,27 @@ impl crate::CodedMessage for self::Value {
     }
     fn calculate_size(&self) -> ::std::option::Option<i32> {
         let mut size = 0i32;
-        if let self::Value_Kind::NullValue(kind) = self.kind {
+        if let self::value::Kind::NullValue(kind) = self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::enum_value(kind));
         }
-        if let self::Value_Kind::NumberValue(kind) = self.kind {
+        if let self::value::Kind::NumberValue(kind) = self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::double(kind));
         }
-        if let self::Value_Kind::StringValue(kind) = &self.kind {
+        if let self::value::Kind::StringValue(kind) = &self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::string(kind));
         }
-        if let self::Value_Kind::BoolValue(kind) = self.kind {
+        if let self::value::Kind::BoolValue(kind) = self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::bool(kind));
         }
-        if let self::Value_Kind::StructValue(kind) = &self.kind {
+        if let self::value::Kind::StructValue(kind) = &self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(&**kind));
         }
-        if let self::Value_Kind::ListValue(kind) = &self.kind {
+        if let self::value::Kind::ListValue(kind) = &self.kind {
             size = size.checked_add(1)?;
             size = size.checked_add(crate::io::sizes::message(&**kind));
         }
@@ -165,27 +147,27 @@ impl crate::CodedMessage for self::Value {
         ::std::option::Option::Some(size)
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        if let self::Value_Kind::NullValue(kind) = self.kind {
+        if let self::value::Kind::NullValue(kind) = self.kind {
             output.write_raw_tag_bytes(&[8])?;
             output.write_enum_value(kind)?;
         }
-        if let self::Value_Kind::NumberValue(kind) = self.kind {
+        if let self::value::Kind::NumberValue(kind) = self.kind {
             output.write_raw_tag_bytes(&[17])?;
             output.write_double(kind)?;
         }
-        if let self::Value_Kind::StringValue(kind) = &self.kind {
+        if let self::value::Kind::StringValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[26])?;
             output.write_string(kind)?;
         }
-        if let self::Value_Kind::BoolValue(kind) = self.kind {
+        if let self::value::Kind::BoolValue(kind) = self.kind {
             output.write_raw_tag_bytes(&[32])?;
             output.write_bool(kind)?;
         }
-        if let self::Value_Kind::StructValue(kind) = &self.kind {
+        if let self::value::Kind::StructValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[42])?;
             output.write_message(&**kind)?;
         }
-        if let self::Value_Kind::ListValue(kind) = &self.kind {
+        if let self::value::Kind::ListValue(kind) = &self.kind {
             output.write_raw_tag_bytes(&[50])?;
             output.write_message(&**kind)?;
         }
@@ -196,35 +178,35 @@ impl crate::CodedMessage for self::Value {
 impl crate::LiteMessage for self::Value {
     fn new() -> Self {
         Self {
-            kind: self::Value_Kind::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            kind: self::value::Kind::None,
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
-        if let self::Value_Kind::NullValue(kind) = other.kind {
-            self.kind = self::Value_Kind::NullValue(kind);
+        if let self::value::Kind::NullValue(kind) = other.kind {
+            self.kind = self::value::Kind::NullValue(kind);
         }
-        if let self::Value_Kind::NumberValue(kind) = other.kind {
-            self.kind = self::Value_Kind::NumberValue(kind);
+        if let self::value::Kind::NumberValue(kind) = other.kind {
+            self.kind = self::value::Kind::NumberValue(kind);
         }
-        if let self::Value_Kind::StringValue(kind) = &other.kind {
-            self.kind = self::Value_Kind::StringValue(kind.clone());
+        if let self::value::Kind::StringValue(kind) = &other.kind {
+            self.kind = self::value::Kind::StringValue(kind.clone());
         }
-        if let self::Value_Kind::BoolValue(kind) = other.kind {
-            self.kind = self::Value_Kind::BoolValue(kind);
+        if let self::value::Kind::BoolValue(kind) = other.kind {
+            self.kind = self::value::Kind::BoolValue(kind);
         }
-        if let self::Value_Kind::StructValue(kind) = &other.kind {
-            if let self::Value_Kind::StructValue(existing) = &mut self.kind {
+        if let self::value::Kind::StructValue(kind) = &other.kind {
+            if let self::value::Kind::StructValue(existing) = &mut self.kind {
                 existing.merge(kind);
             } else {
-                self.kind = self::Value_Kind::StructValue(kind.clone());
+                self.kind = self::value::Kind::StructValue(kind.clone());
             }
         }
-        if let self::Value_Kind::ListValue(kind) = &other.kind {
-            if let self::Value_Kind::ListValue(existing) = &mut self.kind {
+        if let self::value::Kind::ListValue(kind) = &other.kind {
+            if let self::value::Kind::ListValue(existing) = &mut self.kind {
                 existing.merge(kind);
             } else {
-                self.kind = self::Value_Kind::ListValue(kind.clone());
+                self.kind = self::value::Kind::ListValue(kind.clone());
             }
         }
         self.unknown_fields.merge(&other.unknown_fields);
@@ -238,15 +220,41 @@ impl crate::Message for self::Value {
 impl self::Value {
     /// Gets a shared reference to the [`kind`] oneof field
     ///
-    /// [`kind`]: enum.Value_Kind.html
-    pub fn kind(&self) -> &self::Value_Kind {
+    /// [`kind`]: enum.Kind.html
+    pub fn kind(&self) -> &self::value::Kind {
         &self.kind
     }
     /// Gets a unique reference to the [`kind`] oneof field
     ///
-    /// [`kind`]: enum.Value_Kind.html
-    pub fn kind_mut(&mut self) -> &mut self::Value_Kind {
+    /// [`kind`]: enum.Kind.html
+    pub fn kind_mut(&mut self) -> &mut self::value::Kind {
         &mut self.kind
+    }
+}
+/// `Value` represents a dynamically typed value which can be either
+/// null, a number, a string, a boolean, a recursive struct value, or a
+/// list of values. A producer of value is expected to set one of that
+/// variants, absence of any variant indicates an error.
+/// 
+/// The JSON representation for `Value` is JSON value.
+pub mod value {
+    /// The kind of value.
+    #[derive(Clone, Debug, PartialEq)]
+    pub enum Kind {
+        /// No value
+        None,
+        /// Represents a null value.
+        NullValue(crate::EnumValue<self::super::NullValue>),
+        /// Represents a double value.
+        NumberValue(f64),
+        /// Represents a string value.
+        StringValue(::std::string::String),
+        /// Represents a boolean value.
+        BoolValue(bool),
+        /// Represents a structured value.
+        StructValue(::std::boxed::Box<self::super::Struct>),
+        /// Represents a repeated `Value`.
+        ListValue(::std::boxed::Box<self::super::ListValue>),
     }
 }
 /// `ListValue` is a wrapper around a repeated field of values.
@@ -255,7 +263,7 @@ impl self::Value {
 #[derive(Clone, Debug, PartialEq)]
 pub struct ListValue {
     values: crate::collections::RepeatedField<self::Value>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static LIST_VALUE_VALUES_CODEC: crate::Codec<self::Value> = crate::Codec::message(10);
 impl crate::CodedMessage for self::ListValue {
@@ -284,7 +292,7 @@ impl crate::LiteMessage for self::ListValue {
     fn new() -> Self {
         Self {
             values: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -326,6 +334,7 @@ unsafe impl crate::Enum for self::NullValue { }
 impl ::std::convert::TryFrom<i32> for self::NullValue {
     type Error = crate::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+        #[allow(unreachable_patterns)]
         match value {
             0 => ::std::result::Result::Ok(self::NullValue::NullValue),
             _ => ::std::result::Result::Err(crate::VariantUndefinedError)

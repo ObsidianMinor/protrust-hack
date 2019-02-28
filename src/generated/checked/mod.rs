@@ -1,4 +1,5 @@
-
+mod externals {
+}
 #[path = "google/protobuf/any.proto.rs"]
 pub mod google_protobuf_any_proto;
 static GOOGLE_PROTOBUF_ANY_PROTO_BINARY: &'static [u8] = &[
@@ -740,33 +741,52 @@ static GOOGLE_PROTOBUF_COMPILER_PLUGIN_PROTO_BINARY: &'static [u8] = &[
     111, 99, 45, 103, 101, 110, 45, 103, 111, 47, 112, 108, 117, 103, 105, 110, 59, 112, 108, 117, 
     103, 105, 110, 95, 103, 111, 
 ];
-static mut FILES: ::std::option::Option<[crate::descriptor::FileDescriptorProto; 12]> = ::std::option::Option::None;
+static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static crate::ExtensionRegistry; 0]> = ::std::option::Option::None;
+static mut EXTENSIONS_REGISTRY: ::std::option::Option<crate::ExtensionRegistry> = ::std::option::Option::None;
+static EXTENSIONS_INIT: ::std::sync::Once = ::std::sync::Once::new();
+fn extensions_init() {
+    unsafe {
+        self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([
+        ]);
+        self::EXTENSIONS_REGISTRY = ::std::option::Option::Some(crate::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[
+        ]));
+    }
+}
+
+/// Gets the extension registry containing all the extensions contained in this generated code module
+pub fn extensions() -> &'static crate::ExtensionRegistry {
+    unsafe {
+        EXTENSIONS_INIT.call_once(extensions_init);
+        EXTENSIONS_REGISTRY.as_ref().unwrap()
+    }
+}
 static mut EXTERNAL_DEPS: ::std::option::Option<[&'static crate::reflect::DescriptorPool<'static>; 0]> = ::std::option::Option::None;
+static mut FILES: ::std::option::Option<[crate::descriptor::FileDescriptorProto; 12]> = ::std::option::Option::None;
 static mut POOL: ::std::option::Option<crate::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
 static POOL_INIT: ::std::sync::Once = ::std::sync::Once::new();
 fn pool_init() {
     unsafe {
-        self::FILES = ::std::option::Option::Some([
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_ANY_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_API_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_DESCRIPTOR_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_DURATION_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_EMPTY_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_FIELD_MASK_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_SOURCE_CONTEXT_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_STRUCT_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_TIMESTAMP_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_TYPE_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_WRAPPERS_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-            crate::LiteMessage::read_new(&mut GOOGLE_PROTOBUF_COMPILER_PLUGIN_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-        ]);
         self::EXTERNAL_DEPS = ::std::option::Option::Some([
+        ]);
+        self::FILES = ::std::option::Option::Some([
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_ANY_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_API_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_DESCRIPTOR_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_DURATION_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_EMPTY_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_FIELD_MASK_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_SOURCE_CONTEXT_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_STRUCT_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_TIMESTAMP_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_TYPE_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_WRAPPERS_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
+            crate::LiteMessage::read_new_from_input(&mut crate::io::CodedInput::new(&mut GOOGLE_PROTOBUF_COMPILER_PLUGIN_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
         ]);
         self::POOL = ::std::option::Option::Some(crate::reflect::DescriptorPool::build_from_generated_code(self::FILES.as_ref().unwrap().as_ref(), self::EXTERNAL_DEPS.as_ref().unwrap(), ::std::boxed::Box::new([
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_any_proto::Any as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_any_proto::Any as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -774,15 +794,15 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_api_proto::Api as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_api_proto::Api as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_api_proto::Method as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_api_proto::Method as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_api_proto::Mixin as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_api_proto::Mixin as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -790,114 +810,114 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::FileDescriptorSet as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::FileDescriptorSet as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::FileDescriptorProto as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::FileDescriptorProto as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::DescriptorProto as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::DescriptorProto as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::DescriptorProto_ExtensionRange as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::descriptor_proto::ExtensionRange as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::DescriptorProto_ReservedRange as crate::LiteMessage>::new()),
-                                structs: ::std::option::Option::None,
-                            },
-                        ])),
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::ExtensionRangeOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::FieldDescriptorProto as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::OneofDescriptorProto as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::EnumDescriptorProto as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                            crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::EnumDescriptorProto_EnumReservedRange as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::descriptor_proto::ReservedRange as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::EnumValueDescriptorProto as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::ExtensionRangeOptions as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::ServiceDescriptorProto as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::FieldDescriptorProto as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::MethodDescriptorProto as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::OneofDescriptorProto as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::FileOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::MessageOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::FieldOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::OneofOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::EnumOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::EnumValueOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::ServiceOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::MethodOptions as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::UninterpretedOption as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::EnumDescriptorProto as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::UninterpretedOption_NamePart as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::enum_descriptor_proto::EnumReservedRange as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::SourceCodeInfo as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::EnumValueDescriptorProto as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::ServiceDescriptorProto as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::MethodDescriptorProto as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::FileOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::MessageOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::FieldOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::OneofOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::EnumOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::EnumValueOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::ServiceOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::MethodOptions as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::UninterpretedOption as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::SourceCodeInfo_Location as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::uninterpreted_option::NamePart as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::GeneratedCodeInfo as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::SourceCodeInfo as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_descriptor_proto::GeneratedCodeInfo_Annotation as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::source_code_info::Location as crate::LiteMessage>::new()),
+                                structs: ::std::option::Option::None,
+                            },
+                        ])),
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::GeneratedCodeInfo as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::Some(::std::boxed::Box::new([
+                            crate::reflect::GeneratedStructInfo {
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_descriptor_proto::generated_code_info::Annotation as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
@@ -907,7 +927,7 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_duration_proto::Duration as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_duration_proto::Duration as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -915,7 +935,7 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_empty_proto::Empty as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_empty_proto::Empty as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -923,7 +943,7 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_field_mask_proto::FieldMask as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_field_mask_proto::FieldMask as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -931,7 +951,7 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_source_context_proto::SourceContext as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_source_context_proto::SourceContext as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -939,24 +959,16 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_struct_proto::Struct as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_struct_proto::Struct as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                         ])),
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_struct_proto::Value as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_struct_proto::Value as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_struct_proto::ListValue as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                ])),
-            },
-            crate::reflect::GeneratedCodeInfo {
-                structs: ::std::option::Option::Some(::std::boxed::Box::new([
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_timestamp_proto::Timestamp as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_struct_proto::ListValue as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -964,23 +976,7 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_type_proto::Type as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_type_proto::Field as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_type_proto::Enum as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_type_proto::EnumValue as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_type_proto::Option as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_timestamp_proto::Timestamp as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -988,39 +984,23 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::DoubleValue as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_type_proto::Type as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::FloatValue as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_type_proto::Field as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::Int64Value as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_type_proto::Enum as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::UInt64Value as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_type_proto::EnumValue as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::Int32Value as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::UInt32Value as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::BoolValue as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::StringValue as crate::LiteMessage>::new()),
-                        structs: ::std::option::Option::None,
-                    },
-                    crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_wrappers_proto::BytesValue as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_type_proto::Option as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -1028,18 +1008,58 @@ fn pool_init() {
             crate::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_compiler_plugin_proto::Version as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::DoubleValue as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_compiler_plugin_proto::CodeGeneratorRequest as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::FloatValue as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                     crate::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<google_protobuf_compiler_plugin_proto::CodeGeneratorResponse as crate::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::Int64Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::UInt64Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::Int32Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::UInt32Value as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::BoolValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::StringValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_wrappers_proto::BytesValue as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                ])),
+            },
+            crate::reflect::GeneratedCodeInfo {
+                structs: ::std::option::Option::Some(::std::boxed::Box::new([
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_compiler_plugin_proto::Version as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_compiler_plugin_proto::CodeGeneratorRequest as crate::LiteMessage>::new()),
+                        structs: ::std::option::Option::None,
+                    },
+                    crate::reflect::GeneratedStructInfo {
+                        new: || ::std::boxed::Box::new(<self::google_protobuf_compiler_plugin_proto::CodeGeneratorResponse as crate::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             crate::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<google_protobuf_compiler_plugin_proto::CodeGeneratorResponse_File as crate::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::google_protobuf_compiler_plugin_proto::code_generator_response::File as crate::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
@@ -1049,6 +1069,8 @@ fn pool_init() {
         ])));
     }
 }
+
+/// Gets the descriptor pool containing all the reflection information contained in this generated code module
 pub fn pool() -> &'static crate::reflect::DescriptorPool<'static> {
     unsafe {
         POOL_INIT.call_once(pool_init);

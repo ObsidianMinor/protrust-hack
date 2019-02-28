@@ -1,4 +1,7 @@
-
+mod externals {
+    pub(super) use ::protrust::generated::*;
+}
+use externals::google_protobuf_timestamp_proto;
 #[path = "addressbook.proto.rs"]
 pub mod addressbook_proto;
 static ADDRESSBOOK_PROTO_BINARY: &'static [u8] = &[
@@ -30,32 +33,52 @@ static ADDRESSBOOK_PROTO_BINARY: &'static [u8] = &[
     109, 112, 108, 101, 115, 46, 65, 100, 100, 114, 101, 115, 115, 66, 111, 111, 107, 98, 6, 112, 
     114, 111, 116, 111, 51, 
 ];
-static mut FILES: ::std::option::Option<[::protrust::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
+static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static ::protrust::ExtensionRegistry; 1]> = ::std::option::Option::None;
+static mut EXTENSIONS_REGISTRY: ::std::option::Option<::protrust::ExtensionRegistry> = ::std::option::Option::None;
+static EXTENSIONS_INIT: ::std::sync::Once = ::std::sync::Once::new();
+fn extensions_init() {
+    unsafe {
+        self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([
+            ::protrust::generated::extensions(),
+        ]);
+        self::EXTENSIONS_REGISTRY = ::std::option::Option::Some(::protrust::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[
+        ]));
+    }
+}
+
+/// Gets the extension registry containing all the extensions contained in this generated code module
+pub fn extensions() -> &'static ::protrust::ExtensionRegistry {
+    unsafe {
+        EXTENSIONS_INIT.call_once(extensions_init);
+        EXTENSIONS_REGISTRY.as_ref().unwrap()
+    }
+}
 static mut EXTERNAL_DEPS: ::std::option::Option<[&'static ::protrust::reflect::DescriptorPool<'static>; 1]> = ::std::option::Option::None;
+static mut FILES: ::std::option::Option<[::protrust::descriptor::FileDescriptorProto; 1]> = ::std::option::Option::None;
 static mut POOL: ::std::option::Option<::protrust::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
 static POOL_INIT: ::std::sync::Once = ::std::sync::Once::new();
 fn pool_init() {
     unsafe {
-        self::FILES = ::std::option::Option::Some([
-            ::protrust::LiteMessage::read_new(&mut ADDRESSBOOK_PROTO_BINARY.as_ref()).expect("Could not read file descriptor"),
-        ]);
         self::EXTERNAL_DEPS = ::std::option::Option::Some([
-            ::protrust::pool(),
+            ::protrust::generated::pool(),
+        ]);
+        self::FILES = ::std::option::Option::Some([
+            ::protrust::LiteMessage::read_new_from_input(&mut ::protrust::io::CodedInput::new(&mut ADDRESSBOOK_PROTO_BINARY.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("Could not read file descriptor"),
         ]);
         self::POOL = ::std::option::Option::Some(::protrust::reflect::DescriptorPool::build_from_generated_code(self::FILES.as_ref().unwrap().as_ref(), self::EXTERNAL_DEPS.as_ref().unwrap(), ::std::boxed::Box::new([
             ::protrust::reflect::GeneratedCodeInfo {
                 structs: ::std::option::Option::Some(::std::boxed::Box::new([
                     ::protrust::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<addressbook_proto::Person as ::protrust::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::addressbook_proto::Person as ::protrust::LiteMessage>::new()),
                         structs: ::std::option::Option::Some(::std::boxed::Box::new([
                             ::protrust::reflect::GeneratedStructInfo {
-                                new: || ::std::boxed::Box::new(<addressbook_proto::Person_PhoneNumber as ::protrust::LiteMessage>::new()),
+                                new: || ::std::boxed::Box::new(<self::addressbook_proto::person::PhoneNumber as ::protrust::LiteMessage>::new()),
                                 structs: ::std::option::Option::None,
                             },
                         ])),
                     },
                     ::protrust::reflect::GeneratedStructInfo {
-                        new: || ::std::boxed::Box::new(<addressbook_proto::AddressBook as ::protrust::LiteMessage>::new()),
+                        new: || ::std::boxed::Box::new(<self::addressbook_proto::AddressBook as ::protrust::LiteMessage>::new()),
                         structs: ::std::option::Option::None,
                     },
                 ])),
@@ -63,6 +86,8 @@ fn pool_init() {
         ])));
     }
 }
+
+/// Gets the descriptor pool containing all the reflection information contained in this generated code module
 pub fn pool() -> &'static ::protrust::reflect::DescriptorPool<'static> {
     unsafe {
         POOL_INIT.call_once(pool_init);

@@ -13,7 +13,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileDescriptorSet {
     file: crate::collections::RepeatedField<self::FileDescriptorProto>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static FILE_DESCRIPTOR_SET_FILE_CODEC: crate::Codec<self::FileDescriptorProto> = crate::Codec::message(10);
 impl crate::CodedMessage for self::FileDescriptorSet {
@@ -48,7 +48,7 @@ impl crate::LiteMessage for self::FileDescriptorSet {
     fn new() -> Self {
         Self {
             file: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -91,7 +91,7 @@ pub struct FileDescriptorProto {
     options: ::std::option::Option<::std::boxed::Box<self::FileOptions>>,
     source_code_info: ::std::option::Option<::std::boxed::Box<self::SourceCodeInfo>>,
     syntax: ::std::option::Option<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(26);
 static FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(80);
@@ -147,7 +147,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
@@ -189,7 +189,7 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         let source_code_info = &self.source_code_info;
         if let ::std::option::Option::Some(source_code_info) = source_code_info {
@@ -247,7 +247,7 @@ impl crate::LiteMessage for self::FileDescriptorProto {
             options: ::std::option::Option::None,
             source_code_info: ::std::option::Option::None,
             syntax: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -607,20 +607,20 @@ pub struct DescriptorProto {
     extension: crate::collections::RepeatedField<self::FieldDescriptorProto>,
     nested_type: crate::collections::RepeatedField<self::DescriptorProto>,
     enum_type: crate::collections::RepeatedField<self::EnumDescriptorProto>,
-    extension_range: crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange>,
+    extension_range: crate::collections::RepeatedField<self::descriptor_proto::ExtensionRange>,
     oneof_decl: crate::collections::RepeatedField<self::OneofDescriptorProto>,
     options: ::std::option::Option<::std::boxed::Box<self::MessageOptions>>,
-    reserved_range: crate::collections::RepeatedField<self::DescriptorProto_ReservedRange>,
+    reserved_range: crate::collections::RepeatedField<self::descriptor_proto::ReservedRange>,
     reserved_name: crate::collections::RepeatedField<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static DESCRIPTOR_PROTO_FIELD_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(18);
 static DESCRIPTOR_PROTO_EXTENSION_CODEC: crate::Codec<self::FieldDescriptorProto> = crate::Codec::message(50);
 static DESCRIPTOR_PROTO_NESTED_TYPE_CODEC: crate::Codec<self::DescriptorProto> = crate::Codec::message(26);
 static DESCRIPTOR_PROTO_ENUM_TYPE_CODEC: crate::Codec<self::EnumDescriptorProto> = crate::Codec::message(34);
-static DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC: crate::Codec<self::DescriptorProto_ExtensionRange> = crate::Codec::message(42);
+static DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC: crate::Codec<self::descriptor_proto::ExtensionRange> = crate::Codec::message(42);
 static DESCRIPTOR_PROTO_ONEOF_DECL_CODEC: crate::Codec<self::OneofDescriptorProto> = crate::Codec::message(66);
-static DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::DescriptorProto_ReservedRange> = crate::Codec::message(74);
+static DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::descriptor_proto::ReservedRange> = crate::Codec::message(74);
 static DESCRIPTOR_PROTO_RESERVED_NAME_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(82);
 impl crate::CodedMessage for self::DescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -659,7 +659,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.reserved_range.calculate_size(&DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
@@ -683,7 +683,7 @@ impl crate::CodedMessage for self::DescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[58])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.reserved_range.write_to(output, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -733,7 +733,7 @@ impl crate::LiteMessage for self::DescriptorProto {
             options: ::std::option::Option::None,
             reserved_range: crate::collections::RepeatedField::new(),
             reserved_name: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -862,13 +862,13 @@ impl self::DescriptorProto {
     ///
     /// [`extension_range`]: #method.extension_range
     pub const EXTENSION_RANGE_FIELD_NUMBER: i32 = 5;
-    pub fn extension_range(&self) -> &crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange> {
+    pub fn extension_range(&self) -> &crate::collections::RepeatedField<self::descriptor_proto::ExtensionRange> {
         &self.extension_range
     }
     /// Returns a unique reference to the [`extension_range`] field
     ///
     /// [`extension_range`]: #method.extension_range
-    pub fn extension_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::DescriptorProto_ExtensionRange> {
+    pub fn extension_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::descriptor_proto::ExtensionRange> {
         &mut self.extension_range
     }
     /// Gets the field number of the [`oneof_decl`] field
@@ -925,13 +925,13 @@ impl self::DescriptorProto {
     ///
     /// [`reserved_range`]: #method.reserved_range
     pub const RESERVED_RANGE_FIELD_NUMBER: i32 = 9;
-    pub fn reserved_range(&self) -> &crate::collections::RepeatedField<self::DescriptorProto_ReservedRange> {
+    pub fn reserved_range(&self) -> &crate::collections::RepeatedField<self::descriptor_proto::ReservedRange> {
         &self.reserved_range
     }
     /// Returns a unique reference to the [`reserved_range`] field
     ///
     /// [`reserved_range`]: #method.reserved_range
-    pub fn reserved_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::DescriptorProto_ReservedRange> {
+    pub fn reserved_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::descriptor_proto::ReservedRange> {
         &mut self.reserved_range
     }
     /// Gets the field number of the [`reserved_name`] field
@@ -950,372 +950,376 @@ impl self::DescriptorProto {
         &mut self.reserved_name
     }
 }
-#[derive(Clone, Debug, PartialEq)]
-pub struct DescriptorProto_ExtensionRange {
-    start: ::std::option::Option<i32>,
-    end: ::std::option::Option<i32>,
-    options: ::std::option::Option<::std::boxed::Box<self::ExtensionRangeOptions>>,
-    unknown_fields: crate::UnknownFieldSet
-}
-impl crate::CodedMessage for self::DescriptorProto_ExtensionRange {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                _ => self.unknown_fields.merge_from(tag, input)?
-            }
-        }
-        ::std::result::Result::Ok(())
+/// Describes a message type.
+pub mod descriptor_proto {
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct ExtensionRange {
+        start: ::std::option::Option<i32>,
+        end: ::std::option::Option<i32>,
+        options: ::std::option::Option<::std::boxed::Box<self::super::ExtensionRangeOptions>>,
+        unknown_fields: crate::UnknownFieldSet,
     }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
+    impl crate::CodedMessage for self::ExtensionRange {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(start));
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(end));
+                }
+            }
+            let options = &self.options;
+            if let ::std::option::Option::Some(options) = options {
                 size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start));
+                size = size.checked_add(crate::io::sizes::extension_message(&**options));
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[8])?;
+                    output.write_int32(start)?;
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(end)?;
+                }
+            }
+            let options = &self.options;
+            if let ::std::option::Option::Some(options) = options {
+                output.write_raw_tag_bytes(&[26])?;
+                output.write_extension_message(&**options)?;
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+        fn is_initialized(&self) -> bool {
+            if let Some(options) = &self.options {
+                if !crate::CodedMessage::is_initialized(&**options) {
+                    return false;
+                }
+            }
+            true
+        }
+    }
+    impl crate::LiteMessage for self::ExtensionRange {
+        fn new() -> Self {
+            Self {
+                start: ::std::option::Option::None,
+                end: ::std::option::Option::None,
+                options: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end));
+        fn merge(&mut self, other: &Self) {
+            self.start = other.start;
+            self.end = other.end;
+            if let ::std::option::Option::Some(options) = &other.options {
+                self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
+            }
+            self.unknown_fields.merge(&other.unknown_fields);
+        }
+    }
+    impl crate::Message for self::ExtensionRange {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[2].messages()[0]
+        }
+    }
+    impl self::ExtensionRange {
+        /// Gets the field number of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_DEFAULT_VALUE: i32 = 0;
+        pub fn start(&self) -> i32 {
+            self.start.unwrap_or(Self::START_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn start_option(&self) -> ::std::option::Option<i32> {
+            self.start
+        }
+        /// Returns a bool indicating the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn has_start(&self) -> bool {
+            self.start.is_some()
+        }
+        /// Sets the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn set_start(&mut self, value: i32) {
+            self.start = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn clear_start(&mut self) {
+            self.start = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_DEFAULT_VALUE: i32 = 0;
+        pub fn end(&self) -> i32 {
+            self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn end_option(&self) -> ::std::option::Option<i32> {
+            self.end
+        }
+        /// Returns a bool indicating the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn has_end(&self) -> bool {
+            self.end.is_some()
+        }
+        /// Sets the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn set_end(&mut self, value: i32) {
+            self.end = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn clear_end(&mut self) {
+            self.end = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`options`] field
+        ///
+        /// [`options`]: #method.options
+        pub const OPTIONS_FIELD_NUMBER: i32 = 3;
+        pub fn options_option(&self) -> ::std::option::Option<&self::super::ExtensionRangeOptions> {
+            self.options.as_ref().map(|b| &**b)
+        }
+        /// Returns a unique reference to the [`options`] field
+        ///
+        /// [`options`]: #method.options
+        pub fn options_mut(&mut self) -> &mut self::super::ExtensionRangeOptions {
+            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
+        }
+        /// Returns a bool indicating the presence of the [`options`] field
+        ///
+        /// [`options`]: #method.options
+        pub fn has_options(&self) -> bool {
+            self.options.is_some()
+        }
+        /// Sets the value of the [`options`] field
+        ///
+        /// [`options`]: #method.options
+        pub fn set_options(&mut self, value: self::super::ExtensionRangeOptions) {
+            self.options = ::std::option::Option::Some(::std::boxed::Box::new(value))
+        }
+        /// Takes the value of the [`options`] field, leaving it empty
+        ///
+        /// [`options`]: #method.options
+        pub fn take_options(&mut self) -> ::std::option::Option<self::super::ExtensionRangeOptions> {
+            self.options.take().map(|b| *b)
+        }
+        /// Clears the value of the [`options`] field
+        ///
+        /// [`options`]: #method.options
+        pub fn clear_options(&mut self) {
+            self.options = ::std::option::Option::None
+        }
+    }
+    /// Range of reserved tag numbers. Reserved tag numbers may not be used by
+    /// fields or extension ranges in the same message. Reserved ranges may
+    /// not overlap.
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct ReservedRange {
+        start: ::std::option::Option<i32>,
+        end: ::std::option::Option<i32>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    impl crate::CodedMessage for self::ReservedRange {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(start));
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(end));
+                }
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[8])?;
+                    output.write_int32(start)?;
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(end)?;
+                }
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+    }
+    impl crate::LiteMessage for self::ReservedRange {
+        fn new() -> Self {
+            Self {
+                start: ::std::option::Option::None,
+                end: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        let options = &self.options;
-        if let ::std::option::Option::Some(options) = options {
-            size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(start)?;
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(end)?;
-            }
-        }
-        let options = &self.options;
-        if let ::std::option::Option::Some(options) = options {
-            output.write_raw_tag_bytes(&[26])?;
-            output.write_message(&**options)?;
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-    fn is_initialized(&self) -> bool {
-        if let Some(options) = &self.options {
-            if !crate::CodedMessage::is_initialized(&**options) {
-                return false;
-            }
-        }
-        true
-    }
-}
-impl crate::LiteMessage for self::DescriptorProto_ExtensionRange {
-    fn new() -> Self {
-        Self {
-            start: ::std::option::Option::None,
-            end: ::std::option::Option::None,
-            options: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.start = other.start;
+            self.end = other.end;
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.start = other.start;
-        self.end = other.end;
-        if let ::std::option::Option::Some(options) = &other.options {
-            self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).merge(options);
-        }
-        self.unknown_fields.merge(&other.unknown_fields);
-    }
-}
-impl crate::Message for self::DescriptorProto_ExtensionRange {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[2].messages()[0]
-    }
-}
-impl self::DescriptorProto_ExtensionRange {
-    /// Gets the field number of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_DEFAULT_VALUE: i32 = 0;
-    pub fn start(&self) -> i32 {
-        self.start.unwrap_or(Self::START_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn start_option(&self) -> ::std::option::Option<i32> {
-        self.start
-    }
-    /// Returns a bool indicating the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn has_start(&self) -> bool {
-        self.start.is_some()
-    }
-    /// Sets the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn set_start(&mut self, value: i32) {
-        self.start = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn clear_start(&mut self) {
-        self.start = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_DEFAULT_VALUE: i32 = 0;
-    pub fn end(&self) -> i32 {
-        self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn end_option(&self) -> ::std::option::Option<i32> {
-        self.end
-    }
-    /// Returns a bool indicating the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn has_end(&self) -> bool {
-        self.end.is_some()
-    }
-    /// Sets the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn set_end(&mut self, value: i32) {
-        self.end = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn clear_end(&mut self) {
-        self.end = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`options`] field
-    ///
-    /// [`options`]: #method.options
-    pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options_option(&self) -> ::std::option::Option<&self::ExtensionRangeOptions> {
-        self.options.as_ref().map(|b| &**b)
-    }
-    /// Returns a unique reference to the [`options`] field
-    ///
-    /// [`options`]: #method.options
-    pub fn options_mut(&mut self) -> &mut self::ExtensionRangeOptions {
-        self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())).as_mut()
-    }
-    /// Returns a bool indicating the presence of the [`options`] field
-    ///
-    /// [`options`]: #method.options
-    pub fn has_options(&self) -> bool {
-        self.options.is_some()
-    }
-    /// Sets the value of the [`options`] field
-    ///
-    /// [`options`]: #method.options
-    pub fn set_options(&mut self, value: self::ExtensionRangeOptions) {
-        self.options = ::std::option::Option::Some(::std::boxed::Box::new(value))
-    }
-    /// Takes the value of the [`options`] field, leaving it empty
-    ///
-    /// [`options`]: #method.options
-    pub fn take_options(&mut self) -> ::std::option::Option<self::ExtensionRangeOptions> {
-        self.options.take().map(|b| *b)
-    }
-    /// Clears the value of the [`options`] field
-    ///
-    /// [`options`]: #method.options
-    pub fn clear_options(&mut self) {
-        self.options = ::std::option::Option::None
-    }
-}
-/// Range of reserved tag numbers. Reserved tag numbers may not be used by
-/// fields or extension ranges in the same message. Reserved ranges may
-/// not overlap.
-#[derive(Clone, Debug, PartialEq)]
-pub struct DescriptorProto_ReservedRange {
-    start: ::std::option::Option<i32>,
-    end: ::std::option::Option<i32>,
-    unknown_fields: crate::UnknownFieldSet
-}
-impl crate::CodedMessage for self::DescriptorProto_ReservedRange {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                _ => self.unknown_fields.merge_from(tag, input)?
-            }
-        }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start));
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end));
-            }
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(start)?;
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(end)?;
-            }
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-}
-impl crate::LiteMessage for self::DescriptorProto_ReservedRange {
-    fn new() -> Self {
-        Self {
-            start: ::std::option::Option::None,
-            end: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+    impl crate::Message for self::ReservedRange {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[2].messages()[1]
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.start = other.start;
-        self.end = other.end;
-        self.unknown_fields.merge(&other.unknown_fields);
-    }
-}
-impl crate::Message for self::DescriptorProto_ReservedRange {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[2].messages()[1]
-    }
-}
-impl self::DescriptorProto_ReservedRange {
-    /// Gets the field number of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_DEFAULT_VALUE: i32 = 0;
-    /// Inclusive.
-    pub fn start(&self) -> i32 {
-        self.start.unwrap_or(Self::START_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn start_option(&self) -> ::std::option::Option<i32> {
-        self.start
-    }
-    /// Returns a bool indicating the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn has_start(&self) -> bool {
-        self.start.is_some()
-    }
-    /// Sets the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn set_start(&mut self, value: i32) {
-        self.start = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn clear_start(&mut self) {
-        self.start = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_DEFAULT_VALUE: i32 = 0;
-    /// Exclusive.
-    pub fn end(&self) -> i32 {
-        self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn end_option(&self) -> ::std::option::Option<i32> {
-        self.end
-    }
-    /// Returns a bool indicating the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn has_end(&self) -> bool {
-        self.end.is_some()
-    }
-    /// Sets the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn set_end(&mut self, value: i32) {
-        self.end = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn clear_end(&mut self) {
-        self.end = ::std::option::Option::None
+    impl self::ReservedRange {
+        /// Gets the field number of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_DEFAULT_VALUE: i32 = 0;
+        /// Inclusive.
+        pub fn start(&self) -> i32 {
+            self.start.unwrap_or(Self::START_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn start_option(&self) -> ::std::option::Option<i32> {
+            self.start
+        }
+        /// Returns a bool indicating the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn has_start(&self) -> bool {
+            self.start.is_some()
+        }
+        /// Sets the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn set_start(&mut self, value: i32) {
+            self.start = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn clear_start(&mut self) {
+            self.start = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_DEFAULT_VALUE: i32 = 0;
+        /// Exclusive.
+        pub fn end(&self) -> i32 {
+            self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn end_option(&self) -> ::std::option::Option<i32> {
+            self.end
+        }
+        /// Returns a bool indicating the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn has_end(&self) -> bool {
+            self.end.is_some()
+        }
+        /// Sets the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn set_end(&mut self, value: i32) {
+            self.end = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn clear_end(&mut self) {
+            self.end = ::std::option::Option::None
+        }
     }
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct ExtensionRangeOptions {
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ExtensionRangeOptions {
@@ -1337,6 +1341,7 @@ impl crate::CodedMessage for self::ExtensionRangeOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.uninterpreted_option.write_to(output, &EXTENSION_RANGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -1350,13 +1355,23 @@ impl crate::LiteMessage for self::ExtensionRangeOptions {
     fn new() -> Self {
         Self {
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::ExtensionRangeOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::ExtensionRangeOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -1384,15 +1399,15 @@ impl self::ExtensionRangeOptions {
 pub struct FieldDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     number: ::std::option::Option<i32>,
-    label: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Label>>,
-    r#type: ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Type>>,
+    label: ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Label>>,
+    r#type: ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Type>>,
     type_name: ::std::option::Option<::std::string::String>,
     extendee: ::std::option::Option<::std::string::String>,
     default_value: ::std::option::Option<::std::string::String>,
     oneof_index: ::std::option::Option<i32>,
     json_name: ::std::option::Option<::std::string::String>,
     options: ::std::option::Option<::std::boxed::Box<self::FieldOptions>>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::FieldDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1481,7 +1496,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -1553,7 +1568,7 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[66])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -1580,7 +1595,7 @@ impl crate::LiteMessage for self::FieldDescriptorProto {
             oneof_index: ::std::option::Option::None,
             json_name: ::std::option::Option::None,
             options: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -1696,15 +1711,15 @@ impl self::FieldDescriptorProto {
     /// A constant value representing the default value of the [`label`] field
     ///
     /// [`label`]: #method.label
-    pub const LABEL_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Label> = crate::EnumValue::Undefined(0);
-    pub fn label(&self) -> crate::EnumValue<self::FieldDescriptorProto_Label> {
+    pub const LABEL_DEFAULT_VALUE: crate::EnumValue<self::field_descriptor_proto::Label> = crate::EnumValue::Undefined(0);
+    pub fn label(&self) -> crate::EnumValue<self::field_descriptor_proto::Label> {
         self.label.unwrap_or(Self::LABEL_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`label`] field
     ///
     /// [`label`]: #method.label
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn label_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Label>> {
+    pub fn label_option(&self) -> ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Label>> {
         self.label
     }
     /// Returns a bool indicating the presence of the [`label`] field
@@ -1716,7 +1731,7 @@ impl self::FieldDescriptorProto {
     /// Sets the value of the [`label`] field
     ///
     /// [`label`]: #method.label
-    pub fn set_label(&mut self, value: crate::EnumValue<self::FieldDescriptorProto_Label>) {
+    pub fn set_label(&mut self, value: crate::EnumValue<self::field_descriptor_proto::Label>) {
         self.label = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`label`] field
@@ -1732,17 +1747,17 @@ impl self::FieldDescriptorProto {
     /// A constant value representing the default value of the [`type`] field
     ///
     /// [`type`]: #method.type
-    pub const TYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldDescriptorProto_Type> = crate::EnumValue::Undefined(0);
+    pub const TYPE_DEFAULT_VALUE: crate::EnumValue<self::field_descriptor_proto::Type> = crate::EnumValue::Undefined(0);
     /// If type_name is set, this need not be set.  If both this and type_name
     /// are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
-    pub fn r#type(&self) -> crate::EnumValue<self::FieldDescriptorProto_Type> {
+    pub fn r#type(&self) -> crate::EnumValue<self::field_descriptor_proto::Type> {
         self.r#type.unwrap_or(Self::TYPE_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`type`] field
     ///
     /// [`type`]: #method.type
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn type_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldDescriptorProto_Type>> {
+    pub fn type_option(&self) -> ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Type>> {
         self.r#type
     }
     /// Returns a bool indicating the presence of the [`type`] field
@@ -1754,7 +1769,7 @@ impl self::FieldDescriptorProto {
     /// Sets the value of the [`type`] field
     ///
     /// [`type`]: #method.type
-    pub fn set_type(&mut self, value: crate::EnumValue<self::FieldDescriptorProto_Type>) {
+    pub fn set_type(&mut self, value: crate::EnumValue<self::field_descriptor_proto::Type>) {
         self.r#type = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`type`] field
@@ -2047,117 +2062,122 @@ impl self::FieldDescriptorProto {
         self.options = ::std::option::Option::None
     }
 }
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum FieldDescriptorProto_Type {
-    /// 0 is reserved for errors.
-    /// Order is weird for historical reasons.
-    Double,
-    Float,
-    /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
-    /// negative values are likely.
-    Int64,
-    Uint64,
-    /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
-    /// negative values are likely.
-    Int32,
-    Fixed64,
-    Fixed32,
-    Bool,
-    String,
-    /// Tag-delimited aggregate.
-    /// Group type is deprecated and not supported in proto3. However, Proto3
-    /// implementations should still be able to parse the group wire format and
-    /// treat group fields as unknown fields.
-    Group,
-    /// Length-delimited aggregate.
-    Message,
-    /// New in version 2.
-    Bytes,
-    Uint32,
-    Enum,
-    Sfixed32,
-    Sfixed64,
-    /// Uses ZigZag encoding.
-    Sint32,
-    /// Uses ZigZag encoding.
-    Sint64,
-}
-unsafe impl crate::Enum for self::FieldDescriptorProto_Type { }
-impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Type {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            1 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Double),
-            2 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Float),
-            3 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Int64),
-            4 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Uint64),
-            5 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Int32),
-            6 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Fixed64),
-            7 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Fixed32),
-            8 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Bool),
-            9 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::String),
-            10 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Group),
-            11 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Message),
-            12 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Bytes),
-            13 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Uint32),
-            14 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Enum),
-            15 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Sfixed32),
-            16 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Sfixed64),
-            17 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Sint32),
-            18 => ::std::result::Result::Ok(self::FieldDescriptorProto_Type::Sint64),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+/// Describes a field within a message.
+pub mod field_descriptor_proto {
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum Type {
+        /// 0 is reserved for errors.
+        /// Order is weird for historical reasons.
+        Double,
+        Float,
+        /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
+        /// negative values are likely.
+        Int64,
+        Uint64,
+        /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
+        /// negative values are likely.
+        Int32,
+        Fixed64,
+        Fixed32,
+        Bool,
+        String,
+        /// Tag-delimited aggregate.
+        /// Group type is deprecated and not supported in proto3. However, Proto3
+        /// implementations should still be able to parse the group wire format and
+        /// treat group fields as unknown fields.
+        Group,
+        /// Length-delimited aggregate.
+        Message,
+        /// New in version 2.
+        Bytes,
+        Uint32,
+        Enum,
+        Sfixed32,
+        Sfixed64,
+        /// Uses ZigZag encoding.
+        Sint32,
+        /// Uses ZigZag encoding.
+        Sint64,
+    }
+    unsafe impl crate::Enum for self::Type { }
+    impl ::std::convert::TryFrom<i32> for self::Type {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                1 => ::std::result::Result::Ok(self::Type::Double),
+                2 => ::std::result::Result::Ok(self::Type::Float),
+                3 => ::std::result::Result::Ok(self::Type::Int64),
+                4 => ::std::result::Result::Ok(self::Type::Uint64),
+                5 => ::std::result::Result::Ok(self::Type::Int32),
+                6 => ::std::result::Result::Ok(self::Type::Fixed64),
+                7 => ::std::result::Result::Ok(self::Type::Fixed32),
+                8 => ::std::result::Result::Ok(self::Type::Bool),
+                9 => ::std::result::Result::Ok(self::Type::String),
+                10 => ::std::result::Result::Ok(self::Type::Group),
+                11 => ::std::result::Result::Ok(self::Type::Message),
+                12 => ::std::result::Result::Ok(self::Type::Bytes),
+                13 => ::std::result::Result::Ok(self::Type::Uint32),
+                14 => ::std::result::Result::Ok(self::Type::Enum),
+                15 => ::std::result::Result::Ok(self::Type::Sfixed32),
+                16 => ::std::result::Result::Ok(self::Type::Sfixed64),
+                17 => ::std::result::Result::Ok(self::Type::Sint32),
+                18 => ::std::result::Result::Ok(self::Type::Sint64),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::FieldDescriptorProto_Type> for i32 {
-    fn from(value: self::FieldDescriptorProto_Type) -> i32 {
-        match value {
-            FieldDescriptorProto_Type::Double => 1,
-            FieldDescriptorProto_Type::Float => 2,
-            FieldDescriptorProto_Type::Int64 => 3,
-            FieldDescriptorProto_Type::Uint64 => 4,
-            FieldDescriptorProto_Type::Int32 => 5,
-            FieldDescriptorProto_Type::Fixed64 => 6,
-            FieldDescriptorProto_Type::Fixed32 => 7,
-            FieldDescriptorProto_Type::Bool => 8,
-            FieldDescriptorProto_Type::String => 9,
-            FieldDescriptorProto_Type::Group => 10,
-            FieldDescriptorProto_Type::Message => 11,
-            FieldDescriptorProto_Type::Bytes => 12,
-            FieldDescriptorProto_Type::Uint32 => 13,
-            FieldDescriptorProto_Type::Enum => 14,
-            FieldDescriptorProto_Type::Sfixed32 => 15,
-            FieldDescriptorProto_Type::Sfixed64 => 16,
-            FieldDescriptorProto_Type::Sint32 => 17,
-            FieldDescriptorProto_Type::Sint64 => 18,
+    impl ::std::convert::From<self::Type> for i32 {
+        fn from(value: self::Type) -> i32 {
+            match value {
+                Type::Double => 1,
+                Type::Float => 2,
+                Type::Int64 => 3,
+                Type::Uint64 => 4,
+                Type::Int32 => 5,
+                Type::Fixed64 => 6,
+                Type::Fixed32 => 7,
+                Type::Bool => 8,
+                Type::String => 9,
+                Type::Group => 10,
+                Type::Message => 11,
+                Type::Bytes => 12,
+                Type::Uint32 => 13,
+                Type::Enum => 14,
+                Type::Sfixed32 => 15,
+                Type::Sfixed64 => 16,
+                Type::Sint32 => 17,
+                Type::Sint64 => 18,
+            }
         }
     }
-}
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum FieldDescriptorProto_Label {
-    /// 0 is reserved for errors
-    Optional,
-    Required,
-    Repeated,
-}
-unsafe impl crate::Enum for self::FieldDescriptorProto_Label { }
-impl ::std::convert::TryFrom<i32> for self::FieldDescriptorProto_Label {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            1 => ::std::result::Result::Ok(self::FieldDescriptorProto_Label::Optional),
-            2 => ::std::result::Result::Ok(self::FieldDescriptorProto_Label::Required),
-            3 => ::std::result::Result::Ok(self::FieldDescriptorProto_Label::Repeated),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum Label {
+        /// 0 is reserved for errors
+        Optional,
+        Required,
+        Repeated,
+    }
+    unsafe impl crate::Enum for self::Label { }
+    impl ::std::convert::TryFrom<i32> for self::Label {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                1 => ::std::result::Result::Ok(self::Label::Optional),
+                2 => ::std::result::Result::Ok(self::Label::Required),
+                3 => ::std::result::Result::Ok(self::Label::Repeated),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::FieldDescriptorProto_Label> for i32 {
-    fn from(value: self::FieldDescriptorProto_Label) -> i32 {
-        match value {
-            FieldDescriptorProto_Label::Optional => 1,
-            FieldDescriptorProto_Label::Required => 2,
-            FieldDescriptorProto_Label::Repeated => 3,
+    impl ::std::convert::From<self::Label> for i32 {
+        fn from(value: self::Label) -> i32 {
+            match value {
+                Label::Optional => 1,
+                Label::Required => 2,
+                Label::Repeated => 3,
+            }
         }
     }
 }
@@ -2166,7 +2186,7 @@ impl ::std::convert::From<self::FieldDescriptorProto_Label> for i32 {
 pub struct OneofDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     options: ::std::option::Option<::std::boxed::Box<self::OneofOptions>>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::OneofDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2191,7 +2211,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -2207,7 +2227,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[18])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -2226,7 +2246,7 @@ impl crate::LiteMessage for self::OneofDescriptorProto {
         Self {
             name: ::std::option::Option::None,
             options: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -2335,12 +2355,12 @@ pub struct EnumDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     value: crate::collections::RepeatedField<self::EnumValueDescriptorProto>,
     options: ::std::option::Option<::std::boxed::Box<self::EnumOptions>>,
-    reserved_range: crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange>,
+    reserved_range: crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange>,
     reserved_name: crate::collections::RepeatedField<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static ENUM_DESCRIPTOR_PROTO_VALUE_CODEC: crate::Codec<self::EnumValueDescriptorProto> = crate::Codec::message(18);
-static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::EnumDescriptorProto_EnumReservedRange> = crate::Codec::message(34);
+static ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC: crate::Codec<self::enum_descriptor_proto::EnumReservedRange> = crate::Codec::message(34);
 static ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(42);
 impl crate::CodedMessage for self::EnumDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2369,7 +2389,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.reserved_range.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?)?;
         size = size.checked_add(self.reserved_name.calculate_size(&ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?)?;
@@ -2388,7 +2408,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.reserved_range.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?;
         self.reserved_name.write_to(output, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?;
@@ -2418,7 +2438,7 @@ impl crate::LiteMessage for self::EnumDescriptorProto {
             options: ::std::option::Option::None,
             reserved_range: crate::collections::RepeatedField::new(),
             reserved_name: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -2543,13 +2563,13 @@ impl self::EnumDescriptorProto {
     /// Range of reserved numeric values. Reserved numeric values may not be used
     /// by enum values in the same enum declaration. Reserved ranges may not
     /// overlap.
-    pub fn reserved_range(&self) -> &crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange> {
+    pub fn reserved_range(&self) -> &crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange> {
         &self.reserved_range
     }
     /// Returns a unique reference to the [`reserved_range`] field
     ///
     /// [`reserved_range`]: #method.reserved_range
-    pub fn reserved_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::EnumDescriptorProto_EnumReservedRange> {
+    pub fn reserved_range_mut(&mut self) -> &mut crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange> {
         &mut self.reserved_range
     }
     /// Gets the field number of the [`reserved_name`] field
@@ -2568,160 +2588,163 @@ impl self::EnumDescriptorProto {
         &mut self.reserved_name
     }
 }
-/// Range of reserved numeric values. Reserved values may not be used by
-/// entries in the same enum. Reserved ranges may not overlap.
-/// 
-/// Note that this is distinct from DescriptorProto.ReservedRange in that it
-/// is inclusive such that it can appropriately represent the entire int32
-/// domain.
-#[derive(Clone, Debug, PartialEq)]
-pub struct EnumDescriptorProto_EnumReservedRange {
-    start: ::std::option::Option<i32>,
-    end: ::std::option::Option<i32>,
-    unknown_fields: crate::UnknownFieldSet
-}
-impl crate::CodedMessage for self::EnumDescriptorProto_EnumReservedRange {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// Describes an enum type.
+pub mod enum_descriptor_proto {
+    /// Range of reserved numeric values. Reserved values may not be used by
+    /// entries in the same enum. Reserved ranges may not overlap.
+    /// 
+    /// Note that this is distinct from DescriptorProto.ReservedRange in that it
+    /// is inclusive such that it can appropriately represent the entire int32
+    /// domain.
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct EnumReservedRange {
+        start: ::std::option::Option<i32>,
+        end: ::std::option::Option<i32>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    impl crate::CodedMessage for self::EnumReservedRange {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(start));
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(end));
+                }
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            let start = self.start;
+            if let ::std::option::Option::Some(start) = start {
+                if start != Self::START_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[8])?;
+                    output.write_int32(start)?;
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(end)?;
+                }
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+    }
+    impl crate::LiteMessage for self::EnumReservedRange {
+        fn new() -> Self {
+            Self {
+                start: ::std::option::Option::None,
+                end: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(start));
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end));
-            }
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        let start = self.start;
-        if let ::std::option::Option::Some(start) = start {
-            if start != Self::START_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(start)?;
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(end)?;
-            }
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-}
-impl crate::LiteMessage for self::EnumDescriptorProto_EnumReservedRange {
-    fn new() -> Self {
-        Self {
-            start: ::std::option::Option::None,
-            end: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.start = other.start;
+            self.end = other.end;
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.start = other.start;
-        self.end = other.end;
-        self.unknown_fields.merge(&other.unknown_fields);
+    impl crate::Message for self::EnumReservedRange {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[6].messages()[0]
+        }
     }
-}
-impl crate::Message for self::EnumDescriptorProto_EnumReservedRange {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[6].messages()[0]
-    }
-}
-impl self::EnumDescriptorProto_EnumReservedRange {
-    /// Gets the field number of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub const START_DEFAULT_VALUE: i32 = 0;
-    /// Inclusive.
-    pub fn start(&self) -> i32 {
-        self.start.unwrap_or(Self::START_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn start_option(&self) -> ::std::option::Option<i32> {
-        self.start
-    }
-    /// Returns a bool indicating the presence of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn has_start(&self) -> bool {
-        self.start.is_some()
-    }
-    /// Sets the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn set_start(&mut self, value: i32) {
-        self.start = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`start`] field
-    ///
-    /// [`start`]: #method.start
-    pub fn clear_start(&mut self) {
-        self.start = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_DEFAULT_VALUE: i32 = 0;
-    /// Inclusive.
-    pub fn end(&self) -> i32 {
-        self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn end_option(&self) -> ::std::option::Option<i32> {
-        self.end
-    }
-    /// Returns a bool indicating the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn has_end(&self) -> bool {
-        self.end.is_some()
-    }
-    /// Sets the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn set_end(&mut self, value: i32) {
-        self.end = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn clear_end(&mut self) {
-        self.end = ::std::option::Option::None
+    impl self::EnumReservedRange {
+        /// Gets the field number of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub const START_DEFAULT_VALUE: i32 = 0;
+        /// Inclusive.
+        pub fn start(&self) -> i32 {
+            self.start.unwrap_or(Self::START_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn start_option(&self) -> ::std::option::Option<i32> {
+            self.start
+        }
+        /// Returns a bool indicating the presence of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn has_start(&self) -> bool {
+            self.start.is_some()
+        }
+        /// Sets the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn set_start(&mut self, value: i32) {
+            self.start = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`start`] field
+        ///
+        /// [`start`]: #method.start
+        pub fn clear_start(&mut self) {
+            self.start = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_DEFAULT_VALUE: i32 = 0;
+        /// Inclusive.
+        pub fn end(&self) -> i32 {
+            self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn end_option(&self) -> ::std::option::Option<i32> {
+            self.end
+        }
+        /// Returns a bool indicating the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn has_end(&self) -> bool {
+            self.end.is_some()
+        }
+        /// Sets the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn set_end(&mut self, value: i32) {
+            self.end = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn clear_end(&mut self) {
+            self.end = ::std::option::Option::None
+        }
     }
 }
 /// Describes a value within an enum.
@@ -2730,7 +2753,7 @@ pub struct EnumValueDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     number: ::std::option::Option<i32>,
     options: ::std::option::Option<::std::boxed::Box<self::EnumValueOptions>>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::EnumValueDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -2763,7 +2786,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -2786,7 +2809,7 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -2806,7 +2829,7 @@ impl crate::LiteMessage for self::EnumValueDescriptorProto {
             name: ::std::option::Option::None,
             number: ::std::option::Option::None,
             options: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -2952,7 +2975,7 @@ pub struct ServiceDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     method: crate::collections::RepeatedField<self::MethodDescriptorProto>,
     options: ::std::option::Option<::std::boxed::Box<self::ServiceOptions>>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC: crate::Codec<self::MethodDescriptorProto> = crate::Codec::message(18);
 impl crate::CodedMessage for self::ServiceDescriptorProto {
@@ -2980,7 +3003,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         size = size.checked_add(self.unknown_fields.calculate_size()?)?;
         ::std::option::Option::Some(size)
@@ -2997,7 +3020,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[26])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3020,7 +3043,7 @@ impl crate::LiteMessage for self::ServiceDescriptorProto {
             name: ::std::option::Option::None,
             method: crate::collections::RepeatedField::new(),
             options: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -3146,7 +3169,7 @@ pub struct MethodDescriptorProto {
     options: ::std::option::Option<::std::boxed::Box<self::MethodOptions>>,
     client_streaming: ::std::option::Option<bool>,
     server_streaming: ::std::option::Option<bool>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::MethodDescriptorProto {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -3189,7 +3212,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             size = size.checked_add(1)?;
-            size = size.checked_add(crate::io::sizes::message(&**options));
+            size = size.checked_add(crate::io::sizes::extension_message(&**options));
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
@@ -3233,7 +3256,7 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
             output.write_raw_tag_bytes(&[34])?;
-            output.write_message(&**options)?;
+            output.write_extension_message(&**options)?;
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
@@ -3270,7 +3293,7 @@ impl crate::LiteMessage for self::MethodDescriptorProto {
             options: ::std::option::Option::None,
             client_streaming: ::std::option::Option::None,
             server_streaming: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -3556,7 +3579,7 @@ pub struct FileOptions {
     java_multiple_files: ::std::option::Option<bool>,
     java_generate_equals_and_hash: ::std::option::Option<bool>,
     java_string_check_utf8: ::std::option::Option<bool>,
-    optimize_for: ::std::option::Option<crate::EnumValue<self::FileOptions_OptimizeMode>>,
+    optimize_for: ::std::option::Option<crate::EnumValue<self::file_options::OptimizeMode>>,
     go_package: ::std::option::Option<::std::string::String>,
     cc_generic_services: ::std::option::Option<bool>,
     java_generic_services: ::std::option::Option<bool>,
@@ -3572,7 +3595,8 @@ pub struct FileOptions {
     php_metadata_namespace: ::std::option::Option<::std::string::String>,
     ruby_package: ::std::option::Option<::std::string::String>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FileOptions {
@@ -3894,6 +3918,7 @@ impl crate::CodedMessage for self::FileOptions {
         }
         self.uninterpreted_option.write_to(output, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -3927,7 +3952,8 @@ impl crate::LiteMessage for self::FileOptions {
             php_metadata_namespace: ::std::option::Option::None,
             ruby_package: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -3953,7 +3979,16 @@ impl crate::LiteMessage for self::FileOptions {
         self.ruby_package = other.ruby_package.clone();
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::FileOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::FileOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -4194,15 +4229,15 @@ impl self::FileOptions {
     /// A constant value representing the default value of the [`optimize_for`] field
     ///
     /// [`optimize_for`]: #method.optimize_for
-    pub const OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::FileOptions_OptimizeMode> = crate::EnumValue::Defined(self::FileOptions_OptimizeMode::Speed);
-    pub fn optimize_for(&self) -> crate::EnumValue<self::FileOptions_OptimizeMode> {
+    pub const OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::file_options::OptimizeMode> = crate::EnumValue::Defined(self::file_options::OptimizeMode::Speed);
+    pub fn optimize_for(&self) -> crate::EnumValue<self::file_options::OptimizeMode> {
         self.optimize_for.unwrap_or(Self::OPTIMIZE_FOR_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`optimize_for`] field
     ///
     /// [`optimize_for`]: #method.optimize_for
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn optimize_for_option(&self) -> ::std::option::Option<crate::EnumValue<self::FileOptions_OptimizeMode>> {
+    pub fn optimize_for_option(&self) -> ::std::option::Option<crate::EnumValue<self::file_options::OptimizeMode>> {
         self.optimize_for
     }
     /// Returns a bool indicating the presence of the [`optimize_for`] field
@@ -4214,7 +4249,7 @@ impl self::FileOptions {
     /// Sets the value of the [`optimize_for`] field
     ///
     /// [`optimize_for`]: #method.optimize_for
-    pub fn set_optimize_for(&mut self, value: crate::EnumValue<self::FileOptions_OptimizeMode>) {
+    pub fn set_optimize_for(&mut self, value: crate::EnumValue<self::file_options::OptimizeMode>) {
         self.optimize_for = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`optimize_for`] field
@@ -4880,34 +4915,37 @@ impl self::FileOptions {
         &mut self.uninterpreted_option
     }
 }
-/// Generated classes can be optimized for speed or code size.
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum FileOptions_OptimizeMode {
-    /// Generate complete code for parsing, serialization,
-    Speed,
-    /// etc.
-    CodeSize,
-    /// Generate code using MessageLite and the lite runtime.
-    LiteRuntime,
-}
-unsafe impl crate::Enum for self::FileOptions_OptimizeMode { }
-impl ::std::convert::TryFrom<i32> for self::FileOptions_OptimizeMode {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            1 => ::std::result::Result::Ok(self::FileOptions_OptimizeMode::Speed),
-            2 => ::std::result::Result::Ok(self::FileOptions_OptimizeMode::CodeSize),
-            3 => ::std::result::Result::Ok(self::FileOptions_OptimizeMode::LiteRuntime),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+pub mod file_options {
+    /// Generated classes can be optimized for speed or code size.
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum OptimizeMode {
+        /// Generate complete code for parsing, serialization,
+        Speed,
+        /// etc.
+        CodeSize,
+        /// Generate code using MessageLite and the lite runtime.
+        LiteRuntime,
+    }
+    unsafe impl crate::Enum for self::OptimizeMode { }
+    impl ::std::convert::TryFrom<i32> for self::OptimizeMode {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                1 => ::std::result::Result::Ok(self::OptimizeMode::Speed),
+                2 => ::std::result::Result::Ok(self::OptimizeMode::CodeSize),
+                3 => ::std::result::Result::Ok(self::OptimizeMode::LiteRuntime),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::FileOptions_OptimizeMode> for i32 {
-    fn from(value: self::FileOptions_OptimizeMode) -> i32 {
-        match value {
-            FileOptions_OptimizeMode::Speed => 1,
-            FileOptions_OptimizeMode::CodeSize => 2,
-            FileOptions_OptimizeMode::LiteRuntime => 3,
+    impl ::std::convert::From<self::OptimizeMode> for i32 {
+        fn from(value: self::OptimizeMode) -> i32 {
+            match value {
+                OptimizeMode::Speed => 1,
+                OptimizeMode::CodeSize => 2,
+                OptimizeMode::LiteRuntime => 3,
+            }
         }
     }
 }
@@ -4918,7 +4956,8 @@ pub struct MessageOptions {
     deprecated: ::std::option::Option<bool>,
     map_entry: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MessageOptions {
@@ -5000,6 +5039,7 @@ impl crate::CodedMessage for self::MessageOptions {
         }
         self.uninterpreted_option.write_to(output, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -5017,7 +5057,8 @@ impl crate::LiteMessage for self::MessageOptions {
             deprecated: ::std::option::Option::None,
             map_entry: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -5027,7 +5068,16 @@ impl crate::LiteMessage for self::MessageOptions {
         self.map_entry = other.map_entry;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::MessageOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::MessageOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5242,14 +5292,15 @@ impl self::MessageOptions {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct FieldOptions {
-    ctype: ::std::option::Option<crate::EnumValue<self::FieldOptions_CType>>,
+    ctype: ::std::option::Option<crate::EnumValue<self::field_options::CType>>,
     packed: ::std::option::Option<bool>,
-    jstype: ::std::option::Option<crate::EnumValue<self::FieldOptions_JSType>>,
+    jstype: ::std::option::Option<crate::EnumValue<self::field_options::JSType>>,
     lazy: ::std::option::Option<bool>,
     deprecated: ::std::option::Option<bool>,
     weak: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::FieldOptions {
@@ -5361,6 +5412,7 @@ impl crate::CodedMessage for self::FieldOptions {
         }
         self.uninterpreted_option.write_to(output, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -5380,7 +5432,8 @@ impl crate::LiteMessage for self::FieldOptions {
             deprecated: ::std::option::Option::None,
             weak: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -5392,7 +5445,16 @@ impl crate::LiteMessage for self::FieldOptions {
         self.weak = other.weak;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::FieldOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::FieldOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5407,19 +5469,19 @@ impl self::FieldOptions {
     /// A constant value representing the default value of the [`ctype`] field
     ///
     /// [`ctype`]: #method.ctype
-    pub const CTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_CType> = crate::EnumValue::Defined(self::FieldOptions_CType::String);
+    pub const CTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::CType> = crate::EnumValue::Defined(self::field_options::CType::String);
     /// The ctype option instructs the C++ code generator to use a different
     /// representation of the field than it normally would.  See the specific
     /// options below.  This option is not yet implemented in the open source
     /// release -- sorry, we'll try to include it in a future version!
-    pub fn ctype(&self) -> crate::EnumValue<self::FieldOptions_CType> {
+    pub fn ctype(&self) -> crate::EnumValue<self::field_options::CType> {
         self.ctype.unwrap_or(Self::CTYPE_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`ctype`] field
     ///
     /// [`ctype`]: #method.ctype
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn ctype_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldOptions_CType>> {
+    pub fn ctype_option(&self) -> ::std::option::Option<crate::EnumValue<self::field_options::CType>> {
         self.ctype
     }
     /// Returns a bool indicating the presence of the [`ctype`] field
@@ -5431,7 +5493,7 @@ impl self::FieldOptions {
     /// Sets the value of the [`ctype`] field
     ///
     /// [`ctype`]: #method.ctype
-    pub fn set_ctype(&mut self, value: crate::EnumValue<self::FieldOptions_CType>) {
+    pub fn set_ctype(&mut self, value: crate::EnumValue<self::field_options::CType>) {
         self.ctype = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`ctype`] field
@@ -5488,7 +5550,7 @@ impl self::FieldOptions {
     /// A constant value representing the default value of the [`jstype`] field
     ///
     /// [`jstype`]: #method.jstype
-    pub const JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::FieldOptions_JSType> = crate::EnumValue::Defined(self::FieldOptions_JSType::JsNormal);
+    pub const JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::JSType> = crate::EnumValue::Defined(self::field_options::JSType::JsNormal);
     /// The jstype option determines the JavaScript type used for values of the
     /// field.  The option is permitted only for 64 bit integral and fixed types
     /// (int64, uint64, sint64, fixed64, sfixed64).  A field with jstype JS_STRING
@@ -5500,14 +5562,14 @@ impl self::FieldOptions {
     /// 
     /// This option is an enum to permit additional types to be added, e.g.
     /// goog.math.Integer.
-    pub fn jstype(&self) -> crate::EnumValue<self::FieldOptions_JSType> {
+    pub fn jstype(&self) -> crate::EnumValue<self::field_options::JSType> {
         self.jstype.unwrap_or(Self::JSTYPE_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`jstype`] field
     ///
     /// [`jstype`]: #method.jstype
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn jstype_option(&self) -> ::std::option::Option<crate::EnumValue<self::FieldOptions_JSType>> {
+    pub fn jstype_option(&self) -> ::std::option::Option<crate::EnumValue<self::field_options::JSType>> {
         self.jstype
     }
     /// Returns a bool indicating the presence of the [`jstype`] field
@@ -5519,7 +5581,7 @@ impl self::FieldOptions {
     /// Sets the value of the [`jstype`] field
     ///
     /// [`jstype`]: #method.jstype
-    pub fn set_jstype(&mut self, value: crate::EnumValue<self::FieldOptions_JSType>) {
+    pub fn set_jstype(&mut self, value: crate::EnumValue<self::field_options::JSType>) {
         self.jstype = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`jstype`] field
@@ -5683,68 +5745,73 @@ impl self::FieldOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum FieldOptions_CType {
-    /// Default mode.
-    String,
-    Cord,
-    StringPiece,
-}
-unsafe impl crate::Enum for self::FieldOptions_CType { }
-impl ::std::convert::TryFrom<i32> for self::FieldOptions_CType {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::FieldOptions_CType::String),
-            1 => ::std::result::Result::Ok(self::FieldOptions_CType::Cord),
-            2 => ::std::result::Result::Ok(self::FieldOptions_CType::StringPiece),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+pub mod field_options {
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum CType {
+        /// Default mode.
+        String,
+        Cord,
+        StringPiece,
+    }
+    unsafe impl crate::Enum for self::CType { }
+    impl ::std::convert::TryFrom<i32> for self::CType {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::CType::String),
+                1 => ::std::result::Result::Ok(self::CType::Cord),
+                2 => ::std::result::Result::Ok(self::CType::StringPiece),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::FieldOptions_CType> for i32 {
-    fn from(value: self::FieldOptions_CType) -> i32 {
-        match value {
-            FieldOptions_CType::String => 0,
-            FieldOptions_CType::Cord => 1,
-            FieldOptions_CType::StringPiece => 2,
+    impl ::std::convert::From<self::CType> for i32 {
+        fn from(value: self::CType) -> i32 {
+            match value {
+                CType::String => 0,
+                CType::Cord => 1,
+                CType::StringPiece => 2,
+            }
         }
     }
-}
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum FieldOptions_JSType {
-    /// Use the default type.
-    JsNormal,
-    /// Use JavaScript strings.
-    JsString,
-    /// Use JavaScript numbers.
-    JsNumber,
-}
-unsafe impl crate::Enum for self::FieldOptions_JSType { }
-impl ::std::convert::TryFrom<i32> for self::FieldOptions_JSType {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::FieldOptions_JSType::JsNormal),
-            1 => ::std::result::Result::Ok(self::FieldOptions_JSType::JsString),
-            2 => ::std::result::Result::Ok(self::FieldOptions_JSType::JsNumber),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum JSType {
+        /// Use the default type.
+        JsNormal,
+        /// Use JavaScript strings.
+        JsString,
+        /// Use JavaScript numbers.
+        JsNumber,
+    }
+    unsafe impl crate::Enum for self::JSType { }
+    impl ::std::convert::TryFrom<i32> for self::JSType {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::JSType::JsNormal),
+                1 => ::std::result::Result::Ok(self::JSType::JsString),
+                2 => ::std::result::Result::Ok(self::JSType::JsNumber),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::FieldOptions_JSType> for i32 {
-    fn from(value: self::FieldOptions_JSType) -> i32 {
-        match value {
-            FieldOptions_JSType::JsNormal => 0,
-            FieldOptions_JSType::JsString => 1,
-            FieldOptions_JSType::JsNumber => 2,
+    impl ::std::convert::From<self::JSType> for i32 {
+        fn from(value: self::JSType) -> i32 {
+            match value {
+                JSType::JsNormal => 0,
+                JSType::JsString => 1,
+                JSType::JsNumber => 2,
+            }
         }
     }
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct OneofOptions {
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::OneofOptions {
@@ -5766,6 +5833,7 @@ impl crate::CodedMessage for self::OneofOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         self.uninterpreted_option.write_to(output, &ONEOF_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -5779,13 +5847,23 @@ impl crate::LiteMessage for self::OneofOptions {
     fn new() -> Self {
         Self {
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::OneofOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::OneofOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5813,7 +5891,8 @@ pub struct EnumOptions {
     allow_alias: ::std::option::Option<bool>,
     deprecated: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumOptions {
@@ -5865,6 +5944,7 @@ impl crate::CodedMessage for self::EnumOptions {
         }
         self.uninterpreted_option.write_to(output, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -5880,7 +5960,8 @@ impl crate::LiteMessage for self::EnumOptions {
             allow_alias: ::std::option::Option::None,
             deprecated: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -5888,7 +5969,16 @@ impl crate::LiteMessage for self::EnumOptions {
         self.deprecated = other.deprecated;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::EnumOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::EnumOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5993,7 +6083,8 @@ impl self::EnumOptions {
 pub struct EnumValueOptions {
     deprecated: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::EnumValueOptions {
@@ -6030,6 +6121,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
         }
         self.uninterpreted_option.write_to(output, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -6044,14 +6136,24 @@ impl crate::LiteMessage for self::EnumValueOptions {
         Self {
             deprecated: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
         self.deprecated = other.deprecated;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::EnumValueOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::EnumValueOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -6118,7 +6220,8 @@ impl self::EnumValueOptions {
 pub struct ServiceOptions {
     deprecated: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::ServiceOptions {
@@ -6155,6 +6258,7 @@ impl crate::CodedMessage for self::ServiceOptions {
         }
         self.uninterpreted_option.write_to(output, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -6169,14 +6273,24 @@ impl crate::LiteMessage for self::ServiceOptions {
         Self {
             deprecated: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
         self.deprecated = other.deprecated;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::ServiceOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::ServiceOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -6242,9 +6356,10 @@ impl self::ServiceOptions {
 #[derive(Clone, Debug, PartialEq)]
 pub struct MethodOptions {
     deprecated: ::std::option::Option<bool>,
-    idempotency_level: ::std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>>,
+    idempotency_level: ::std::option::Option<crate::EnumValue<self::method_options::IdempotencyLevel>>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
+    extensions: crate::ExtensionSet<Self>,
 }
 static METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC: crate::Codec<self::UninterpretedOption> = crate::Codec::message(7994);
 impl crate::CodedMessage for self::MethodOptions {
@@ -6296,6 +6411,7 @@ impl crate::CodedMessage for self::MethodOptions {
         }
         self.uninterpreted_option.write_to(output, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
+        self.extensions.write_to(output)?;
         ::std::result::Result::Ok(())
     }
     fn is_initialized(&self) -> bool {
@@ -6311,7 +6427,8 @@ impl crate::LiteMessage for self::MethodOptions {
             deprecated: ::std::option::Option::None,
             idempotency_level: ::std::option::Option::None,
             uninterpreted_option: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
+            extensions: crate::ExtensionSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -6319,7 +6436,16 @@ impl crate::LiteMessage for self::MethodOptions {
         self.idempotency_level = other.idempotency_level;
         self.uninterpreted_option.merge(&other.uninterpreted_option);
         self.unknown_fields.merge(&other.unknown_fields);
+        self.extensions.merge(&other.extensions);
     }
+}
+impl crate::ExtensionMessage for self::MethodOptions {
+    fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
+    fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
+    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
+    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
+    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
 }
 impl crate::Message for self::MethodOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -6374,15 +6500,15 @@ impl self::MethodOptions {
     /// A constant value representing the default value of the [`idempotency_level`] field
     ///
     /// [`idempotency_level`]: #method.idempotency_level
-    pub const IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<self::MethodOptions_IdempotencyLevel> = crate::EnumValue::Defined(self::MethodOptions_IdempotencyLevel::IdempotencyUnknown);
-    pub fn idempotency_level(&self) -> crate::EnumValue<self::MethodOptions_IdempotencyLevel> {
+    pub const IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<self::method_options::IdempotencyLevel> = crate::EnumValue::Defined(self::method_options::IdempotencyLevel::IdempotencyUnknown);
+    pub fn idempotency_level(&self) -> crate::EnumValue<self::method_options::IdempotencyLevel> {
         self.idempotency_level.unwrap_or(Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE)
     }
     /// Returns an [`Option`] representing the presence of the [`idempotency_level`] field
     ///
     /// [`idempotency_level`]: #method.idempotency_level
     /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn idempotency_level_option(&self) -> ::std::option::Option<crate::EnumValue<self::MethodOptions_IdempotencyLevel>> {
+    pub fn idempotency_level_option(&self) -> ::std::option::Option<crate::EnumValue<self::method_options::IdempotencyLevel>> {
         self.idempotency_level
     }
     /// Returns a bool indicating the presence of the [`idempotency_level`] field
@@ -6394,7 +6520,7 @@ impl self::MethodOptions {
     /// Sets the value of the [`idempotency_level`] field
     ///
     /// [`idempotency_level`]: #method.idempotency_level
-    pub fn set_idempotency_level(&mut self, value: crate::EnumValue<self::MethodOptions_IdempotencyLevel>) {
+    pub fn set_idempotency_level(&mut self, value: crate::EnumValue<self::method_options::IdempotencyLevel>) {
         self.idempotency_level = ::std::option::Option::Some(value)
     }
     /// Clears the value of the [`idempotency_level`] field
@@ -6418,35 +6544,38 @@ impl self::MethodOptions {
         &mut self.uninterpreted_option
     }
 }
-/// Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
-/// or neither? HTTP based RPC implementation may choose GET verb for safe
-/// methods, and PUT verb for idempotent methods instead of the default POST.
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum MethodOptions_IdempotencyLevel {
-    IdempotencyUnknown,
-    /// implies idempotent
-    NoSideEffects,
-    /// idempotent, but may have side effects
-    Idempotent,
-}
-unsafe impl crate::Enum for self::MethodOptions_IdempotencyLevel { }
-impl ::std::convert::TryFrom<i32> for self::MethodOptions_IdempotencyLevel {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::MethodOptions_IdempotencyLevel::IdempotencyUnknown),
-            1 => ::std::result::Result::Ok(self::MethodOptions_IdempotencyLevel::NoSideEffects),
-            2 => ::std::result::Result::Ok(self::MethodOptions_IdempotencyLevel::Idempotent),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+pub mod method_options {
+    /// Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
+    /// or neither? HTTP based RPC implementation may choose GET verb for safe
+    /// methods, and PUT verb for idempotent methods instead of the default POST.
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum IdempotencyLevel {
+        IdempotencyUnknown,
+        /// implies idempotent
+        NoSideEffects,
+        /// idempotent, but may have side effects
+        Idempotent,
+    }
+    unsafe impl crate::Enum for self::IdempotencyLevel { }
+    impl ::std::convert::TryFrom<i32> for self::IdempotencyLevel {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::IdempotencyLevel::IdempotencyUnknown),
+                1 => ::std::result::Result::Ok(self::IdempotencyLevel::NoSideEffects),
+                2 => ::std::result::Result::Ok(self::IdempotencyLevel::Idempotent),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
-    fn from(value: self::MethodOptions_IdempotencyLevel) -> i32 {
-        match value {
-            MethodOptions_IdempotencyLevel::IdempotencyUnknown => 0,
-            MethodOptions_IdempotencyLevel::NoSideEffects => 1,
-            MethodOptions_IdempotencyLevel::Idempotent => 2,
+    impl ::std::convert::From<self::IdempotencyLevel> for i32 {
+        fn from(value: self::IdempotencyLevel) -> i32 {
+            match value {
+                IdempotencyLevel::IdempotencyUnknown => 0,
+                IdempotencyLevel::NoSideEffects => 1,
+                IdempotencyLevel::Idempotent => 2,
+            }
         }
     }
 }
@@ -6458,16 +6587,16 @@ impl ::std::convert::From<self::MethodOptions_IdempotencyLevel> for i32 {
 /// in them.
 #[derive(Clone, Debug, PartialEq)]
 pub struct UninterpretedOption {
-    name: crate::collections::RepeatedField<self::UninterpretedOption_NamePart>,
+    name: crate::collections::RepeatedField<self::uninterpreted_option::NamePart>,
     identifier_value: ::std::option::Option<::std::string::String>,
     positive_int_value: ::std::option::Option<u64>,
     negative_int_value: ::std::option::Option<i64>,
     double_value: ::std::option::Option<f64>,
     string_value: ::std::option::Option<::std::vec::Vec<u8>>,
     aggregate_value: ::std::option::Option<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
-static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<self::UninterpretedOption_NamePart> = crate::Codec::message(18);
+static UNINTERPRETED_OPTION_NAME_CODEC: crate::Codec<self::uninterpreted_option::NamePart> = crate::Codec::message(18);
 impl crate::CodedMessage for self::UninterpretedOption {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -6596,7 +6725,7 @@ impl crate::LiteMessage for self::UninterpretedOption {
             double_value: ::std::option::Option::None,
             string_value: ::std::option::Option::None,
             aggregate_value: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -6620,13 +6749,13 @@ impl self::UninterpretedOption {
     ///
     /// [`name`]: #method.name
     pub const NAME_FIELD_NUMBER: i32 = 2;
-    pub fn name(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption_NamePart> {
+    pub fn name(&self) -> &crate::collections::RepeatedField<self::uninterpreted_option::NamePart> {
         &self.name
     }
     /// Returns a unique reference to the [`name`] field
     ///
     /// [`name`]: #method.name
-    pub fn name_mut(&mut self) -> &mut crate::collections::RepeatedField<self::UninterpretedOption_NamePart> {
+    pub fn name_mut(&mut self) -> &mut crate::collections::RepeatedField<self::uninterpreted_option::NamePart> {
         &mut self.name
     }
     /// Gets the field number of the [`identifier_value`] field
@@ -6884,188 +7013,196 @@ impl self::UninterpretedOption {
         self.aggregate_value = ::std::option::Option::None
     }
 }
-/// The name of the uninterpreted option.  Each string represents a segment in
-/// a dot-separated name.  is_extension is true iff a segment represents an
-/// extension (denoted with parentheses in options specs in .proto files).
-/// E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
-/// "foo.(bar.baz).qux".
-#[derive(Clone, Debug, PartialEq)]
-pub struct UninterpretedOption_NamePart {
-    name_part: ::std::option::Option<::std::string::String>,
-    is_extension: ::std::option::Option<bool>,
-    unknown_fields: crate::UnknownFieldSet
-}
-impl crate::CodedMessage for self::UninterpretedOption_NamePart {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                10 => self.name_part = ::std::option::Option::Some(input.read_string()?),
-                16 => self.is_extension = ::std::option::Option::Some(input.read_bool()?),
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// A message representing a option the parser does not recognize. This only
+/// appears in options protos created by the compiler::Parser class.
+/// DescriptorPool resolves these when building Descriptor objects. Therefore,
+/// options protos in descriptor objects (e.g. returned by Descriptor::options(),
+/// or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
+/// in them.
+pub mod uninterpreted_option {
+    /// The name of the uninterpreted option.  Each string represents a segment in
+    /// a dot-separated name.  is_extension is true iff a segment represents an
+    /// extension (denoted with parentheses in options specs in .proto files).
+    /// E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
+    /// "foo.(bar.baz).qux".
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct NamePart {
+        name_part: ::std::option::Option<::std::string::String>,
+        is_extension: ::std::option::Option<bool>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    impl crate::CodedMessage for self::NamePart {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    10 => self.name_part = ::std::option::Option::Some(input.read_string()?),
+                    16 => self.is_extension = ::std::option::Option::Some(input.read_bool()?),
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            let name_part = &self.name_part;
+            if let ::std::option::Option::Some(name_part) = name_part {
+                if name_part != Self::NAME_PART_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(name_part));
+                }
+            }
+            let is_extension = self.is_extension;
+            if let ::std::option::Option::Some(is_extension) = is_extension {
+                if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::bool(is_extension));
+                }
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            let name_part = &self.name_part;
+            if let ::std::option::Option::Some(name_part) = name_part {
+                if name_part != Self::NAME_PART_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[10])?;
+                    output.write_string(name_part)?;
+                }
+            }
+            let is_extension = self.is_extension;
+            if let ::std::option::Option::Some(is_extension) = is_extension {
+                if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_bool(is_extension)?;
+                }
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+        fn is_initialized(&self) -> bool {
+            if self.name_part.is_none() {
+                return false;
+            }
+            if self.is_extension.is_none() {
+                return false;
+            }
+            true
+        }
+    }
+    impl crate::LiteMessage for self::NamePart {
+        fn new() -> Self {
+            Self {
+                name_part: ::std::option::Option::None,
+                is_extension: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        let name_part = &self.name_part;
-        if let ::std::option::Option::Some(name_part) = name_part {
-            if name_part != Self::NAME_PART_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name_part));
-            }
-        }
-        let is_extension = self.is_extension;
-        if let ::std::option::Option::Some(is_extension) = is_extension {
-            if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::bool(is_extension));
-            }
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        let name_part = &self.name_part;
-        if let ::std::option::Option::Some(name_part) = name_part {
-            if name_part != Self::NAME_PART_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name_part)?;
-            }
-        }
-        let is_extension = self.is_extension;
-        if let ::std::option::Option::Some(is_extension) = is_extension {
-            if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_bool(is_extension)?;
-            }
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-    fn is_initialized(&self) -> bool {
-        if self.name_part.is_none() {
-            return false;
-        }
-        if self.is_extension.is_none() {
-            return false;
-        }
-        true
-    }
-}
-impl crate::LiteMessage for self::UninterpretedOption_NamePart {
-    fn new() -> Self {
-        Self {
-            name_part: ::std::option::Option::None,
-            is_extension: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.name_part = other.name_part.clone();
+            self.is_extension = other.is_extension;
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.name_part = other.name_part.clone();
-        self.is_extension = other.is_extension;
-        self.unknown_fields.merge(&other.unknown_fields);
+    impl crate::Message for self::NamePart {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[18].messages()[0]
+        }
     }
-}
-impl crate::Message for self::UninterpretedOption_NamePart {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[18].messages()[0]
-    }
-}
-impl self::UninterpretedOption_NamePart {
-    /// Gets the field number of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub const NAME_PART_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
-    pub fn name_part(&self) -> &str {
-        self.name_part.as_ref().map(|v| &**v).unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn name_part_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.name_part.as_ref()
-    }
-    /// Returns a unique reference to the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub fn name_part_mut(&mut self) -> &mut ::std::string::String {
-        self.name_part.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub fn has_name_part(&self) -> bool {
-        self.name_part.is_some()
-    }
-    /// Sets the value of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub fn set_name_part(&mut self, value: ::std::string::String) {
-        self.name_part = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`name_part`] field, leaving it empty
-    ///
-    /// [`name_part`]: #method.name_part
-    pub fn take_name_part(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.name_part.take()
-    }
-    /// Clears the value of the [`name_part`] field
-    ///
-    /// [`name_part`]: #method.name_part
-    pub fn clear_name_part(&mut self) {
-        self.name_part = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
-    pub fn is_extension(&self) -> bool {
-        self.is_extension.unwrap_or(Self::IS_EXTENSION_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn is_extension_option(&self) -> ::std::option::Option<bool> {
-        self.is_extension
-    }
-    /// Returns a bool indicating the presence of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    pub fn has_is_extension(&self) -> bool {
-        self.is_extension.is_some()
-    }
-    /// Sets the value of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    pub fn set_is_extension(&mut self, value: bool) {
-        self.is_extension = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`is_extension`] field
-    ///
-    /// [`is_extension`]: #method.is_extension
-    pub fn clear_is_extension(&mut self) {
-        self.is_extension = ::std::option::Option::None
+    impl self::NamePart {
+        /// Gets the field number of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub const NAME_PART_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
+        pub fn name_part(&self) -> &str {
+            self.name_part.as_ref().map(|v| &**v).unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn name_part_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.name_part.as_ref()
+        }
+        /// Returns a unique reference to the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub fn name_part_mut(&mut self) -> &mut ::std::string::String {
+            self.name_part.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub fn has_name_part(&self) -> bool {
+            self.name_part.is_some()
+        }
+        /// Sets the value of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub fn set_name_part(&mut self, value: ::std::string::String) {
+            self.name_part = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`name_part`] field, leaving it empty
+        ///
+        /// [`name_part`]: #method.name_part
+        pub fn take_name_part(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.name_part.take()
+        }
+        /// Clears the value of the [`name_part`] field
+        ///
+        /// [`name_part`]: #method.name_part
+        pub fn clear_name_part(&mut self) {
+            self.name_part = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
+        pub fn is_extension(&self) -> bool {
+            self.is_extension.unwrap_or(Self::IS_EXTENSION_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn is_extension_option(&self) -> ::std::option::Option<bool> {
+            self.is_extension
+        }
+        /// Returns a bool indicating the presence of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        pub fn has_is_extension(&self) -> bool {
+            self.is_extension.is_some()
+        }
+        /// Sets the value of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        pub fn set_is_extension(&mut self, value: bool) {
+            self.is_extension = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`is_extension`] field
+        ///
+        /// [`is_extension`]: #method.is_extension
+        pub fn clear_is_extension(&mut self) {
+            self.is_extension = ::std::option::Option::None
+        }
     }
 }
 /// Encapsulates information about the original source file from which a
 /// FileDescriptorProto was generated.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SourceCodeInfo {
-    location: crate::collections::RepeatedField<self::SourceCodeInfo_Location>,
-    unknown_fields: crate::UnknownFieldSet
+    location: crate::collections::RepeatedField<self::source_code_info::Location>,
+    unknown_fields: crate::UnknownFieldSet,
 }
-static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<self::SourceCodeInfo_Location> = crate::Codec::message(10);
+static SOURCE_CODE_INFO_LOCATION_CODEC: crate::Codec<self::source_code_info::Location> = crate::Codec::message(10);
 impl crate::CodedMessage for self::SourceCodeInfo {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -7098,7 +7235,7 @@ impl crate::LiteMessage for self::SourceCodeInfo {
     fn new() -> Self {
         Self {
             location: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -7161,324 +7298,328 @@ impl self::SourceCodeInfo {
     ///   ignore those that it doesn't understand, as more types of locations could
     ///   be recorded in the future.
     ///   
-    pub fn location(&self) -> &crate::collections::RepeatedField<self::SourceCodeInfo_Location> {
+    pub fn location(&self) -> &crate::collections::RepeatedField<self::source_code_info::Location> {
         &self.location
     }
     /// Returns a unique reference to the [`location`] field
     ///
     /// [`location`]: #method.location
-    pub fn location_mut(&mut self) -> &mut crate::collections::RepeatedField<self::SourceCodeInfo_Location> {
+    pub fn location_mut(&mut self) -> &mut crate::collections::RepeatedField<self::source_code_info::Location> {
         &mut self.location
     }
 }
-#[derive(Clone, Debug, PartialEq)]
-pub struct SourceCodeInfo_Location {
-    path: crate::collections::RepeatedField<i32>,
-    span: crate::collections::RepeatedField<i32>,
-    leading_comments: ::std::option::Option<::std::string::String>,
-    trailing_comments: ::std::option::Option<::std::string::String>,
-    leading_detached_comments: crate::collections::RepeatedField<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
-}
-static SOURCE_CODE_INFO__LOCATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
-static SOURCE_CODE_INFO__LOCATION_SPAN_CODEC: crate::Codec<i32> = crate::Codec::int32(18);
-static SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(50);
-impl crate::CodedMessage for self::SourceCodeInfo_Location {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                10 | 8 => self.path.add_entries(input, &SOURCE_CODE_INFO__LOCATION_PATH_CODEC)?,
-                18 | 16 => self.span.add_entries(input, &SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?,
-                26 => self.leading_comments = ::std::option::Option::Some(input.read_string()?),
-                34 => self.trailing_comments = ::std::option::Option::Some(input.read_string()?),
-                50 => self.leading_detached_comments.add_entries(input, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?,
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// Encapsulates information about the original source file from which a
+/// FileDescriptorProto was generated.
+pub mod source_code_info {
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct Location {
+        path: crate::collections::RepeatedField<i32>,
+        span: crate::collections::RepeatedField<i32>,
+        leading_comments: ::std::option::Option<::std::string::String>,
+        trailing_comments: ::std::option::Option<::std::string::String>,
+        leading_detached_comments: crate::collections::RepeatedField<::std::string::String>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    static LOCATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
+    static LOCATION_SPAN_CODEC: crate::Codec<i32> = crate::Codec::int32(18);
+    static LOCATION_LEADING_DETACHED_COMMENTS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(50);
+    impl crate::CodedMessage for self::Location {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    10 | 8 => self.path.add_entries(input, &LOCATION_PATH_CODEC)?,
+                    18 | 16 => self.span.add_entries(input, &LOCATION_SPAN_CODEC)?,
+                    26 => self.leading_comments = ::std::option::Option::Some(input.read_string()?),
+                    34 => self.trailing_comments = ::std::option::Option::Some(input.read_string()?),
+                    50 => self.leading_detached_comments.add_entries(input, &LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?,
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            size = size.checked_add(self.path.calculate_size(&LOCATION_PATH_CODEC)?)?;
+            size = size.checked_add(self.span.calculate_size(&LOCATION_SPAN_CODEC)?)?;
+            let leading_comments = &self.leading_comments;
+            if let ::std::option::Option::Some(leading_comments) = leading_comments {
+                if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(leading_comments));
+                }
+            }
+            let trailing_comments = &self.trailing_comments;
+            if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
+                if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(trailing_comments));
+                }
+            }
+            size = size.checked_add(self.leading_detached_comments.calculate_size(&LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?)?;
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            self.path.write_to(output, &LOCATION_PATH_CODEC)?;
+            self.span.write_to(output, &LOCATION_SPAN_CODEC)?;
+            let leading_comments = &self.leading_comments;
+            if let ::std::option::Option::Some(leading_comments) = leading_comments {
+                if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[26])?;
+                    output.write_string(leading_comments)?;
+                }
+            }
+            let trailing_comments = &self.trailing_comments;
+            if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
+                if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[34])?;
+                    output.write_string(trailing_comments)?;
+                }
+            }
+            self.leading_detached_comments.write_to(output, &LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?;
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+        fn is_initialized(&self) -> bool {
+            true
+        }
+    }
+    impl crate::LiteMessage for self::Location {
+        fn new() -> Self {
+            Self {
+                path: crate::collections::RepeatedField::new(),
+                span: crate::collections::RepeatedField::new(),
+                leading_comments: ::std::option::Option::None,
+                trailing_comments: ::std::option::Option::None,
+                leading_detached_comments: crate::collections::RepeatedField::new(),
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        size = size.checked_add(self.path.calculate_size(&SOURCE_CODE_INFO__LOCATION_PATH_CODEC)?)?;
-        size = size.checked_add(self.span.calculate_size(&SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?)?;
-        let leading_comments = &self.leading_comments;
-        if let ::std::option::Option::Some(leading_comments) = leading_comments {
-            if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(leading_comments));
-            }
-        }
-        let trailing_comments = &self.trailing_comments;
-        if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
-            if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(trailing_comments));
-            }
-        }
-        size = size.checked_add(self.leading_detached_comments.calculate_size(&SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?)?;
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        self.path.write_to(output, &SOURCE_CODE_INFO__LOCATION_PATH_CODEC)?;
-        self.span.write_to(output, &SOURCE_CODE_INFO__LOCATION_SPAN_CODEC)?;
-        let leading_comments = &self.leading_comments;
-        if let ::std::option::Option::Some(leading_comments) = leading_comments {
-            if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[26])?;
-                output.write_string(leading_comments)?;
-            }
-        }
-        let trailing_comments = &self.trailing_comments;
-        if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
-            if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[34])?;
-                output.write_string(trailing_comments)?;
-            }
-        }
-        self.leading_detached_comments.write_to(output, &SOURCE_CODE_INFO__LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?;
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-    fn is_initialized(&self) -> bool {
-        true
-    }
-}
-impl crate::LiteMessage for self::SourceCodeInfo_Location {
-    fn new() -> Self {
-        Self {
-            path: crate::collections::RepeatedField::new(),
-            span: crate::collections::RepeatedField::new(),
-            leading_comments: ::std::option::Option::None,
-            trailing_comments: ::std::option::Option::None,
-            leading_detached_comments: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.path.merge(&other.path);
+            self.span.merge(&other.span);
+            self.leading_comments = other.leading_comments.clone();
+            self.trailing_comments = other.trailing_comments.clone();
+            self.leading_detached_comments.merge(&other.leading_detached_comments);
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.path.merge(&other.path);
-        self.span.merge(&other.span);
-        self.leading_comments = other.leading_comments.clone();
-        self.trailing_comments = other.trailing_comments.clone();
-        self.leading_detached_comments.merge(&other.leading_detached_comments);
-        self.unknown_fields.merge(&other.unknown_fields);
+    impl crate::Message for self::Location {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[19].messages()[0]
+        }
     }
-}
-impl crate::Message for self::SourceCodeInfo_Location {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[19].messages()[0]
-    }
-}
-impl self::SourceCodeInfo_Location {
-    /// Gets the field number of the [`path`] field
-    ///
-    /// [`path`]: #method.path
-    pub const PATH_FIELD_NUMBER: i32 = 1;
-    /// Identifies which part of the FileDescriptorProto was defined at this
-    /// location.
-    /// 
-    /// Each element is a field number or an index.  They form a path from
-    /// the root FileDescriptorProto to the place where the definition.  For
-    /// example, this path:
-    /// [ 4, 3, 2, 7, 1 ]
-    /// refers to:
-    /// file.message_type(3)  // 4, 3
-    /// .field(7)         // 2, 7
-    /// .name()           // 1
-    /// This is because FileDescriptorProto.message_type has field number 4:
-    /// repeated DescriptorProto message_type = 4;
-    /// and DescriptorProto.field has field number 2:
-    /// repeated FieldDescriptorProto field = 2;
-    /// and FieldDescriptorProto.name has field number 1:
-    /// optional string name = 1;
-    /// 
-    /// Thus, the above path gives the location of a field name.  If we removed
-    /// the last element:
-    /// [ 4, 3, 2, 7 ]
-    /// this path refers to the whole field declaration (from the beginning
-    /// of the label to the terminating semicolon).
-    pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
-        &self.path
-    }
-    /// Returns a unique reference to the [`path`] field
-    ///
-    /// [`path`]: #method.path
-    pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
-        &mut self.path
-    }
-    /// Gets the field number of the [`span`] field
-    ///
-    /// [`span`]: #method.span
-    pub const SPAN_FIELD_NUMBER: i32 = 2;
-    /// Always has exactly three or four elements: start line, start column,
-    /// end line (optional, otherwise assumed same as start line), end column.
-    /// These are packed into a single field for efficiency.  Note that line
-    /// and column numbers are zero-based -- typically you will want to add
-    /// 1 to each before displaying to a user.
-    pub fn span(&self) -> &crate::collections::RepeatedField<i32> {
-        &self.span
-    }
-    /// Returns a unique reference to the [`span`] field
-    ///
-    /// [`span`]: #method.span
-    pub fn span_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
-        &mut self.span
-    }
-    /// Gets the field number of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub const LEADING_COMMENTS_FIELD_NUMBER: i32 = 3;
-    /// A constant value representing the default value of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub const LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
-    /// If this SourceCodeInfo represents a complete declaration, these are any
-    /// comments appearing before and after the declaration which appear to be
-    /// attached to the declaration.
-    /// 
-    /// A series of line comments appearing on consecutive lines, with no other
-    /// tokens appearing on those lines, will be treated as a single comment.
-    /// 
-    /// leading_detached_comments will keep paragraphs of comments that appear
-    /// before (but not connected to) the current element. Each paragraph,
-    /// separated by empty lines, will be one comment element in the repeated
-    /// field.
-    /// 
-    /// Only the comment content is provided; comment markers (e.g. //) are
-    /// stripped out.  For block comments, leading whitespace and an asterisk
-    /// will be stripped from the beginning of each line other than the first.
-    /// Newlines are included in the output.
-    /// 
-    /// Examples:
-    /// 
-    /// optional int32 foo = 1;  // Comment attached to foo.
-    /// // Comment attached to bar.
-    /// optional int32 bar = 2;
-    /// 
-    /// optional string baz = 3;
-    /// // Comment attached to baz.
-    /// // Another line attached to baz.
-    /// 
-    /// // Comment attached to qux.
-    /// //
-    /// // Another line attached to qux.
-    /// optional double qux = 4;
-    /// 
-    /// // Detached comment for corge. This is not leading or trailing comments
-    /// // to qux or corge because there are blank lines separating it from
-    /// // both.
-    /// 
-    /// // Detached comment for corge paragraph 2.
-    /// 
-    /// optional string corge = 5;
-    /// /* Block comment attached
-    /// * to corge.  Leading asterisks
-    /// * will be removed. */
-    /// /* Block comment attached to
-    /// * grault. */
-    /// optional int32 grault = 6;
-    /// 
-    /// // ignored detached comments.
-    pub fn leading_comments(&self) -> &str {
-        self.leading_comments.as_ref().map(|v| &**v).unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn leading_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.leading_comments.as_ref()
-    }
-    /// Returns a unique reference to the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub fn leading_comments_mut(&mut self) -> &mut ::std::string::String {
-        self.leading_comments.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub fn has_leading_comments(&self) -> bool {
-        self.leading_comments.is_some()
-    }
-    /// Sets the value of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub fn set_leading_comments(&mut self, value: ::std::string::String) {
-        self.leading_comments = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`leading_comments`] field, leaving it empty
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub fn take_leading_comments(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.leading_comments.take()
-    }
-    /// Clears the value of the [`leading_comments`] field
-    ///
-    /// [`leading_comments`]: #method.leading_comments
-    pub fn clear_leading_comments(&mut self) {
-        self.leading_comments = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub const TRAILING_COMMENTS_FIELD_NUMBER: i32 = 4;
-    /// A constant value representing the default value of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub const TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
-    pub fn trailing_comments(&self) -> &str {
-        self.trailing_comments.as_ref().map(|v| &**v).unwrap_or(Self::TRAILING_COMMENTS_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn trailing_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.trailing_comments.as_ref()
-    }
-    /// Returns a unique reference to the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub fn trailing_comments_mut(&mut self) -> &mut ::std::string::String {
-        self.trailing_comments.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub fn has_trailing_comments(&self) -> bool {
-        self.trailing_comments.is_some()
-    }
-    /// Sets the value of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub fn set_trailing_comments(&mut self, value: ::std::string::String) {
-        self.trailing_comments = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`trailing_comments`] field, leaving it empty
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub fn take_trailing_comments(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.trailing_comments.take()
-    }
-    /// Clears the value of the [`trailing_comments`] field
-    ///
-    /// [`trailing_comments`]: #method.trailing_comments
-    pub fn clear_trailing_comments(&mut self) {
-        self.trailing_comments = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`leading_detached_comments`] field
-    ///
-    /// [`leading_detached_comments`]: #method.leading_detached_comments
-    pub const LEADING_DETACHED_COMMENTS_FIELD_NUMBER: i32 = 6;
-    pub fn leading_detached_comments(&self) -> &crate::collections::RepeatedField<::std::string::String> {
-        &self.leading_detached_comments
-    }
-    /// Returns a unique reference to the [`leading_detached_comments`] field
-    ///
-    /// [`leading_detached_comments`]: #method.leading_detached_comments
-    pub fn leading_detached_comments_mut(&mut self) -> &mut crate::collections::RepeatedField<::std::string::String> {
-        &mut self.leading_detached_comments
+    impl self::Location {
+        /// Gets the field number of the [`path`] field
+        ///
+        /// [`path`]: #method.path
+        pub const PATH_FIELD_NUMBER: i32 = 1;
+        /// Identifies which part of the FileDescriptorProto was defined at this
+        /// location.
+        /// 
+        /// Each element is a field number or an index.  They form a path from
+        /// the root FileDescriptorProto to the place where the definition.  For
+        /// example, this path:
+        /// [ 4, 3, 2, 7, 1 ]
+        /// refers to:
+        /// file.message_type(3)  // 4, 3
+        /// .field(7)         // 2, 7
+        /// .name()           // 1
+        /// This is because FileDescriptorProto.message_type has field number 4:
+        /// repeated DescriptorProto message_type = 4;
+        /// and DescriptorProto.field has field number 2:
+        /// repeated FieldDescriptorProto field = 2;
+        /// and FieldDescriptorProto.name has field number 1:
+        /// optional string name = 1;
+        /// 
+        /// Thus, the above path gives the location of a field name.  If we removed
+        /// the last element:
+        /// [ 4, 3, 2, 7 ]
+        /// this path refers to the whole field declaration (from the beginning
+        /// of the label to the terminating semicolon).
+        pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
+            &self.path
+        }
+        /// Returns a unique reference to the [`path`] field
+        ///
+        /// [`path`]: #method.path
+        pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
+            &mut self.path
+        }
+        /// Gets the field number of the [`span`] field
+        ///
+        /// [`span`]: #method.span
+        pub const SPAN_FIELD_NUMBER: i32 = 2;
+        /// Always has exactly three or four elements: start line, start column,
+        /// end line (optional, otherwise assumed same as start line), end column.
+        /// These are packed into a single field for efficiency.  Note that line
+        /// and column numbers are zero-based -- typically you will want to add
+        /// 1 to each before displaying to a user.
+        pub fn span(&self) -> &crate::collections::RepeatedField<i32> {
+            &self.span
+        }
+        /// Returns a unique reference to the [`span`] field
+        ///
+        /// [`span`]: #method.span
+        pub fn span_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
+            &mut self.span
+        }
+        /// Gets the field number of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub const LEADING_COMMENTS_FIELD_NUMBER: i32 = 3;
+        /// A constant value representing the default value of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub const LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
+        /// If this SourceCodeInfo represents a complete declaration, these are any
+        /// comments appearing before and after the declaration which appear to be
+        /// attached to the declaration.
+        /// 
+        /// A series of line comments appearing on consecutive lines, with no other
+        /// tokens appearing on those lines, will be treated as a single comment.
+        /// 
+        /// leading_detached_comments will keep paragraphs of comments that appear
+        /// before (but not connected to) the current element. Each paragraph,
+        /// separated by empty lines, will be one comment element in the repeated
+        /// field.
+        /// 
+        /// Only the comment content is provided; comment markers (e.g. //) are
+        /// stripped out.  For block comments, leading whitespace and an asterisk
+        /// will be stripped from the beginning of each line other than the first.
+        /// Newlines are included in the output.
+        /// 
+        /// Examples:
+        /// 
+        /// optional int32 foo = 1;  // Comment attached to foo.
+        /// // Comment attached to bar.
+        /// optional int32 bar = 2;
+        /// 
+        /// optional string baz = 3;
+        /// // Comment attached to baz.
+        /// // Another line attached to baz.
+        /// 
+        /// // Comment attached to qux.
+        /// //
+        /// // Another line attached to qux.
+        /// optional double qux = 4;
+        /// 
+        /// // Detached comment for corge. This is not leading or trailing comments
+        /// // to qux or corge because there are blank lines separating it from
+        /// // both.
+        /// 
+        /// // Detached comment for corge paragraph 2.
+        /// 
+        /// optional string corge = 5;
+        /// /* Block comment attached
+        /// * to corge.  Leading asterisks
+        /// * will be removed. */
+        /// /* Block comment attached to
+        /// * grault. */
+        /// optional int32 grault = 6;
+        /// 
+        /// // ignored detached comments.
+        pub fn leading_comments(&self) -> &str {
+            self.leading_comments.as_ref().map(|v| &**v).unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn leading_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.leading_comments.as_ref()
+        }
+        /// Returns a unique reference to the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub fn leading_comments_mut(&mut self) -> &mut ::std::string::String {
+            self.leading_comments.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub fn has_leading_comments(&self) -> bool {
+            self.leading_comments.is_some()
+        }
+        /// Sets the value of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub fn set_leading_comments(&mut self, value: ::std::string::String) {
+            self.leading_comments = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`leading_comments`] field, leaving it empty
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub fn take_leading_comments(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.leading_comments.take()
+        }
+        /// Clears the value of the [`leading_comments`] field
+        ///
+        /// [`leading_comments`]: #method.leading_comments
+        pub fn clear_leading_comments(&mut self) {
+            self.leading_comments = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub const TRAILING_COMMENTS_FIELD_NUMBER: i32 = 4;
+        /// A constant value representing the default value of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub const TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
+        pub fn trailing_comments(&self) -> &str {
+            self.trailing_comments.as_ref().map(|v| &**v).unwrap_or(Self::TRAILING_COMMENTS_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn trailing_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.trailing_comments.as_ref()
+        }
+        /// Returns a unique reference to the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub fn trailing_comments_mut(&mut self) -> &mut ::std::string::String {
+            self.trailing_comments.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub fn has_trailing_comments(&self) -> bool {
+            self.trailing_comments.is_some()
+        }
+        /// Sets the value of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub fn set_trailing_comments(&mut self, value: ::std::string::String) {
+            self.trailing_comments = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`trailing_comments`] field, leaving it empty
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub fn take_trailing_comments(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.trailing_comments.take()
+        }
+        /// Clears the value of the [`trailing_comments`] field
+        ///
+        /// [`trailing_comments`]: #method.trailing_comments
+        pub fn clear_trailing_comments(&mut self) {
+            self.trailing_comments = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`leading_detached_comments`] field
+        ///
+        /// [`leading_detached_comments`]: #method.leading_detached_comments
+        pub const LEADING_DETACHED_COMMENTS_FIELD_NUMBER: i32 = 6;
+        pub fn leading_detached_comments(&self) -> &crate::collections::RepeatedField<::std::string::String> {
+            &self.leading_detached_comments
+        }
+        /// Returns a unique reference to the [`leading_detached_comments`] field
+        ///
+        /// [`leading_detached_comments`]: #method.leading_detached_comments
+        pub fn leading_detached_comments_mut(&mut self) -> &mut crate::collections::RepeatedField<::std::string::String> {
+            &mut self.leading_detached_comments
+        }
     }
 }
 /// Describes the relationship between generated code and its original source
@@ -7486,10 +7627,10 @@ impl self::SourceCodeInfo_Location {
 /// source file, but may contain references to different source .proto files.
 #[derive(Clone, Debug, PartialEq)]
 pub struct GeneratedCodeInfo {
-    annotation: crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation>,
-    unknown_fields: crate::UnknownFieldSet
+    annotation: crate::collections::RepeatedField<self::generated_code_info::Annotation>,
+    unknown_fields: crate::UnknownFieldSet,
 }
-static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<self::GeneratedCodeInfo_Annotation> = crate::Codec::message(10);
+static GENERATED_CODE_INFO_ANNOTATION_CODEC: crate::Codec<self::generated_code_info::Annotation> = crate::Codec::message(10);
 impl crate::CodedMessage for self::GeneratedCodeInfo {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -7522,7 +7663,7 @@ impl crate::LiteMessage for self::GeneratedCodeInfo {
     fn new() -> Self {
         Self {
             annotation: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -7542,258 +7683,263 @@ impl self::GeneratedCodeInfo {
     pub const ANNOTATION_FIELD_NUMBER: i32 = 1;
     /// An Annotation connects some span of text in generated code to an element
     /// of its generating .proto file.
-    pub fn annotation(&self) -> &crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation> {
+    pub fn annotation(&self) -> &crate::collections::RepeatedField<self::generated_code_info::Annotation> {
         &self.annotation
     }
     /// Returns a unique reference to the [`annotation`] field
     ///
     /// [`annotation`]: #method.annotation
-    pub fn annotation_mut(&mut self) -> &mut crate::collections::RepeatedField<self::GeneratedCodeInfo_Annotation> {
+    pub fn annotation_mut(&mut self) -> &mut crate::collections::RepeatedField<self::generated_code_info::Annotation> {
         &mut self.annotation
     }
 }
-#[derive(Clone, Debug, PartialEq)]
-pub struct GeneratedCodeInfo_Annotation {
-    path: crate::collections::RepeatedField<i32>,
-    source_file: ::std::option::Option<::std::string::String>,
-    begin: ::std::option::Option<i32>,
-    end: ::std::option::Option<i32>,
-    unknown_fields: crate::UnknownFieldSet
-}
-static GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
-impl crate::CodedMessage for self::GeneratedCodeInfo_Annotation {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                10 | 8 => self.path.add_entries(input, &GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?,
-                18 => self.source_file = ::std::option::Option::Some(input.read_string()?),
-                24 => self.begin = ::std::option::Option::Some(input.read_int32()?),
-                32 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// Describes the relationship between generated code and its original source
+/// file. A GeneratedCodeInfo message is associated with only one generated
+/// source file, but may contain references to different source .proto files.
+pub mod generated_code_info {
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct Annotation {
+        path: crate::collections::RepeatedField<i32>,
+        source_file: ::std::option::Option<::std::string::String>,
+        begin: ::std::option::Option<i32>,
+        end: ::std::option::Option<i32>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    static ANNOTATION_PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
+    impl crate::CodedMessage for self::Annotation {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    10 | 8 => self.path.add_entries(input, &ANNOTATION_PATH_CODEC)?,
+                    18 => self.source_file = ::std::option::Option::Some(input.read_string()?),
+                    24 => self.begin = ::std::option::Option::Some(input.read_int32()?),
+                    32 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            size = size.checked_add(self.path.calculate_size(&ANNOTATION_PATH_CODEC)?)?;
+            let source_file = &self.source_file;
+            if let ::std::option::Option::Some(source_file) = source_file {
+                if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(source_file));
+                }
+            }
+            let begin = self.begin;
+            if let ::std::option::Option::Some(begin) = begin {
+                if begin != Self::BEGIN_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(begin));
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::int32(end));
+                }
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            self.path.write_to(output, &ANNOTATION_PATH_CODEC)?;
+            let source_file = &self.source_file;
+            if let ::std::option::Option::Some(source_file) = source_file {
+                if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[18])?;
+                    output.write_string(source_file)?;
+                }
+            }
+            let begin = self.begin;
+            if let ::std::option::Option::Some(begin) = begin {
+                if begin != Self::BEGIN_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[24])?;
+                    output.write_int32(begin)?;
+                }
+            }
+            let end = self.end;
+            if let ::std::option::Option::Some(end) = end {
+                if end != Self::END_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[32])?;
+                    output.write_int32(end)?;
+                }
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+        fn is_initialized(&self) -> bool {
+            true
+        }
+    }
+    impl crate::LiteMessage for self::Annotation {
+        fn new() -> Self {
+            Self {
+                path: crate::collections::RepeatedField::new(),
+                source_file: ::std::option::Option::None,
+                begin: ::std::option::Option::None,
+                end: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        size = size.checked_add(self.path.calculate_size(&GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?)?;
-        let source_file = &self.source_file;
-        if let ::std::option::Option::Some(source_file) = source_file {
-            if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(source_file));
-            }
-        }
-        let begin = self.begin;
-        if let ::std::option::Option::Some(begin) = begin {
-            if begin != Self::BEGIN_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(begin));
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::int32(end));
-            }
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        self.path.write_to(output, &GENERATED_CODE_INFO__ANNOTATION_PATH_CODEC)?;
-        let source_file = &self.source_file;
-        if let ::std::option::Option::Some(source_file) = source_file {
-            if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(source_file)?;
-            }
-        }
-        let begin = self.begin;
-        if let ::std::option::Option::Some(begin) = begin {
-            if begin != Self::BEGIN_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(begin)?;
-            }
-        }
-        let end = self.end;
-        if let ::std::option::Option::Some(end) = end {
-            if end != Self::END_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_int32(end)?;
-            }
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-    fn is_initialized(&self) -> bool {
-        true
-    }
-}
-impl crate::LiteMessage for self::GeneratedCodeInfo_Annotation {
-    fn new() -> Self {
-        Self {
-            path: crate::collections::RepeatedField::new(),
-            source_file: ::std::option::Option::None,
-            begin: ::std::option::Option::None,
-            end: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.path.merge(&other.path);
+            self.source_file = other.source_file.clone();
+            self.begin = other.begin;
+            self.end = other.end;
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.path.merge(&other.path);
-        self.source_file = other.source_file.clone();
-        self.begin = other.begin;
-        self.end = other.end;
-        self.unknown_fields.merge(&other.unknown_fields);
+    impl crate::Message for self::Annotation {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[20].messages()[0]
+        }
     }
-}
-impl crate::Message for self::GeneratedCodeInfo_Annotation {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[20].messages()[0]
-    }
-}
-impl self::GeneratedCodeInfo_Annotation {
-    /// Gets the field number of the [`path`] field
-    ///
-    /// [`path`]: #method.path
-    pub const PATH_FIELD_NUMBER: i32 = 1;
-    /// Identifies the element in the original source .proto file. This field
-    /// is formatted the same as SourceCodeInfo.Location.path.
-    pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
-        &self.path
-    }
-    /// Returns a unique reference to the [`path`] field
-    ///
-    /// [`path`]: #method.path
-    pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
-        &mut self.path
-    }
-    /// Gets the field number of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub const SOURCE_FILE_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
-    /// Identifies the filesystem path to the original source .proto.
-    pub fn source_file(&self) -> &str {
-        self.source_file.as_ref().map(|v| &**v).unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn source_file_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.source_file.as_ref()
-    }
-    /// Returns a unique reference to the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub fn source_file_mut(&mut self) -> &mut ::std::string::String {
-        self.source_file.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub fn has_source_file(&self) -> bool {
-        self.source_file.is_some()
-    }
-    /// Sets the value of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub fn set_source_file(&mut self, value: ::std::string::String) {
-        self.source_file = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`source_file`] field, leaving it empty
-    ///
-    /// [`source_file`]: #method.source_file
-    pub fn take_source_file(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.source_file.take()
-    }
-    /// Clears the value of the [`source_file`] field
-    ///
-    /// [`source_file`]: #method.source_file
-    pub fn clear_source_file(&mut self) {
-        self.source_file = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    pub const BEGIN_FIELD_NUMBER: i32 = 3;
-    /// A constant value representing the default value of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    pub const BEGIN_DEFAULT_VALUE: i32 = 0;
-    /// Identifies the starting offset in bytes in the generated code
-    /// that relates to the identified object.
-    pub fn begin(&self) -> i32 {
-        self.begin.unwrap_or(Self::BEGIN_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn begin_option(&self) -> ::std::option::Option<i32> {
-        self.begin
-    }
-    /// Returns a bool indicating the presence of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    pub fn has_begin(&self) -> bool {
-        self.begin.is_some()
-    }
-    /// Sets the value of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    pub fn set_begin(&mut self, value: i32) {
-        self.begin = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`begin`] field
-    ///
-    /// [`begin`]: #method.begin
-    pub fn clear_begin(&mut self) {
-        self.begin = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_FIELD_NUMBER: i32 = 4;
-    /// A constant value representing the default value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub const END_DEFAULT_VALUE: i32 = 0;
-    /// Identifies the ending offset in bytes in the generated code that
-    /// relates to the identified offset. The end offset should be one past
-    /// the last relevant byte (so the length of the text = end - begin).
-    pub fn end(&self) -> i32 {
-        self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn end_option(&self) -> ::std::option::Option<i32> {
-        self.end
-    }
-    /// Returns a bool indicating the presence of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn has_end(&self) -> bool {
-        self.end.is_some()
-    }
-    /// Sets the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn set_end(&mut self, value: i32) {
-        self.end = ::std::option::Option::Some(value)
-    }
-    /// Clears the value of the [`end`] field
-    ///
-    /// [`end`]: #method.end
-    pub fn clear_end(&mut self) {
-        self.end = ::std::option::Option::None
+    impl self::Annotation {
+        /// Gets the field number of the [`path`] field
+        ///
+        /// [`path`]: #method.path
+        pub const PATH_FIELD_NUMBER: i32 = 1;
+        /// Identifies the element in the original source .proto file. This field
+        /// is formatted the same as SourceCodeInfo.Location.path.
+        pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
+            &self.path
+        }
+        /// Returns a unique reference to the [`path`] field
+        ///
+        /// [`path`]: #method.path
+        pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
+            &mut self.path
+        }
+        /// Gets the field number of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub const SOURCE_FILE_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
+        /// Identifies the filesystem path to the original source .proto.
+        pub fn source_file(&self) -> &str {
+            self.source_file.as_ref().map(|v| &**v).unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn source_file_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.source_file.as_ref()
+        }
+        /// Returns a unique reference to the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub fn source_file_mut(&mut self) -> &mut ::std::string::String {
+            self.source_file.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub fn has_source_file(&self) -> bool {
+            self.source_file.is_some()
+        }
+        /// Sets the value of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub fn set_source_file(&mut self, value: ::std::string::String) {
+            self.source_file = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`source_file`] field, leaving it empty
+        ///
+        /// [`source_file`]: #method.source_file
+        pub fn take_source_file(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.source_file.take()
+        }
+        /// Clears the value of the [`source_file`] field
+        ///
+        /// [`source_file`]: #method.source_file
+        pub fn clear_source_file(&mut self) {
+            self.source_file = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        pub const BEGIN_FIELD_NUMBER: i32 = 3;
+        /// A constant value representing the default value of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        pub const BEGIN_DEFAULT_VALUE: i32 = 0;
+        /// Identifies the starting offset in bytes in the generated code
+        /// that relates to the identified object.
+        pub fn begin(&self) -> i32 {
+            self.begin.unwrap_or(Self::BEGIN_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn begin_option(&self) -> ::std::option::Option<i32> {
+            self.begin
+        }
+        /// Returns a bool indicating the presence of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        pub fn has_begin(&self) -> bool {
+            self.begin.is_some()
+        }
+        /// Sets the value of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        pub fn set_begin(&mut self, value: i32) {
+            self.begin = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`begin`] field
+        ///
+        /// [`begin`]: #method.begin
+        pub fn clear_begin(&mut self) {
+            self.begin = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_FIELD_NUMBER: i32 = 4;
+        /// A constant value representing the default value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub const END_DEFAULT_VALUE: i32 = 0;
+        /// Identifies the ending offset in bytes in the generated code that
+        /// relates to the identified offset. The end offset should be one past
+        /// the last relevant byte (so the length of the text = end - begin).
+        pub fn end(&self) -> i32 {
+            self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn end_option(&self) -> ::std::option::Option<i32> {
+            self.end
+        }
+        /// Returns a bool indicating the presence of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn has_end(&self) -> bool {
+            self.end.is_some()
+        }
+        /// Sets the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn set_end(&mut self, value: i32) {
+            self.end = ::std::option::Option::Some(value)
+        }
+        /// Clears the value of the [`end`] field
+        ///
+        /// [`end`]: #method.end
+        pub fn clear_end(&mut self) {
+            self.end = ::std::option::Option::None
+        }
     }
 }

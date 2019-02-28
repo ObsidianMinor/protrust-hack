@@ -14,11 +14,11 @@ pub struct Person {
     name: ::std::string::String,
     id: i32,
     email: ::std::string::String,
-    phones: ::protrust::collections::RepeatedField<self::Person_PhoneNumber>,
-    last_updated: ::std::option::Option<::std::boxed::Box<::protrust::wkt::timestamp::Timestamp>>,
-    unknown_fields: ::protrust::UnknownFieldSet
+    phones: ::protrust::collections::RepeatedField<self::person::PhoneNumber>,
+    last_updated: ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_timestamp_proto::Timestamp>>,
+    unknown_fields: ::protrust::UnknownFieldSet,
 }
-static PERSON_PHONES_CODEC: ::protrust::Codec<self::Person_PhoneNumber> = ::protrust::Codec::message(34);
+static PERSON_PHONES_CODEC: ::protrust::Codec<self::person::PhoneNumber> = ::protrust::Codec::message(34);
 impl ::protrust::CodedMessage for self::Person {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -93,7 +93,7 @@ impl ::protrust::LiteMessage for self::Person {
             email: ::std::string::String::new(),
             phones: ::protrust::collections::RepeatedField::new(),
             last_updated: ::std::option::Option::None,
-            unknown_fields: ::protrust::UnknownFieldSet::new()
+            unknown_fields: ::protrust::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -169,155 +169,159 @@ impl self::Person {
     ///
     /// [`phones`]: #method.phones
     pub const PHONES_FIELD_NUMBER: i32 = 4;
-    pub fn phones(&self) -> &::protrust::collections::RepeatedField<self::Person_PhoneNumber> {
+    pub fn phones(&self) -> &::protrust::collections::RepeatedField<self::person::PhoneNumber> {
         &self.phones
     }
     /// Returns a unique reference to the [`phones`] field
     ///
     /// [`phones`]: #method.phones
-    pub fn phones_mut(&mut self) -> &mut ::protrust::collections::RepeatedField<self::Person_PhoneNumber> {
+    pub fn phones_mut(&mut self) -> &mut ::protrust::collections::RepeatedField<self::person::PhoneNumber> {
         &mut self.phones
     }
     /// Gets the field number of the [`last_updated`] field
     ///
     /// [`last_updated`]: #method.last_updated
     pub const LAST_UPDATED_FIELD_NUMBER: i32 = 5;
-    pub fn last_updated(&self) -> &::std::option::Option<::std::boxed::Box<::protrust::wkt::timestamp::Timestamp>> {
+    pub fn last_updated(&self) -> &::std::option::Option<::std::boxed::Box<self::super::google_protobuf_timestamp_proto::Timestamp>> {
         &self.last_updated
     }
     /// Returns a unique reference to the [`last_updated`] field
     ///
     /// [`last_updated`]: #method.last_updated
-    pub fn last_updated_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<::protrust::wkt::timestamp::Timestamp>> {
+    pub fn last_updated_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_timestamp_proto::Timestamp>> {
         &mut self.last_updated
     }
 }
-#[derive(Clone, Debug, PartialEq)]
-pub struct Person_PhoneNumber {
-    number: ::std::string::String,
-    r#type: ::protrust::EnumValue<self::Person_PhoneType>,
-    unknown_fields: ::protrust::UnknownFieldSet
-}
-impl ::protrust::CodedMessage for self::Person_PhoneNumber {
-    fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                10 => self.number = input.read_string()?,
-                16 => self.r#type = input.read_enum_value()?,
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// [START messages]
+pub mod person {
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct PhoneNumber {
+        number: ::std::string::String,
+        r#type: ::protrust::EnumValue<self::PhoneType>,
+        unknown_fields: ::protrust::UnknownFieldSet,
+    }
+    impl ::protrust::CodedMessage for self::PhoneNumber {
+        fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    10 => self.number = input.read_string()?,
+                    16 => self.r#type = input.read_enum_value()?,
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> i32 {
+            let mut size = 0i32;
+            let number = &self.number;
+            if number != Self::NUMBER_DEFAULT_VALUE {
+                size += 1;
+                size += ::protrust::io::sizes::string(number);
+            }
+            let r#type = self.r#type;
+            if r#type != Self::TYPE_DEFAULT_VALUE {
+                size += 1;
+                size += ::protrust::io::sizes::enum_value(r#type);
+            }
+            size += self.unknown_fields.calculate_size();
+            size
+        }
+        fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
+            let number = &self.number;
+            if number != Self::NUMBER_DEFAULT_VALUE {
+                output.write_raw_tag_bytes(&[10])?;
+                output.write_string(number)?;
+            }
+            let r#type = self.r#type;
+            if r#type != Self::TYPE_DEFAULT_VALUE {
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_enum_value(r#type)?;
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+    }
+    impl ::protrust::LiteMessage for self::PhoneNumber {
+        fn new() -> Self {
+            Self {
+                number: ::std::string::String::new(),
+                r#type: Self::TYPE_DEFAULT_VALUE,
+                unknown_fields: ::protrust::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> i32 {
-        let mut size = 0i32;
-        let number = &self.number;
-        if number != Self::NUMBER_DEFAULT_VALUE {
-            size += 1;
-            size += ::protrust::io::sizes::string(number);
-        }
-        let r#type = self.r#type;
-        if r#type != Self::TYPE_DEFAULT_VALUE {
-            size += 1;
-            size += ::protrust::io::sizes::enum_value(r#type);
-        }
-        size += self.unknown_fields.calculate_size();
-        size
-    }
-    fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
-        let number = &self.number;
-        if number != Self::NUMBER_DEFAULT_VALUE {
-            output.write_raw_tag_bytes(&[10])?;
-            output.write_string(number)?;
-        }
-        let r#type = self.r#type;
-        if r#type != Self::TYPE_DEFAULT_VALUE {
-            output.write_raw_tag_bytes(&[16])?;
-            output.write_enum_value(r#type)?;
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-}
-impl ::protrust::LiteMessage for self::Person_PhoneNumber {
-    fn new() -> Self {
-        Self {
-            number: ::std::string::String::new(),
-            r#type: Self::TYPE_DEFAULT_VALUE,
-            unknown_fields: ::protrust::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.number = other.number.clone();
+            self.r#type = other.r#type;
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.number = other.number.clone();
-        self.r#type = other.r#type;
-        self.unknown_fields.merge(&other.unknown_fields);
-    }
-}
-impl ::protrust::Message for self::Person_PhoneNumber {
-    fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
-        &self::file().messages()[0].messages()[0]
-    }
-}
-impl self::Person_PhoneNumber {
-    /// Gets the field number of the [`number`] field
-    ///
-    /// [`number`]: #method.number
-    pub const NUMBER_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`number`] field
-    ///
-    /// [`number`]: #method.number
-    pub const NUMBER_DEFAULT_VALUE: &'static str = "";
-    pub fn number(&self) -> &::std::string::String {
-        &self.number
-    }
-    /// Returns a unique reference to the [`number`] field
-    ///
-    /// [`number`]: #method.number
-    pub fn number_mut(&mut self) -> &mut ::std::string::String {
-        &mut self.number
-    }
-    /// Gets the field number of the [`type`] field
-    ///
-    /// [`type`]: #method.type
-    pub const TYPE_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`type`] field
-    ///
-    /// [`type`]: #method.type
-    pub const TYPE_DEFAULT_VALUE: ::protrust::EnumValue<self::Person_PhoneType> = ::protrust::EnumValue::Defined(self::Person_PhoneType::Mobile);
-    pub fn r#type(&self) -> ::protrust::EnumValue<self::Person_PhoneType> {
-        self.r#type
-    }
-    /// Returns a unique reference to the [`type`] field
-    ///
-    /// [`type`]: #method.type
-    pub fn type_mut(&mut self) -> &mut ::protrust::EnumValue<self::Person_PhoneType> {
-        &mut self.r#type
-    }
-}
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum Person_PhoneType {
-    Mobile,
-    Home,
-    Work,
-}
-unsafe impl ::protrust::Enum for self::Person_PhoneType { }
-impl ::std::convert::TryFrom<i32> for self::Person_PhoneType {
-    type Error = ::protrust::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::Person_PhoneType::Mobile),
-            1 => ::std::result::Result::Ok(self::Person_PhoneType::Home),
-            2 => ::std::result::Result::Ok(self::Person_PhoneType::Work),
-            _ => ::std::result::Result::Err(::protrust::VariantUndefinedError)
+    impl ::protrust::Message for self::PhoneNumber {
+        fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
+            &self::super::file().messages()[0].messages()[0]
         }
     }
-}
-impl ::std::convert::From<self::Person_PhoneType> for i32 {
-    fn from(value: self::Person_PhoneType) -> i32 {
-        match value {
-            Person_PhoneType::Mobile => 0,
-            Person_PhoneType::Home => 1,
-            Person_PhoneType::Work => 2,
+    impl self::PhoneNumber {
+        /// Gets the field number of the [`number`] field
+        ///
+        /// [`number`]: #method.number
+        pub const NUMBER_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`number`] field
+        ///
+        /// [`number`]: #method.number
+        pub const NUMBER_DEFAULT_VALUE: &'static str = "";
+        pub fn number(&self) -> &::std::string::String {
+            &self.number
+        }
+        /// Returns a unique reference to the [`number`] field
+        ///
+        /// [`number`]: #method.number
+        pub fn number_mut(&mut self) -> &mut ::std::string::String {
+            &mut self.number
+        }
+        /// Gets the field number of the [`type`] field
+        ///
+        /// [`type`]: #method.type
+        pub const TYPE_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`type`] field
+        ///
+        /// [`type`]: #method.type
+        pub const TYPE_DEFAULT_VALUE: ::protrust::EnumValue<self::PhoneType> = ::protrust::EnumValue::Defined(self::PhoneType::Mobile);
+        pub fn r#type(&self) -> ::protrust::EnumValue<self::PhoneType> {
+            self.r#type
+        }
+        /// Returns a unique reference to the [`type`] field
+        ///
+        /// [`type`]: #method.type
+        pub fn type_mut(&mut self) -> &mut ::protrust::EnumValue<self::PhoneType> {
+            &mut self.r#type
+        }
+    }
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum PhoneType {
+        Mobile,
+        Home,
+        Work,
+    }
+    unsafe impl ::protrust::Enum for self::PhoneType { }
+    impl ::std::convert::TryFrom<i32> for self::PhoneType {
+        type Error = ::protrust::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::PhoneType::Mobile),
+                1 => ::std::result::Result::Ok(self::PhoneType::Home),
+                2 => ::std::result::Result::Ok(self::PhoneType::Work),
+                _ => ::std::result::Result::Err(::protrust::VariantUndefinedError)
+            }
+        }
+    }
+    impl ::std::convert::From<self::PhoneType> for i32 {
+        fn from(value: self::PhoneType) -> i32 {
+            match value {
+                PhoneType::Mobile => 0,
+                PhoneType::Home => 1,
+                PhoneType::Work => 2,
+            }
         }
     }
 }
@@ -325,7 +329,7 @@ impl ::std::convert::From<self::Person_PhoneType> for i32 {
 #[derive(Clone, Debug, PartialEq)]
 pub struct AddressBook {
     people: ::protrust::collections::RepeatedField<self::Person>,
-    unknown_fields: ::protrust::UnknownFieldSet
+    unknown_fields: ::protrust::UnknownFieldSet,
 }
 static ADDRESS_BOOK_PEOPLE_CODEC: ::protrust::Codec<self::Person> = ::protrust::Codec::message(10);
 impl ::protrust::CodedMessage for self::AddressBook {
@@ -354,7 +358,7 @@ impl ::protrust::LiteMessage for self::AddressBook {
     fn new() -> Self {
         Self {
             people: ::protrust::collections::RepeatedField::new(),
-            unknown_fields: ::protrust::UnknownFieldSet::new()
+            unknown_fields: ::protrust::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

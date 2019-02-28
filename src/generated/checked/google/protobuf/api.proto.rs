@@ -21,15 +21,15 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 pub struct Api {
     name: ::std::string::String,
     methods: crate::collections::RepeatedField<self::Method>,
-    options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
+    options: crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>,
     version: ::std::string::String,
-    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    source_context: ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>>,
     mixins: crate::collections::RepeatedField<self::Mixin>,
-    syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
-    unknown_fields: crate::UnknownFieldSet
+    syntax: crate::EnumValue<self::super::google_protobuf_type_proto::Syntax>,
+    unknown_fields: crate::UnknownFieldSet,
 }
 static API_METHODS_CODEC: crate::Codec<self::Method> = crate::Codec::message(18);
-static API_OPTIONS_CODEC: crate::Codec<crate::wkt::r#type::Option> = crate::Codec::message(26);
+static API_OPTIONS_CODEC: crate::Codec<self::super::google_protobuf_type_proto::Option> = crate::Codec::message(26);
 static API_MIXINS_CODEC: crate::Codec<self::Mixin> = crate::Codec::message(50);
 impl crate::CodedMessage for self::Api {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -113,7 +113,7 @@ impl crate::LiteMessage for self::Api {
             source_context: ::std::option::Option::None,
             mixins: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -173,13 +173,13 @@ impl self::Api {
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
     /// Any metadata attached to the interface.
-    pub fn options(&self) -> &crate::collections::RepeatedField<crate::wkt::r#type::Option> {
+    pub fn options(&self) -> &crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option> {
         &self.options
     }
     /// Returns a unique reference to the [`options`] field
     ///
     /// [`options`]: #method.options
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<crate::wkt::r#type::Option> {
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option> {
         &mut self.options
     }
     /// Gets the field number of the [`version`] field
@@ -224,13 +224,13 @@ impl self::Api {
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
     /// Source context for the protocol buffer service represented by this
     /// message.
-    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &self.source_context
     }
     /// Returns a unique reference to the [`source_context`] field
     ///
     /// [`source_context`]: #method.source_context
-    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &mut self.source_context
     }
     /// Gets the field number of the [`mixins`] field
@@ -254,15 +254,15 @@ impl self::Api {
     /// A constant value representing the default value of the [`syntax`] field
     ///
     /// [`syntax`]: #method.syntax
-    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<crate::wkt::r#type::Syntax> = crate::EnumValue::Defined(crate::wkt::r#type::Syntax::Proto2);
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(self::super::google_protobuf_type_proto::Syntax::Proto2);
     /// The source syntax of the service.
-    pub fn syntax(&self) -> crate::EnumValue<crate::wkt::r#type::Syntax> {
+    pub fn syntax(&self) -> crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
         self.syntax
     }
     /// Returns a unique reference to the [`syntax`] field
     ///
     /// [`syntax`]: #method.syntax
-    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<crate::wkt::r#type::Syntax> {
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
         &mut self.syntax
     }
 }
@@ -274,11 +274,11 @@ pub struct Method {
     request_streaming: bool,
     response_type_url: ::std::string::String,
     response_streaming: bool,
-    options: crate::collections::RepeatedField<crate::wkt::r#type::Option>,
-    syntax: crate::EnumValue<crate::wkt::r#type::Syntax>,
-    unknown_fields: crate::UnknownFieldSet
+    options: crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>,
+    syntax: crate::EnumValue<self::super::google_protobuf_type_proto::Syntax>,
+    unknown_fields: crate::UnknownFieldSet,
 }
-static METHOD_OPTIONS_CODEC: crate::Codec<crate::wkt::r#type::Option> = crate::Codec::message(50);
+static METHOD_OPTIONS_CODEC: crate::Codec<self::super::google_protobuf_type_proto::Option> = crate::Codec::message(50);
 impl crate::CodedMessage for self::Method {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -377,7 +377,7 @@ impl crate::LiteMessage for self::Method {
             response_streaming: Self::RESPONSE_STREAMING_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -492,13 +492,13 @@ impl self::Method {
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 6;
     /// Any metadata attached to the method.
-    pub fn options(&self) -> &crate::collections::RepeatedField<crate::wkt::r#type::Option> {
+    pub fn options(&self) -> &crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option> {
         &self.options
     }
     /// Returns a unique reference to the [`options`] field
     ///
     /// [`options`]: #method.options
-    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<crate::wkt::r#type::Option> {
+    pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option> {
         &mut self.options
     }
     /// Gets the field number of the [`syntax`] field
@@ -508,15 +508,15 @@ impl self::Method {
     /// A constant value representing the default value of the [`syntax`] field
     ///
     /// [`syntax`]: #method.syntax
-    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<crate::wkt::r#type::Syntax> = crate::EnumValue::Defined(crate::wkt::r#type::Syntax::Proto2);
+    pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> = crate::EnumValue::Defined(self::super::google_protobuf_type_proto::Syntax::Proto2);
     /// The source syntax of this method.
-    pub fn syntax(&self) -> crate::EnumValue<crate::wkt::r#type::Syntax> {
+    pub fn syntax(&self) -> crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
         self.syntax
     }
     /// Returns a unique reference to the [`syntax`] field
     ///
     /// [`syntax`]: #method.syntax
-    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<crate::wkt::r#type::Syntax> {
+    pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
         &mut self.syntax
     }
 }
@@ -612,7 +612,7 @@ impl self::Method {
 pub struct Mixin {
     name: ::std::string::String,
     root: ::std::string::String,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Mixin {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -660,7 +660,7 @@ impl crate::LiteMessage for self::Mixin {
         Self {
             name: ::std::string::String::new(),
             root: ::std::string::String::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

@@ -1,12 +1,12 @@
 use crate::{
-    names,
+    names::{self, Scope},
     printer::{self, Printer},
     Options,
 };
-use protrust::descriptor::FileOptions_OptimizeMode as OptimizeMode;
+use protrust::descriptor::file_options::OptimizeMode;
 use protrust::io::{self, WireType};
 use protrust::plugin::{
-    CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponse_File as File,
+    CodeGeneratorRequest, CodeGeneratorResponse, code_generator_response::File,
 };
 use protrust::prelude::*;
 use protrust::reflect::*;
@@ -133,6 +133,63 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
             files
         };
 
+        let external_files = files
+                .iter()
+                .flat_map(|f| f.dependencies()) // include the direct dependencies
+                .chain(files.iter().flat_map(|f| {
+                    f.public_dependencies()
+                        .iter()
+                        .flat_map(|p| p.dependencies()) // include the direct dependencies of our dependents public dependencies
+                }))
+                .map(|r| &**r) // make them standard shared references
+                .collect::<std::collections::HashSet<_>>() // remove equal items
+                .difference(&files.iter().map(|r| *r).collect::<std::collections::HashSet<_>>()) // get the difference (the depended items not generated)
+                .map(|r| *r)
+                .collect::<Vec<&FileDescriptor>>();
+
+        let external_dependencies = {
+            let mut externals = Vec::new();
+            if external_files.iter()
+                .any(|f| match f.name() {
+                    "google/protobuf/descriptor.proto"
+                    | "google/protobuf/compiler/plugin.proto"
+                    | "google/protobuf/any.proto"
+                    | "google/protobuf/api.proto"
+                    | "google/protobuf/duration.proto"
+                    | "google/protobuf/empty.proto"
+                    | "google/protobuf/field_mask.proto"
+                    | "google/protobuf/source_context.proto"
+                    | "google/protobuf/struct.proto"
+                    | "google/protobuf/timestamp.proto"
+                    | "google/protobuf/type.proto"
+                    | "google/protobuf/wrappers.proto" => true,
+                    _ => false,
+                }) {
+                    externals.push(var!(self.vars, crate_name).to_owned() + "::generated");
+                }
+            for value in &self.options.external_modules {
+                if value != var!(self.vars, crate_name) {
+                    let mut value = value.clone();
+                    if !value.starts_with("::") {
+                        value.insert_str(0, "::");
+                    }
+                    externals.push(value)
+                }
+            }
+            externals
+        };
+        gen!(printer, "mod externals {{");
+        indent!(printer, {
+            for external in &external_dependencies {
+                genln!(printer, "pub(super) use {}::*;", external);
+            }
+        });
+        genln!(printer, "}}");
+
+        for file in &external_files {
+            genln!(printer, "use externals::{};", names::get_rust_file_mod_name(file));
+        }
+
         for file in &files {
             Generator::<FileDescriptor, _>::new(&mut printer, file, self.options)
                 .generate_mod_info()?;
@@ -149,8 +206,8 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
             self.output.file_mut().push(code_file);
         }
 
-        self.generate_extension_registry(&files, &mut printer)?;
-        self.generate_pool(&files, &mut printer)?;
+        self.generate_extension_registry(&files, &external_dependencies, &mut printer)?;
+        self.generate_pool(&files, &external_dependencies, &mut printer)?;
 
         self.output.file_mut().push(mod_file);
 
@@ -160,49 +217,79 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
     pub fn generate_extension_registry<W: Write>(
         &mut self,
         files: &[&FileDescriptor],
+        externals: &[String],
         mod_file: &mut Printer<W>,
     ) -> Result {
+        genln!(mod_file, "static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static {}::ExtensionRegistry; {}]> = ::std::option::Option::None;", var!(self.vars, crate_name), externals.len());
+        genln!(mod_file; "static mut EXTENSIONS_REGISTRY: ::std::option::Option<{}::ExtensionRegistry> = ::std::option::Option::None;" => self.vars, crate_name);
+        genln!(mod_file, "static EXTENSIONS_INIT: ::std::sync::Once = ::std::sync::Once::new();");
+        genln!(mod_file, "fn extensions_init() {{");
+        indent!(mod_file, {
+            genln!(mod_file, "unsafe {{");
+            indent!(mod_file, {
+                genln!(mod_file, "self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([");
+                indent!(mod_file, {
+                    for external in externals {
+                        genln!(mod_file, "{}::extensions(),", external);
+                    }
+                });
+                genln!(mod_file, "]);");
+                genln!(mod_file; "self::EXTENSIONS_REGISTRY = ::std::option::Option::Some({}::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[" => self.vars, crate_name);
+                let mut map = HashMap::new();
+                for (msg, field) in files.iter()
+                    .flat_map(|f| f.extensions())
+                    .chain(files.iter().flat_map(|f| f.flatten_messages().flat_map(|m| m.extensions())))
+                    .map(|e| (e.message(), &**e)) {
+                        map.entry(msg).or_insert_with(Vec::new).push(field);
+                    }
+                indent!(mod_file, {
+                    for (msg, fields) in map.iter() {
+                        genln!(mod_file, "(::std::any::TypeId::of::<self::{}::{}>(), &[", names::get_rust_file_mod_name(msg.file()), names::get_message_type_name(msg));
+                        indent!(mod_file, {
+                            for field in fields {
+                                match field.scope() {
+                                    FieldScope::Message(m) => {
+                                        genln!(mod_file, "&{}::{},", names::get_full_message_type_module_name(m, None), names::get_field_name(field));
+                                    },
+                                    FieldScope::File(f) => {
+                                        genln!(mod_file, "&self::{}::{},", names::get_rust_file_mod_name(f), names::get_field_name(field));
+                                    },
+                                    _ => unreachable!()
+                                }
+                            }
+                        });
+                        genln!(mod_file, "]),");
+                    }
+                });
+                genln!(mod_file, "]));");
+            });
+            genln!(mod_file, "}}");
+        });
+        genln!(mod_file, "}}");
+        genln!(mod_file);
+        genln!(mod_file, "/// Gets the extension registry containing all the extensions contained in this generated code module");
+        genln!(mod_file; "pub fn extensions() -> &'static {}::ExtensionRegistry {{" => self.vars, crate_name);
+        indent!(mod_file, {
+            genln!(mod_file, "unsafe {{");
+            indent!(mod_file, {
+                genln!(mod_file, "EXTENSIONS_INIT.call_once(extensions_init);");
+                genln!(mod_file, "EXTENSIONS_REGISTRY.as_ref().unwrap()");
+            });
+            genln!(mod_file, "}}");
+        });
+        genln!(mod_file, "}}");
+
         Ok(())
     }
 
     pub fn generate_pool<W: Write>(
         &mut self,
         files: &[&FileDescriptor],
+        externals: &[String],
         mod_file: &mut Printer<W>,
     ) -> Result {
-        let contains_included_files = files
-            .iter()
-            .flat_map(|f| f.dependencies()) // include the direct dependencies
-            .chain(files.iter().flat_map(|f| {
-                f.public_dependencies()
-                    .iter()
-                    .flat_map(|p| p.dependencies()) // include the direct dependencies of our dependents public dependencies
-            }))
-            .map(|r| &**r) // make them standard shared references
-            .collect::<std::collections::HashSet<_>>() // remove equal items
-            .difference(&files.iter().map(|r| *r).collect::<std::collections::HashSet<_>>()) // get the difference (the depended items not generated)
-            .any(|f| match f.name() {
-                "google/protobuf/descriptor.proto"
-                | "google/protobuf/compiler/plugin.proto"
-                | "google/protobuf/any.proto"
-                | "google/protobuf/api.proto"
-                | "google/protobuf/duration.proto"
-                | "google/protobuf/empty.proto"
-                | "google/protobuf/field_mask.proto"
-                | "google/protobuf/source_context.proto"
-                | "google/protobuf/struct.proto"
-                | "google/protobuf/timestamp.proto"
-                | "google/protobuf/type.proto"
-                | "google/protobuf/wrappers.proto" => true,
-                _ => false,
-            });
-        let mut dep_count = 0;
-        if contains_included_files {
-            dep_count += 1;
-        }
-
+        genln!(mod_file, "static mut EXTERNAL_DEPS: ::std::option::Option<[&'static {}::reflect::DescriptorPool<'static>; {}]> = ::std::option::Option::None;", var!(self.vars, crate_name), externals.len());
         genln!(mod_file; "static mut FILES: ::std::option::Option<[{crate_name}::descriptor::FileDescriptorProto; {file_count}]> = ::std::option::Option::None;" => self.vars, crate_name, file_count);
-        genln!(mod_file, "static mut EXTERNAL_DEPS: ::std::option::Option<[&'static {}::reflect::DescriptorPool<'static>; {}]> = ::std::option::Option::None;", var!(self.vars, crate_name), dep_count);
         genln!(mod_file; "static mut POOL: ::std::option::Option<{crate_name}::reflect::DescriptorPool<'static>> = ::std::option::Option::None;" => self.vars, crate_name);
         genln!(
             mod_file,
@@ -213,18 +300,18 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
         indent!(mod_file, {
             genln!(mod_file, "unsafe {{");
             indent!(mod_file, {
+                genln!(mod_file, "self::EXTERNAL_DEPS = ::std::option::Option::Some([");
+                indent!(mod_file, {
+                    for external in externals {
+                        genln!(mod_file, "{}::pool(),", external);
+                    }
+                });
+                genln!(mod_file, "]);");
                 genln!(mod_file, "self::FILES = ::std::option::Option::Some([");
                 indent!(mod_file, {
                     for file in files {
                         Generator::<FileDescriptor, _>::new(mod_file, file, self.options)
                             .generate_blob_read()?;
-                    }
-                });
-                genln!(mod_file, "]);");
-                genln!(mod_file, "self::EXTERNAL_DEPS = ::std::option::Option::Some([");
-                indent!(mod_file, {
-                    if contains_included_files {
-                        genln!(mod_file; "{}::pool()," => self.vars, crate_name);
                     }
                 });
                 genln!(mod_file, "]);");
@@ -240,7 +327,8 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
             genln!(mod_file, "}}");
         });
         genln!(mod_file, "}}");
-
+        genln!(mod_file);
+        genln!(mod_file, "/// Gets the descriptor pool containing all the reflection information contained in this generated code module");
         genln!(mod_file; "pub fn pool() -> &'static {}::reflect::DescriptorPool<'static> {{" => self.vars, crate_name);
         indent!(mod_file, {
             genln!(mod_file, "unsafe {{");
@@ -280,17 +368,14 @@ impl<W: Write> Generator<'_, FileDescriptor, Printer<W>> {
         genln!(self.output, "}}");
         genln!(self.output);
 
-        // extensions
-        //for _extension in self.input.extensions() {
-        //
-        //}
+        for extension in self.input.extensions() {
+            Generator::<FieldDescriptor, _>::from_other(self, extension).generate_extension()?;
+        }
 
-        // messages
         for message in self.input.messages() {
             Generator::<MessageDescriptor, _>::from_other(self, message).generate()?;
         }
 
-        // enums
         for enum_type in self.input.enums() {
             Generator::<EnumDescriptor, _>::from_other(self, enum_type).generate()?;
         }
@@ -342,15 +427,16 @@ impl<W: Write> Generator<'_, FileDescriptor, Printer<W>> {
     }
 
     pub fn generate_blob_read(&mut self) -> Result {
-        genln!(self.output; "{}::LiteMessage::read_new(&mut {}.as_ref()).expect(\"Could not read file descriptor\")," => self.vars, crate_name, file_blob_name);
+        genln!(self.output; "{crate_name}::LiteMessage::read_new_from_input(&mut {crate_name}::io::CodedInput::new(&mut {file_blob_name}.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect(\"Could not read file descriptor\")," => self.vars, crate_name, file_blob_name);
         Ok(())
     }
 }
 
 generator_new!(MessageDescriptor, proto, options;
     "type_name", names::get_message_type_name(proto),
-    "full_type_name", names::get_full_message_type_name(proto, Some(proto.file()), &options.crate_name),
-    "full_type_mod_name", names::get_full_message_type_name(proto, None, &options.crate_name),
+    "full_type_name", names::get_full_message_type_name(proto, Some(Scope::Composite(proto.scope()))),
+    "full_type_mod_name", names::get_full_message_type_name(proto, None),
+    "mod_name", names::get_message_type_module_name(proto),
     "crate_name", options.crate_name.clone());
 
 impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
@@ -399,7 +485,11 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                 Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_struct_field()?;
             }
 
-            genln!(self.output; "unknown_fields: {crate_name}::UnknownFieldSet" => self.vars, crate_name);
+            genln!(self.output; "unknown_fields: {crate_name}::UnknownFieldSet," => self.vars, crate_name);
+
+            if has_extensions(self.input) {
+                genln!(self.output; "extensions: {crate_name}::ExtensionSet<Self>," => self.vars, crate_name);
+            }
         });
         genln!(self.output, "}}");
 
@@ -407,12 +497,12 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
             Generator::<FieldDescriptor, _>::from_other(self, field).generate_codec()?;
         }
 
-        for oneof in self.input.oneofs() {
-            Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_type()?;
-        }
-
         self.generate_coded_message_impl()?;
         self.generate_lite_message_impl()?;
+
+        if has_extensions(self.input) {
+            self.generate_extension_message_impl()?;
+        }
 
         if self.input.file().options().map(|o| o.optimize_for())
             != Some(EnumValue::Defined(OptimizeMode::LiteRuntime))
@@ -422,12 +512,30 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
 
         self.generate_struct_impl()?;
 
-        for nested in self.input.messages().iter().filter(|m| !m.map_entry()) {
-            Generator::<MessageDescriptor, _>::from_other(self, nested).generate()?;
-        }
+        if self.input.messages().iter().filter(|m| !m.map_entry()).any(|_| true) 
+        || self.input.enums().len() != 0 
+        || self.input.extensions().len() != 0 
+        || self.input.oneofs().len() != 0 {
+            self.generate_rustdoc_comments()?;
+            genln!(self.output; "pub mod {} {{" => self.vars, mod_name);
+            indent!(self.output, {
+                for nested in self.input.messages().iter().filter(|m| !m.map_entry()) {
+                    Generator::<MessageDescriptor, _>::from_other(self, nested).generate()?;
+                }
 
-        for nested in self.input.enums() {
-            Generator::<EnumDescriptor, _>::from_other(self, nested).generate()?;
+                for nested in self.input.enums() {
+                    Generator::<EnumDescriptor, _>::from_other(self, nested).generate()?;
+                }
+
+                for extension in self.input.extensions() {
+                    Generator::<FieldDescriptor, _>::from_other(self, extension).generate_extension()?;
+                }
+
+                for oneof in self.input.oneofs() {
+                    Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_type()?;
+                }
+            });
+            genln!(self.output, "}}");
         }
 
         Ok(())
@@ -494,6 +602,9 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                     Generator::<FieldDescriptor, _>::from_other(self, field).generate_writer()?;
                 }
                 genln!(self.output, "self.unknown_fields.write_to(output)?;");
+                if has_extensions(self.input) {
+                    genln!(self.output, "self.extensions.write_to(output)?;");
+                }
                 genln!(self.output, "::std::result::Result::Ok(())");
             });
             genln!(self.output, "}}");
@@ -541,11 +652,11 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                         Generator::<OneofDescriptor, _>::from_other(self, oneof).generate_new()?;
                     }
 
-                    genln!(
-                        self.output,
-                        "unknown_fields: {}::UnknownFieldSet::new()",
-                        self.options.crate_name
-                    );
+                    genln!(self.output, "unknown_fields: {}::UnknownFieldSet::new(),", self.options.crate_name);
+                    
+                    if has_extensions(self.input) {
+                        genln!(self.output, "extensions: {}::ExtensionSet::new(),", self.options.crate_name);
+                    }
                 });
                 genln!(self.output, "}}");
             });
@@ -561,6 +672,10 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                     self.output,
                     "self.unknown_fields.merge(&other.unknown_fields);"
                 );
+
+                if has_extensions(self.input) {
+                    genln!(self.output, "self.extensions.merge(&other.extensions);");
+                }
             });
             genln!(self.output, "}}");
         });
@@ -569,12 +684,26 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
         Ok(())
     }
 
+    pub fn generate_extension_message_impl(&mut self) -> Result {
+        genln!(self.output; "impl {crate_name}::ExtensionMessage for {full_type_name} {{" => self.vars, crate_name, full_type_name);
+        indent!(self.output, {
+            genln!(self.output; "fn registry(&self) -> ::std::option::Option<&'static {crate_name}::ExtensionRegistry> {{ self.extensions.registry() }}" => self.vars, crate_name);
+            genln!(self.output; "fn replace_registry(&mut self, extensions: ::std::option::Option<&'static {crate_name}::ExtensionRegistry>) -> ::std::option::Option<&'static {crate_name}::ExtensionRegistry> {{ self.extensions.replace_registry(extensions) }}" => self.vars, crate_name);
+            genln!(self.output; "fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static {crate_name}::Extension<Self, V, D>) -> ::std::option::Option<&{crate_name}::ExtensionField<V, D>> {{ self.extensions.field(extension) }}" => self.vars, crate_name);
+            genln!(self.output; "fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static {crate_name}::Extension<Self, V, D>) -> ::std::option::Option<&mut {crate_name}::ExtensionField<V, D>> {{ self.extensions.field_mut(extension) }}" => self.vars, crate_name);
+            genln!(self.output; "fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static {crate_name}::RepeatedExtension<Self, V>) -> ::std::option::Option<&{crate_name}::collections::RepeatedField<V>> {{ self.extensions.repeated_field(extension) }}" => self.vars, crate_name);
+            genln!(self.output; "fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static {crate_name}::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut {crate_name}::collections::RepeatedField<V>> {{ self.extensions.repeated_field_mut(extension) }}" => self.vars, crate_name);
+        });
+        genln!(self.output, "}}");
+        Ok(())
+    }
+
     pub fn generate_message_impl(&mut self) -> Result {
         genln!(self.output; "impl {crate_name}::Message for {full_type_name} {{" => self.vars, crate_name, full_type_name);
         indent!(self.output, {
             genln!(self.output; "fn descriptor() -> &'static {crate_name}::reflect::MessageDescriptor {{" => self.vars, crate_name);
             indent!(self.output, {
-                genln!(self.output, "&self::file()");
+                genln!(self.output, "&self{}::file()", str::repeat("::super", message_depth(self.input)));
                 let mut message_access = format!(".messages()[{}]", self.input.scope_index());
                 let mut scope = self.input.scope();
                 while let CompositeScope::Message(m) = scope {
@@ -610,23 +739,40 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
     }
 }
 
+fn has_extensions(message: &MessageDescriptor) -> bool {
+    message.proto().extension_range().len() != 0
+}
+
+fn message_depth(message: &MessageDescriptor) -> usize {
+    let mut depth = 0;
+    let mut scope = message.scope();
+    while let CompositeScope::Message(m) = scope {
+        depth += 1;
+        scope = m.scope();
+    }
+    depth
+}
+
 generator_new!(FieldDescriptor, proto, options;
     "proto_name", proto.name().to_string(),
     "proto_type", names::get_proto_type(proto),
     "name", names::get_field_name(proto),
     "field_name", names::get_struct_field_name(proto),
-    "base_type", names::get_rust_type(names::TypeResolution::Base, proto, &options.crate_name),
-    "indirected_type", names::get_rust_type(names::TypeResolution::Indirection, proto, &options.crate_name),
-    "field_type", names::get_rust_type(names::TypeResolution::Full, proto, &options.crate_name),
+    "base_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Full, &options.crate_name),
+    "map_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Message, &options.crate_name),
+    "indirected_type", names::get_rust_type(names::TypeResolution::Indirection, proto, names::TypeScope::Full, &options.crate_name),
+    "field_type", names::get_rust_type(names::TypeResolution::Full, proto, names::TypeScope::Full, &options.crate_name),
+    "oneof_field_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Message, &options.crate_name),
     "crate_name", options.crate_name.clone(),
     "new_value", default_field_value(proto, &options.crate_name),
+    "module", names::get_message_type_module_name(proto.message()),
     "field_number_const", names::get_field_number_const_name(proto),
     "number", proto.number().get().to_string(),
     "default", names::get_field_default_value_name(proto),
     "default_type", match proto.field_type() {
         FieldType::String => format!("&'static str"),
         FieldType::Bytes => format!("&'static [u8]"),
-        _ => names::get_rust_type(names::TypeResolution::Indirection, proto, &options.crate_name),
+        _ => names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Full, &options.crate_name),
     },
     "default_value", {
         match proto.default_value() {
@@ -636,7 +782,7 @@ generator_new!(FieldDescriptor, proto, options;
                     FieldType::Enum(e) => {
                         match e.values().iter().find(|f| f.number() == 0) {
                             Some(defined) => {
-                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, Some(proto.file()), &options.crate_name))
+                                format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(defined, Some(Scope::Field(proto))))
                             },
                             None => {
                                 format!("{}::EnumValue::Undefined(0)", options.crate_name)
@@ -650,12 +796,32 @@ generator_new!(FieldDescriptor, proto, options;
                     _ => format!("0")
                 }
             },
-            DefaultValue::String(s) => s.chars().flat_map(char::escape_default).collect(),
+            DefaultValue::String(s) => format!("\"{}\"", s.chars().flat_map(char::escape_default).collect::<String>()),
             DefaultValue::Bool(b) => b.to_string(),
-            DefaultValue::Double(d) => d.to_string(),
+            DefaultValue::Double(d) => {
+                if d.is_finite() {
+                    format!("{:?}", d)
+                } else {
+                    format!("::std::{}::{}", {
+                        if *proto.field_type() == FieldType::Float {
+                            "f32"
+                        } else {
+                            "f64"
+                        }
+                    }, {
+                        if d.is_nan() {
+                            "NAN"
+                        } else if d.is_infinite() {
+                            "INFINITY"
+                        } else {
+                            "NEG_INFINITY"
+                        }
+                    })
+                }
+            },
             DefaultValue::SignedInt(s) => s.to_string(),
             DefaultValue::UnsignedInt(u) => u.to_string(),
-            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, Some(proto.file()), &options.crate_name)),
+            DefaultValue::Enum(e) => format!("{}::EnumValue::Defined({})", options.crate_name, names::get_full_enum_variant_name(e, Some(Scope::Field(proto)))),
             DefaultValue::Bytes(b) => format!("&{:?}", b)
         }
     },
@@ -666,6 +832,7 @@ generator_new!(FieldDescriptor, proto, options;
             _ => String::new()
         }
     },
+    "message_type", names::get_full_message_type_name(proto.message(), Some(Scope::Field(proto))),
     "tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), proto.wire_type()).get()).to_string(),
     "tag", io::Tag::new(proto.number(), proto.wire_type()).get().to_string(),
     "tags", {
@@ -735,28 +902,28 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
         match self.input.scope() {
             FieldScope::Oneof(_) => {
                 if is_copy_type(self.input.field_type()) {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = other.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = other.{field_name} {{" => self.vars, oneof, name, module, field_name);
                 } else {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = &other.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &other.{field_name} {{" => self.vars, oneof, name, module, field_name);
                 }
                 indent!(self.output, {
                     match self.input.field_type() {
                         FieldType::Message(_) | FieldType::Group(_) => {
-                            genln!(self.output; "if let self::{oneof}::{name}(existing) = &mut self.{field_name} {{" => self.vars, oneof, name, field_name);
+                            genln!(self.output; "if let self::{module}::{oneof}::{name}(existing) = &mut self.{field_name} {{" => self.vars, oneof, name, module, field_name);
                             indent!(self.output, {
                                 genln!(self.output; "existing.merge({field_name});" => self.vars, field_name);
                             });
                             genln!(self.output, "}} else {{");
                             indent!(self.output, {
-                                genln!(self.output; "self.{field_name} = self::{oneof}::{name}({field_name}.clone());" => self.vars, field_name, name, oneof);
+                                genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}({field_name}.clone());" => self.vars, field_name, name, module, oneof);
                             });
                             genln!(self.output, "}}");
                         }
                         FieldType::Bytes | FieldType::String => {
-                            genln!(self.output; "self.{field_name} = self::{oneof}::{name}({field_name}.clone());" => self.vars, field_name, name, oneof);
+                            genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}({field_name}.clone());" => self.vars, field_name, name, module, oneof);
                         }
                         _ => {
-                            genln!(self.output; "self.{field_name} = self::{oneof}::{name}({field_name});" => self.vars, field_name, name, oneof);
+                            genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}({field_name});" => self.vars, field_name, name, module, oneof);
                         }
                     }
                 });
@@ -816,21 +983,21 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                 FieldScope::Oneof(_) => match self.input.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
                         indent!(self.output, {
-                            genln!(self.output; "if let self::{oneof}::{name}({field_name}) = &mut self.{field_name} {{" => self.vars, oneof, name, field_name);
+                            genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &mut self.{field_name} {{" => self.vars, oneof, name, module, field_name);
                             indent!(self.output, {
                                 genln!(self.output; "{field_name}.merge_from(input)?;" => self.vars, field_name);
                             });
                             genln!(self.output, "}} else {{");
                             indent!(self.output, {
-                                genln!(self.output; "let mut {field_name} = ::std::boxed::Box::new(<{base_type} as {crate_name}::LiteMessage>::new());" => self.vars, field_name, base_type, crate_name);
+                                genln!(self.output; "let mut {field_name} = ::std::boxed::Box::new(<{oneof_field_type} as {crate_name}::LiteMessage>::new());" => self.vars, field_name, oneof_field_type, crate_name);
                                 genln!(self.output; "{field_name}.merge_from(input)?;" => self.vars, field_name);
-                                genln!(self.output; "self.{field_name} = self::{oneof}::{name}({field_name})" => self.vars, field_name, oneof, name);
+                                genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}({field_name})" => self.vars, field_name, oneof, module, name);
                             });
                             genln!(self.output, "}}");
                         });
                     }
                     _ => {
-                        gen!(self.output; "self.{field_name} = self::{oneof}::{name}(input.read_{proto_type}()?)" => self.vars, field_name, oneof, name, proto_type)
+                        gen!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}(input.read_{proto_type}()?)" => self.vars, field_name, oneof, module, name, proto_type)
                     }
                 },
                 _ => unreachable!(),
@@ -838,6 +1005,34 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
         }
 
         gen!(self.output, ",");
+
+        Ok(())
+    }
+
+    pub fn generate_extension(&mut self) -> Result {
+        self.generate_rustdoc_comments()?;
+        match self.input.label() {
+            FieldLabel::Repeated => {
+                genln!(self.output; "pub static {name}: {crate_name}::RepeatedExtension<{message_type}, {base_type}> = {crate_name}::RepeatedExtension::{proto_type}({tag}" => self.vars, name, message_type, crate_name, base_type, proto_type, tag);
+                if let FieldType::Group(_) = self.input.field_type() {
+                    gen!(self.output; ", {end_tag}" => self.vars, end_tag);
+                }
+                gen!(self.output, ");");
+            },
+            _ => {
+                genln!(self.output; "pub static {name}: {crate_name}::Extension<{message_type}, {base_type}, {default_type}> = {crate_name}::Extension::{proto_type}({tag}" => self.vars, name, message_type, crate_name, base_type, default_type, proto_type, tag);
+                match self.input.field_type() {
+                    FieldType::Group(_) => {
+                        gen!(self.output; ", {end_tag}" => self.vars, end_tag);
+                    },
+                    FieldType::Message(_) => { },
+                    _ => {
+                        gen!(self.output;", {default_value}" => self.vars, default_value);
+                    }
+                }
+                gen!(self.output, ");");
+            }
+        }
 
         Ok(())
     }
@@ -852,9 +1047,9 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
         } else {
             if let FieldScope::Oneof(_) = self.input.scope() {
                 if is_copy_type(self.input.field_type()) {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = self.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = self.{field_name} {{" => self.vars, oneof, module, name, field_name);
                 } else {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = &self.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &self.{field_name} {{" => self.vars, oneof, module, name, field_name);
                 }
                 self.output.indent();
             } else {
@@ -941,9 +1136,9 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
         } else {
             if let FieldScope::Oneof(_) = self.input.scope() {
                 if is_copy_type(self.input.field_type()) {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = self.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = self.{field_name} {{" => self.vars, oneof, module, name, field_name);
                 } else {
-                    genln!(self.output; "if let self::{oneof}::{name}({field_name}) = &self.{field_name} {{" => self.vars, oneof, name, field_name);
+                    genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &self.{field_name} {{" => self.vars, oneof, module, name, field_name);
                 }
                 self.output.indent();
             } else {
@@ -1045,10 +1240,10 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                     genln!(self.output; "static {codec}: {crate_name}::collections::MapCodec<" => self.vars, codec, crate_name);
                     let generator =
                         Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0]);
-                    gen!(generator.output; "{base_type}, " => generator.vars, base_type);
+                    gen!(generator.output; "{map_type}, " => generator.vars, map_type);
                     let generator =
                         Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[1]);
-                    gen!(generator.output; "{base_type}" => generator.vars, base_type);
+                    gen!(generator.output; "{map_type}" => generator.vars, map_type);
                     gen!(self.output; "> = {crate_name}::collections::MapCodec::new(" => self.vars, crate_name);
 
                     Generator::<FieldDescriptor, _>::from_other(self, &m.fields()[0])
@@ -1059,7 +1254,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                     gen!(self.output; ", {tag});" => self.vars, tag);
                 }
                 _ => {
-                    genln!(self.output; "static {codec}: {crate_name}::Codec<{base_type}> = " => self.vars, codec, crate_name, base_type);
+                    genln!(self.output; "static {codec}: {crate_name}::Codec<{map_type}> = " => self.vars, codec, crate_name, map_type);
                     self.generate_codec_new()?;
                     gen!(self.output, ";");
                 }
@@ -1072,15 +1267,23 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
     pub fn generate_is_initialized(&mut self) -> Result {
         match self.input.label() {
             FieldLabel::Repeated => {
-                genln!(self.output; "if !self.{field_name}.is_initialized() {{" => self.vars, field_name);
-                indent!(self.output, {
-                    genln!(self.output, "return false;");
-                });
-                genln!(self.output, "}}");
+                if let FieldType::Message(m) = self.input.field_type() {
+                    if !m.map_entry() || m.fields()[1].field_type().is_message() {
+                        genln!(self.output; "if !self.{field_name}.is_initialized() {{" => self.vars, field_name);
+                        indent!(self.output, {
+                            genln!(self.output, "return false;");
+                        });
+                        genln!(self.output, "}}");
+                    }
+                }
             }
             _ => {
                 if self.input.field_type().is_message() || self.input.field_type().is_group() {
-                    genln!(self.output; "if let Some({field_name}) = &self.{field_name} {{" => self.vars, field_name);
+                    if let FieldScope::Oneof(_) = self.input.scope() {
+                        genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &self.{field_name} {{" => self.vars, oneof, module, name, field_name);
+                    } else {
+                        genln!(self.output; "if let Some({field_name}) = &self.{field_name} {{" => self.vars, field_name);
+                    }
                     indent!(self.output, {
                         genln!(self.output; "if !{crate_name}::CodedMessage::is_initialized(&**{field_name}) {{" => self.vars, crate_name, field_name);
                         indent!(self.output, {
@@ -1361,7 +1564,7 @@ fn is_copy_type(ft: &FieldType) -> bool {
 generator_new!(EnumDescriptor, proto, options;
     "type_name", names::get_enum_type_name(proto),
     "crate_name", options.crate_name.clone(),
-    "full_type_name", names::get_full_enum_type_name(proto, Some(proto.file()), &options.crate_name));
+    "full_type_name", names::get_full_enum_type_name(proto, Some(Scope::Composite(proto.scope()))));
 
 impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
     pub fn generate_rustdoc_comments(&mut self) -> Result {
@@ -1407,6 +1610,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
             genln!(self.output; "type Error = {crate_name}::VariantUndefinedError;" => self.vars, crate_name);
             genln!(self.output; "fn try_from(value: i32) -> ::std::result::Result<Self, {crate_name}::VariantUndefinedError> {{" => self.vars, crate_name);
             indent!(self.output, {
+                genln!(self.output, "#[allow(unreachable_patterns)]");
                 genln!(self.output, "match value {{");
                 indent!(self.output, {
                     for (name, value) in values.iter() {
@@ -1454,6 +1658,7 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
 generator_new!(OneofDescriptor, proto, options;
     "name", proto.name().to_string(),
     "field_name", proto.name().to_string(),
+    "module", names::get_message_type_module_name(proto.message()),
     "type_name", names::get_oneof_name(proto));
 
 impl<W: Write> Generator<'_, OneofDescriptor, Printer<W>> {
@@ -1482,12 +1687,12 @@ impl<W: Write> Generator<'_, OneofDescriptor, Printer<W>> {
     }
 
     pub fn generate_struct_field(&mut self) -> Result {
-        genln!(self.output; "{field_name}: self::{type_name}," => self.vars, field_name, type_name);
+        genln!(self.output; "{field_name}: self::{module}::{type_name}," => self.vars, field_name, module, type_name);
         Ok(())
     }
 
     pub fn generate_new(&mut self) -> Result {
-        genln!(self.output; "{field_name}: self::{type_name}::None," => self.vars, field_name, type_name);
+        genln!(self.output; "{field_name}: self::{module}::{type_name}::None," => self.vars, field_name, module, type_name);
         Ok(())
     }
 
@@ -1495,7 +1700,7 @@ impl<W: Write> Generator<'_, OneofDescriptor, Printer<W>> {
         genln!(self.output; "/// Gets a shared reference to the [`{name}`] oneof field" => self.vars, name);
         genln!(self.output, "///");
         genln!(self.output; "/// [`{name}`]: enum.{type_name}.html" => self.vars, type_name, name);
-        genln!(self.output; "pub fn {field_name}(&self) -> &self::{type_name} {{" => self.vars, field_name, type_name);
+        genln!(self.output; "pub fn {field_name}(&self) -> &self::{module}::{type_name} {{" => self.vars, field_name, module, type_name);
         indent!(self.output, {
             genln!(self.output; "&self.{field_name}" => self.vars, field_name);
         });
@@ -1504,7 +1709,7 @@ impl<W: Write> Generator<'_, OneofDescriptor, Printer<W>> {
         genln!(self.output; "/// Gets a unique reference to the [`{name}`] oneof field" => self.vars, name);
         genln!(self.output, "///");
         genln!(self.output; "/// [`{name}`]: enum.{type_name}.html" => self.vars, type_name, name);
-        genln!(self.output; "pub fn {field_name}_mut(&mut self) -> &mut self::{type_name} {{" => self.vars, field_name, type_name);
+        genln!(self.output; "pub fn {field_name}_mut(&mut self) -> &mut self::{module}::{type_name} {{" => self.vars, field_name, module, type_name);
         indent!(self.output, {
             genln!(self.output; "&mut self.{field_name}" => self.vars, field_name);
         });

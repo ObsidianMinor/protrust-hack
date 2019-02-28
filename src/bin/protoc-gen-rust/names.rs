@@ -1,36 +1,67 @@
 use protrust::reflect::*;
 
+/// Gets the file name for a generated file
 pub fn get_rust_file_name(file: &FileDescriptor) -> String {
     file.name().to_string() + ".rs"
 }
 
+/// Gets the module name for a file
 pub fn get_rust_file_mod_name(file: &FileDescriptor) -> String {
     file.name()
         .replace(|s| s == '/' || s == '-' || s == '.', "_")
 }
 
+/// Gets the name of a struct name for a message type
 pub fn get_message_type_name(message: &MessageDescriptor) -> String {
-    get_type_name(message.name(), message.scope())
+    get_type_name(message.name())
 }
 
+/// Gets the name of a module name for a message type
+pub fn get_message_type_module_name(message: &MessageDescriptor) -> String {
+    let mut name = String::new();
+    let mut last_was_cap = false;
+
+    for c in message.name().chars() {
+        if name.len() != 0 && c.is_uppercase() {
+            if !last_was_cap {
+                name.push('_');
+            }
+            last_was_cap = true;
+        } else {
+            last_was_cap = false;
+        }
+        for c in c.to_lowercase() {
+            name.push(c);
+        }
+    }
+
+    name
+}
+
+/// Resolves a fully qualified struct name for a message type from a relative scope.
+/// If no scope is given, it's resolved from the generated module scope.
 pub fn get_full_message_type_name(
     message: &MessageDescriptor,
-    file: Option<&FileDescriptor>,
-    crate_name: &str,
+    scope: Option<Scope>,
 ) -> String {
-    get_full_type_name(message.name(), message.scope(), file, crate_name)
+    get_full_type_name(message.name(), message.scope(), scope)
+}
+
+/// Resolves a fully qualified module name for a message type from a relative scope.
+/// If no scope is given, it's resolved from the generated module scope.
+pub fn get_full_message_type_module_name(message: &MessageDescriptor, scope: Option<Scope>) -> String {
+    get_full_type_name(&get_message_type_module_name(message), message.scope(), scope)
 }
 
 pub fn get_enum_type_name(enum_type: &EnumDescriptor) -> String {
-    get_type_name(enum_type.name(), enum_type.scope())
+    get_type_name(enum_type.name())
 }
 
 pub fn get_full_enum_type_name(
     enum_type: &EnumDescriptor,
-    file: Option<&FileDescriptor>,
-    crate_name: &str,
+    scope: Option<Scope>,
 ) -> String {
-    get_full_type_name(enum_type.name(), enum_type.scope(), file, crate_name)
+    get_full_type_name(enum_type.name(), enum_type.scope(), scope)
 }
 
 // ported from https://github.com/protocolbuffers/protobuf/blob/704037f23a9ede00ec4fcf40d568712ce6200934/src/google/protobuf/compiler/csharp/csharp_helpers.cc
@@ -43,19 +74,20 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
 
 pub fn get_full_enum_variant_name(
     value: &EnumValueDescriptor,
-    file: Option<&FileDescriptor>,
-    crate_name: &str,
+    scope: Option<Scope>,
 ) -> String {
     format!(
         "{}::{}",
-        get_full_enum_type_name(value.enum_type(), file, crate_name),
+        get_full_enum_type_name(value.enum_type(), scope),
         get_enum_variant_name(value)
     )
 }
 
 pub fn get_field_name(field: &FieldDescriptor) -> String {
     match field.scope() {
-        FieldScope::Message(_) | FieldScope::File(_) => field.name().to_string(),
+        FieldScope::Message(_) if field.proto().has_extendee() => field.name().to_uppercase(),
+        FieldScope::File(_) => field.name().to_uppercase(),
+        FieldScope::Message(_) => field.name().to_string(),
         FieldScope::Oneof(_) => underscores_to_pascal_case(field.name(), false),
     }
 }
@@ -111,16 +143,35 @@ pub enum TypeResolution {
     Full,
 }
 
+#[derive(Clone, Copy)]
+pub enum TypeScope {
+    /// For oneof fields, the message that contains the oneof. For map fields, the message that contains the map
+    Message,
+    /// The full scope
+    Full
+}
+
 /// Gets the rust type for a field
-pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &str) -> String {
+pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, scope: TypeScope, crate_name: &str) -> String {
     use protrust::reflect::FieldType::*;
+    let field_scope = 
+        match (scope, field.scope()) {
+            (TypeScope::Message, FieldScope::Oneof(o)) => Scope::Composite(o.message().scope()),
+            (TypeScope::Message, FieldScope::Message(m)) if m.map_entry() => {
+                match m.scope() {
+                    CompositeScope::Message(m) => Scope::Composite(m.scope()),
+                    _ => unreachable!()
+                }
+            },
+            (_, _) => Scope::Field(field)
+        };
     match res {
         TypeResolution::Base => match field.field_type() {
-            Message(m) | Group(m) => get_full_message_type_name(m, Some(field.file()), crate_name),
+            Message(m) | Group(m) => get_full_message_type_name(m, Some(field_scope)),
             Enum(e) => format!(
                 "{}::EnumValue<{}>",
                 crate_name,
-                get_full_enum_type_name(e, Some(field.file()), crate_name)
+                get_full_enum_type_name(e, Some(field_scope))
             ),
             Bytes => format!("::std::vec::Vec<u8>"),
             String => format!("::std::string::String"),
@@ -133,7 +184,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
             Float => format!("f32"),
         },
         TypeResolution::Indirection => {
-            let base = get_rust_type(TypeResolution::Base, field, crate_name);
+            let base = get_rust_type(TypeResolution::Base, field, scope, crate_name);
             match field.field_type() {
                 Message(_) | Group(_) => format!("::std::boxed::Box<{}>", base),
                 _ => base,
@@ -141,7 +192,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
         }
         TypeResolution::Full => match field.label() {
             FieldLabel::Optional | FieldLabel::Required => {
-                let base = get_rust_type(TypeResolution::Indirection, field, crate_name);
+                let base = get_rust_type(TypeResolution::Indirection, field, scope, crate_name);
                 if field.file().syntax() == Syntax::Proto2 {
                     format!("::std::option::Option<{}>", base)
                 } else {
@@ -163,8 +214,8 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
                         return format!(
                             "{}::collections::MapField<{}, {}>",
                             crate_name,
-                            get_rust_type(TypeResolution::Base, &m.fields()[0], crate_name),
-                            get_rust_type(TypeResolution::Base, &m.fields()[1], crate_name)
+                            get_rust_type(TypeResolution::Base, &m.fields()[0], TypeScope::Message, crate_name),
+                            get_rust_type(TypeResolution::Base, &m.fields()[1], TypeScope::Message, crate_name)
                         );
                     }
                 }
@@ -172,7 +223,7 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, crate_name: &
                 format!(
                     "{}::collections::RepeatedField<{}>",
                     crate_name,
-                    get_rust_type(TypeResolution::Base, field, crate_name)
+                    get_rust_type(TypeResolution::Base, field, scope, crate_name)
                 )
             }
         },
@@ -201,6 +252,7 @@ pub fn get_proto_type(field: &FieldDescriptor) -> String {
         FieldType::String => "string",
         FieldType::Bytes => "bytes",
         FieldType::Enum(_) => "enum_value",
+        FieldType::Message(m) if m.proto().extension_range().len() != 0 => "extension_message",
         FieldType::Message(_) => "message",
         FieldType::Group(_) => "group",
     }
@@ -208,7 +260,7 @@ pub fn get_proto_type(field: &FieldDescriptor) -> String {
 }
 
 pub fn get_oneof_name(oneof: &OneofDescriptor) -> String {
-    get_message_type_name(oneof.message()) + "_" + &underscores_to_pascal_case(oneof.name(), false)
+    underscores_to_pascal_case(oneof.name(), false)
 }
 
 fn escape_name(name: &mut String) {
@@ -223,48 +275,116 @@ fn escape_name(name: &mut String) {
     }
 }
 
-fn get_type_name(name: &str, mut scope: &CompositeScope) -> String {
-    let mut type_name = name.to_string();
+fn get_type_name(name: &str) -> String {
+    name.to_string()
+}
 
-    while let CompositeScope::Message(parent) = scope {
-        type_name.insert(0, '_');
-        type_name.insert_str(0, parent.name());
-        scope = parent.scope();
-    }
-
-    type_name
+pub enum Scope<'a> {
+    Field(&'a FieldDescriptor),
+    Composite(&'a CompositeScope),
 }
 
 fn get_full_type_name(
     name: &str,
     scope: &CompositeScope,
-    file: Option<&FileDescriptor>,
-    crate_name: &str,
+    current_scope: Option<Scope>,
 ) -> String {
-    let mut full = get_type_name(name, scope);
-
-    if let Some(file) = file {
-        if scope.file() == file {
-            full.insert_str(0, "self::");
-        } else {
-            let file = scope.file();
-            if let Some(file) = well_known_file(file) {
-                full.insert_str(0, "::");
-                full.insert_str(0, file);
-                full.insert_str(0, "::");
-                full.insert_str(0, crate_name);
-            } else {
-                full.insert_str(0, "::");
-                full.insert_str(0, &get_rust_file_mod_name(file));
-                full.insert_str(0, "super::");
-            }
+    fn push_scope(path: &mut String, scope: &CompositeScope) {
+        match scope {
+            CompositeScope::File(f) => {
+                path.push_str(&get_rust_file_mod_name(f));
+            },
+            CompositeScope::Message(m) => {
+                path.push_str(&get_message_type_module_name(m));
+            },
         }
-    } else {
-        full.insert_str(0, "::");
-        full.insert_str(0, &get_rust_file_mod_name(scope.file()))
+        path.push_str("::");
     }
 
-    full
+    fn build_from_composite_scope(path: &mut String, name: &str, scopes: &[&CompositeScope], mut current_scope: &CompositeScope) {
+        loop {
+            // if any of the scopes in our vector match the current scope, we can build a path from that point
+            if let Some(index) = scopes.iter().position(|s| *s == current_scope) {
+                scopes[..index].iter().for_each(|s| push_scope(path, s));
+                path.push_str(name);
+                return;
+            // otherwise we continue to move up
+            } else {
+                path.push_str("super::");
+                match current_scope {
+                    // if we've hit a the file scope, then our current scope is the mod file
+                    // so the only path now is down
+                    CompositeScope::File(_) => {
+                        scopes.iter().rev().for_each(|s| push_scope(path, s));
+                        path.push_str(name);
+                        return;
+                    },
+                    // if we're in a message scope, just reassign the current scope and loop
+                    CompositeScope::Message(m) => {
+                        current_scope = m.scope();
+                    }
+                }
+            }
+        }
+    }
+
+    let scopes = { // build a vector of every level of our type's scope
+        let mut traversed_scope = scope;
+        let mut scopes = Vec::new();
+        while let CompositeScope::Message(m) = traversed_scope {
+            scopes.push(traversed_scope);
+            traversed_scope = m.scope();
+        }
+        scopes.push(traversed_scope);
+        scopes
+    };
+    let mut full = "self::".to_string(); // start with self
+    match current_scope {
+        // with an existing scope, we have to move up until we've found a scope we can decend into to get the target type
+        Some(current_scope) => {
+            match current_scope {
+                Scope::Field(f) => {
+                    match f.scope() {
+                        FieldScope::File(f) => {
+                            if &**f != scope.file() {
+                                full.push_str("super::");
+                                full.push_str(&get_rust_file_mod_name(scope.file()));
+                                full.push_str("::");
+                            }
+
+                            if let Some((_, levels)) = scopes.split_last() {
+                                levels.iter().rev().for_each(|s| push_scope(&mut full, s));
+                            }
+
+                            full.push_str(name);
+                        },
+                        FieldScope::Oneof(_) => {
+                            full.push_str("super::");
+                            build_from_composite_scope(&mut full, name, &scopes, f.message().scope());
+                        },
+                        FieldScope::Message(m) if f.proto().has_extendee() => {
+                            full.push_str("super::");
+                            build_from_composite_scope(&mut full, name, &scopes, m.scope());
+                        },
+                        FieldScope::Message(m) => {
+                            build_from_composite_scope(&mut full, name, &scopes, m.scope());
+                        }
+                    }
+                    full
+                },
+                Scope::Composite(c) => {
+                    build_from_composite_scope(&mut full, name, &scopes, c);
+                    full
+                }
+            }
+        },
+        // with no scope, we can decend from the mod file
+        None => {
+            scopes.iter().rev().for_each(|s| push_scope(&mut full, s));
+            full.push_str(name);
+            full
+        }
+    }
 }
 
 fn try_remove_prefix<'a>(type_name: &str, value_name: &'a str) -> &'a str {
@@ -352,22 +472,4 @@ fn underscores_to_camel_case(input: &str, mut cap_next: bool, preserve_dot: bool
 
 fn underscores_to_pascal_case(input: &str, preserve_dot: bool) -> String {
     underscores_to_camel_case(input, true, preserve_dot)
-}
-
-fn well_known_file(file: &FileDescriptor) -> Option<&'static str> {
-    match file.name() {
-        "google/protobuf/descriptor.proto" => Some("descriptor"),
-        "google/protobuf/compiler/plugin.proto" => Some("plugin"),
-        "google/protobuf/any.proto" => Some("wkt::any"),
-        "google/protobuf/api.proto" => Some("wkt::api"),
-        "google/protobuf/duration.proto" => Some("wkt::duration"),
-        "google/protobuf/empty.proto" => Some("wkt::empty"),
-        "google/protobuf/field_mask.proto" => Some("wkt::field_mask"),
-        "google/protobuf/source_context.proto" => Some("wkt::source_context"),
-        "google/protobuf/struct.proto" => Some("wkt::r#struct"),
-        "google/protobuf/timestamp.proto" => Some("wkt::timestamp"),
-        "google/protobuf/type.proto" => Some("wkt::r#type"),
-        "google/protobuf/wrappers.proto" => Some("wkt::wrappers"),
-        _ => None,
-    }
 }

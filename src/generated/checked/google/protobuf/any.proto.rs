@@ -96,7 +96,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 pub struct Any {
     type_url: ::std::string::String,
     value: ::std::vec::Vec<u8>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Any {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -144,7 +144,7 @@ impl crate::LiteMessage for self::Any {
         Self {
             type_url: ::std::string::String::new(),
             value: ::std::vec::Vec::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

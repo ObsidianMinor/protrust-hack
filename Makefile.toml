@@ -53,6 +53,17 @@ args = [
     "addressbook.proto"
 ]
 
+[tasks.gen-tests]
+command = "protoc"
+args = [
+    "--proto_path=protos",
+    "--rust_out=tests/shared/gen",
+    "unittest.proto",
+    "unittest_proto3.proto",
+    "unittest_import.proto",
+    "unittest_import_public.proto"
+]
+
 [tasks.protoc-check.windows]
 script_runner = "powershell"
 script_extension = "ps1"
@@ -199,12 +210,29 @@ script = [
     'New-Item "examples\gen" -ItemType "directory" | Out-Null'
 ]
 
+[tasks.gen-move-tests]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+    'mv "tests/shared/gen" "tests/shared/gen.old"',
+    'mkdir "tests/shared/gen"'
+]
+
+[tasks.gen-move-tests.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Rename-Item "tests\shared\gen" "gen.old"',
+    'New-Item "tests\shared\gen" -ItemType "directory" | Out-Null'
+]
+
 [tasks.pre-gen]
 description = "Moves old generated code to .old directories to be reverted or commited later"
 dependencies = [
     "gen-move-included-checked",
     "gen-move-included-unchecked",
     "gen-move-sample",
+    "gen-move-tests",
 ]
 
 [tasks.gen]
@@ -219,6 +247,7 @@ dependencies = [
     "gen-included-checked",
     "gen-included-unchecked",
     "gen-sample",
+    "gen-tests",
 ]
 
 [tasks.gen.windows]
@@ -241,6 +270,7 @@ dependencies = [
     "gen-revert-included-checked",
     "gen-revert-included-unchecked",
     "gen-revert-sample",
+    "gen-revert-tests",
 ]
 
 [tasks.gen-revert-included-checked]
@@ -291,11 +321,28 @@ script = [
     'Rename-Item "examples\gen.old" "gen"'
 ]
 
+[tasks.gen-revert-tests]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [
+    'rm -rf "tests/shared/gen"',
+    'mv "tests/shared/gen.old" "tests/shared/gen"'
+]
+
+[tasks.gen-revert-tests.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [
+    'Remove-Item -Force -Recurse "tests\shared\gen"',
+    'Rename-Item "tests\shared\gen.old" "gen"'
+]
+
 [tasks.gen-commit]
 dependencies = [
     "gen-commit-included-checked",
     "gen-commit-included-unchecked",
     "gen-commit-sample",
+    "gen-commit-tests",
 ]
 
 [tasks.gen-commit-included-checked]
@@ -328,6 +375,16 @@ script_runner = "powershell"
 script_extension = "ps1"
 script = [ 'Remove-Item -Recurse -Force "examples\gen.old"' ]
 
+[tasks.gen-commit-tests]
+script_runner = "/bin/bash"
+script_extension = "sh"
+script = [ 'rm -rf "tests/shared/gen.old"' ]
+
+[tasks.gen-commit-tests.windows]
+script_runner = "powershell"
+script_extension = "ps1"
+script = [ 'Remove-Item -Recurse -Force "tests\shared\gen.old"' ]
+
 [tasks.gen-git-add-included-checked]
 command = "git"
 args = [ "add", "src/generated/checked" ]
@@ -340,9 +397,14 @@ args = [ "add", "src/generated/unchecked" ]
 command = "git"
 args = [ "add", "examples/gen" ]
 
+[tasks.gen-git-add-tests]
+command = "git"
+args = [ "add", "tests/shared/gen" ]
+
 [tasks.gen-git-add]
 dependencies = [
     "gen-git-add-included-checked",
     "gen-git-add-included-unchecked",
     "gen-git-add-sample",
+    "gen-git-add-tests",
 ]

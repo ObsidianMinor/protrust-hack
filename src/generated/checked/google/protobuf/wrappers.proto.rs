@@ -14,7 +14,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 #[derive(Clone, Debug, PartialEq)]
 pub struct DoubleValue {
     value: f64,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::DoubleValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -50,7 +50,7 @@ impl crate::LiteMessage for self::DoubleValue {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -89,7 +89,7 @@ impl self::DoubleValue {
 #[derive(Clone, Debug, PartialEq)]
 pub struct FloatValue {
     value: f32,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::FloatValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -125,7 +125,7 @@ impl crate::LiteMessage for self::FloatValue {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -164,7 +164,7 @@ impl self::FloatValue {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int64Value {
     value: i64,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Int64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -200,7 +200,7 @@ impl crate::LiteMessage for self::Int64Value {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -239,7 +239,7 @@ impl self::Int64Value {
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt64Value {
     value: u64,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::UInt64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -275,7 +275,7 @@ impl crate::LiteMessage for self::UInt64Value {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -314,7 +314,7 @@ impl self::UInt64Value {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int32Value {
     value: i32,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Int32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -350,7 +350,7 @@ impl crate::LiteMessage for self::Int32Value {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -389,7 +389,7 @@ impl self::Int32Value {
 #[derive(Clone, Debug, PartialEq)]
 pub struct UInt32Value {
     value: u32,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::UInt32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -425,7 +425,7 @@ impl crate::LiteMessage for self::UInt32Value {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -464,7 +464,7 @@ impl self::UInt32Value {
 #[derive(Clone, Debug, PartialEq)]
 pub struct BoolValue {
     value: bool,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::BoolValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -500,7 +500,7 @@ impl crate::LiteMessage for self::BoolValue {
     fn new() -> Self {
         Self {
             value: Self::VALUE_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -539,7 +539,7 @@ impl self::BoolValue {
 #[derive(Clone, Debug, PartialEq)]
 pub struct StringValue {
     value: ::std::string::String,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::StringValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -575,7 +575,7 @@ impl crate::LiteMessage for self::StringValue {
     fn new() -> Self {
         Self {
             value: ::std::string::String::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -614,7 +614,7 @@ impl self::StringValue {
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytesValue {
     value: ::std::vec::Vec<u8>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::BytesValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -650,7 +650,7 @@ impl crate::LiteMessage for self::BytesValue {
     fn new() -> Self {
         Self {
             value: ::std::vec::Vec::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

@@ -90,7 +90,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 pub struct Timestamp {
     seconds: i64,
     nanos: i32,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Timestamp {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -138,7 +138,7 @@ impl crate::LiteMessage for self::Timestamp {
         Self {
             seconds: Self::SECONDS_DEFAULT_VALUE,
             nanos: Self::NANOS_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

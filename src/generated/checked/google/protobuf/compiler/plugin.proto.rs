@@ -15,7 +15,7 @@ pub struct Version {
     minor: ::std::option::Option<i32>,
     patch: ::std::option::Option<i32>,
     suffix: ::std::option::Option<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Version {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -103,7 +103,7 @@ impl crate::LiteMessage for self::Version {
             minor: ::std::option::Option::None,
             patch: ::std::option::Option::None,
             suffix: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -284,12 +284,12 @@ impl self::Version {
 pub struct CodeGeneratorRequest {
     file_to_generate: crate::collections::RepeatedField<::std::string::String>,
     parameter: ::std::option::Option<::std::string::String>,
-    proto_file: crate::collections::RepeatedField<crate::descriptor::FileDescriptorProto>,
+    proto_file: crate::collections::RepeatedField<self::super::google_protobuf_descriptor_proto::FileDescriptorProto>,
     compiler_version: ::std::option::Option<::std::boxed::Box<self::Version>>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(10);
-static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<crate::descriptor::FileDescriptorProto> = crate::Codec::message(122);
+static CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC: crate::Codec<self::super::google_protobuf_descriptor_proto::FileDescriptorProto> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorRequest {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -359,7 +359,7 @@ impl crate::LiteMessage for self::CodeGeneratorRequest {
             parameter: ::std::option::Option::None,
             proto_file: crate::collections::RepeatedField::new(),
             compiler_version: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -461,13 +461,13 @@ impl self::CodeGeneratorRequest {
     /// 
     /// Type names of fields and extensions in the FileDescriptorProto are always
     /// fully qualified.
-    pub fn proto_file(&self) -> &crate::collections::RepeatedField<crate::descriptor::FileDescriptorProto> {
+    pub fn proto_file(&self) -> &crate::collections::RepeatedField<self::super::google_protobuf_descriptor_proto::FileDescriptorProto> {
         &self.proto_file
     }
     /// Returns a unique reference to the [`proto_file`] field
     ///
     /// [`proto_file`]: #method.proto_file
-    pub fn proto_file_mut(&mut self) -> &mut crate::collections::RepeatedField<crate::descriptor::FileDescriptorProto> {
+    pub fn proto_file_mut(&mut self) -> &mut crate::collections::RepeatedField<self::super::google_protobuf_descriptor_proto::FileDescriptorProto> {
         &mut self.proto_file
     }
     /// Gets the field number of the [`compiler_version`] field
@@ -513,10 +513,10 @@ impl self::CodeGeneratorRequest {
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeGeneratorResponse {
     error: ::std::option::Option<::std::string::String>,
-    file: crate::collections::RepeatedField<self::CodeGeneratorResponse_File>,
-    unknown_fields: crate::UnknownFieldSet
+    file: crate::collections::RepeatedField<self::code_generator_response::File>,
+    unknown_fields: crate::UnknownFieldSet,
 }
-static CODE_GENERATOR_RESPONSE_FILE_CODEC: crate::Codec<self::CodeGeneratorResponse_File> = crate::Codec::message(122);
+static CODE_GENERATOR_RESPONSE_FILE_CODEC: crate::Codec<self::code_generator_response::File> = crate::Codec::message(122);
 impl crate::CodedMessage for self::CodeGeneratorResponse {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -565,7 +565,7 @@ impl crate::LiteMessage for self::CodeGeneratorResponse {
         Self {
             error: ::std::option::Option::None,
             file: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -640,301 +640,304 @@ impl self::CodeGeneratorResponse {
     ///
     /// [`file`]: #method.file
     pub const FILE_FIELD_NUMBER: i32 = 15;
-    pub fn file(&self) -> &crate::collections::RepeatedField<self::CodeGeneratorResponse_File> {
+    pub fn file(&self) -> &crate::collections::RepeatedField<self::code_generator_response::File> {
         &self.file
     }
     /// Returns a unique reference to the [`file`] field
     ///
     /// [`file`]: #method.file
-    pub fn file_mut(&mut self) -> &mut crate::collections::RepeatedField<self::CodeGeneratorResponse_File> {
+    pub fn file_mut(&mut self) -> &mut crate::collections::RepeatedField<self::code_generator_response::File> {
         &mut self.file
     }
 }
-/// Represents a single generated file.
-#[derive(Clone, Debug, PartialEq)]
-pub struct CodeGeneratorResponse_File {
-    name: ::std::option::Option<::std::string::String>,
-    insertion_point: ::std::option::Option<::std::string::String>,
-    content: ::std::option::Option<::std::string::String>,
-    unknown_fields: crate::UnknownFieldSet
-}
-impl crate::CodedMessage for self::CodeGeneratorResponse_File {
-    fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
-        while let ::std::option::Option::Some(tag) = input.read_tag()? {
-            match tag.get() {
-                10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                18 => self.insertion_point = ::std::option::Option::Some(input.read_string()?),
-                122 => self.content = ::std::option::Option::Some(input.read_string()?),
-                _ => self.unknown_fields.merge_from(tag, input)?
+/// The plugin writes an encoded CodeGeneratorResponse to stdout.
+pub mod code_generator_response {
+    /// Represents a single generated file.
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct File {
+        name: ::std::option::Option<::std::string::String>,
+        insertion_point: ::std::option::Option<::std::string::String>,
+        content: ::std::option::Option<::std::string::String>,
+        unknown_fields: crate::UnknownFieldSet,
+    }
+    impl crate::CodedMessage for self::File {
+        fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
+            while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                match tag.get() {
+                    10 => self.name = ::std::option::Option::Some(input.read_string()?),
+                    18 => self.insertion_point = ::std::option::Option::Some(input.read_string()?),
+                    122 => self.content = ::std::option::Option::Some(input.read_string()?),
+                    _ => self.unknown_fields.merge_from(tag, input)?
+                }
+            }
+            ::std::result::Result::Ok(())
+        }
+        fn calculate_size(&self) -> ::std::option::Option<i32> {
+            let mut size = 0i32;
+            let name = &self.name;
+            if let ::std::option::Option::Some(name) = name {
+                if name != Self::NAME_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(name));
+                }
+            }
+            let insertion_point = &self.insertion_point;
+            if let ::std::option::Option::Some(insertion_point) = insertion_point {
+                if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(insertion_point));
+                }
+            }
+            let content = &self.content;
+            if let ::std::option::Option::Some(content) = content {
+                if content != Self::CONTENT_DEFAULT_VALUE {
+                    size = size.checked_add(1)?;
+                    size = size.checked_add(crate::io::sizes::string(content));
+                }
+            }
+            size = size.checked_add(self.unknown_fields.calculate_size()?)?;
+            ::std::option::Option::Some(size)
+        }
+        fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+            let name = &self.name;
+            if let ::std::option::Option::Some(name) = name {
+                if name != Self::NAME_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[10])?;
+                    output.write_string(name)?;
+                }
+            }
+            let insertion_point = &self.insertion_point;
+            if let ::std::option::Option::Some(insertion_point) = insertion_point {
+                if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[18])?;
+                    output.write_string(insertion_point)?;
+                }
+            }
+            let content = &self.content;
+            if let ::std::option::Option::Some(content) = content {
+                if content != Self::CONTENT_DEFAULT_VALUE {
+                    output.write_raw_tag_bytes(&[122])?;
+                    output.write_string(content)?;
+                }
+            }
+            self.unknown_fields.write_to(output)?;
+            ::std::result::Result::Ok(())
+        }
+    }
+    impl crate::LiteMessage for self::File {
+        fn new() -> Self {
+            Self {
+                name: ::std::option::Option::None,
+                insertion_point: ::std::option::Option::None,
+                content: ::std::option::Option::None,
+                unknown_fields: crate::UnknownFieldSet::new(),
             }
         }
-        ::std::result::Result::Ok(())
-    }
-    fn calculate_size(&self) -> ::std::option::Option<i32> {
-        let mut size = 0i32;
-        let name = &self.name;
-        if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(name));
-            }
-        }
-        let insertion_point = &self.insertion_point;
-        if let ::std::option::Option::Some(insertion_point) = insertion_point {
-            if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(insertion_point));
-            }
-        }
-        let content = &self.content;
-        if let ::std::option::Option::Some(content) = content {
-            if content != Self::CONTENT_DEFAULT_VALUE {
-                size = size.checked_add(1)?;
-                size = size.checked_add(crate::io::sizes::string(content));
-            }
-        }
-        size = size.checked_add(self.unknown_fields.calculate_size()?)?;
-        ::std::option::Option::Some(size)
-    }
-    fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        let name = &self.name;
-        if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
-        }
-        let insertion_point = &self.insertion_point;
-        if let ::std::option::Option::Some(insertion_point) = insertion_point {
-            if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(insertion_point)?;
-            }
-        }
-        let content = &self.content;
-        if let ::std::option::Option::Some(content) = content {
-            if content != Self::CONTENT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[122])?;
-                output.write_string(content)?;
-            }
-        }
-        self.unknown_fields.write_to(output)?;
-        ::std::result::Result::Ok(())
-    }
-}
-impl crate::LiteMessage for self::CodeGeneratorResponse_File {
-    fn new() -> Self {
-        Self {
-            name: ::std::option::Option::None,
-            insertion_point: ::std::option::Option::None,
-            content: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+        fn merge(&mut self, other: &Self) {
+            self.name = other.name.clone();
+            self.insertion_point = other.insertion_point.clone();
+            self.content = other.content.clone();
+            self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    fn merge(&mut self, other: &Self) {
-        self.name = other.name.clone();
-        self.insertion_point = other.insertion_point.clone();
-        self.content = other.content.clone();
-        self.unknown_fields.merge(&other.unknown_fields);
+    impl crate::Message for self::File {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            &self::super::file().messages()[2].messages()[0]
+        }
     }
-}
-impl crate::Message for self::CodeGeneratorResponse_File {
-    fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-        &self::file().messages()[2].messages()[0]
-    }
-}
-impl self::CodeGeneratorResponse_File {
-    /// Gets the field number of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub const NAME_FIELD_NUMBER: i32 = 1;
-    /// A constant value representing the default value of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub const NAME_DEFAULT_VALUE: &'static str = "";
-    /// The file name, relative to the output directory.  The name must not
-    /// contain "." or ".." components and must be relative, not be absolute (so,
-    /// the file cannot lie outside the output directory).  "/" must be used as
-    /// the path separator, not "".
-    /// 
-    /// If the name is omitted, the content will be appended to the previous
-    /// file.  This allows the generator to break large files into small chunks,
-    /// and allows the generated text to be streamed back to protoc so that large
-    /// files need not reside completely in memory at one time.  Note that as of
-    /// this writing protoc does not optimize for this -- it will read the entire
-    /// CodeGeneratorResponse before writing files to disk.
-    pub fn name(&self) -> &str {
-        self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.name.as_ref()
-    }
-    /// Returns a unique reference to the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub fn name_mut(&mut self) -> &mut ::std::string::String {
-        self.name.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub fn has_name(&self) -> bool {
-        self.name.is_some()
-    }
-    /// Sets the value of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub fn set_name(&mut self, value: ::std::string::String) {
-        self.name = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`name`] field, leaving it empty
-    ///
-    /// [`name`]: #method.name
-    pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.name.take()
-    }
-    /// Clears the value of the [`name`] field
-    ///
-    /// [`name`]: #method.name
-    pub fn clear_name(&mut self) {
-        self.name = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub const INSERTION_POINT_FIELD_NUMBER: i32 = 2;
-    /// A constant value representing the default value of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub const INSERTION_POINT_DEFAULT_VALUE: &'static str = "";
-    /// If non-empty, indicates that the named file should already exist, and the
-    /// content here is to be inserted into that file at a defined insertion
-    /// point.  This feature allows a code generator to extend the output
-    /// produced by another code generator.  The original generator may provide
-    /// insertion points by placing special annotations in the file that look
-    /// like:
-    /// @@protoc_insertion_point(NAME)
-    /// The annotation can have arbitrary text before and after it on the line,
-    /// which allows it to be placed in a comment.  NAME should be replaced with
-    /// an identifier naming the point -- this is what other generators will use
-    /// as the insertion_point.  Code inserted at this point will be placed
-    /// immediately above the line containing the insertion point (thus multiple
-    /// insertions to the same point will come out in the order they were added).
-    /// The double-@ is intended to make it unlikely that the generated code
-    /// could contain things that look like insertion points by accident.
-    /// 
-    /// For example, the C++ code generator places the following line in the
-    /// .pb.h files that it generates:
-    /// // @@protoc_insertion_point(namespace_scope)
-    /// This line appears within the scope of the file's package namespace, but
-    /// outside of any particular class.  Another plugin can then specify the
-    /// insertion_point "namespace_scope" to generate additional classes or
-    /// other declarations that should be placed in this scope.
-    /// 
-    /// Note that if the line containing the insertion point begins with
-    /// whitespace, the same whitespace will be added to every line of the
-    /// inserted text.  This is useful for languages like Python, where
-    /// indentation matters.  In these languages, the insertion point comment
-    /// should be indented the same amount as any inserted code will need to be
-    /// in order to work correctly in that context.
-    /// 
-    /// The code generator that generates the initial file and the one which
-    /// inserts into it must both run as part of a single invocation of protoc.
-    /// Code generators are executed in the order in which they appear on the
-    /// command line.
-    /// 
-    /// If |insertion_point| is present, |name| must also be present.
-    pub fn insertion_point(&self) -> &str {
-        self.insertion_point.as_ref().map(|v| &**v).unwrap_or(Self::INSERTION_POINT_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn insertion_point_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.insertion_point.as_ref()
-    }
-    /// Returns a unique reference to the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub fn insertion_point_mut(&mut self) -> &mut ::std::string::String {
-        self.insertion_point.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub fn has_insertion_point(&self) -> bool {
-        self.insertion_point.is_some()
-    }
-    /// Sets the value of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub fn set_insertion_point(&mut self, value: ::std::string::String) {
-        self.insertion_point = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`insertion_point`] field, leaving it empty
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub fn take_insertion_point(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.insertion_point.take()
-    }
-    /// Clears the value of the [`insertion_point`] field
-    ///
-    /// [`insertion_point`]: #method.insertion_point
-    pub fn clear_insertion_point(&mut self) {
-        self.insertion_point = ::std::option::Option::None
-    }
-    /// Gets the field number of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub const CONTENT_FIELD_NUMBER: i32 = 15;
-    /// A constant value representing the default value of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub const CONTENT_DEFAULT_VALUE: &'static str = "";
-    /// The file contents.
-    pub fn content(&self) -> &str {
-        self.content.as_ref().map(|v| &**v).unwrap_or(Self::CONTENT_DEFAULT_VALUE)
-    }
-    /// Returns an [`Option`] representing the presence of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
-    pub fn content_option(&self) -> ::std::option::Option<&::std::string::String> {
-        self.content.as_ref()
-    }
-    /// Returns a unique reference to the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub fn content_mut(&mut self) -> &mut ::std::string::String {
-        self.content.get_or_insert_with(::std::string::String::new)
-    }
-    /// Returns a bool indicating the presence of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub fn has_content(&self) -> bool {
-        self.content.is_some()
-    }
-    /// Sets the value of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub fn set_content(&mut self, value: ::std::string::String) {
-        self.content = ::std::option::Option::Some(value)
-    }
-    /// Takes the value of the [`content`] field, leaving it empty
-    ///
-    /// [`content`]: #method.content
-    pub fn take_content(&mut self) -> ::std::option::Option<::std::string::String> {
-        self.content.take()
-    }
-    /// Clears the value of the [`content`] field
-    ///
-    /// [`content`]: #method.content
-    pub fn clear_content(&mut self) {
-        self.content = ::std::option::Option::None
+    impl self::File {
+        /// Gets the field number of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub const NAME_FIELD_NUMBER: i32 = 1;
+        /// A constant value representing the default value of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub const NAME_DEFAULT_VALUE: &'static str = "";
+        /// The file name, relative to the output directory.  The name must not
+        /// contain "." or ".." components and must be relative, not be absolute (so,
+        /// the file cannot lie outside the output directory).  "/" must be used as
+        /// the path separator, not "".
+        /// 
+        /// If the name is omitted, the content will be appended to the previous
+        /// file.  This allows the generator to break large files into small chunks,
+        /// and allows the generated text to be streamed back to protoc so that large
+        /// files need not reside completely in memory at one time.  Note that as of
+        /// this writing protoc does not optimize for this -- it will read the entire
+        /// CodeGeneratorResponse before writing files to disk.
+        pub fn name(&self) -> &str {
+            self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.name.as_ref()
+        }
+        /// Returns a unique reference to the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub fn name_mut(&mut self) -> &mut ::std::string::String {
+            self.name.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub fn has_name(&self) -> bool {
+            self.name.is_some()
+        }
+        /// Sets the value of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub fn set_name(&mut self, value: ::std::string::String) {
+            self.name = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`name`] field, leaving it empty
+        ///
+        /// [`name`]: #method.name
+        pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.name.take()
+        }
+        /// Clears the value of the [`name`] field
+        ///
+        /// [`name`]: #method.name
+        pub fn clear_name(&mut self) {
+            self.name = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub const INSERTION_POINT_FIELD_NUMBER: i32 = 2;
+        /// A constant value representing the default value of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub const INSERTION_POINT_DEFAULT_VALUE: &'static str = "";
+        /// If non-empty, indicates that the named file should already exist, and the
+        /// content here is to be inserted into that file at a defined insertion
+        /// point.  This feature allows a code generator to extend the output
+        /// produced by another code generator.  The original generator may provide
+        /// insertion points by placing special annotations in the file that look
+        /// like:
+        /// @@protoc_insertion_point(NAME)
+        /// The annotation can have arbitrary text before and after it on the line,
+        /// which allows it to be placed in a comment.  NAME should be replaced with
+        /// an identifier naming the point -- this is what other generators will use
+        /// as the insertion_point.  Code inserted at this point will be placed
+        /// immediately above the line containing the insertion point (thus multiple
+        /// insertions to the same point will come out in the order they were added).
+        /// The double-@ is intended to make it unlikely that the generated code
+        /// could contain things that look like insertion points by accident.
+        /// 
+        /// For example, the C++ code generator places the following line in the
+        /// .pb.h files that it generates:
+        /// // @@protoc_insertion_point(namespace_scope)
+        /// This line appears within the scope of the file's package namespace, but
+        /// outside of any particular class.  Another plugin can then specify the
+        /// insertion_point "namespace_scope" to generate additional classes or
+        /// other declarations that should be placed in this scope.
+        /// 
+        /// Note that if the line containing the insertion point begins with
+        /// whitespace, the same whitespace will be added to every line of the
+        /// inserted text.  This is useful for languages like Python, where
+        /// indentation matters.  In these languages, the insertion point comment
+        /// should be indented the same amount as any inserted code will need to be
+        /// in order to work correctly in that context.
+        /// 
+        /// The code generator that generates the initial file and the one which
+        /// inserts into it must both run as part of a single invocation of protoc.
+        /// Code generators are executed in the order in which they appear on the
+        /// command line.
+        /// 
+        /// If |insertion_point| is present, |name| must also be present.
+        pub fn insertion_point(&self) -> &str {
+            self.insertion_point.as_ref().map(|v| &**v).unwrap_or(Self::INSERTION_POINT_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn insertion_point_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.insertion_point.as_ref()
+        }
+        /// Returns a unique reference to the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub fn insertion_point_mut(&mut self) -> &mut ::std::string::String {
+            self.insertion_point.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub fn has_insertion_point(&self) -> bool {
+            self.insertion_point.is_some()
+        }
+        /// Sets the value of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub fn set_insertion_point(&mut self, value: ::std::string::String) {
+            self.insertion_point = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`insertion_point`] field, leaving it empty
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub fn take_insertion_point(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.insertion_point.take()
+        }
+        /// Clears the value of the [`insertion_point`] field
+        ///
+        /// [`insertion_point`]: #method.insertion_point
+        pub fn clear_insertion_point(&mut self) {
+            self.insertion_point = ::std::option::Option::None
+        }
+        /// Gets the field number of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub const CONTENT_FIELD_NUMBER: i32 = 15;
+        /// A constant value representing the default value of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub const CONTENT_DEFAULT_VALUE: &'static str = "";
+        /// The file contents.
+        pub fn content(&self) -> &str {
+            self.content.as_ref().map(|v| &**v).unwrap_or(Self::CONTENT_DEFAULT_VALUE)
+        }
+        /// Returns an [`Option`] representing the presence of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        /// [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
+        pub fn content_option(&self) -> ::std::option::Option<&::std::string::String> {
+            self.content.as_ref()
+        }
+        /// Returns a unique reference to the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub fn content_mut(&mut self) -> &mut ::std::string::String {
+            self.content.get_or_insert_with(::std::string::String::new)
+        }
+        /// Returns a bool indicating the presence of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub fn has_content(&self) -> bool {
+            self.content.is_some()
+        }
+        /// Sets the value of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub fn set_content(&mut self, value: ::std::string::String) {
+            self.content = ::std::option::Option::Some(value)
+        }
+        /// Takes the value of the [`content`] field, leaving it empty
+        ///
+        /// [`content`]: #method.content
+        pub fn take_content(&mut self) -> ::std::option::Option<::std::string::String> {
+            self.content.take()
+        }
+        /// Clears the value of the [`content`] field
+        ///
+        /// [`content`]: #method.content
+        pub fn clear_content(&mut self) {
+            self.content = ::std::option::Option::None
+        }
     }
 }

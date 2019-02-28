@@ -15,9 +15,9 @@ pub struct Type {
     fields: crate::collections::RepeatedField<self::Field>,
     oneofs: crate::collections::RepeatedField<::std::string::String>,
     options: crate::collections::RepeatedField<self::Option>,
-    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    source_context: ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>>,
     syntax: crate::EnumValue<self::Syntax>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static TYPE_FIELDS_CODEC: crate::Codec<self::Field> = crate::Codec::message(18);
 static TYPE_ONEOFS_CODEC: crate::Codec<::std::string::String> = crate::Codec::string(26);
@@ -92,7 +92,7 @@ impl crate::LiteMessage for self::Type {
             options: crate::collections::RepeatedField::new(),
             source_context: ::std::option::Option::None,
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -178,13 +178,13 @@ impl self::Type {
     /// [`source_context`]: #method.source_context
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
     /// The source context.
-    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &self.source_context
     }
     /// Returns a unique reference to the [`source_context`] field
     ///
     /// [`source_context`]: #method.source_context
-    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &mut self.source_context
     }
     /// Gets the field number of the [`syntax`] field
@@ -209,8 +209,8 @@ impl self::Type {
 /// A single field of a message type.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Field {
-    kind: crate::EnumValue<self::Field_Kind>,
-    cardinality: crate::EnumValue<self::Field_Cardinality>,
+    kind: crate::EnumValue<self::field::Kind>,
+    cardinality: crate::EnumValue<self::field::Cardinality>,
     number: i32,
     name: ::std::string::String,
     type_url: ::std::string::String,
@@ -219,7 +219,7 @@ pub struct Field {
     options: crate::collections::RepeatedField<self::Option>,
     json_name: ::std::string::String,
     default_value: ::std::string::String,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static FIELD_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(74);
 impl crate::CodedMessage for self::Field {
@@ -356,7 +356,7 @@ impl crate::LiteMessage for self::Field {
             options: crate::collections::RepeatedField::new(),
             json_name: ::std::string::String::new(),
             default_value: ::std::string::String::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -386,15 +386,15 @@ impl self::Field {
     /// A constant value representing the default value of the [`kind`] field
     ///
     /// [`kind`]: #method.kind
-    pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::Field_Kind> = crate::EnumValue::Defined(self::Field_Kind::TypeUnknown);
+    pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::field::Kind> = crate::EnumValue::Defined(self::field::Kind::TypeUnknown);
     /// The field type.
-    pub fn kind(&self) -> crate::EnumValue<self::Field_Kind> {
+    pub fn kind(&self) -> crate::EnumValue<self::field::Kind> {
         self.kind
     }
     /// Returns a unique reference to the [`kind`] field
     ///
     /// [`kind`]: #method.kind
-    pub fn kind_mut(&mut self) -> &mut crate::EnumValue<self::Field_Kind> {
+    pub fn kind_mut(&mut self) -> &mut crate::EnumValue<self::field::Kind> {
         &mut self.kind
     }
     /// Gets the field number of the [`cardinality`] field
@@ -404,15 +404,15 @@ impl self::Field {
     /// A constant value representing the default value of the [`cardinality`] field
     ///
     /// [`cardinality`]: #method.cardinality
-    pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::Field_Cardinality> = crate::EnumValue::Defined(self::Field_Cardinality::Unknown);
+    pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::field::Cardinality> = crate::EnumValue::Defined(self::field::Cardinality::Unknown);
     /// The field cardinality.
-    pub fn cardinality(&self) -> crate::EnumValue<self::Field_Cardinality> {
+    pub fn cardinality(&self) -> crate::EnumValue<self::field::Cardinality> {
         self.cardinality
     }
     /// Returns a unique reference to the [`cardinality`] field
     ///
     /// [`cardinality`]: #method.cardinality
-    pub fn cardinality_mut(&mut self) -> &mut crate::EnumValue<self::Field_Cardinality> {
+    pub fn cardinality_mut(&mut self) -> &mut crate::EnumValue<self::field::Cardinality> {
         &mut self.cardinality
     }
     /// Gets the field number of the [`number`] field
@@ -558,133 +558,138 @@ impl self::Field {
         &mut self.default_value
     }
 }
-/// Basic field types.
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum Field_Kind {
-    /// Field type unknown.
-    TypeUnknown,
-    /// Field type double.
-    TypeDouble,
-    /// Field type float.
-    TypeFloat,
-    /// Field type int64.
-    TypeInt64,
-    /// Field type uint64.
-    TypeUint64,
-    /// Field type int32.
-    TypeInt32,
-    /// Field type fixed64.
-    TypeFixed64,
-    /// Field type fixed32.
-    TypeFixed32,
-    /// Field type bool.
-    TypeBool,
-    /// Field type string.
-    TypeString,
-    /// Field type group. Proto2 syntax only, and deprecated.
-    TypeGroup,
-    /// Field type message.
-    TypeMessage,
-    /// Field type bytes.
-    TypeBytes,
-    /// Field type uint32.
-    TypeUint32,
-    /// Field type enum.
-    TypeEnum,
-    /// Field type sfixed32.
-    TypeSfixed32,
-    /// Field type sfixed64.
-    TypeSfixed64,
-    /// Field type sint32.
-    TypeSint32,
-    /// Field type sint64.
-    TypeSint64,
-}
-unsafe impl crate::Enum for self::Field_Kind { }
-impl ::std::convert::TryFrom<i32> for self::Field_Kind {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::Field_Kind::TypeUnknown),
-            1 => ::std::result::Result::Ok(self::Field_Kind::TypeDouble),
-            2 => ::std::result::Result::Ok(self::Field_Kind::TypeFloat),
-            3 => ::std::result::Result::Ok(self::Field_Kind::TypeInt64),
-            4 => ::std::result::Result::Ok(self::Field_Kind::TypeUint64),
-            5 => ::std::result::Result::Ok(self::Field_Kind::TypeInt32),
-            6 => ::std::result::Result::Ok(self::Field_Kind::TypeFixed64),
-            7 => ::std::result::Result::Ok(self::Field_Kind::TypeFixed32),
-            8 => ::std::result::Result::Ok(self::Field_Kind::TypeBool),
-            9 => ::std::result::Result::Ok(self::Field_Kind::TypeString),
-            10 => ::std::result::Result::Ok(self::Field_Kind::TypeGroup),
-            11 => ::std::result::Result::Ok(self::Field_Kind::TypeMessage),
-            12 => ::std::result::Result::Ok(self::Field_Kind::TypeBytes),
-            13 => ::std::result::Result::Ok(self::Field_Kind::TypeUint32),
-            14 => ::std::result::Result::Ok(self::Field_Kind::TypeEnum),
-            15 => ::std::result::Result::Ok(self::Field_Kind::TypeSfixed32),
-            16 => ::std::result::Result::Ok(self::Field_Kind::TypeSfixed64),
-            17 => ::std::result::Result::Ok(self::Field_Kind::TypeSint32),
-            18 => ::std::result::Result::Ok(self::Field_Kind::TypeSint64),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+/// A single field of a message type.
+pub mod field {
+    /// Basic field types.
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum Kind {
+        /// Field type unknown.
+        TypeUnknown,
+        /// Field type double.
+        TypeDouble,
+        /// Field type float.
+        TypeFloat,
+        /// Field type int64.
+        TypeInt64,
+        /// Field type uint64.
+        TypeUint64,
+        /// Field type int32.
+        TypeInt32,
+        /// Field type fixed64.
+        TypeFixed64,
+        /// Field type fixed32.
+        TypeFixed32,
+        /// Field type bool.
+        TypeBool,
+        /// Field type string.
+        TypeString,
+        /// Field type group. Proto2 syntax only, and deprecated.
+        TypeGroup,
+        /// Field type message.
+        TypeMessage,
+        /// Field type bytes.
+        TypeBytes,
+        /// Field type uint32.
+        TypeUint32,
+        /// Field type enum.
+        TypeEnum,
+        /// Field type sfixed32.
+        TypeSfixed32,
+        /// Field type sfixed64.
+        TypeSfixed64,
+        /// Field type sint32.
+        TypeSint32,
+        /// Field type sint64.
+        TypeSint64,
+    }
+    unsafe impl crate::Enum for self::Kind { }
+    impl ::std::convert::TryFrom<i32> for self::Kind {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::Kind::TypeUnknown),
+                1 => ::std::result::Result::Ok(self::Kind::TypeDouble),
+                2 => ::std::result::Result::Ok(self::Kind::TypeFloat),
+                3 => ::std::result::Result::Ok(self::Kind::TypeInt64),
+                4 => ::std::result::Result::Ok(self::Kind::TypeUint64),
+                5 => ::std::result::Result::Ok(self::Kind::TypeInt32),
+                6 => ::std::result::Result::Ok(self::Kind::TypeFixed64),
+                7 => ::std::result::Result::Ok(self::Kind::TypeFixed32),
+                8 => ::std::result::Result::Ok(self::Kind::TypeBool),
+                9 => ::std::result::Result::Ok(self::Kind::TypeString),
+                10 => ::std::result::Result::Ok(self::Kind::TypeGroup),
+                11 => ::std::result::Result::Ok(self::Kind::TypeMessage),
+                12 => ::std::result::Result::Ok(self::Kind::TypeBytes),
+                13 => ::std::result::Result::Ok(self::Kind::TypeUint32),
+                14 => ::std::result::Result::Ok(self::Kind::TypeEnum),
+                15 => ::std::result::Result::Ok(self::Kind::TypeSfixed32),
+                16 => ::std::result::Result::Ok(self::Kind::TypeSfixed64),
+                17 => ::std::result::Result::Ok(self::Kind::TypeSint32),
+                18 => ::std::result::Result::Ok(self::Kind::TypeSint64),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::Field_Kind> for i32 {
-    fn from(value: self::Field_Kind) -> i32 {
-        match value {
-            Field_Kind::TypeUnknown => 0,
-            Field_Kind::TypeDouble => 1,
-            Field_Kind::TypeFloat => 2,
-            Field_Kind::TypeInt64 => 3,
-            Field_Kind::TypeUint64 => 4,
-            Field_Kind::TypeInt32 => 5,
-            Field_Kind::TypeFixed64 => 6,
-            Field_Kind::TypeFixed32 => 7,
-            Field_Kind::TypeBool => 8,
-            Field_Kind::TypeString => 9,
-            Field_Kind::TypeGroup => 10,
-            Field_Kind::TypeMessage => 11,
-            Field_Kind::TypeBytes => 12,
-            Field_Kind::TypeUint32 => 13,
-            Field_Kind::TypeEnum => 14,
-            Field_Kind::TypeSfixed32 => 15,
-            Field_Kind::TypeSfixed64 => 16,
-            Field_Kind::TypeSint32 => 17,
-            Field_Kind::TypeSint64 => 18,
+    impl ::std::convert::From<self::Kind> for i32 {
+        fn from(value: self::Kind) -> i32 {
+            match value {
+                Kind::TypeUnknown => 0,
+                Kind::TypeDouble => 1,
+                Kind::TypeFloat => 2,
+                Kind::TypeInt64 => 3,
+                Kind::TypeUint64 => 4,
+                Kind::TypeInt32 => 5,
+                Kind::TypeFixed64 => 6,
+                Kind::TypeFixed32 => 7,
+                Kind::TypeBool => 8,
+                Kind::TypeString => 9,
+                Kind::TypeGroup => 10,
+                Kind::TypeMessage => 11,
+                Kind::TypeBytes => 12,
+                Kind::TypeUint32 => 13,
+                Kind::TypeEnum => 14,
+                Kind::TypeSfixed32 => 15,
+                Kind::TypeSfixed64 => 16,
+                Kind::TypeSint32 => 17,
+                Kind::TypeSint64 => 18,
+            }
         }
     }
-}
-/// Whether a field is optional, required, or repeated.
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub enum Field_Cardinality {
-    /// For fields with unknown cardinality.
-    Unknown,
-    /// For optional fields.
-    Optional,
-    /// For required fields. Proto2 syntax only.
-    Required,
-    /// For repeated fields.
-    Repeated,
-}
-unsafe impl crate::Enum for self::Field_Cardinality { }
-impl ::std::convert::TryFrom<i32> for self::Field_Cardinality {
-    type Error = crate::VariantUndefinedError;
-    fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-        match value {
-            0 => ::std::result::Result::Ok(self::Field_Cardinality::Unknown),
-            1 => ::std::result::Result::Ok(self::Field_Cardinality::Optional),
-            2 => ::std::result::Result::Ok(self::Field_Cardinality::Required),
-            3 => ::std::result::Result::Ok(self::Field_Cardinality::Repeated),
-            _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+    /// Whether a field is optional, required, or repeated.
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+    pub enum Cardinality {
+        /// For fields with unknown cardinality.
+        Unknown,
+        /// For optional fields.
+        Optional,
+        /// For required fields. Proto2 syntax only.
+        Required,
+        /// For repeated fields.
+        Repeated,
+    }
+    unsafe impl crate::Enum for self::Cardinality { }
+    impl ::std::convert::TryFrom<i32> for self::Cardinality {
+        type Error = crate::VariantUndefinedError;
+        fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+            #[allow(unreachable_patterns)]
+            match value {
+                0 => ::std::result::Result::Ok(self::Cardinality::Unknown),
+                1 => ::std::result::Result::Ok(self::Cardinality::Optional),
+                2 => ::std::result::Result::Ok(self::Cardinality::Required),
+                3 => ::std::result::Result::Ok(self::Cardinality::Repeated),
+                _ => ::std::result::Result::Err(crate::VariantUndefinedError)
+            }
         }
     }
-}
-impl ::std::convert::From<self::Field_Cardinality> for i32 {
-    fn from(value: self::Field_Cardinality) -> i32 {
-        match value {
-            Field_Cardinality::Unknown => 0,
-            Field_Cardinality::Optional => 1,
-            Field_Cardinality::Required => 2,
-            Field_Cardinality::Repeated => 3,
+    impl ::std::convert::From<self::Cardinality> for i32 {
+        fn from(value: self::Cardinality) -> i32 {
+            match value {
+                Cardinality::Unknown => 0,
+                Cardinality::Optional => 1,
+                Cardinality::Required => 2,
+                Cardinality::Repeated => 3,
+            }
         }
     }
 }
@@ -694,9 +699,9 @@ pub struct Enum {
     name: ::std::string::String,
     enumvalue: crate::collections::RepeatedField<self::EnumValue>,
     options: crate::collections::RepeatedField<self::Option>,
-    source_context: ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>>,
+    source_context: ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>>,
     syntax: crate::EnumValue<self::Syntax>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static ENUM_ENUMVALUE_CODEC: crate::Codec<self::EnumValue> = crate::Codec::message(18);
 static ENUM_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
@@ -766,7 +771,7 @@ impl crate::LiteMessage for self::Enum {
             options: crate::collections::RepeatedField::new(),
             source_context: ::std::option::Option::None,
             syntax: Self::SYNTAX_DEFAULT_VALUE,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -837,13 +842,13 @@ impl self::Enum {
     /// [`source_context`]: #method.source_context
     pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
     /// The source context.
-    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context(&self) -> &::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &self.source_context
     }
     /// Returns a unique reference to the [`source_context`] field
     ///
     /// [`source_context`]: #method.source_context
-    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<crate::wkt::source_context::SourceContext>> {
+    pub fn source_context_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_source_context_proto::SourceContext>> {
         &mut self.source_context
     }
     /// Gets the field number of the [`syntax`] field
@@ -871,7 +876,7 @@ pub struct EnumValue {
     name: ::std::string::String,
     number: i32,
     options: crate::collections::RepeatedField<self::Option>,
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 static ENUM_VALUE_OPTIONS_CODEC: crate::Codec<self::Option> = crate::Codec::message(26);
 impl crate::CodedMessage for self::EnumValue {
@@ -924,7 +929,7 @@ impl crate::LiteMessage for self::EnumValue {
             name: ::std::string::String::new(),
             number: Self::NUMBER_DEFAULT_VALUE,
             options: crate::collections::RepeatedField::new(),
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -996,8 +1001,8 @@ impl self::EnumValue {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Option {
     name: ::std::string::String,
-    value: ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>>,
-    unknown_fields: crate::UnknownFieldSet
+    value: ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_any_proto::Any>>,
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Option {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -1045,7 +1050,7 @@ impl crate::LiteMessage for self::Option {
         Self {
             name: ::std::string::String::new(),
             value: ::std::option::Option::None,
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {
@@ -1091,13 +1096,13 @@ impl self::Option {
     /// the corresponding wrapper type defined in google/protobuf/wrappers.proto
     /// should be used. If the value is an enum, it should be stored as an int32
     /// value using the google.protobuf.Int32Value type.
-    pub fn value(&self) -> &::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>> {
+    pub fn value(&self) -> &::std::option::Option<::std::boxed::Box<self::super::google_protobuf_any_proto::Any>> {
         &self.value
     }
     /// Returns a unique reference to the [`value`] field
     ///
     /// [`value`]: #method.value
-    pub fn value_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<crate::wkt::any::Any>> {
+    pub fn value_mut(&mut self) -> &mut ::std::option::Option<::std::boxed::Box<self::super::google_protobuf_any_proto::Any>> {
         &mut self.value
     }
 }
@@ -1113,6 +1118,7 @@ unsafe impl crate::Enum for self::Syntax { }
 impl ::std::convert::TryFrom<i32> for self::Syntax {
     type Error = crate::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+        #[allow(unreachable_patterns)]
         match value {
             0 => ::std::result::Result::Ok(self::Syntax::Proto2),
             1 => ::std::result::Result::Ok(self::Syntax::Proto3),

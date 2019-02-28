@@ -1,7 +1,7 @@
 #![feature(try_from)]
 
 #[rustfmt::skip]
-#[allow(unused_variables, dead_code, non_camel_case_types, non_snake_case)]
+#[allow(dead_code)]
 mod gen;
 
 fn main() {

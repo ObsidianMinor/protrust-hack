@@ -20,7 +20,7 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
 /// The JSON representation for `Empty` is empty JSON object `{}`.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Empty {
-    unknown_fields: crate::UnknownFieldSet
+    unknown_fields: crate::UnknownFieldSet,
 }
 impl crate::CodedMessage for self::Empty {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -44,7 +44,7 @@ impl crate::CodedMessage for self::Empty {
 impl crate::LiteMessage for self::Empty {
     fn new() -> Self {
         Self {
-            unknown_fields: crate::UnknownFieldSet::new()
+            unknown_fields: crate::UnknownFieldSet::new(),
         }
     }
     fn merge(&mut self, other: &Self) {

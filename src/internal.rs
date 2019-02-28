@@ -62,7 +62,7 @@ impl<T: crate::CodedMessage> Primitive for T {
     }
 }
 
-impl<E: Into<i32> + Clone> Primitive for crate::EnumValue<E> {
+impl<E: crate::Enum> Primitive for crate::EnumValue<E> {
     fn is_default(&self) -> bool {
         i32::from(self.clone()) == 0
     }

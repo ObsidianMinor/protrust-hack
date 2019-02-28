@@ -78,7 +78,7 @@ impl FieldNumber {
     /// Creates a field number if the given value is not zero or more than 536870911
     #[inline]
     pub fn new(n: u32) -> Option<FieldNumber> {
-        if n != 0 && n < Self::MAX_VALUE {
+        if n != 0 && n <= Self::MAX_VALUE {
             unsafe { Some(FieldNumber(NonZeroU32::new_unchecked(n))) }
         } else {
             None
@@ -89,6 +89,12 @@ impl FieldNumber {
     #[inline]
     pub fn get(self) -> u32 {
         self.0.get()
+    }
+}
+
+impl Display for FieldNumber {
+    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+        self.0.fmt(f)
     }
 }
 
@@ -154,6 +160,12 @@ impl Tag {
     }
 }
 
+impl Display for Tag {
+    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+        self.0.fmt(f)
+    }
+}
+
 #[doc(hidden)]
 pub mod sizes {
     // a helper module for calculating sizes in generated code
@@ -169,7 +181,7 @@ pub mod sizes {
     }
 
     #[inline]
-    pub fn enum_value<E: Into<i32> + Clone>(value: crate::EnumValue<E>) -> i32 {
+    pub fn enum_value<E: crate::Enum>(value: crate::EnumValue<E>) -> i32 {
         int32(value.into())
     }
 
@@ -283,6 +295,8 @@ pub mod sizes {
         let length = value.calculate_size();
         length + int32(length)
     }
+
+    pub use message as extension_message; // for the compiler plugin
 
     #[inline]
     #[cfg(checked_size)]
@@ -412,23 +426,24 @@ pub struct CodedInput<'a> {
     inner: &'a mut Read,
     limit: Option<i32>,
     last_tag: Option<Tag>,
+    registry: Option<&'static crate::ExtensionRegistry>,
 }
 
 impl<'a> CodedInput<'a> {
     /// Creates a new CodedInput from the specified Read instance
-    ///
-    /// # Examples
-    /// ## Read from stdin
-    /// ```
-    /// let stdin = std::io::stdin();
-    /// let mut input = CodedInput::new(&mut stdin.lock());
-    /// ```
     pub fn new(inner: &'a mut Read) -> Self {
         CodedInput {
             inner,
             limit: None,
             last_tag: None,
+            registry: None
         }
+    }
+
+    /// Sets the registry in use by this input
+    pub fn with_registry(mut self, registry: Option<&'static crate::ExtensionRegistry>) -> Self {
+        self.registry = registry;
+        self
     }
 
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
@@ -460,6 +475,9 @@ impl<'a> CodedInput<'a> {
         } else {
             self.inner.read_exact(buf)
         }
+    }
+    pub(crate) fn registry(&self) -> Option<&'static crate::ExtensionRegistry> {
+        self.registry
     }
     pub(crate) fn last_tag(&self) -> Option<Tag> {
         self.last_tag
@@ -524,6 +542,11 @@ impl<'a> CodedInput<'a> {
             self.pop_limit(old);
             Ok(())
         }
+    }
+    #[inline(always)]
+    #[doc(hidden)]
+    pub fn read_extension_message(&mut self, message: &mut dyn CodedMessage) -> InputResult<()> {
+        self.read_message(message)
     }
     /// Reads a group message from the input, merging it with an existing coded message
     pub fn read_group(&mut self, message: &mut dyn CodedMessage) -> InputResult<()> {
@@ -683,7 +706,7 @@ impl<'a> CodedInput<'a> {
         Err(InputError::MalformedVarint)
     }
     /// Reads an enum value from the input
-    pub fn read_enum_value<E: std::convert::TryFrom<i32, Error = crate::VariantUndefinedError>>(
+    pub fn read_enum_value<E: crate::Enum>(
         &mut self,
     ) -> InputResult<crate::EnumValue<E>> {
         self.read_int32().map(crate::EnumValue::from)
@@ -767,6 +790,12 @@ impl<'a> CodedOutput<'a> {
     pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
         self.write_int32(value.calculate_size())?;
         value.write_to(self)
+    }
+
+    #[inline(always)]
+    #[doc(hidden)]
+    pub fn write_extension_message(&mut self, message: &CodedMessage) -> OutputResult {
+        self.write_message(message)
     }
 
     /// Writes a length delimited `bytes` value to the output
@@ -878,7 +907,7 @@ impl<'a> CodedOutput<'a> {
     }
 
     /// Writes an enum value to the output
-    pub fn write_enum_value<E: Into<i32> + Clone>(
+    pub fn write_enum_value<E: crate::Enum>(
         &mut self,
         value: crate::EnumValue<E>,
     ) -> OutputResult {

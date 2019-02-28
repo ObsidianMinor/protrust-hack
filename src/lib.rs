@@ -28,24 +28,15 @@
 
 #![feature(const_fn)]
 #![feature(try_from)]
-#![feature(get_type_id)]
+
+mod internal;
+mod extend;
 
 #[cfg_attr(checked_size, path = "generated/checked/mod.rs")]
 #[cfg_attr(not(checked_size), path = "generated/unchecked/mod.rs")]
 #[rustfmt::skip]
-#[allow(
-    unused_variables,
-    dead_code,
-    non_camel_case_types,
-    non_snake_case,
-    missing_docs
-)]
-mod generated;
-mod internal;
-mod extend;
-
 #[doc(hidden)]
-pub use generated::pool;
+pub mod generated;
 
 /// The protrust prelude
 ///
@@ -75,7 +66,6 @@ pub use extend::{ExtensionMessage, Extension, ExtensionField, ExtensionRegistry,
 use crate::io::{Tag, WireType};
 use std::collections::HashMap;
 use std::convert::TryFrom;
-use std::num::NonZeroU32;
 
 /// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
 pub trait CodedMessage {
@@ -137,7 +127,7 @@ pub trait CodedMessage {
 }
 
 /// A LITE Protocol Buffers message
-pub trait LiteMessage: CodedMessage + Clone + PartialEq {
+pub trait LiteMessage: CodedMessage + Clone + PartialEq + std::fmt::Debug {
     /// Creates a new instance of the message
     fn new() -> Self;
 
@@ -169,7 +159,7 @@ pub trait Message: LiteMessage {
 pub struct VariantUndefinedError;
 
 #[doc(hidden)]
-pub unsafe trait Enum {}
+pub unsafe trait Enum: Into<i32> + TryFrom<i32, Error = VariantUndefinedError> + PartialEq + Eq + Copy + Clone {}
 
 /// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
 ///
@@ -184,20 +174,12 @@ pub enum EnumValue<E> {
     Undefined(i32),
 }
 
-impl<E> EnumValue<E> {
+impl<E: Enum> EnumValue<E> {
     /// Converts from an EnumValue<E> to Option<E>, discarding the undefined value if it exists
     pub fn defined(self) -> Option<E> {
         match self {
             EnumValue::Defined(e) => Some(e),
             EnumValue::Undefined(_) => None,
-        }
-    }
-
-    /// Converts from an EnumValue<E> to Option<i32>, discarding the defined value if it exists
-    pub fn undefined(self) -> Option<i32> {
-        match self {
-            EnumValue::Defined(_) => None,
-            EnumValue::Undefined(u) => Some(u),
         }
     }
 
@@ -224,15 +206,15 @@ fn expect_failed(msg: &str) -> ! {
     panic!("{}", msg)
 }
 
-impl<E: Into<i32> + Clone> PartialEq for EnumValue<E> {
+impl<E: Enum> PartialEq for EnumValue<E> {
     fn eq(&self, other: &Self) -> bool {
         Into::<i32>::into(self.clone()) == Into::<i32>::into(other.clone())
     }
 }
 
-impl<E: Into<i32> + Clone> Eq for EnumValue<E> {}
+impl<E: Enum> Eq for EnumValue<E> {}
 
-impl<E: TryFrom<i32, Error = VariantUndefinedError>> From<i32> for EnumValue<E> {
+impl<E: Enum> From<i32> for EnumValue<E> {
     fn from(value: i32) -> EnumValue<E> {
         if let Ok(e) = E::try_from(value) {
             EnumValue::Defined(e)
@@ -242,7 +224,7 @@ impl<E: TryFrom<i32, Error = VariantUndefinedError>> From<i32> for EnumValue<E> 
     }
 }
 
-impl<E: Into<i32> + Clone> From<EnumValue<E>> for i32 {
+impl<E: Enum> From<EnumValue<E>> for i32 {
     fn from(value: EnumValue<E>) -> i32 {
         match value {
             EnumValue::Defined(ref e) => e.clone().into(),
@@ -720,11 +702,11 @@ impl<M: LiteMessage> Codec<M> {
         }
     }
 
-    pub const fn group(start: u32, end: NonZeroU32) -> Codec<M> {
+    pub const fn group(start: u32, end: u32) -> Codec<M> {
         unsafe {
             Codec {
                 start: Tag::new_unchecked(start),
-                end: Some(Tag::new_unchecked(end.get())),
+                end: Some(Tag::new_unchecked(end)),
                 size: ValueSize::Func(|m| io::sizes::group(m)),
                 merge: |i, v| {
                     if let Some(v) = v {
@@ -749,7 +731,37 @@ impl<M: LiteMessage> Codec<M> {
 }
 
 #[doc(hidden)]
-impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> Codec<EnumValue<E>> {
+impl<M: ExtensionMessage> Codec<M> {
+    pub const fn extension_message(tag: u32) -> Codec<M> {
+        unsafe {
+            Codec {
+                start: Tag::new_unchecked(tag),
+                end: None,
+                size: ValueSize::Func(|m| io::sizes::message(m)),
+                merge: |i, v| {
+                    if let Some(v) = v {
+                        i.read_message(v)?;
+                    } else {
+                        let mut new = M::with_registry(i.registry());
+                        i.read_message(&mut new)?;
+                        *v = Some(new);
+                    }
+                    Ok(())
+                },
+                value_merge: |s, o| match (s.as_mut(), o.as_ref()) {
+                    (Some(s), Some(o)) => s.merge(o),
+                    (None, Some(o)) => *s = Some(o.clone()),
+                    _ => {}
+                },
+                write: |o, v| o.write_message(v),
+                packed: false,
+            }
+        }
+    }
+}
+
+#[doc(hidden)]
+impl<E: Enum> Codec<EnumValue<E>> {
     pub const fn enum_value(tag: u32) -> Codec<EnumValue<E>> {
         unsafe {
             Codec {

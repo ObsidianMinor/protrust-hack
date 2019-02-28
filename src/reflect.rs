@@ -1,6 +1,6 @@
 //! Provides reflection and dynamic message access to protobuf messages
 
-pub use crate::descriptor::FieldDescriptorProto_Label as FieldLabel;
+pub use crate::descriptor::field_descriptor_proto::Label as FieldLabel;
 
 use crate::descriptor::{
     DescriptorProto, EnumDescriptorProto, EnumOptions, EnumValueDescriptorProto, EnumValueOptions,
@@ -690,6 +690,7 @@ impl Debug for FileDescriptor {
 }
 
 /// Represents the scope of a composite type (message or enum type)
+#[derive(PartialEq, Eq)]
 pub enum CompositeScope {
     /// A file scope
     File(Ref<FileDescriptor>),
@@ -723,7 +724,7 @@ impl dyn AnyMessage {
     #[inline]
     pub fn is<T: AnyMessage>(&self) -> bool {
         let t = std::any::TypeId::of::<T>();
-        let boxed = self.get_type_id();
+        let boxed = self.type_id();
         t == boxed
     }
 
@@ -1954,7 +1955,7 @@ impl FieldDescriptor {
     }
 
     fn cross_ref(&mut self, pool: &mut DescriptorPool) {
-        use crate::descriptor::FieldDescriptorProto_Type::*;
+        use crate::descriptor::field_descriptor_proto::Type::*;
         self.value_type = match self.proto().r#type().expect("Undefined enum value") {
             Message => FieldType::Message(pool.get_message_ref(self.proto().type_name())),
             Enum => FieldType::Enum(pool.get_enum_ref(self.proto().type_name())),
