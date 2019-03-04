@@ -41,7 +41,7 @@ impl crate::CodedMessage for self::Api {
                 34 => self.version = input.read_string()?,
                 42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 50 => self.mixins.add_entries(input, &API_MIXINS_CODEC)?,
-                56 => self.syntax = input.read_enum_value()?,
+                56 | 58 => self.syntax = input.read_enum_value()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -285,11 +285,11 @@ impl crate::CodedMessage for self::Method {
             match tag.get() {
                 10 => self.name = input.read_string()?,
                 18 => self.request_type_url = input.read_string()?,
-                24 => self.request_streaming = input.read_bool()?,
+                24 | 26 => self.request_streaming = input.read_bool()?,
                 34 => self.response_type_url = input.read_string()?,
-                40 => self.response_streaming = input.read_bool()?,
+                40 | 42 => self.response_streaming = input.read_bool()?,
                 50 => self.options.add_entries(input, &METHOD_OPTIONS_CODEC)?,
-                56 => self.syntax = input.read_enum_value()?,
+                56 | 58 => self.syntax = input.read_enum_value()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

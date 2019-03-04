@@ -30,13 +30,11 @@ assert_eq!(*address_book.people()[0], person);
 
 ## Roadmap
 
- 1. Extensions
+ 0. Tests everywhere
+ 1. Well known types
  2. Full reflection
  3. Dynamic messages
  4. JSON support
- 5. Conformance
- 6. Code size optimization
- 7. Finish markdown filter
- 8. Plugin module
- 9. Docs everywhere
- 10. Tests everywhere
+ 5. Plugin module
+ 6. Refactor generator (again)
+ 7. Docs everywhere

@@ -20,7 +20,7 @@ impl crate::CodedMessage for self::DoubleValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                9 => self.value = input.read_double()?,
+                9 | 10 => self.value = input.read_double()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -95,7 +95,7 @@ impl crate::CodedMessage for self::FloatValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                13 => self.value = input.read_float()?,
+                13 | 10 => self.value = input.read_float()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -170,7 +170,7 @@ impl crate::CodedMessage for self::Int64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.value = input.read_int64()?,
+                8 | 10 => self.value = input.read_int64()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -245,7 +245,7 @@ impl crate::CodedMessage for self::UInt64Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.value = input.read_uint64()?,
+                8 | 10 => self.value = input.read_uint64()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -320,7 +320,7 @@ impl crate::CodedMessage for self::Int32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.value = input.read_int32()?,
+                8 | 10 => self.value = input.read_int32()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -395,7 +395,7 @@ impl crate::CodedMessage for self::UInt32Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.value = input.read_uint32()?,
+                8 | 10 => self.value = input.read_uint32()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -470,7 +470,7 @@ impl crate::CodedMessage for self::BoolValue {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.value = input.read_bool()?,
+                8 | 10 => self.value = input.read_bool()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

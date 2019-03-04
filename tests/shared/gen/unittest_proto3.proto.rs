@@ -90,61 +90,61 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.optional_int32 = input.read_int32()?,
-                16 => self.optional_int64 = input.read_int64()?,
-                24 => self.optional_uint32 = input.read_uint32()?,
-                32 => self.optional_uint64 = input.read_uint64()?,
-                40 => self.optional_sint32 = input.read_sint32()?,
-                48 => self.optional_sint64 = input.read_sint64()?,
-                61 => self.optional_fixed32 = input.read_fixed32()?,
-                65 => self.optional_fixed64 = input.read_fixed64()?,
-                77 => self.optional_sfixed32 = input.read_sfixed32()?,
-                81 => self.optional_sfixed64 = input.read_sfixed64()?,
-                93 => self.optional_float = input.read_float()?,
-                97 => self.optional_double = input.read_double()?,
-                104 => self.optional_bool = input.read_bool()?,
+                8 | 10 => self.optional_int32 = input.read_int32()?,
+                16 | 18 => self.optional_int64 = input.read_int64()?,
+                24 | 26 => self.optional_uint32 = input.read_uint32()?,
+                32 | 34 => self.optional_uint64 = input.read_uint64()?,
+                40 | 42 => self.optional_sint32 = input.read_sint32()?,
+                48 | 50 => self.optional_sint64 = input.read_sint64()?,
+                61 | 58 => self.optional_fixed32 = input.read_fixed32()?,
+                65 | 66 => self.optional_fixed64 = input.read_fixed64()?,
+                77 | 74 => self.optional_sfixed32 = input.read_sfixed32()?,
+                81 | 82 => self.optional_sfixed64 = input.read_sfixed64()?,
+                93 | 90 => self.optional_float = input.read_float()?,
+                97 | 98 => self.optional_double = input.read_double()?,
+                104 | 106 => self.optional_bool = input.read_bool()?,
                 114 => self.optional_string = input.read_string()?,
                 122 => self.optional_bytes = input.read_bytes()?,
                 146 => input.read_message(&mut **self.optional_nested_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 154 => input.read_message(&mut **self.optional_foreign_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 162 => input.read_message(&mut **self.optional_import_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                168 => self.optional_nested_enum = input.read_enum_value()?,
-                176 => self.optional_foreign_enum = input.read_enum_value()?,
+                168 | 170 => self.optional_nested_enum = input.read_enum_value()?,
+                176 | 178 => self.optional_foreign_enum = input.read_enum_value()?,
                 194 => self.optional_string_piece = input.read_string()?,
                 202 => self.optional_cord = input.read_string()?,
                 210 => input.read_message(&mut **self.optional_public_import_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 218 => input.read_message(&mut **self.optional_lazy_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 922 => input.read_message(&mut **self.optional_lazy_import_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                250 | 248 => self.repeated_int32.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT32_CODEC)?,
-                258 | 256 => self.repeated_int64.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT64_CODEC)?,
-                266 | 264 => self.repeated_uint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT32_CODEC)?,
-                274 | 272 => self.repeated_uint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT64_CODEC)?,
-                282 | 280 => self.repeated_sint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT32_CODEC)?,
-                290 | 288 => self.repeated_sint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT64_CODEC)?,
-                298 | 301 => self.repeated_fixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED32_CODEC)?,
-                306 | 305 => self.repeated_fixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED64_CODEC)?,
-                314 | 317 => self.repeated_sfixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED32_CODEC)?,
-                322 | 321 => self.repeated_sfixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED64_CODEC)?,
-                330 | 333 => self.repeated_float.add_entries(input, &TEST_ALL_TYPES_REPEATED_FLOAT_CODEC)?,
-                338 | 337 => self.repeated_double.add_entries(input, &TEST_ALL_TYPES_REPEATED_DOUBLE_CODEC)?,
-                346 | 344 => self.repeated_bool.add_entries(input, &TEST_ALL_TYPES_REPEATED_BOOL_CODEC)?,
+                248 | 250 => self.repeated_int32.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT32_CODEC)?,
+                256 | 258 => self.repeated_int64.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT64_CODEC)?,
+                264 | 266 => self.repeated_uint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT32_CODEC)?,
+                272 | 274 => self.repeated_uint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT64_CODEC)?,
+                280 | 282 => self.repeated_sint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT32_CODEC)?,
+                288 | 290 => self.repeated_sint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT64_CODEC)?,
+                301 | 298 => self.repeated_fixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED32_CODEC)?,
+                305 | 306 => self.repeated_fixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED64_CODEC)?,
+                317 | 314 => self.repeated_sfixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED32_CODEC)?,
+                321 | 322 => self.repeated_sfixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED64_CODEC)?,
+                333 | 330 => self.repeated_float.add_entries(input, &TEST_ALL_TYPES_REPEATED_FLOAT_CODEC)?,
+                337 | 338 => self.repeated_double.add_entries(input, &TEST_ALL_TYPES_REPEATED_DOUBLE_CODEC)?,
+                344 | 346 => self.repeated_bool.add_entries(input, &TEST_ALL_TYPES_REPEATED_BOOL_CODEC)?,
                 354 => self.repeated_string.add_entries(input, &TEST_ALL_TYPES_REPEATED_STRING_CODEC)?,
                 362 => self.repeated_bytes.add_entries(input, &TEST_ALL_TYPES_REPEATED_BYTES_CODEC)?,
                 386 => self.repeated_nested_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_MESSAGE_CODEC)?,
                 394 => self.repeated_foreign_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_MESSAGE_CODEC)?,
                 402 => self.repeated_import_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_IMPORT_MESSAGE_CODEC)?,
-                410 | 408 => self.repeated_nested_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
-                418 | 416 => self.repeated_foreign_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_ENUM_CODEC)?,
+                408 | 410 => self.repeated_nested_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
+                416 | 418 => self.repeated_foreign_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_ENUM_CODEC)?,
                 434 => self.repeated_string_piece.add_entries(input, &TEST_ALL_TYPES_REPEATED_STRING_PIECE_CODEC)?,
                 442 => self.repeated_cord.add_entries(input, &TEST_ALL_TYPES_REPEATED_CORD_CODEC)?,
                 458 => self.repeated_lazy_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_LAZY_MESSAGE_CODEC)?,
-                888 => self.oneof_field = self::test_all_types::OneofField::OneofUint32(input.read_uint32()?),
+                888 | 890 => self.oneof_field = self::test_all_types::OneofField::OneofUint32(input.read_uint32()?),
                 898 => 
                     if let self::test_all_types::OneofField::OneofNestedMessage(oneof_field) = &mut self.oneof_field {
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut **oneof_field)?;
                     } else {
                         let mut oneof_field = ::std::boxed::Box::new(<self::test_all_types::NestedMessage as ::protrust::LiteMessage>::new());
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut *oneof_field)?;
                         self.oneof_field = self::test_all_types::OneofField::OneofNestedMessage(oneof_field)
                     },
                 906 => self.oneof_field = self::test_all_types::OneofField::OneofString(input.read_string()?),
@@ -1361,7 +1361,7 @@ pub mod test_all_types {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.bb = input.read_int32()?,
+                    8 | 10 => self.bb = input.read_int32()?,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -1507,20 +1507,20 @@ impl ::protrust::CodedMessage for self::TestPackedTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                722 | 720 => self.packed_int32.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT32_CODEC)?,
-                730 | 728 => self.packed_int64.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT64_CODEC)?,
-                738 | 736 => self.packed_uint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT32_CODEC)?,
-                746 | 744 => self.packed_uint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT64_CODEC)?,
-                754 | 752 => self.packed_sint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT32_CODEC)?,
-                762 | 760 => self.packed_sint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT64_CODEC)?,
-                770 | 773 => self.packed_fixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED32_CODEC)?,
-                778 | 777 => self.packed_fixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED64_CODEC)?,
-                786 | 789 => self.packed_sfixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED32_CODEC)?,
-                794 | 793 => self.packed_sfixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED64_CODEC)?,
-                802 | 805 => self.packed_float.add_entries(input, &TEST_PACKED_TYPES_PACKED_FLOAT_CODEC)?,
-                810 | 809 => self.packed_double.add_entries(input, &TEST_PACKED_TYPES_PACKED_DOUBLE_CODEC)?,
-                818 | 816 => self.packed_bool.add_entries(input, &TEST_PACKED_TYPES_PACKED_BOOL_CODEC)?,
-                826 | 824 => self.packed_enum.add_entries(input, &TEST_PACKED_TYPES_PACKED_ENUM_CODEC)?,
+                720 | 722 => self.packed_int32.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT32_CODEC)?,
+                728 | 730 => self.packed_int64.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT64_CODEC)?,
+                736 | 738 => self.packed_uint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT32_CODEC)?,
+                744 | 746 => self.packed_uint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT64_CODEC)?,
+                752 | 754 => self.packed_sint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT32_CODEC)?,
+                760 | 762 => self.packed_sint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT64_CODEC)?,
+                773 | 770 => self.packed_fixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED32_CODEC)?,
+                777 | 778 => self.packed_fixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED64_CODEC)?,
+                789 | 786 => self.packed_sfixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED32_CODEC)?,
+                793 | 794 => self.packed_sfixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED64_CODEC)?,
+                805 | 802 => self.packed_float.add_entries(input, &TEST_PACKED_TYPES_PACKED_FLOAT_CODEC)?,
+                809 | 810 => self.packed_double.add_entries(input, &TEST_PACKED_TYPES_PACKED_DOUBLE_CODEC)?,
+                816 | 818 => self.packed_bool.add_entries(input, &TEST_PACKED_TYPES_PACKED_BOOL_CODEC)?,
+                824 | 826 => self.packed_enum.add_entries(input, &TEST_PACKED_TYPES_PACKED_ENUM_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1828,20 +1828,20 @@ impl ::protrust::CodedMessage for self::TestUnpackedTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.repeated_int32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_INT32_CODEC)?,
-                16 => self.repeated_int64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_INT64_CODEC)?,
-                24 => self.repeated_uint32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_UINT32_CODEC)?,
-                32 => self.repeated_uint64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_UINT64_CODEC)?,
-                40 => self.repeated_sint32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SINT32_CODEC)?,
-                48 => self.repeated_sint64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SINT64_CODEC)?,
-                61 => self.repeated_fixed32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FIXED32_CODEC)?,
-                65 => self.repeated_fixed64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FIXED64_CODEC)?,
-                77 => self.repeated_sfixed32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SFIXED32_CODEC)?,
-                81 => self.repeated_sfixed64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SFIXED64_CODEC)?,
-                93 => self.repeated_float.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FLOAT_CODEC)?,
-                97 => self.repeated_double.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_DOUBLE_CODEC)?,
-                104 => self.repeated_bool.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_BOOL_CODEC)?,
-                112 => self.repeated_nested_enum.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
+                8 | 10 => self.repeated_int32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_INT32_CODEC)?,
+                16 | 18 => self.repeated_int64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_INT64_CODEC)?,
+                24 | 26 => self.repeated_uint32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_UINT32_CODEC)?,
+                32 | 34 => self.repeated_uint64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_UINT64_CODEC)?,
+                40 | 42 => self.repeated_sint32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SINT32_CODEC)?,
+                48 | 50 => self.repeated_sint64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SINT64_CODEC)?,
+                61 | 58 => self.repeated_fixed32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FIXED32_CODEC)?,
+                65 | 66 => self.repeated_fixed64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FIXED64_CODEC)?,
+                77 | 74 => self.repeated_sfixed32.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SFIXED32_CODEC)?,
+                81 | 82 => self.repeated_sfixed64.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_SFIXED64_CODEC)?,
+                93 | 90 => self.repeated_float.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_FLOAT_CODEC)?,
+                97 | 98 => self.repeated_double.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_DOUBLE_CODEC)?,
+                104 | 106 => self.repeated_bool.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_BOOL_CODEC)?,
+                112 | 114 => self.repeated_nested_enum.add_entries(input, &TEST_UNPACKED_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2222,7 +2222,7 @@ impl ::protrust::CodedMessage for self::ForeignMessage {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.c = input.read_int32()?,
+                8 | 10 => self.c = input.read_int32()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2336,7 +2336,7 @@ impl ::protrust::CodedMessage for self::TestOneof2 {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                48 => self.foo = self::test_oneof2::Foo::FooEnum(input.read_enum_value()?),
+                48 | 50 => self.foo = self::test_oneof2::Foo::FooEnum(input.read_enum_value()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

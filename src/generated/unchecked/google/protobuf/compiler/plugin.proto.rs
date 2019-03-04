@@ -21,9 +21,9 @@ impl crate::CodedMessage for self::Version {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.major = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.minor = ::std::option::Option::Some(input.read_int32()?),
-                24 => self.patch = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.major = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.minor = ::std::option::Option::Some(input.read_int32()?),
+                24 | 26 => self.patch = ::std::option::Option::Some(input.read_int32()?),
                 34 => self.suffix = ::std::option::Option::Some(input.read_string()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -34,31 +34,23 @@ impl crate::CodedMessage for self::Version {
         let mut size = 0i32;
         let major = self.major;
         if let ::std::option::Option::Some(major) = major {
-            if major != Self::MAJOR_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(major);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(major);
         }
         let minor = self.minor;
         if let ::std::option::Option::Some(minor) = minor {
-            if minor != Self::MINOR_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(minor);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(minor);
         }
         let patch = self.patch;
         if let ::std::option::Option::Some(patch) = patch {
-            if patch != Self::PATCH_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(patch);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(patch);
         }
         let suffix = &self.suffix;
         if let ::std::option::Option::Some(suffix) = suffix {
-            if suffix != Self::SUFFIX_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(suffix);
-            }
+            size += 1;
+            size += crate::io::sizes::string(suffix);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -66,31 +58,23 @@ impl crate::CodedMessage for self::Version {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let major = self.major;
         if let ::std::option::Option::Some(major) = major {
-            if major != Self::MAJOR_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(major)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(major)?;
         }
         let minor = self.minor;
         if let ::std::option::Option::Some(minor) = minor {
-            if minor != Self::MINOR_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(minor)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(minor)?;
         }
         let patch = self.patch;
         if let ::std::option::Option::Some(patch) = patch {
-            if patch != Self::PATCH_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(patch)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(patch)?;
         }
         let suffix = &self.suffix;
         if let ::std::option::Option::Some(suffix) = suffix {
-            if suffix != Self::SUFFIX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[34])?;
-                output.write_string(suffix)?;
-            }
+            output.write_raw_tag_bytes(&[34])?;
+            output.write_string(suffix)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -308,10 +292,8 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         size += self.file_to_generate.calculate_size(&CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC);
         let parameter = &self.parameter;
         if let ::std::option::Option::Some(parameter) = parameter {
-            if parameter != Self::PARAMETER_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(parameter);
-            }
+            size += 1;
+            size += crate::io::sizes::string(parameter);
         }
         size += self.proto_file.calculate_size(&CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC);
         let compiler_version = &self.compiler_version;
@@ -326,10 +308,8 @@ impl crate::CodedMessage for self::CodeGeneratorRequest {
         self.file_to_generate.write_to(output, &CODE_GENERATOR_REQUEST_FILE_TO_GENERATE_CODEC)?;
         let parameter = &self.parameter;
         if let ::std::option::Option::Some(parameter) = parameter {
-            if parameter != Self::PARAMETER_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(parameter)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(parameter)?;
         }
         self.proto_file.write_to(output, &CODE_GENERATOR_REQUEST_PROTO_FILE_CODEC)?;
         let compiler_version = &self.compiler_version;
@@ -532,10 +512,8 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
         let mut size = 0i32;
         let error = &self.error;
         if let ::std::option::Option::Some(error) = error {
-            if error != Self::ERROR_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(error);
-            }
+            size += 1;
+            size += crate::io::sizes::string(error);
         }
         size += self.file.calculate_size(&CODE_GENERATOR_RESPONSE_FILE_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -544,10 +522,8 @@ impl crate::CodedMessage for self::CodeGeneratorResponse {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let error = &self.error;
         if let ::std::option::Option::Some(error) = error {
-            if error != Self::ERROR_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(error)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(error)?;
         }
         self.file.write_to(output, &CODE_GENERATOR_RESPONSE_FILE_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -676,24 +652,18 @@ pub mod code_generator_response {
             let mut size = 0i32;
             let name = &self.name;
             if let ::std::option::Option::Some(name) = name {
-                if name != Self::NAME_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(name);
-                }
+                size += 1;
+                size += crate::io::sizes::string(name);
             }
             let insertion_point = &self.insertion_point;
             if let ::std::option::Option::Some(insertion_point) = insertion_point {
-                if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(insertion_point);
-                }
+                size += 1;
+                size += crate::io::sizes::string(insertion_point);
             }
             let content = &self.content;
             if let ::std::option::Option::Some(content) = content {
-                if content != Self::CONTENT_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(content);
-                }
+                size += 1;
+                size += crate::io::sizes::string(content);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -701,24 +671,18 @@ pub mod code_generator_response {
         fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
             let name = &self.name;
             if let ::std::option::Option::Some(name) = name {
-                if name != Self::NAME_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[10])?;
-                    output.write_string(name)?;
-                }
+                output.write_raw_tag_bytes(&[10])?;
+                output.write_string(name)?;
             }
             let insertion_point = &self.insertion_point;
             if let ::std::option::Option::Some(insertion_point) = insertion_point {
-                if insertion_point != Self::INSERTION_POINT_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[18])?;
-                    output.write_string(insertion_point)?;
-                }
+                output.write_raw_tag_bytes(&[18])?;
+                output.write_string(insertion_point)?;
             }
             let content = &self.content;
             if let ::std::option::Option::Some(content) = content {
-                if content != Self::CONTENT_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[122])?;
-                    output.write_string(content)?;
-                }
+                output.write_raw_tag_bytes(&[122])?;
+                output.write_string(content)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())

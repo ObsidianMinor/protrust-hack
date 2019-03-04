@@ -31,7 +31,7 @@ impl crate::CodedMessage for self::Type {
                 26 => self.oneofs.add_entries(input, &TYPE_ONEOFS_CODEC)?,
                 34 => self.options.add_entries(input, &TYPE_OPTIONS_CODEC)?,
                 42 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                48 => self.syntax = input.read_enum_value()?,
+                48 | 50 => self.syntax = input.read_enum_value()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -226,13 +226,13 @@ impl crate::CodedMessage for self::Field {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.kind = input.read_enum_value()?,
-                16 => self.cardinality = input.read_enum_value()?,
-                24 => self.number = input.read_int32()?,
+                8 | 10 => self.kind = input.read_enum_value()?,
+                16 | 18 => self.cardinality = input.read_enum_value()?,
+                24 | 26 => self.number = input.read_int32()?,
                 34 => self.name = input.read_string()?,
                 50 => self.type_url = input.read_string()?,
-                56 => self.oneof_index = input.read_int32()?,
-                64 => self.packed = input.read_bool()?,
+                56 | 58 => self.oneof_index = input.read_int32()?,
+                64 | 66 => self.packed = input.read_bool()?,
                 74 => self.options.add_entries(input, &FIELD_OPTIONS_CODEC)?,
                 82 => self.json_name = input.read_string()?,
                 90 => self.default_value = input.read_string()?,
@@ -713,7 +713,7 @@ impl crate::CodedMessage for self::Enum {
                 18 => self.enumvalue.add_entries(input, &ENUM_ENUMVALUE_CODEC)?,
                 26 => self.options.add_entries(input, &ENUM_OPTIONS_CODEC)?,
                 34 => input.read_message(&mut **self.source_context.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                40 => self.syntax = input.read_enum_value()?,
+                40 | 42 => self.syntax = input.read_enum_value()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -884,7 +884,7 @@ impl crate::CodedMessage for self::EnumValue {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = input.read_string()?,
-                16 => self.number = input.read_int32()?,
+                16 | 18 => self.number = input.read_int32()?,
                 26 => self.options.add_entries(input, &ENUM_VALUE_OPTIONS_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }

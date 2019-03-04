@@ -248,6 +248,7 @@ pub struct Codec<T> {
     value_merge: fn(&mut Option<T>, &Option<T>),
     write: fn(&mut io::CodedOutput, &T) -> io::OutputResult,
     packed: bool,
+    packable: bool
 }
 
 enum ValueSize<T> {
@@ -263,6 +264,11 @@ const fn is_packed(tag: u32) -> bool {
 }
 
 impl<T> Codec<T> {
+    #[inline]
+    fn packable(&self) -> bool {
+        self.packable
+    }
+
     #[inline]
     fn is_packed(&self) -> bool {
         self.packed
@@ -343,6 +349,7 @@ impl Codec<f32> {
                 },
                 write: |o, v| o.write_float(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -369,6 +376,7 @@ impl Codec<f64> {
                 },
                 write: |o, v| o.write_double(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -395,6 +403,7 @@ impl Codec<i32> {
                 },
                 write: |o, v| o.write_int32(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -418,6 +427,7 @@ impl Codec<i32> {
                 },
                 write: |o, v| o.write_sint32(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -438,6 +448,7 @@ impl Codec<i32> {
                 },
                 write: |o, v| o.write_sfixed32(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -464,6 +475,7 @@ impl Codec<u32> {
                 },
                 write: |o, v| o.write_uint32(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -484,6 +496,7 @@ impl Codec<u32> {
                 },
                 write: |o, v| o.write_fixed32(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -510,6 +523,7 @@ impl Codec<i64> {
                 },
                 write: |o, v| o.write_int64(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -533,6 +547,7 @@ impl Codec<i64> {
                 },
                 write: |o, v| o.write_sint64(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -553,6 +568,7 @@ impl Codec<i64> {
                 },
                 write: |o, v| o.write_sfixed64(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -579,6 +595,7 @@ impl Codec<u64> {
                 },
                 write: |o, v| o.write_uint64(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -599,6 +616,7 @@ impl Codec<u64> {
                 },
                 write: |o, v| o.write_fixed64(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -622,6 +640,7 @@ impl Codec<bool> {
                 },
                 write: |o, v| o.write_bool(*v),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -645,6 +664,7 @@ impl Codec<String> {
                 },
                 write: |o, v| o.write_string(v),
                 packed: false,
+                packable: false
             }
         }
     }
@@ -668,6 +688,7 @@ impl Codec<Vec<u8>> {
                 },
                 write: |o, v| o.write_bytes(v),
                 packed: false,
+                packable: false
             }
         }
     }
@@ -698,6 +719,7 @@ impl<M: LiteMessage> Codec<M> {
                 },
                 write: |o, v| o.write_message(v),
                 packed: false,
+                packable: false
             }
         }
     }
@@ -725,6 +747,7 @@ impl<M: LiteMessage> Codec<M> {
                 },
                 write: |o, v| o.write_group(v),
                 packed: false,
+                packable: false
             }
         }
     }
@@ -755,6 +778,7 @@ impl<M: ExtensionMessage> Codec<M> {
                 },
                 write: |o, v| o.write_message(v),
                 packed: false,
+                packable: false
             }
         }
     }
@@ -781,6 +805,7 @@ impl<E: Enum> Codec<EnumValue<E>> {
                 },
                 write: |o, v| o.write_int32(Into::<i32>::into(v.clone())),
                 packed: is_packed(tag),
+                packable: true
             }
         }
     }
@@ -935,6 +960,3 @@ impl UnknownFieldSet {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {}

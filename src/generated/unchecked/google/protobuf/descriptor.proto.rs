@@ -107,13 +107,13 @@ impl crate::CodedMessage for self::FileDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.package = ::std::option::Option::Some(input.read_string()?),
                 26 => self.dependency.add_entries(input, &FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC)?,
-                80 => self.public_dependency.add_entries(input, &FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC)?,
-                88 => self.weak_dependency.add_entries(input, &FILE_DESCRIPTOR_PROTO_WEAK_DEPENDENCY_CODEC)?,
+                80 | 82 => self.public_dependency.add_entries(input, &FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC)?,
+                88 | 90 => self.weak_dependency.add_entries(input, &FILE_DESCRIPTOR_PROTO_WEAK_DEPENDENCY_CODEC)?,
                 34 => self.message_type.add_entries(input, &FILE_DESCRIPTOR_PROTO_MESSAGE_TYPE_CODEC)?,
                 42 => self.enum_type.add_entries(input, &FILE_DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 50 => self.service.add_entries(input, &FILE_DESCRIPTOR_PROTO_SERVICE_CODEC)?,
                 58 => self.extension.add_entries(input, &FILE_DESCRIPTOR_PROTO_EXTENSION_CODEC)?,
-                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                66 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => input.read_message(&mut **self.source_code_info.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 98 => self.syntax = ::std::option::Option::Some(input.read_string()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -125,17 +125,13 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         let package = &self.package;
         if let ::std::option::Option::Some(package) = package {
-            if package != Self::PACKAGE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(package);
-            }
+            size += 1;
+            size += crate::io::sizes::string(package);
         }
         size += self.dependency.calculate_size(&FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC);
         size += self.public_dependency.calculate_size(&FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC);
@@ -156,10 +152,8 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
-            if syntax != Self::SYNTAX_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(syntax);
-            }
+            size += 1;
+            size += crate::io::sizes::string(syntax);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -167,17 +161,13 @@ impl crate::CodedMessage for self::FileDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         let package = &self.package;
         if let ::std::option::Option::Some(package) = package {
-            if package != Self::PACKAGE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(package)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(package)?;
         }
         self.dependency.write_to(output, &FILE_DESCRIPTOR_PROTO_DEPENDENCY_CODEC)?;
         self.public_dependency.write_to(output, &FILE_DESCRIPTOR_PROTO_PUBLIC_DEPENDENCY_CODEC)?;
@@ -198,10 +188,8 @@ impl crate::CodedMessage for self::FileDescriptorProto {
         }
         let syntax = &self.syntax;
         if let ::std::option::Option::Some(syntax) = syntax {
-            if syntax != Self::SYNTAX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[98])?;
-                output.write_string(syntax)?;
-            }
+            output.write_raw_tag_bytes(&[98])?;
+            output.write_string(syntax)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -633,7 +621,7 @@ impl crate::CodedMessage for self::DescriptorProto {
                 34 => self.enum_type.add_entries(input, &DESCRIPTOR_PROTO_ENUM_TYPE_CODEC)?,
                 42 => self.extension_range.add_entries(input, &DESCRIPTOR_PROTO_EXTENSION_RANGE_CODEC)?,
                 66 => self.oneof_decl.add_entries(input, &DESCRIPTOR_PROTO_ONEOF_DECL_CODEC)?,
-                58 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                58 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 74 => self.reserved_range.add_entries(input, &DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 82 => self.reserved_name.add_entries(input, &DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -645,10 +633,8 @@ impl crate::CodedMessage for self::DescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         size += self.field.calculate_size(&DESCRIPTOR_PROTO_FIELD_CODEC);
         size += self.extension.calculate_size(&DESCRIPTOR_PROTO_EXTENSION_CODEC);
@@ -669,10 +655,8 @@ impl crate::CodedMessage for self::DescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         self.field.write_to(output, &DESCRIPTOR_PROTO_FIELD_CODEC)?;
         self.extension.write_to(output, &DESCRIPTOR_PROTO_EXTENSION_CODEC)?;
@@ -963,9 +947,9 @@ pub mod descriptor_proto {
         fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
-                    26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                    8 | 10 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 | 18 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    26 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -975,17 +959,13 @@ pub mod descriptor_proto {
             let mut size = 0i32;
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(start);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(start);
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(end);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(end);
             }
             let options = &self.options;
             if let ::std::option::Option::Some(options) = options {
@@ -998,17 +978,13 @@ pub mod descriptor_proto {
         fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(start)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(start)?;
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int32(end)?;
-                }
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_int32(end)?;
             }
             let options = &self.options;
             if let ::std::option::Option::Some(options) = options {
@@ -1174,8 +1150,8 @@ pub mod descriptor_proto {
         fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    8 | 10 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 | 18 => self.end = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -1185,17 +1161,13 @@ pub mod descriptor_proto {
             let mut size = 0i32;
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(start);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(start);
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(end);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(end);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -1203,17 +1175,13 @@ pub mod descriptor_proto {
         fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(start)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(start)?;
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int32(end)?;
-                }
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_int32(end)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -1414,15 +1382,15 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                24 => self.number = ::std::option::Option::Some(input.read_int32()?),
-                32 => self.label = ::std::option::Option::Some(input.read_enum_value()?),
-                40 => self.r#type = ::std::option::Option::Some(input.read_enum_value()?),
+                24 | 26 => self.number = ::std::option::Option::Some(input.read_int32()?),
+                32 | 34 => self.label = ::std::option::Option::Some(input.read_enum_value()?),
+                40 | 42 => self.r#type = ::std::option::Option::Some(input.read_enum_value()?),
                 50 => self.type_name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.extendee = ::std::option::Option::Some(input.read_string()?),
                 58 => self.default_value = ::std::option::Option::Some(input.read_string()?),
-                72 => self.oneof_index = ::std::option::Option::Some(input.read_int32()?),
+                72 | 74 => self.oneof_index = ::std::option::Option::Some(input.read_int32()?),
                 82 => self.json_name = ::std::option::Option::Some(input.read_string()?),
-                66 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                66 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -1432,66 +1400,48 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
-            if number != Self::NUMBER_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(number);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(number);
         }
         let label = self.label;
         if let ::std::option::Option::Some(label) = label {
-            if label != Self::LABEL_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::enum_value(label);
-            }
+            size += 1;
+            size += crate::io::sizes::enum_value(label);
         }
         let r#type = self.r#type;
         if let ::std::option::Option::Some(r#type) = r#type {
-            if r#type != Self::TYPE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::enum_value(r#type);
-            }
+            size += 1;
+            size += crate::io::sizes::enum_value(r#type);
         }
         let type_name = &self.type_name;
         if let ::std::option::Option::Some(type_name) = type_name {
-            if type_name != Self::TYPE_NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(type_name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(type_name);
         }
         let extendee = &self.extendee;
         if let ::std::option::Option::Some(extendee) = extendee {
-            if extendee != Self::EXTENDEE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(extendee);
-            }
+            size += 1;
+            size += crate::io::sizes::string(extendee);
         }
         let default_value = &self.default_value;
         if let ::std::option::Option::Some(default_value) = default_value {
-            if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(default_value);
-            }
+            size += 1;
+            size += crate::io::sizes::string(default_value);
         }
         let oneof_index = self.oneof_index;
         if let ::std::option::Option::Some(oneof_index) = oneof_index {
-            if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(oneof_index);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(oneof_index);
         }
         let json_name = &self.json_name;
         if let ::std::option::Option::Some(json_name) = json_name {
-            if json_name != Self::JSON_NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(json_name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(json_name);
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -1504,66 +1454,48 @@ impl crate::CodedMessage for self::FieldDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
-            if number != Self::NUMBER_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(number)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(number)?;
         }
         let label = self.label;
         if let ::std::option::Option::Some(label) = label {
-            if label != Self::LABEL_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_enum_value(label)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_enum_value(label)?;
         }
         let r#type = self.r#type;
         if let ::std::option::Option::Some(r#type) = r#type {
-            if r#type != Self::TYPE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_enum_value(r#type)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_enum_value(r#type)?;
         }
         let type_name = &self.type_name;
         if let ::std::option::Option::Some(type_name) = type_name {
-            if type_name != Self::TYPE_NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[50])?;
-                output.write_string(type_name)?;
-            }
+            output.write_raw_tag_bytes(&[50])?;
+            output.write_string(type_name)?;
         }
         let extendee = &self.extendee;
         if let ::std::option::Option::Some(extendee) = extendee {
-            if extendee != Self::EXTENDEE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(extendee)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(extendee)?;
         }
         let default_value = &self.default_value;
         if let ::std::option::Option::Some(default_value) = default_value {
-            if default_value != Self::DEFAULT_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[58])?;
-                output.write_string(default_value)?;
-            }
+            output.write_raw_tag_bytes(&[58])?;
+            output.write_string(default_value)?;
         }
         let oneof_index = self.oneof_index;
         if let ::std::option::Option::Some(oneof_index) = oneof_index {
-            if oneof_index != Self::ONEOF_INDEX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[72])?;
-                output.write_int32(oneof_index)?;
-            }
+            output.write_raw_tag_bytes(&[72])?;
+            output.write_int32(oneof_index)?;
         }
         let json_name = &self.json_name;
         if let ::std::option::Option::Some(json_name) = json_name {
-            if json_name != Self::JSON_NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[82])?;
-                output.write_string(json_name)?;
-            }
+            output.write_raw_tag_bytes(&[82])?;
+            output.write_string(json_name)?;
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -2193,7 +2125,7 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                18 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                18 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2203,10 +2135,8 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -2219,10 +2149,8 @@ impl crate::CodedMessage for self::OneofDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -2368,7 +2296,7 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.value.add_entries(input, &ENUM_DESCRIPTOR_PROTO_VALUE_CODEC)?,
-                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                26 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 34 => self.reserved_range.add_entries(input, &ENUM_DESCRIPTOR_PROTO_RESERVED_RANGE_CODEC)?,
                 42 => self.reserved_name.add_entries(input, &ENUM_DESCRIPTOR_PROTO_RESERVED_NAME_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -2380,10 +2308,8 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         size += self.value.calculate_size(&ENUM_DESCRIPTOR_PROTO_VALUE_CODEC);
         let options = &self.options;
@@ -2399,10 +2325,8 @@ impl crate::CodedMessage for self::EnumDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         self.value.write_to(output, &ENUM_DESCRIPTOR_PROTO_VALUE_CODEC)?;
         let options = &self.options;
@@ -2606,8 +2530,8 @@ pub mod enum_descriptor_proto {
         fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.start = ::std::option::Option::Some(input.read_int32()?),
-                    16 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    8 | 10 => self.start = ::std::option::Option::Some(input.read_int32()?),
+                    16 | 18 => self.end = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -2617,17 +2541,13 @@ pub mod enum_descriptor_proto {
             let mut size = 0i32;
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(start);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(start);
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(end);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(end);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -2635,17 +2555,13 @@ pub mod enum_descriptor_proto {
         fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
             let start = self.start;
             if let ::std::option::Option::Some(start) = start {
-                if start != Self::START_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(start)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(start)?;
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int32(end)?;
-                }
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_int32(end)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -2760,8 +2676,8 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
-                16 => self.number = ::std::option::Option::Some(input.read_int32()?),
-                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                16 | 18 => self.number = ::std::option::Option::Some(input.read_int32()?),
+                26 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2771,17 +2687,13 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
-            if number != Self::NUMBER_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int32(number);
-            }
+            size += 1;
+            size += crate::io::sizes::int32(number);
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -2794,17 +2706,13 @@ impl crate::CodedMessage for self::EnumValueDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         let number = self.number;
         if let ::std::option::Option::Some(number) = number {
-            if number != Self::NUMBER_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(number)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(number)?;
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -2984,7 +2892,7 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
             match tag.get() {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.method.add_entries(input, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?,
-                26 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                26 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -2994,10 +2902,8 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         size += self.method.calculate_size(&SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC);
         let options = &self.options;
@@ -3011,10 +2917,8 @@ impl crate::CodedMessage for self::ServiceDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         self.method.write_to(output, &SERVICE_DESCRIPTOR_PROTO_METHOD_CODEC)?;
         let options = &self.options;
@@ -3178,9 +3082,9 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
                 10 => self.name = ::std::option::Option::Some(input.read_string()?),
                 18 => self.input_type = ::std::option::Option::Some(input.read_string()?),
                 26 => self.output_type = ::std::option::Option::Some(input.read_string()?),
-                34 => input.read_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
-                40 => self.client_streaming = ::std::option::Option::Some(input.read_bool()?),
-                48 => self.server_streaming = ::std::option::Option::Some(input.read_bool()?),
+                34 => input.read_extension_message(&mut **self.options.get_or_insert_with(|| ::std::boxed::Box::new(crate::LiteMessage::new())))?,
+                40 | 42 => self.client_streaming = ::std::option::Option::Some(input.read_bool()?),
+                48 | 50 => self.server_streaming = ::std::option::Option::Some(input.read_bool()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3190,24 +3094,18 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         let mut size = 0i32;
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(name);
-            }
+            size += 1;
+            size += crate::io::sizes::string(name);
         }
         let input_type = &self.input_type;
         if let ::std::option::Option::Some(input_type) = input_type {
-            if input_type != Self::INPUT_TYPE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(input_type);
-            }
+            size += 1;
+            size += crate::io::sizes::string(input_type);
         }
         let output_type = &self.output_type;
         if let ::std::option::Option::Some(output_type) = output_type {
-            if output_type != Self::OUTPUT_TYPE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(output_type);
-            }
+            size += 1;
+            size += crate::io::sizes::string(output_type);
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -3216,17 +3114,13 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
-            if client_streaming != Self::CLIENT_STREAMING_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(client_streaming);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(client_streaming);
         }
         let server_streaming = self.server_streaming;
         if let ::std::option::Option::Some(server_streaming) = server_streaming {
-            if server_streaming != Self::SERVER_STREAMING_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(server_streaming);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(server_streaming);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -3234,24 +3128,18 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let name = &self.name;
         if let ::std::option::Option::Some(name) = name {
-            if name != Self::NAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(name)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(name)?;
         }
         let input_type = &self.input_type;
         if let ::std::option::Option::Some(input_type) = input_type {
-            if input_type != Self::INPUT_TYPE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(input_type)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(input_type)?;
         }
         let output_type = &self.output_type;
         if let ::std::option::Option::Some(output_type) = output_type {
-            if output_type != Self::OUTPUT_TYPE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[26])?;
-                output.write_string(output_type)?;
-            }
+            output.write_raw_tag_bytes(&[26])?;
+            output.write_string(output_type)?;
         }
         let options = &self.options;
         if let ::std::option::Option::Some(options) = options {
@@ -3260,17 +3148,13 @@ impl crate::CodedMessage for self::MethodDescriptorProto {
         }
         let client_streaming = self.client_streaming;
         if let ::std::option::Option::Some(client_streaming) = client_streaming {
-            if client_streaming != Self::CLIENT_STREAMING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_bool(client_streaming)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_bool(client_streaming)?;
         }
         let server_streaming = self.server_streaming;
         if let ::std::option::Option::Some(server_streaming) = server_streaming {
-            if server_streaming != Self::SERVER_STREAMING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_bool(server_streaming)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_bool(server_streaming)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -3605,17 +3489,17 @@ impl crate::CodedMessage for self::FileOptions {
             match tag.get() {
                 10 => self.java_package = ::std::option::Option::Some(input.read_string()?),
                 66 => self.java_outer_classname = ::std::option::Option::Some(input.read_string()?),
-                80 => self.java_multiple_files = ::std::option::Option::Some(input.read_bool()?),
-                160 => self.java_generate_equals_and_hash = ::std::option::Option::Some(input.read_bool()?),
-                216 => self.java_string_check_utf8 = ::std::option::Option::Some(input.read_bool()?),
-                72 => self.optimize_for = ::std::option::Option::Some(input.read_enum_value()?),
+                80 | 82 => self.java_multiple_files = ::std::option::Option::Some(input.read_bool()?),
+                160 | 162 => self.java_generate_equals_and_hash = ::std::option::Option::Some(input.read_bool()?),
+                216 | 218 => self.java_string_check_utf8 = ::std::option::Option::Some(input.read_bool()?),
+                72 | 74 => self.optimize_for = ::std::option::Option::Some(input.read_enum_value()?),
                 90 => self.go_package = ::std::option::Option::Some(input.read_string()?),
-                128 => self.cc_generic_services = ::std::option::Option::Some(input.read_bool()?),
-                136 => self.java_generic_services = ::std::option::Option::Some(input.read_bool()?),
-                144 => self.py_generic_services = ::std::option::Option::Some(input.read_bool()?),
-                336 => self.php_generic_services = ::std::option::Option::Some(input.read_bool()?),
-                184 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
-                248 => self.cc_enable_arenas = ::std::option::Option::Some(input.read_bool()?),
+                128 | 130 => self.cc_generic_services = ::std::option::Option::Some(input.read_bool()?),
+                136 | 138 => self.java_generic_services = ::std::option::Option::Some(input.read_bool()?),
+                144 | 146 => self.py_generic_services = ::std::option::Option::Some(input.read_bool()?),
+                336 | 338 => self.php_generic_services = ::std::option::Option::Some(input.read_bool()?),
+                184 | 186 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                248 | 250 => self.cc_enable_arenas = ::std::option::Option::Some(input.read_bool()?),
                 290 => self.objc_class_prefix = ::std::option::Option::Some(input.read_string()?),
                 298 => self.csharp_namespace = ::std::option::Option::Some(input.read_string()?),
                 314 => self.swift_prefix = ::std::option::Option::Some(input.read_string()?),
@@ -3633,143 +3517,103 @@ impl crate::CodedMessage for self::FileOptions {
         let mut size = 0i32;
         let java_package = &self.java_package;
         if let ::std::option::Option::Some(java_package) = java_package {
-            if java_package != Self::JAVA_PACKAGE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(java_package);
-            }
+            size += 1;
+            size += crate::io::sizes::string(java_package);
         }
         let java_outer_classname = &self.java_outer_classname;
         if let ::std::option::Option::Some(java_outer_classname) = java_outer_classname {
-            if java_outer_classname != Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(java_outer_classname);
-            }
+            size += 1;
+            size += crate::io::sizes::string(java_outer_classname);
         }
         let java_multiple_files = self.java_multiple_files;
         if let ::std::option::Option::Some(java_multiple_files) = java_multiple_files {
-            if java_multiple_files != Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(java_multiple_files);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(java_multiple_files);
         }
         let java_generate_equals_and_hash = self.java_generate_equals_and_hash;
         if let ::std::option::Option::Some(java_generate_equals_and_hash) = java_generate_equals_and_hash {
-            if java_generate_equals_and_hash != Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(java_generate_equals_and_hash);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(java_generate_equals_and_hash);
         }
         let java_string_check_utf8 = self.java_string_check_utf8;
         if let ::std::option::Option::Some(java_string_check_utf8) = java_string_check_utf8 {
-            if java_string_check_utf8 != Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(java_string_check_utf8);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(java_string_check_utf8);
         }
         let optimize_for = self.optimize_for;
         if let ::std::option::Option::Some(optimize_for) = optimize_for {
-            if optimize_for != Self::OPTIMIZE_FOR_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::enum_value(optimize_for);
-            }
+            size += 1;
+            size += crate::io::sizes::enum_value(optimize_for);
         }
         let go_package = &self.go_package;
         if let ::std::option::Option::Some(go_package) = go_package {
-            if go_package != Self::GO_PACKAGE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(go_package);
-            }
+            size += 1;
+            size += crate::io::sizes::string(go_package);
         }
         let cc_generic_services = self.cc_generic_services;
         if let ::std::option::Option::Some(cc_generic_services) = cc_generic_services {
-            if cc_generic_services != Self::CC_GENERIC_SERVICES_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(cc_generic_services);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(cc_generic_services);
         }
         let java_generic_services = self.java_generic_services;
         if let ::std::option::Option::Some(java_generic_services) = java_generic_services {
-            if java_generic_services != Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(java_generic_services);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(java_generic_services);
         }
         let py_generic_services = self.py_generic_services;
         if let ::std::option::Option::Some(py_generic_services) = py_generic_services {
-            if py_generic_services != Self::PY_GENERIC_SERVICES_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(py_generic_services);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(py_generic_services);
         }
         let php_generic_services = self.php_generic_services;
         if let ::std::option::Option::Some(php_generic_services) = php_generic_services {
-            if php_generic_services != Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(php_generic_services);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(php_generic_services);
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(deprecated);
         }
         let cc_enable_arenas = self.cc_enable_arenas;
         if let ::std::option::Option::Some(cc_enable_arenas) = cc_enable_arenas {
-            if cc_enable_arenas != Self::CC_ENABLE_ARENAS_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(cc_enable_arenas);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(cc_enable_arenas);
         }
         let objc_class_prefix = &self.objc_class_prefix;
         if let ::std::option::Option::Some(objc_class_prefix) = objc_class_prefix {
-            if objc_class_prefix != Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(objc_class_prefix);
-            }
+            size += 2;
+            size += crate::io::sizes::string(objc_class_prefix);
         }
         let csharp_namespace = &self.csharp_namespace;
         if let ::std::option::Option::Some(csharp_namespace) = csharp_namespace {
-            if csharp_namespace != Self::CSHARP_NAMESPACE_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(csharp_namespace);
-            }
+            size += 2;
+            size += crate::io::sizes::string(csharp_namespace);
         }
         let swift_prefix = &self.swift_prefix;
         if let ::std::option::Option::Some(swift_prefix) = swift_prefix {
-            if swift_prefix != Self::SWIFT_PREFIX_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(swift_prefix);
-            }
+            size += 2;
+            size += crate::io::sizes::string(swift_prefix);
         }
         let php_class_prefix = &self.php_class_prefix;
         if let ::std::option::Option::Some(php_class_prefix) = php_class_prefix {
-            if php_class_prefix != Self::PHP_CLASS_PREFIX_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(php_class_prefix);
-            }
+            size += 2;
+            size += crate::io::sizes::string(php_class_prefix);
         }
         let php_namespace = &self.php_namespace;
         if let ::std::option::Option::Some(php_namespace) = php_namespace {
-            if php_namespace != Self::PHP_NAMESPACE_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(php_namespace);
-            }
+            size += 2;
+            size += crate::io::sizes::string(php_namespace);
         }
         let php_metadata_namespace = &self.php_metadata_namespace;
         if let ::std::option::Option::Some(php_metadata_namespace) = php_metadata_namespace {
-            if php_metadata_namespace != Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(php_metadata_namespace);
-            }
+            size += 2;
+            size += crate::io::sizes::string(php_metadata_namespace);
         }
         let ruby_package = &self.ruby_package;
         if let ::std::option::Option::Some(ruby_package) = ruby_package {
-            if ruby_package != Self::RUBY_PACKAGE_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::string(ruby_package);
-            }
+            size += 2;
+            size += crate::io::sizes::string(ruby_package);
         }
         size += self.uninterpreted_option.calculate_size(&FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -3778,143 +3622,103 @@ impl crate::CodedMessage for self::FileOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let java_package = &self.java_package;
         if let ::std::option::Option::Some(java_package) = java_package {
-            if java_package != Self::JAVA_PACKAGE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(java_package)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(java_package)?;
         }
         let java_outer_classname = &self.java_outer_classname;
         if let ::std::option::Option::Some(java_outer_classname) = java_outer_classname {
-            if java_outer_classname != Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[66])?;
-                output.write_string(java_outer_classname)?;
-            }
+            output.write_raw_tag_bytes(&[66])?;
+            output.write_string(java_outer_classname)?;
         }
         let java_multiple_files = self.java_multiple_files;
         if let ::std::option::Option::Some(java_multiple_files) = java_multiple_files {
-            if java_multiple_files != Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[80])?;
-                output.write_bool(java_multiple_files)?;
-            }
+            output.write_raw_tag_bytes(&[80])?;
+            output.write_bool(java_multiple_files)?;
         }
         let java_generate_equals_and_hash = self.java_generate_equals_and_hash;
         if let ::std::option::Option::Some(java_generate_equals_and_hash) = java_generate_equals_and_hash {
-            if java_generate_equals_and_hash != Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[160, 1])?;
-                output.write_bool(java_generate_equals_and_hash)?;
-            }
+            output.write_raw_tag_bytes(&[160, 1])?;
+            output.write_bool(java_generate_equals_and_hash)?;
         }
         let java_string_check_utf8 = self.java_string_check_utf8;
         if let ::std::option::Option::Some(java_string_check_utf8) = java_string_check_utf8 {
-            if java_string_check_utf8 != Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[216, 1])?;
-                output.write_bool(java_string_check_utf8)?;
-            }
+            output.write_raw_tag_bytes(&[216, 1])?;
+            output.write_bool(java_string_check_utf8)?;
         }
         let optimize_for = self.optimize_for;
         if let ::std::option::Option::Some(optimize_for) = optimize_for {
-            if optimize_for != Self::OPTIMIZE_FOR_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[72])?;
-                output.write_enum_value(optimize_for)?;
-            }
+            output.write_raw_tag_bytes(&[72])?;
+            output.write_enum_value(optimize_for)?;
         }
         let go_package = &self.go_package;
         if let ::std::option::Option::Some(go_package) = go_package {
-            if go_package != Self::GO_PACKAGE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[90])?;
-                output.write_string(go_package)?;
-            }
+            output.write_raw_tag_bytes(&[90])?;
+            output.write_string(go_package)?;
         }
         let cc_generic_services = self.cc_generic_services;
         if let ::std::option::Option::Some(cc_generic_services) = cc_generic_services {
-            if cc_generic_services != Self::CC_GENERIC_SERVICES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[128, 1])?;
-                output.write_bool(cc_generic_services)?;
-            }
+            output.write_raw_tag_bytes(&[128, 1])?;
+            output.write_bool(cc_generic_services)?;
         }
         let java_generic_services = self.java_generic_services;
         if let ::std::option::Option::Some(java_generic_services) = java_generic_services {
-            if java_generic_services != Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 1])?;
-                output.write_bool(java_generic_services)?;
-            }
+            output.write_raw_tag_bytes(&[136, 1])?;
+            output.write_bool(java_generic_services)?;
         }
         let py_generic_services = self.py_generic_services;
         if let ::std::option::Option::Some(py_generic_services) = py_generic_services {
-            if py_generic_services != Self::PY_GENERIC_SERVICES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 1])?;
-                output.write_bool(py_generic_services)?;
-            }
+            output.write_raw_tag_bytes(&[144, 1])?;
+            output.write_bool(py_generic_services)?;
         }
         let php_generic_services = self.php_generic_services;
         if let ::std::option::Option::Some(php_generic_services) = php_generic_services {
-            if php_generic_services != Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[208, 2])?;
-                output.write_bool(php_generic_services)?;
-            }
+            output.write_raw_tag_bytes(&[208, 2])?;
+            output.write_bool(php_generic_services)?;
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[184, 1])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[184, 1])?;
+            output.write_bool(deprecated)?;
         }
         let cc_enable_arenas = self.cc_enable_arenas;
         if let ::std::option::Option::Some(cc_enable_arenas) = cc_enable_arenas {
-            if cc_enable_arenas != Self::CC_ENABLE_ARENAS_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[248, 1])?;
-                output.write_bool(cc_enable_arenas)?;
-            }
+            output.write_raw_tag_bytes(&[248, 1])?;
+            output.write_bool(cc_enable_arenas)?;
         }
         let objc_class_prefix = &self.objc_class_prefix;
         if let ::std::option::Option::Some(objc_class_prefix) = objc_class_prefix {
-            if objc_class_prefix != Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[162, 2])?;
-                output.write_string(objc_class_prefix)?;
-            }
+            output.write_raw_tag_bytes(&[162, 2])?;
+            output.write_string(objc_class_prefix)?;
         }
         let csharp_namespace = &self.csharp_namespace;
         if let ::std::option::Option::Some(csharp_namespace) = csharp_namespace {
-            if csharp_namespace != Self::CSHARP_NAMESPACE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[170, 2])?;
-                output.write_string(csharp_namespace)?;
-            }
+            output.write_raw_tag_bytes(&[170, 2])?;
+            output.write_string(csharp_namespace)?;
         }
         let swift_prefix = &self.swift_prefix;
         if let ::std::option::Option::Some(swift_prefix) = swift_prefix {
-            if swift_prefix != Self::SWIFT_PREFIX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[186, 2])?;
-                output.write_string(swift_prefix)?;
-            }
+            output.write_raw_tag_bytes(&[186, 2])?;
+            output.write_string(swift_prefix)?;
         }
         let php_class_prefix = &self.php_class_prefix;
         if let ::std::option::Option::Some(php_class_prefix) = php_class_prefix {
-            if php_class_prefix != Self::PHP_CLASS_PREFIX_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[194, 2])?;
-                output.write_string(php_class_prefix)?;
-            }
+            output.write_raw_tag_bytes(&[194, 2])?;
+            output.write_string(php_class_prefix)?;
         }
         let php_namespace = &self.php_namespace;
         if let ::std::option::Option::Some(php_namespace) = php_namespace {
-            if php_namespace != Self::PHP_NAMESPACE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[202, 2])?;
-                output.write_string(php_namespace)?;
-            }
+            output.write_raw_tag_bytes(&[202, 2])?;
+            output.write_string(php_namespace)?;
         }
         let php_metadata_namespace = &self.php_metadata_namespace;
         if let ::std::option::Option::Some(php_metadata_namespace) = php_metadata_namespace {
-            if php_metadata_namespace != Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[226, 2])?;
-                output.write_string(php_metadata_namespace)?;
-            }
+            output.write_raw_tag_bytes(&[226, 2])?;
+            output.write_string(php_metadata_namespace)?;
         }
         let ruby_package = &self.ruby_package;
         if let ::std::option::Option::Some(ruby_package) = ruby_package {
-            if ruby_package != Self::RUBY_PACKAGE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[234, 2])?;
-                output.write_string(ruby_package)?;
-            }
+            output.write_raw_tag_bytes(&[234, 2])?;
+            output.write_string(ruby_package)?;
         }
         self.uninterpreted_option.write_to(output, &FILE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -4964,10 +4768,10 @@ impl crate::CodedMessage for self::MessageOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.message_set_wire_format = ::std::option::Option::Some(input.read_bool()?),
-                16 => self.no_standard_descriptor_accessor = ::std::option::Option::Some(input.read_bool()?),
-                24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
-                56 => self.map_entry = ::std::option::Option::Some(input.read_bool()?),
+                8 | 10 => self.message_set_wire_format = ::std::option::Option::Some(input.read_bool()?),
+                16 | 18 => self.no_standard_descriptor_accessor = ::std::option::Option::Some(input.read_bool()?),
+                24 | 26 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                56 | 58 => self.map_entry = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(input, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -4978,31 +4782,23 @@ impl crate::CodedMessage for self::MessageOptions {
         let mut size = 0i32;
         let message_set_wire_format = self.message_set_wire_format;
         if let ::std::option::Option::Some(message_set_wire_format) = message_set_wire_format {
-            if message_set_wire_format != Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(message_set_wire_format);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(message_set_wire_format);
         }
         let no_standard_descriptor_accessor = self.no_standard_descriptor_accessor;
         if let ::std::option::Option::Some(no_standard_descriptor_accessor) = no_standard_descriptor_accessor {
-            if no_standard_descriptor_accessor != Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(no_standard_descriptor_accessor);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(no_standard_descriptor_accessor);
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(deprecated);
         }
         let map_entry = self.map_entry;
         if let ::std::option::Option::Some(map_entry) = map_entry {
-            if map_entry != Self::MAP_ENTRY_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(map_entry);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(map_entry);
         }
         size += self.uninterpreted_option.calculate_size(&MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -5011,31 +4807,23 @@ impl crate::CodedMessage for self::MessageOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let message_set_wire_format = self.message_set_wire_format;
         if let ::std::option::Option::Some(message_set_wire_format) = message_set_wire_format {
-            if message_set_wire_format != Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_bool(message_set_wire_format)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_bool(message_set_wire_format)?;
         }
         let no_standard_descriptor_accessor = self.no_standard_descriptor_accessor;
         if let ::std::option::Option::Some(no_standard_descriptor_accessor) = no_standard_descriptor_accessor {
-            if no_standard_descriptor_accessor != Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_bool(no_standard_descriptor_accessor)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_bool(no_standard_descriptor_accessor)?;
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_bool(deprecated)?;
         }
         let map_entry = self.map_entry;
         if let ::std::option::Option::Some(map_entry) = map_entry {
-            if map_entry != Self::MAP_ENTRY_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[56])?;
-                output.write_bool(map_entry)?;
-            }
+            output.write_raw_tag_bytes(&[56])?;
+            output.write_bool(map_entry)?;
         }
         self.uninterpreted_option.write_to(output, &MESSAGE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -5307,12 +5095,12 @@ impl crate::CodedMessage for self::FieldOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.ctype = ::std::option::Option::Some(input.read_enum_value()?),
-                16 => self.packed = ::std::option::Option::Some(input.read_bool()?),
-                48 => self.jstype = ::std::option::Option::Some(input.read_enum_value()?),
-                40 => self.lazy = ::std::option::Option::Some(input.read_bool()?),
-                24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
-                80 => self.weak = ::std::option::Option::Some(input.read_bool()?),
+                8 | 10 => self.ctype = ::std::option::Option::Some(input.read_enum_value()?),
+                16 | 18 => self.packed = ::std::option::Option::Some(input.read_bool()?),
+                48 | 50 => self.jstype = ::std::option::Option::Some(input.read_enum_value()?),
+                40 | 42 => self.lazy = ::std::option::Option::Some(input.read_bool()?),
+                24 | 26 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                80 | 82 => self.weak = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(input, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -5323,45 +5111,33 @@ impl crate::CodedMessage for self::FieldOptions {
         let mut size = 0i32;
         let ctype = self.ctype;
         if let ::std::option::Option::Some(ctype) = ctype {
-            if ctype != Self::CTYPE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::enum_value(ctype);
-            }
+            size += 1;
+            size += crate::io::sizes::enum_value(ctype);
         }
         let packed = self.packed;
         if let ::std::option::Option::Some(packed) = packed {
-            if packed != Self::PACKED_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(packed);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(packed);
         }
         let jstype = self.jstype;
         if let ::std::option::Option::Some(jstype) = jstype {
-            if jstype != Self::JSTYPE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::enum_value(jstype);
-            }
+            size += 1;
+            size += crate::io::sizes::enum_value(jstype);
         }
         let lazy = self.lazy;
         if let ::std::option::Option::Some(lazy) = lazy {
-            if lazy != Self::LAZY_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(lazy);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(lazy);
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(deprecated);
         }
         let weak = self.weak;
         if let ::std::option::Option::Some(weak) = weak {
-            if weak != Self::WEAK_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(weak);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(weak);
         }
         size += self.uninterpreted_option.calculate_size(&FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -5370,45 +5146,33 @@ impl crate::CodedMessage for self::FieldOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let ctype = self.ctype;
         if let ::std::option::Option::Some(ctype) = ctype {
-            if ctype != Self::CTYPE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_enum_value(ctype)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_enum_value(ctype)?;
         }
         let packed = self.packed;
         if let ::std::option::Option::Some(packed) = packed {
-            if packed != Self::PACKED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_bool(packed)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_bool(packed)?;
         }
         let jstype = self.jstype;
         if let ::std::option::Option::Some(jstype) = jstype {
-            if jstype != Self::JSTYPE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_enum_value(jstype)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_enum_value(jstype)?;
         }
         let lazy = self.lazy;
         if let ::std::option::Option::Some(lazy) = lazy {
-            if lazy != Self::LAZY_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_bool(lazy)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_bool(lazy)?;
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_bool(deprecated)?;
         }
         let weak = self.weak;
         if let ::std::option::Option::Some(weak) = weak {
-            if weak != Self::WEAK_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[80])?;
-                output.write_bool(weak)?;
-            }
+            output.write_raw_tag_bytes(&[80])?;
+            output.write_bool(weak)?;
         }
         self.uninterpreted_option.write_to(output, &FIELD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -5899,8 +5663,8 @@ impl crate::CodedMessage for self::EnumOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                16 => self.allow_alias = ::std::option::Option::Some(input.read_bool()?),
-                24 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                16 | 18 => self.allow_alias = ::std::option::Option::Some(input.read_bool()?),
+                24 | 26 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(input, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -5911,17 +5675,13 @@ impl crate::CodedMessage for self::EnumOptions {
         let mut size = 0i32;
         let allow_alias = self.allow_alias;
         if let ::std::option::Option::Some(allow_alias) = allow_alias {
-            if allow_alias != Self::ALLOW_ALIAS_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(allow_alias);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(allow_alias);
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(deprecated);
         }
         size += self.uninterpreted_option.calculate_size(&ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -5930,17 +5690,13 @@ impl crate::CodedMessage for self::EnumOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let allow_alias = self.allow_alias;
         if let ::std::option::Option::Some(allow_alias) = allow_alias {
-            if allow_alias != Self::ALLOW_ALIAS_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_bool(allow_alias)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_bool(allow_alias)?;
         }
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_bool(deprecated)?;
         }
         self.uninterpreted_option.write_to(output, &ENUM_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -6091,7 +5847,7 @@ impl crate::CodedMessage for self::EnumValueOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                8 | 10 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(input, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -6102,10 +5858,8 @@ impl crate::CodedMessage for self::EnumValueOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 1;
+            size += crate::io::sizes::bool(deprecated);
         }
         size += self.uninterpreted_option.calculate_size(&ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -6114,10 +5868,8 @@ impl crate::CodedMessage for self::EnumValueOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_bool(deprecated)?;
         }
         self.uninterpreted_option.write_to(output, &ENUM_VALUE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -6228,7 +5980,7 @@ impl crate::CodedMessage for self::ServiceOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                264 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                264 | 266 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
                 7994 => self.uninterpreted_option.add_entries(input, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -6239,10 +5991,8 @@ impl crate::CodedMessage for self::ServiceOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(deprecated);
         }
         size += self.uninterpreted_option.calculate_size(&SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -6251,10 +6001,8 @@ impl crate::CodedMessage for self::ServiceOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 2])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[136, 2])?;
+            output.write_bool(deprecated)?;
         }
         self.uninterpreted_option.write_to(output, &SERVICE_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -6366,8 +6114,8 @@ impl crate::CodedMessage for self::MethodOptions {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                264 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
-                272 => self.idempotency_level = ::std::option::Option::Some(input.read_enum_value()?),
+                264 | 266 => self.deprecated = ::std::option::Option::Some(input.read_bool()?),
+                272 | 274 => self.idempotency_level = ::std::option::Option::Some(input.read_enum_value()?),
                 7994 => self.uninterpreted_option.add_entries(input, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -6378,17 +6126,13 @@ impl crate::CodedMessage for self::MethodOptions {
         let mut size = 0i32;
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::bool(deprecated);
-            }
+            size += 2;
+            size += crate::io::sizes::bool(deprecated);
         }
         let idempotency_level = self.idempotency_level;
         if let ::std::option::Option::Some(idempotency_level) = idempotency_level {
-            if idempotency_level != Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
-                size += 2;
-                size += crate::io::sizes::enum_value(idempotency_level);
-            }
+            size += 2;
+            size += crate::io::sizes::enum_value(idempotency_level);
         }
         size += self.uninterpreted_option.calculate_size(&METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -6397,17 +6141,13 @@ impl crate::CodedMessage for self::MethodOptions {
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
         let deprecated = self.deprecated;
         if let ::std::option::Option::Some(deprecated) = deprecated {
-            if deprecated != Self::DEPRECATED_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 2])?;
-                output.write_bool(deprecated)?;
-            }
+            output.write_raw_tag_bytes(&[136, 2])?;
+            output.write_bool(deprecated)?;
         }
         let idempotency_level = self.idempotency_level;
         if let ::std::option::Option::Some(idempotency_level) = idempotency_level {
-            if idempotency_level != Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 2])?;
-                output.write_enum_value(idempotency_level)?;
-            }
+            output.write_raw_tag_bytes(&[144, 2])?;
+            output.write_enum_value(idempotency_level)?;
         }
         self.uninterpreted_option.write_to(output, &METHOD_OPTIONS_UNINTERPRETED_OPTION_CODEC)?;
         self.unknown_fields.write_to(output)?;
@@ -6603,9 +6343,9 @@ impl crate::CodedMessage for self::UninterpretedOption {
             match tag.get() {
                 18 => self.name.add_entries(input, &UNINTERPRETED_OPTION_NAME_CODEC)?,
                 26 => self.identifier_value = ::std::option::Option::Some(input.read_string()?),
-                32 => self.positive_int_value = ::std::option::Option::Some(input.read_uint64()?),
-                40 => self.negative_int_value = ::std::option::Option::Some(input.read_int64()?),
-                49 => self.double_value = ::std::option::Option::Some(input.read_double()?),
+                32 | 34 => self.positive_int_value = ::std::option::Option::Some(input.read_uint64()?),
+                40 | 42 => self.negative_int_value = ::std::option::Option::Some(input.read_int64()?),
+                49 | 50 => self.double_value = ::std::option::Option::Some(input.read_double()?),
                 58 => self.string_value = ::std::option::Option::Some(input.read_bytes()?),
                 66 => self.aggregate_value = ::std::option::Option::Some(input.read_string()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -6618,45 +6358,33 @@ impl crate::CodedMessage for self::UninterpretedOption {
         size += self.name.calculate_size(&UNINTERPRETED_OPTION_NAME_CODEC);
         let identifier_value = &self.identifier_value;
         if let ::std::option::Option::Some(identifier_value) = identifier_value {
-            if identifier_value != Self::IDENTIFIER_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(identifier_value);
-            }
+            size += 1;
+            size += crate::io::sizes::string(identifier_value);
         }
         let positive_int_value = self.positive_int_value;
         if let ::std::option::Option::Some(positive_int_value) = positive_int_value {
-            if positive_int_value != Self::POSITIVE_INT_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::uint64(positive_int_value);
-            }
+            size += 1;
+            size += crate::io::sizes::uint64(positive_int_value);
         }
         let negative_int_value = self.negative_int_value;
         if let ::std::option::Option::Some(negative_int_value) = negative_int_value {
-            if negative_int_value != Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::int64(negative_int_value);
-            }
+            size += 1;
+            size += crate::io::sizes::int64(negative_int_value);
         }
         let double_value = self.double_value;
         if let ::std::option::Option::Some(double_value) = double_value {
-            if double_value != Self::DOUBLE_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::double(double_value);
-            }
+            size += 1;
+            size += crate::io::sizes::double(double_value);
         }
         let string_value = &self.string_value;
         if let ::std::option::Option::Some(string_value) = string_value {
-            if string_value.as_slice() != Self::STRING_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::bytes(string_value);
-            }
+            size += 1;
+            size += crate::io::sizes::bytes(string_value);
         }
         let aggregate_value = &self.aggregate_value;
         if let ::std::option::Option::Some(aggregate_value) = aggregate_value {
-            if aggregate_value != Self::AGGREGATE_VALUE_DEFAULT_VALUE {
-                size += 1;
-                size += crate::io::sizes::string(aggregate_value);
-            }
+            size += 1;
+            size += crate::io::sizes::string(aggregate_value);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -6665,45 +6393,33 @@ impl crate::CodedMessage for self::UninterpretedOption {
         self.name.write_to(output, &UNINTERPRETED_OPTION_NAME_CODEC)?;
         let identifier_value = &self.identifier_value;
         if let ::std::option::Option::Some(identifier_value) = identifier_value {
-            if identifier_value != Self::IDENTIFIER_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[26])?;
-                output.write_string(identifier_value)?;
-            }
+            output.write_raw_tag_bytes(&[26])?;
+            output.write_string(identifier_value)?;
         }
         let positive_int_value = self.positive_int_value;
         if let ::std::option::Option::Some(positive_int_value) = positive_int_value {
-            if positive_int_value != Self::POSITIVE_INT_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_uint64(positive_int_value)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_uint64(positive_int_value)?;
         }
         let negative_int_value = self.negative_int_value;
         if let ::std::option::Option::Some(negative_int_value) = negative_int_value {
-            if negative_int_value != Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_int64(negative_int_value)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_int64(negative_int_value)?;
         }
         let double_value = self.double_value;
         if let ::std::option::Option::Some(double_value) = double_value {
-            if double_value != Self::DOUBLE_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[49])?;
-                output.write_double(double_value)?;
-            }
+            output.write_raw_tag_bytes(&[49])?;
+            output.write_double(double_value)?;
         }
         let string_value = &self.string_value;
         if let ::std::option::Option::Some(string_value) = string_value {
-            if string_value.as_slice() != Self::STRING_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[58])?;
-                output.write_bytes(string_value)?;
-            }
+            output.write_raw_tag_bytes(&[58])?;
+            output.write_bytes(string_value)?;
         }
         let aggregate_value = &self.aggregate_value;
         if let ::std::option::Option::Some(aggregate_value) = aggregate_value {
-            if aggregate_value != Self::AGGREGATE_VALUE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[66])?;
-                output.write_string(aggregate_value)?;
-            }
+            output.write_raw_tag_bytes(&[66])?;
+            output.write_string(aggregate_value)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -7036,7 +6752,7 @@ pub mod uninterpreted_option {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
                     10 => self.name_part = ::std::option::Option::Some(input.read_string()?),
-                    16 => self.is_extension = ::std::option::Option::Some(input.read_bool()?),
+                    16 | 18 => self.is_extension = ::std::option::Option::Some(input.read_bool()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -7046,17 +6762,13 @@ pub mod uninterpreted_option {
             let mut size = 0i32;
             let name_part = &self.name_part;
             if let ::std::option::Option::Some(name_part) = name_part {
-                if name_part != Self::NAME_PART_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(name_part);
-                }
+                size += 1;
+                size += crate::io::sizes::string(name_part);
             }
             let is_extension = self.is_extension;
             if let ::std::option::Option::Some(is_extension) = is_extension {
-                if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::bool(is_extension);
-                }
+                size += 1;
+                size += crate::io::sizes::bool(is_extension);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -7064,17 +6776,13 @@ pub mod uninterpreted_option {
         fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
             let name_part = &self.name_part;
             if let ::std::option::Option::Some(name_part) = name_part {
-                if name_part != Self::NAME_PART_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[10])?;
-                    output.write_string(name_part)?;
-                }
+                output.write_raw_tag_bytes(&[10])?;
+                output.write_string(name_part)?;
             }
             let is_extension = self.is_extension;
             if let ::std::option::Option::Some(is_extension) = is_extension {
-                if is_extension != Self::IS_EXTENSION_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_bool(is_extension)?;
-                }
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_bool(is_extension)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -7327,8 +7035,8 @@ pub mod source_code_info {
         fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    10 | 8 => self.path.add_entries(input, &LOCATION_PATH_CODEC)?,
-                    18 | 16 => self.span.add_entries(input, &LOCATION_SPAN_CODEC)?,
+                    8 | 10 => self.path.add_entries(input, &LOCATION_PATH_CODEC)?,
+                    16 | 18 => self.span.add_entries(input, &LOCATION_SPAN_CODEC)?,
                     26 => self.leading_comments = ::std::option::Option::Some(input.read_string()?),
                     34 => self.trailing_comments = ::std::option::Option::Some(input.read_string()?),
                     50 => self.leading_detached_comments.add_entries(input, &LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?,
@@ -7343,17 +7051,13 @@ pub mod source_code_info {
             size += self.span.calculate_size(&LOCATION_SPAN_CODEC);
             let leading_comments = &self.leading_comments;
             if let ::std::option::Option::Some(leading_comments) = leading_comments {
-                if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(leading_comments);
-                }
+                size += 1;
+                size += crate::io::sizes::string(leading_comments);
             }
             let trailing_comments = &self.trailing_comments;
             if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
-                if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(trailing_comments);
-                }
+                size += 1;
+                size += crate::io::sizes::string(trailing_comments);
             }
             size += self.leading_detached_comments.calculate_size(&LOCATION_LEADING_DETACHED_COMMENTS_CODEC);
             size += self.unknown_fields.calculate_size();
@@ -7364,17 +7068,13 @@ pub mod source_code_info {
             self.span.write_to(output, &LOCATION_SPAN_CODEC)?;
             let leading_comments = &self.leading_comments;
             if let ::std::option::Option::Some(leading_comments) = leading_comments {
-                if leading_comments != Self::LEADING_COMMENTS_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[26])?;
-                    output.write_string(leading_comments)?;
-                }
+                output.write_raw_tag_bytes(&[26])?;
+                output.write_string(leading_comments)?;
             }
             let trailing_comments = &self.trailing_comments;
             if let ::std::option::Option::Some(trailing_comments) = trailing_comments {
-                if trailing_comments != Self::TRAILING_COMMENTS_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[34])?;
-                    output.write_string(trailing_comments)?;
-                }
+                output.write_raw_tag_bytes(&[34])?;
+                output.write_string(trailing_comments)?;
             }
             self.leading_detached_comments.write_to(output, &LOCATION_LEADING_DETACHED_COMMENTS_CODEC)?;
             self.unknown_fields.write_to(output)?;
@@ -7710,10 +7410,10 @@ pub mod generated_code_info {
         fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    10 | 8 => self.path.add_entries(input, &ANNOTATION_PATH_CODEC)?,
+                    8 | 10 => self.path.add_entries(input, &ANNOTATION_PATH_CODEC)?,
                     18 => self.source_file = ::std::option::Option::Some(input.read_string()?),
-                    24 => self.begin = ::std::option::Option::Some(input.read_int32()?),
-                    32 => self.end = ::std::option::Option::Some(input.read_int32()?),
+                    24 | 26 => self.begin = ::std::option::Option::Some(input.read_int32()?),
+                    32 | 34 => self.end = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -7724,24 +7424,18 @@ pub mod generated_code_info {
             size += self.path.calculate_size(&ANNOTATION_PATH_CODEC);
             let source_file = &self.source_file;
             if let ::std::option::Option::Some(source_file) = source_file {
-                if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::string(source_file);
-                }
+                size += 1;
+                size += crate::io::sizes::string(source_file);
             }
             let begin = self.begin;
             if let ::std::option::Option::Some(begin) = begin {
-                if begin != Self::BEGIN_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(begin);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(begin);
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    size += 1;
-                    size += crate::io::sizes::int32(end);
-                }
+                size += 1;
+                size += crate::io::sizes::int32(end);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -7750,24 +7444,18 @@ pub mod generated_code_info {
             self.path.write_to(output, &ANNOTATION_PATH_CODEC)?;
             let source_file = &self.source_file;
             if let ::std::option::Option::Some(source_file) = source_file {
-                if source_file != Self::SOURCE_FILE_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[18])?;
-                    output.write_string(source_file)?;
-                }
+                output.write_raw_tag_bytes(&[18])?;
+                output.write_string(source_file)?;
             }
             let begin = self.begin;
             if let ::std::option::Option::Some(begin) = begin {
-                if begin != Self::BEGIN_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[24])?;
-                    output.write_int32(begin)?;
-                }
+                output.write_raw_tag_bytes(&[24])?;
+                output.write_int32(begin)?;
             }
             let end = self.end;
             if let ::std::option::Option::Some(end) = end {
-                if end != Self::END_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[32])?;
-                    output.write_int32(end)?;
-                }
+                output.write_raw_tag_bytes(&[32])?;
+                output.write_int32(end)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())

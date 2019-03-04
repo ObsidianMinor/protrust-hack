@@ -92,24 +92,24 @@ impl crate::CodedMessage for self::Value {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.kind = self::value::Kind::NullValue(input.read_enum_value()?),
-                17 => self.kind = self::value::Kind::NumberValue(input.read_double()?),
+                8 | 10 => self.kind = self::value::Kind::NullValue(input.read_enum_value()?),
+                17 | 18 => self.kind = self::value::Kind::NumberValue(input.read_double()?),
                 26 => self.kind = self::value::Kind::StringValue(input.read_string()?),
-                32 => self.kind = self::value::Kind::BoolValue(input.read_bool()?),
+                32 | 34 => self.kind = self::value::Kind::BoolValue(input.read_bool()?),
                 42 => 
                     if let self::value::Kind::StructValue(kind) = &mut self.kind {
-                        kind.merge_from(input)?;
+                        input.read_message(&mut **kind)?;
                     } else {
                         let mut kind = ::std::boxed::Box::new(<self::Struct as crate::LiteMessage>::new());
-                        kind.merge_from(input)?;
+                        input.read_message(&mut *kind)?;
                         self.kind = self::value::Kind::StructValue(kind)
                     },
                 50 => 
                     if let self::value::Kind::ListValue(kind) = &mut self.kind {
-                        kind.merge_from(input)?;
+                        input.read_message(&mut **kind)?;
                     } else {
                         let mut kind = ::std::boxed::Box::new(<self::ListValue as crate::LiteMessage>::new());
-                        kind.merge_from(input)?;
+                        input.read_message(&mut *kind)?;
                         self.kind = self::value::Kind::ListValue(kind)
                     },
                 _ => self.unknown_fields.merge_from(tag, input)?

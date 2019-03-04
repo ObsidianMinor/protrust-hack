@@ -226,84 +226,84 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.optional_int64 = ::std::option::Option::Some(input.read_int64()?),
-                24 => self.optional_uint32 = ::std::option::Option::Some(input.read_uint32()?),
-                32 => self.optional_uint64 = ::std::option::Option::Some(input.read_uint64()?),
-                40 => self.optional_sint32 = ::std::option::Option::Some(input.read_sint32()?),
-                48 => self.optional_sint64 = ::std::option::Option::Some(input.read_sint64()?),
-                61 => self.optional_fixed32 = ::std::option::Option::Some(input.read_fixed32()?),
-                65 => self.optional_fixed64 = ::std::option::Option::Some(input.read_fixed64()?),
-                77 => self.optional_sfixed32 = ::std::option::Option::Some(input.read_sfixed32()?),
-                81 => self.optional_sfixed64 = ::std::option::Option::Some(input.read_sfixed64()?),
-                93 => self.optional_float = ::std::option::Option::Some(input.read_float()?),
-                97 => self.optional_double = ::std::option::Option::Some(input.read_double()?),
-                104 => self.optional_bool = ::std::option::Option::Some(input.read_bool()?),
+                8 | 10 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.optional_int64 = ::std::option::Option::Some(input.read_int64()?),
+                24 | 26 => self.optional_uint32 = ::std::option::Option::Some(input.read_uint32()?),
+                32 | 34 => self.optional_uint64 = ::std::option::Option::Some(input.read_uint64()?),
+                40 | 42 => self.optional_sint32 = ::std::option::Option::Some(input.read_sint32()?),
+                48 | 50 => self.optional_sint64 = ::std::option::Option::Some(input.read_sint64()?),
+                61 | 58 => self.optional_fixed32 = ::std::option::Option::Some(input.read_fixed32()?),
+                65 | 66 => self.optional_fixed64 = ::std::option::Option::Some(input.read_fixed64()?),
+                77 | 74 => self.optional_sfixed32 = ::std::option::Option::Some(input.read_sfixed32()?),
+                81 | 82 => self.optional_sfixed64 = ::std::option::Option::Some(input.read_sfixed64()?),
+                93 | 90 => self.optional_float = ::std::option::Option::Some(input.read_float()?),
+                97 | 98 => self.optional_double = ::std::option::Option::Some(input.read_double()?),
+                104 | 106 => self.optional_bool = ::std::option::Option::Some(input.read_bool()?),
                 114 => self.optional_string = ::std::option::Option::Some(input.read_string()?),
                 122 => self.optional_bytes = ::std::option::Option::Some(input.read_bytes()?),
-                131 => input.read_message(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                131 => input.read_group(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 146 => input.read_message(&mut **self.optional_nested_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 154 => input.read_message(&mut **self.optional_foreign_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 162 => input.read_message(&mut **self.optional_import_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                168 => self.optional_nested_enum = ::std::option::Option::Some(input.read_enum_value()?),
-                176 => self.optional_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
-                184 => self.optional_import_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                168 | 170 => self.optional_nested_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                176 | 178 => self.optional_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                184 | 186 => self.optional_import_enum = ::std::option::Option::Some(input.read_enum_value()?),
                 194 => self.optional_string_piece = ::std::option::Option::Some(input.read_string()?),
                 202 => self.optional_cord = ::std::option::Option::Some(input.read_string()?),
                 210 => input.read_message(&mut **self.optional_public_import_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 218 => input.read_message(&mut **self.optional_lazy_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                248 => self.repeated_int32.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT32_CODEC)?,
-                256 => self.repeated_int64.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT64_CODEC)?,
-                264 => self.repeated_uint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT32_CODEC)?,
-                272 => self.repeated_uint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT64_CODEC)?,
-                280 => self.repeated_sint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT32_CODEC)?,
-                288 => self.repeated_sint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT64_CODEC)?,
-                301 => self.repeated_fixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED32_CODEC)?,
-                305 => self.repeated_fixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED64_CODEC)?,
-                317 => self.repeated_sfixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED32_CODEC)?,
-                321 => self.repeated_sfixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED64_CODEC)?,
-                333 => self.repeated_float.add_entries(input, &TEST_ALL_TYPES_REPEATED_FLOAT_CODEC)?,
-                337 => self.repeated_double.add_entries(input, &TEST_ALL_TYPES_REPEATED_DOUBLE_CODEC)?,
-                344 => self.repeated_bool.add_entries(input, &TEST_ALL_TYPES_REPEATED_BOOL_CODEC)?,
+                248 | 250 => self.repeated_int32.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT32_CODEC)?,
+                256 | 258 => self.repeated_int64.add_entries(input, &TEST_ALL_TYPES_REPEATED_INT64_CODEC)?,
+                264 | 266 => self.repeated_uint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT32_CODEC)?,
+                272 | 274 => self.repeated_uint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_UINT64_CODEC)?,
+                280 | 282 => self.repeated_sint32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT32_CODEC)?,
+                288 | 290 => self.repeated_sint64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SINT64_CODEC)?,
+                301 | 298 => self.repeated_fixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED32_CODEC)?,
+                305 | 306 => self.repeated_fixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_FIXED64_CODEC)?,
+                317 | 314 => self.repeated_sfixed32.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED32_CODEC)?,
+                321 | 322 => self.repeated_sfixed64.add_entries(input, &TEST_ALL_TYPES_REPEATED_SFIXED64_CODEC)?,
+                333 | 330 => self.repeated_float.add_entries(input, &TEST_ALL_TYPES_REPEATED_FLOAT_CODEC)?,
+                337 | 338 => self.repeated_double.add_entries(input, &TEST_ALL_TYPES_REPEATED_DOUBLE_CODEC)?,
+                344 | 346 => self.repeated_bool.add_entries(input, &TEST_ALL_TYPES_REPEATED_BOOL_CODEC)?,
                 354 => self.repeated_string.add_entries(input, &TEST_ALL_TYPES_REPEATED_STRING_CODEC)?,
                 362 => self.repeated_bytes.add_entries(input, &TEST_ALL_TYPES_REPEATED_BYTES_CODEC)?,
                 371 => self.repeatedgroup.add_entries(input, &TEST_ALL_TYPES_REPEATEDGROUP_CODEC)?,
                 386 => self.repeated_nested_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_MESSAGE_CODEC)?,
                 394 => self.repeated_foreign_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_MESSAGE_CODEC)?,
                 402 => self.repeated_import_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_IMPORT_MESSAGE_CODEC)?,
-                408 => self.repeated_nested_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
-                416 => self.repeated_foreign_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_ENUM_CODEC)?,
-                424 => self.repeated_import_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_IMPORT_ENUM_CODEC)?,
+                408 | 410 => self.repeated_nested_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_NESTED_ENUM_CODEC)?,
+                416 | 418 => self.repeated_foreign_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_FOREIGN_ENUM_CODEC)?,
+                424 | 426 => self.repeated_import_enum.add_entries(input, &TEST_ALL_TYPES_REPEATED_IMPORT_ENUM_CODEC)?,
                 434 => self.repeated_string_piece.add_entries(input, &TEST_ALL_TYPES_REPEATED_STRING_PIECE_CODEC)?,
                 442 => self.repeated_cord.add_entries(input, &TEST_ALL_TYPES_REPEATED_CORD_CODEC)?,
                 458 => self.repeated_lazy_message.add_entries(input, &TEST_ALL_TYPES_REPEATED_LAZY_MESSAGE_CODEC)?,
-                488 => self.default_int32 = ::std::option::Option::Some(input.read_int32()?),
-                496 => self.default_int64 = ::std::option::Option::Some(input.read_int64()?),
-                504 => self.default_uint32 = ::std::option::Option::Some(input.read_uint32()?),
-                512 => self.default_uint64 = ::std::option::Option::Some(input.read_uint64()?),
-                520 => self.default_sint32 = ::std::option::Option::Some(input.read_sint32()?),
-                528 => self.default_sint64 = ::std::option::Option::Some(input.read_sint64()?),
-                541 => self.default_fixed32 = ::std::option::Option::Some(input.read_fixed32()?),
-                545 => self.default_fixed64 = ::std::option::Option::Some(input.read_fixed64()?),
-                557 => self.default_sfixed32 = ::std::option::Option::Some(input.read_sfixed32()?),
-                561 => self.default_sfixed64 = ::std::option::Option::Some(input.read_sfixed64()?),
-                573 => self.default_float = ::std::option::Option::Some(input.read_float()?),
-                577 => self.default_double = ::std::option::Option::Some(input.read_double()?),
-                584 => self.default_bool = ::std::option::Option::Some(input.read_bool()?),
+                488 | 490 => self.default_int32 = ::std::option::Option::Some(input.read_int32()?),
+                496 | 498 => self.default_int64 = ::std::option::Option::Some(input.read_int64()?),
+                504 | 506 => self.default_uint32 = ::std::option::Option::Some(input.read_uint32()?),
+                512 | 514 => self.default_uint64 = ::std::option::Option::Some(input.read_uint64()?),
+                520 | 522 => self.default_sint32 = ::std::option::Option::Some(input.read_sint32()?),
+                528 | 530 => self.default_sint64 = ::std::option::Option::Some(input.read_sint64()?),
+                541 | 538 => self.default_fixed32 = ::std::option::Option::Some(input.read_fixed32()?),
+                545 | 546 => self.default_fixed64 = ::std::option::Option::Some(input.read_fixed64()?),
+                557 | 554 => self.default_sfixed32 = ::std::option::Option::Some(input.read_sfixed32()?),
+                561 | 562 => self.default_sfixed64 = ::std::option::Option::Some(input.read_sfixed64()?),
+                573 | 570 => self.default_float = ::std::option::Option::Some(input.read_float()?),
+                577 | 578 => self.default_double = ::std::option::Option::Some(input.read_double()?),
+                584 | 586 => self.default_bool = ::std::option::Option::Some(input.read_bool()?),
                 594 => self.default_string = ::std::option::Option::Some(input.read_string()?),
                 602 => self.default_bytes = ::std::option::Option::Some(input.read_bytes()?),
-                648 => self.default_nested_enum = ::std::option::Option::Some(input.read_enum_value()?),
-                656 => self.default_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
-                664 => self.default_import_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                648 | 650 => self.default_nested_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                656 | 658 => self.default_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                664 | 666 => self.default_import_enum = ::std::option::Option::Some(input.read_enum_value()?),
                 674 => self.default_string_piece = ::std::option::Option::Some(input.read_string()?),
                 682 => self.default_cord = ::std::option::Option::Some(input.read_string()?),
-                888 => self.oneof_field = self::test_all_types::OneofField::OneofUint32(input.read_uint32()?),
+                888 | 890 => self.oneof_field = self::test_all_types::OneofField::OneofUint32(input.read_uint32()?),
                 898 => 
                     if let self::test_all_types::OneofField::OneofNestedMessage(oneof_field) = &mut self.oneof_field {
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut **oneof_field)?;
                     } else {
                         let mut oneof_field = ::std::boxed::Box::new(<self::test_all_types::NestedMessage as ::protrust::LiteMessage>::new());
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut *oneof_field)?;
                         self.oneof_field = self::test_all_types::OneofField::OneofNestedMessage(oneof_field)
                     },
                 906 => self.oneof_field = self::test_all_types::OneofField::OneofString(input.read_string()?),
@@ -317,113 +317,84 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
         let mut size = 0i32;
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(optional_int32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(optional_int32);
         }
         let optional_int64 = self.optional_int64;
         if let ::std::option::Option::Some(optional_int64) = optional_int64 {
-            if optional_int64 != Self::OPTIONAL_INT64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int64(optional_int64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int64(optional_int64);
         }
         let optional_uint32 = self.optional_uint32;
         if let ::std::option::Option::Some(optional_uint32) = optional_uint32 {
-            if optional_uint32 != Self::OPTIONAL_UINT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint32(optional_uint32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint32(optional_uint32);
         }
         let optional_uint64 = self.optional_uint64;
         if let ::std::option::Option::Some(optional_uint64) = optional_uint64 {
-            if optional_uint64 != Self::OPTIONAL_UINT64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint64(optional_uint64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint64(optional_uint64);
         }
         let optional_sint32 = self.optional_sint32;
         if let ::std::option::Option::Some(optional_sint32) = optional_sint32 {
-            if optional_sint32 != Self::OPTIONAL_SINT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::sint32(optional_sint32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::sint32(optional_sint32);
         }
         let optional_sint64 = self.optional_sint64;
         if let ::std::option::Option::Some(optional_sint64) = optional_sint64 {
-            if optional_sint64 != Self::OPTIONAL_SINT64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::sint64(optional_sint64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::sint64(optional_sint64);
         }
         let optional_fixed32 = self.optional_fixed32;
         if let ::std::option::Option::Some(optional_fixed32) = optional_fixed32 {
-            if optional_fixed32 != Self::OPTIONAL_FIXED32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::fixed32(optional_fixed32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::fixed32(optional_fixed32);
         }
         let optional_fixed64 = self.optional_fixed64;
         if let ::std::option::Option::Some(optional_fixed64) = optional_fixed64 {
-            if optional_fixed64 != Self::OPTIONAL_FIXED64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::fixed64(optional_fixed64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::fixed64(optional_fixed64);
         }
         let optional_sfixed32 = self.optional_sfixed32;
         if let ::std::option::Option::Some(optional_sfixed32) = optional_sfixed32 {
-            if optional_sfixed32 != Self::OPTIONAL_SFIXED32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::sfixed32(optional_sfixed32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::sfixed32(optional_sfixed32);
         }
         let optional_sfixed64 = self.optional_sfixed64;
         if let ::std::option::Option::Some(optional_sfixed64) = optional_sfixed64 {
-            if optional_sfixed64 != Self::OPTIONAL_SFIXED64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::sfixed64(optional_sfixed64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::sfixed64(optional_sfixed64);
         }
         let optional_float = self.optional_float;
         if let ::std::option::Option::Some(optional_float) = optional_float {
-            if optional_float != Self::OPTIONAL_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(optional_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(optional_float);
         }
         let optional_double = self.optional_double;
         if let ::std::option::Option::Some(optional_double) = optional_double {
-            if optional_double != Self::OPTIONAL_DOUBLE_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::double(optional_double);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::double(optional_double);
         }
         let optional_bool = self.optional_bool;
         if let ::std::option::Option::Some(optional_bool) = optional_bool {
-            if optional_bool != Self::OPTIONAL_BOOL_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::bool(optional_bool);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::bool(optional_bool);
         }
         let optional_string = &self.optional_string;
         if let ::std::option::Option::Some(optional_string) = optional_string {
-            if optional_string != Self::OPTIONAL_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(optional_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(optional_string);
         }
         let optional_bytes = &self.optional_bytes;
         if let ::std::option::Option::Some(optional_bytes) = optional_bytes {
-            if optional_bytes.as_slice() != Self::OPTIONAL_BYTES_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::bytes(optional_bytes);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::bytes(optional_bytes);
         }
         let optionalgroup = &self.optionalgroup;
         if let ::std::option::Option::Some(optionalgroup) = optionalgroup {
             size += 2;
             size += ::protrust::io::sizes::group(&**optionalgroup);
+            size += 2;
         }
         let optional_nested_message = &self.optional_nested_message;
         if let ::std::option::Option::Some(optional_nested_message) = optional_nested_message {
@@ -442,38 +413,28 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
         }
         let optional_nested_enum = self.optional_nested_enum;
         if let ::std::option::Option::Some(optional_nested_enum) = optional_nested_enum {
-            if optional_nested_enum != Self::OPTIONAL_NESTED_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(optional_nested_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(optional_nested_enum);
         }
         let optional_foreign_enum = self.optional_foreign_enum;
         if let ::std::option::Option::Some(optional_foreign_enum) = optional_foreign_enum {
-            if optional_foreign_enum != Self::OPTIONAL_FOREIGN_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(optional_foreign_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(optional_foreign_enum);
         }
         let optional_import_enum = self.optional_import_enum;
         if let ::std::option::Option::Some(optional_import_enum) = optional_import_enum {
-            if optional_import_enum != Self::OPTIONAL_IMPORT_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(optional_import_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(optional_import_enum);
         }
         let optional_string_piece = &self.optional_string_piece;
         if let ::std::option::Option::Some(optional_string_piece) = optional_string_piece {
-            if optional_string_piece != Self::OPTIONAL_STRING_PIECE_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(optional_string_piece);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(optional_string_piece);
         }
         let optional_cord = &self.optional_cord;
         if let ::std::option::Option::Some(optional_cord) = optional_cord {
-            if optional_cord != Self::OPTIONAL_CORD_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(optional_cord);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(optional_cord);
         }
         let optional_public_import_message = &self.optional_public_import_message;
         if let ::std::option::Option::Some(optional_public_import_message) = optional_public_import_message {
@@ -512,143 +473,103 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
         size += self.repeated_lazy_message.calculate_size(&TEST_ALL_TYPES_REPEATED_LAZY_MESSAGE_CODEC);
         let default_int32 = self.default_int32;
         if let ::std::option::Option::Some(default_int32) = default_int32 {
-            if default_int32 != Self::DEFAULT_INT32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(default_int32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(default_int32);
         }
         let default_int64 = self.default_int64;
         if let ::std::option::Option::Some(default_int64) = default_int64 {
-            if default_int64 != Self::DEFAULT_INT64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int64(default_int64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int64(default_int64);
         }
         let default_uint32 = self.default_uint32;
         if let ::std::option::Option::Some(default_uint32) = default_uint32 {
-            if default_uint32 != Self::DEFAULT_UINT32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::uint32(default_uint32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::uint32(default_uint32);
         }
         let default_uint64 = self.default_uint64;
         if let ::std::option::Option::Some(default_uint64) = default_uint64 {
-            if default_uint64 != Self::DEFAULT_UINT64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::uint64(default_uint64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::uint64(default_uint64);
         }
         let default_sint32 = self.default_sint32;
         if let ::std::option::Option::Some(default_sint32) = default_sint32 {
-            if default_sint32 != Self::DEFAULT_SINT32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::sint32(default_sint32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::sint32(default_sint32);
         }
         let default_sint64 = self.default_sint64;
         if let ::std::option::Option::Some(default_sint64) = default_sint64 {
-            if default_sint64 != Self::DEFAULT_SINT64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::sint64(default_sint64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::sint64(default_sint64);
         }
         let default_fixed32 = self.default_fixed32;
         if let ::std::option::Option::Some(default_fixed32) = default_fixed32 {
-            if default_fixed32 != Self::DEFAULT_FIXED32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::fixed32(default_fixed32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::fixed32(default_fixed32);
         }
         let default_fixed64 = self.default_fixed64;
         if let ::std::option::Option::Some(default_fixed64) = default_fixed64 {
-            if default_fixed64 != Self::DEFAULT_FIXED64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::fixed64(default_fixed64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::fixed64(default_fixed64);
         }
         let default_sfixed32 = self.default_sfixed32;
         if let ::std::option::Option::Some(default_sfixed32) = default_sfixed32 {
-            if default_sfixed32 != Self::DEFAULT_SFIXED32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::sfixed32(default_sfixed32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::sfixed32(default_sfixed32);
         }
         let default_sfixed64 = self.default_sfixed64;
         if let ::std::option::Option::Some(default_sfixed64) = default_sfixed64 {
-            if default_sfixed64 != Self::DEFAULT_SFIXED64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::sfixed64(default_sfixed64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::sfixed64(default_sfixed64);
         }
         let default_float = self.default_float;
         if let ::std::option::Option::Some(default_float) = default_float {
-            if default_float != Self::DEFAULT_FLOAT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::float(default_float);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::float(default_float);
         }
         let default_double = self.default_double;
         if let ::std::option::Option::Some(default_double) = default_double {
-            if default_double != Self::DEFAULT_DOUBLE_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::double(default_double);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::double(default_double);
         }
         let default_bool = self.default_bool;
         if let ::std::option::Option::Some(default_bool) = default_bool {
-            if default_bool != Self::DEFAULT_BOOL_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::bool(default_bool);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::bool(default_bool);
         }
         let default_string = &self.default_string;
         if let ::std::option::Option::Some(default_string) = default_string {
-            if default_string != Self::DEFAULT_STRING_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(default_string);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(default_string);
         }
         let default_bytes = &self.default_bytes;
         if let ::std::option::Option::Some(default_bytes) = default_bytes {
-            if default_bytes.as_slice() != Self::DEFAULT_BYTES_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::bytes(default_bytes);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::bytes(default_bytes);
         }
         let default_nested_enum = self.default_nested_enum;
         if let ::std::option::Option::Some(default_nested_enum) = default_nested_enum {
-            if default_nested_enum != Self::DEFAULT_NESTED_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(default_nested_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(default_nested_enum);
         }
         let default_foreign_enum = self.default_foreign_enum;
         if let ::std::option::Option::Some(default_foreign_enum) = default_foreign_enum {
-            if default_foreign_enum != Self::DEFAULT_FOREIGN_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(default_foreign_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(default_foreign_enum);
         }
         let default_import_enum = self.default_import_enum;
         if let ::std::option::Option::Some(default_import_enum) = default_import_enum {
-            if default_import_enum != Self::DEFAULT_IMPORT_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(default_import_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(default_import_enum);
         }
         let default_string_piece = &self.default_string_piece;
         if let ::std::option::Option::Some(default_string_piece) = default_string_piece {
-            if default_string_piece != Self::DEFAULT_STRING_PIECE_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(default_string_piece);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(default_string_piece);
         }
         let default_cord = &self.default_cord;
         if let ::std::option::Option::Some(default_cord) = default_cord {
-            if default_cord != Self::DEFAULT_CORD_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(default_cord);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(default_cord);
         }
         if let self::test_all_types::OneofField::OneofUint32(oneof_field) = self.oneof_field {
             size += 2;
@@ -672,108 +593,78 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(optional_int32)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(optional_int32)?;
         }
         let optional_int64 = self.optional_int64;
         if let ::std::option::Option::Some(optional_int64) = optional_int64 {
-            if optional_int64 != Self::OPTIONAL_INT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int64(optional_int64)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int64(optional_int64)?;
         }
         let optional_uint32 = self.optional_uint32;
         if let ::std::option::Option::Some(optional_uint32) = optional_uint32 {
-            if optional_uint32 != Self::OPTIONAL_UINT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_uint32(optional_uint32)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_uint32(optional_uint32)?;
         }
         let optional_uint64 = self.optional_uint64;
         if let ::std::option::Option::Some(optional_uint64) = optional_uint64 {
-            if optional_uint64 != Self::OPTIONAL_UINT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_uint64(optional_uint64)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_uint64(optional_uint64)?;
         }
         let optional_sint32 = self.optional_sint32;
         if let ::std::option::Option::Some(optional_sint32) = optional_sint32 {
-            if optional_sint32 != Self::OPTIONAL_SINT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_sint32(optional_sint32)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_sint32(optional_sint32)?;
         }
         let optional_sint64 = self.optional_sint64;
         if let ::std::option::Option::Some(optional_sint64) = optional_sint64 {
-            if optional_sint64 != Self::OPTIONAL_SINT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_sint64(optional_sint64)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_sint64(optional_sint64)?;
         }
         let optional_fixed32 = self.optional_fixed32;
         if let ::std::option::Option::Some(optional_fixed32) = optional_fixed32 {
-            if optional_fixed32 != Self::OPTIONAL_FIXED32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[61])?;
-                output.write_fixed32(optional_fixed32)?;
-            }
+            output.write_raw_tag_bytes(&[61])?;
+            output.write_fixed32(optional_fixed32)?;
         }
         let optional_fixed64 = self.optional_fixed64;
         if let ::std::option::Option::Some(optional_fixed64) = optional_fixed64 {
-            if optional_fixed64 != Self::OPTIONAL_FIXED64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[65])?;
-                output.write_fixed64(optional_fixed64)?;
-            }
+            output.write_raw_tag_bytes(&[65])?;
+            output.write_fixed64(optional_fixed64)?;
         }
         let optional_sfixed32 = self.optional_sfixed32;
         if let ::std::option::Option::Some(optional_sfixed32) = optional_sfixed32 {
-            if optional_sfixed32 != Self::OPTIONAL_SFIXED32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[77])?;
-                output.write_sfixed32(optional_sfixed32)?;
-            }
+            output.write_raw_tag_bytes(&[77])?;
+            output.write_sfixed32(optional_sfixed32)?;
         }
         let optional_sfixed64 = self.optional_sfixed64;
         if let ::std::option::Option::Some(optional_sfixed64) = optional_sfixed64 {
-            if optional_sfixed64 != Self::OPTIONAL_SFIXED64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[81])?;
-                output.write_sfixed64(optional_sfixed64)?;
-            }
+            output.write_raw_tag_bytes(&[81])?;
+            output.write_sfixed64(optional_sfixed64)?;
         }
         let optional_float = self.optional_float;
         if let ::std::option::Option::Some(optional_float) = optional_float {
-            if optional_float != Self::OPTIONAL_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[93])?;
-                output.write_float(optional_float)?;
-            }
+            output.write_raw_tag_bytes(&[93])?;
+            output.write_float(optional_float)?;
         }
         let optional_double = self.optional_double;
         if let ::std::option::Option::Some(optional_double) = optional_double {
-            if optional_double != Self::OPTIONAL_DOUBLE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[97])?;
-                output.write_double(optional_double)?;
-            }
+            output.write_raw_tag_bytes(&[97])?;
+            output.write_double(optional_double)?;
         }
         let optional_bool = self.optional_bool;
         if let ::std::option::Option::Some(optional_bool) = optional_bool {
-            if optional_bool != Self::OPTIONAL_BOOL_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[104])?;
-                output.write_bool(optional_bool)?;
-            }
+            output.write_raw_tag_bytes(&[104])?;
+            output.write_bool(optional_bool)?;
         }
         let optional_string = &self.optional_string;
         if let ::std::option::Option::Some(optional_string) = optional_string {
-            if optional_string != Self::OPTIONAL_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[114])?;
-                output.write_string(optional_string)?;
-            }
+            output.write_raw_tag_bytes(&[114])?;
+            output.write_string(optional_string)?;
         }
         let optional_bytes = &self.optional_bytes;
         if let ::std::option::Option::Some(optional_bytes) = optional_bytes {
-            if optional_bytes.as_slice() != Self::OPTIONAL_BYTES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[122])?;
-                output.write_bytes(optional_bytes)?;
-            }
+            output.write_raw_tag_bytes(&[122])?;
+            output.write_bytes(optional_bytes)?;
         }
         let optionalgroup = &self.optionalgroup;
         if let ::std::option::Option::Some(optionalgroup) = optionalgroup {
@@ -798,38 +689,28 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
         }
         let optional_nested_enum = self.optional_nested_enum;
         if let ::std::option::Option::Some(optional_nested_enum) = optional_nested_enum {
-            if optional_nested_enum != Self::OPTIONAL_NESTED_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[168, 1])?;
-                output.write_enum_value(optional_nested_enum)?;
-            }
+            output.write_raw_tag_bytes(&[168, 1])?;
+            output.write_enum_value(optional_nested_enum)?;
         }
         let optional_foreign_enum = self.optional_foreign_enum;
         if let ::std::option::Option::Some(optional_foreign_enum) = optional_foreign_enum {
-            if optional_foreign_enum != Self::OPTIONAL_FOREIGN_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[176, 1])?;
-                output.write_enum_value(optional_foreign_enum)?;
-            }
+            output.write_raw_tag_bytes(&[176, 1])?;
+            output.write_enum_value(optional_foreign_enum)?;
         }
         let optional_import_enum = self.optional_import_enum;
         if let ::std::option::Option::Some(optional_import_enum) = optional_import_enum {
-            if optional_import_enum != Self::OPTIONAL_IMPORT_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[184, 1])?;
-                output.write_enum_value(optional_import_enum)?;
-            }
+            output.write_raw_tag_bytes(&[184, 1])?;
+            output.write_enum_value(optional_import_enum)?;
         }
         let optional_string_piece = &self.optional_string_piece;
         if let ::std::option::Option::Some(optional_string_piece) = optional_string_piece {
-            if optional_string_piece != Self::OPTIONAL_STRING_PIECE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[194, 1])?;
-                output.write_string(optional_string_piece)?;
-            }
+            output.write_raw_tag_bytes(&[194, 1])?;
+            output.write_string(optional_string_piece)?;
         }
         let optional_cord = &self.optional_cord;
         if let ::std::option::Option::Some(optional_cord) = optional_cord {
-            if optional_cord != Self::OPTIONAL_CORD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[202, 1])?;
-                output.write_string(optional_cord)?;
-            }
+            output.write_raw_tag_bytes(&[202, 1])?;
+            output.write_string(optional_cord)?;
         }
         let optional_public_import_message = &self.optional_public_import_message;
         if let ::std::option::Option::Some(optional_public_import_message) = optional_public_import_message {
@@ -868,143 +749,103 @@ impl ::protrust::CodedMessage for self::TestAllTypes {
         self.repeated_lazy_message.write_to(output, &TEST_ALL_TYPES_REPEATED_LAZY_MESSAGE_CODEC)?;
         let default_int32 = self.default_int32;
         if let ::std::option::Option::Some(default_int32) = default_int32 {
-            if default_int32 != Self::DEFAULT_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[232, 3])?;
-                output.write_int32(default_int32)?;
-            }
+            output.write_raw_tag_bytes(&[232, 3])?;
+            output.write_int32(default_int32)?;
         }
         let default_int64 = self.default_int64;
         if let ::std::option::Option::Some(default_int64) = default_int64 {
-            if default_int64 != Self::DEFAULT_INT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[240, 3])?;
-                output.write_int64(default_int64)?;
-            }
+            output.write_raw_tag_bytes(&[240, 3])?;
+            output.write_int64(default_int64)?;
         }
         let default_uint32 = self.default_uint32;
         if let ::std::option::Option::Some(default_uint32) = default_uint32 {
-            if default_uint32 != Self::DEFAULT_UINT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[248, 3])?;
-                output.write_uint32(default_uint32)?;
-            }
+            output.write_raw_tag_bytes(&[248, 3])?;
+            output.write_uint32(default_uint32)?;
         }
         let default_uint64 = self.default_uint64;
         if let ::std::option::Option::Some(default_uint64) = default_uint64 {
-            if default_uint64 != Self::DEFAULT_UINT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[128, 4])?;
-                output.write_uint64(default_uint64)?;
-            }
+            output.write_raw_tag_bytes(&[128, 4])?;
+            output.write_uint64(default_uint64)?;
         }
         let default_sint32 = self.default_sint32;
         if let ::std::option::Option::Some(default_sint32) = default_sint32 {
-            if default_sint32 != Self::DEFAULT_SINT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 4])?;
-                output.write_sint32(default_sint32)?;
-            }
+            output.write_raw_tag_bytes(&[136, 4])?;
+            output.write_sint32(default_sint32)?;
         }
         let default_sint64 = self.default_sint64;
         if let ::std::option::Option::Some(default_sint64) = default_sint64 {
-            if default_sint64 != Self::DEFAULT_SINT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 4])?;
-                output.write_sint64(default_sint64)?;
-            }
+            output.write_raw_tag_bytes(&[144, 4])?;
+            output.write_sint64(default_sint64)?;
         }
         let default_fixed32 = self.default_fixed32;
         if let ::std::option::Option::Some(default_fixed32) = default_fixed32 {
-            if default_fixed32 != Self::DEFAULT_FIXED32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[157, 4])?;
-                output.write_fixed32(default_fixed32)?;
-            }
+            output.write_raw_tag_bytes(&[157, 4])?;
+            output.write_fixed32(default_fixed32)?;
         }
         let default_fixed64 = self.default_fixed64;
         if let ::std::option::Option::Some(default_fixed64) = default_fixed64 {
-            if default_fixed64 != Self::DEFAULT_FIXED64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[161, 4])?;
-                output.write_fixed64(default_fixed64)?;
-            }
+            output.write_raw_tag_bytes(&[161, 4])?;
+            output.write_fixed64(default_fixed64)?;
         }
         let default_sfixed32 = self.default_sfixed32;
         if let ::std::option::Option::Some(default_sfixed32) = default_sfixed32 {
-            if default_sfixed32 != Self::DEFAULT_SFIXED32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[173, 4])?;
-                output.write_sfixed32(default_sfixed32)?;
-            }
+            output.write_raw_tag_bytes(&[173, 4])?;
+            output.write_sfixed32(default_sfixed32)?;
         }
         let default_sfixed64 = self.default_sfixed64;
         if let ::std::option::Option::Some(default_sfixed64) = default_sfixed64 {
-            if default_sfixed64 != Self::DEFAULT_SFIXED64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[177, 4])?;
-                output.write_sfixed64(default_sfixed64)?;
-            }
+            output.write_raw_tag_bytes(&[177, 4])?;
+            output.write_sfixed64(default_sfixed64)?;
         }
         let default_float = self.default_float;
         if let ::std::option::Option::Some(default_float) = default_float {
-            if default_float != Self::DEFAULT_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[189, 4])?;
-                output.write_float(default_float)?;
-            }
+            output.write_raw_tag_bytes(&[189, 4])?;
+            output.write_float(default_float)?;
         }
         let default_double = self.default_double;
         if let ::std::option::Option::Some(default_double) = default_double {
-            if default_double != Self::DEFAULT_DOUBLE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[193, 4])?;
-                output.write_double(default_double)?;
-            }
+            output.write_raw_tag_bytes(&[193, 4])?;
+            output.write_double(default_double)?;
         }
         let default_bool = self.default_bool;
         if let ::std::option::Option::Some(default_bool) = default_bool {
-            if default_bool != Self::DEFAULT_BOOL_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[200, 4])?;
-                output.write_bool(default_bool)?;
-            }
+            output.write_raw_tag_bytes(&[200, 4])?;
+            output.write_bool(default_bool)?;
         }
         let default_string = &self.default_string;
         if let ::std::option::Option::Some(default_string) = default_string {
-            if default_string != Self::DEFAULT_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[210, 4])?;
-                output.write_string(default_string)?;
-            }
+            output.write_raw_tag_bytes(&[210, 4])?;
+            output.write_string(default_string)?;
         }
         let default_bytes = &self.default_bytes;
         if let ::std::option::Option::Some(default_bytes) = default_bytes {
-            if default_bytes.as_slice() != Self::DEFAULT_BYTES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[218, 4])?;
-                output.write_bytes(default_bytes)?;
-            }
+            output.write_raw_tag_bytes(&[218, 4])?;
+            output.write_bytes(default_bytes)?;
         }
         let default_nested_enum = self.default_nested_enum;
         if let ::std::option::Option::Some(default_nested_enum) = default_nested_enum {
-            if default_nested_enum != Self::DEFAULT_NESTED_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 5])?;
-                output.write_enum_value(default_nested_enum)?;
-            }
+            output.write_raw_tag_bytes(&[136, 5])?;
+            output.write_enum_value(default_nested_enum)?;
         }
         let default_foreign_enum = self.default_foreign_enum;
         if let ::std::option::Option::Some(default_foreign_enum) = default_foreign_enum {
-            if default_foreign_enum != Self::DEFAULT_FOREIGN_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 5])?;
-                output.write_enum_value(default_foreign_enum)?;
-            }
+            output.write_raw_tag_bytes(&[144, 5])?;
+            output.write_enum_value(default_foreign_enum)?;
         }
         let default_import_enum = self.default_import_enum;
         if let ::std::option::Option::Some(default_import_enum) = default_import_enum {
-            if default_import_enum != Self::DEFAULT_IMPORT_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[152, 5])?;
-                output.write_enum_value(default_import_enum)?;
-            }
+            output.write_raw_tag_bytes(&[152, 5])?;
+            output.write_enum_value(default_import_enum)?;
         }
         let default_string_piece = &self.default_string_piece;
         if let ::std::option::Option::Some(default_string_piece) = default_string_piece {
-            if default_string_piece != Self::DEFAULT_STRING_PIECE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[162, 5])?;
-                output.write_string(default_string_piece)?;
-            }
+            output.write_raw_tag_bytes(&[162, 5])?;
+            output.write_string(default_string_piece)?;
         }
         let default_cord = &self.default_cord;
         if let ::std::option::Option::Some(default_cord) = default_cord {
-            if default_cord != Self::DEFAULT_CORD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[170, 5])?;
-                output.write_string(default_cord)?;
-            }
+            output.write_raw_tag_bytes(&[170, 5])?;
+            output.write_string(default_cord)?;
         }
         if let self::test_all_types::OneofField::OneofUint32(oneof_field) = self.oneof_field {
             output.write_raw_tag_bytes(&[248, 6])?;
@@ -3375,7 +3216,7 @@ pub mod test_all_types {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.bb = ::std::option::Option::Some(input.read_int32()?),
+                    8 | 10 => self.bb = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -3385,10 +3226,8 @@ pub mod test_all_types {
             let mut size = 0i32;
             let bb = self.bb;
             if let ::std::option::Option::Some(bb) = bb {
-                if bb != Self::BB_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(bb);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(bb);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -3396,10 +3235,8 @@ pub mod test_all_types {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let bb = self.bb;
             if let ::std::option::Option::Some(bb) = bb {
-                if bb != Self::BB_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(bb)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(bb)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -3472,7 +3309,8 @@ pub mod test_all_types {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    136 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    136 | 138 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    132 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -3482,10 +3320,8 @@ pub mod test_all_types {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 2;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 2;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -3493,10 +3329,8 @@ pub mod test_all_types {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[136, 1])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[136, 1])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -3566,7 +3400,8 @@ pub mod test_all_types {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    376 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    376 | 378 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    372 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -3576,10 +3411,8 @@ pub mod test_all_types {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 2;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 2;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -3587,10 +3420,8 @@ pub mod test_all_types {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[248, 2])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[248, 2])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -3887,8 +3718,8 @@ impl ::protrust::CodedMessage for self::TestDeprecatedFields {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.deprecated_int32 = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.oneof_fields = self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(input.read_int32()?),
+                8 | 10 => self.deprecated_int32 = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.oneof_fields = self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -3898,10 +3729,8 @@ impl ::protrust::CodedMessage for self::TestDeprecatedFields {
         let mut size = 0i32;
         let deprecated_int32 = self.deprecated_int32;
         if let ::std::option::Option::Some(deprecated_int32) = deprecated_int32 {
-            if deprecated_int32 != Self::DEPRECATED_INT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(deprecated_int32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(deprecated_int32);
         }
         if let self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(oneof_fields) = self.oneof_fields {
             size += 1;
@@ -3913,10 +3742,8 @@ impl ::protrust::CodedMessage for self::TestDeprecatedFields {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let deprecated_int32 = self.deprecated_int32;
         if let ::std::option::Option::Some(deprecated_int32) = deprecated_int32 {
-            if deprecated_int32 != Self::DEPRECATED_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(deprecated_int32)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(deprecated_int32)?;
         }
         if let self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(oneof_fields) = self.oneof_fields {
             output.write_raw_tag_bytes(&[16])?;
@@ -4057,8 +3884,8 @@ impl ::protrust::CodedMessage for self::ForeignMessage {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.c = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.d = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.c = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.d = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -4068,17 +3895,13 @@ impl ::protrust::CodedMessage for self::ForeignMessage {
         let mut size = 0i32;
         let c = self.c;
         if let ::std::option::Option::Some(c) = c {
-            if c != Self::C_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(c);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(c);
         }
         let d = self.d;
         if let ::std::option::Option::Some(d) = d {
-            if d != Self::D_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(d);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(d);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -4086,17 +3909,13 @@ impl ::protrust::CodedMessage for self::ForeignMessage {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let c = self.c;
         if let ::std::option::Option::Some(c) = c {
-            if c != Self::C_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(c)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(c)?;
         }
         let d = self.d;
         if let ::std::option::Option::Some(d) = d {
-            if d != Self::D_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(d)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(d)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -4296,7 +4115,7 @@ impl ::protrust::CodedMessage for self::OptionalGroup_extension {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                136 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                136 | 138 => self.a = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -4306,10 +4125,8 @@ impl ::protrust::CodedMessage for self::OptionalGroup_extension {
         let mut size = 0i32;
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(a);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(a);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -4317,10 +4134,8 @@ impl ::protrust::CodedMessage for self::OptionalGroup_extension {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 1])?;
-                output.write_int32(a)?;
-            }
+            output.write_raw_tag_bytes(&[136, 1])?;
+            output.write_int32(a)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -4390,7 +4205,7 @@ impl ::protrust::CodedMessage for self::RepeatedGroup_extension {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                376 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                376 | 378 => self.a = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -4400,10 +4215,8 @@ impl ::protrust::CodedMessage for self::RepeatedGroup_extension {
         let mut size = 0i32;
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(a);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(a);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -4411,10 +4224,8 @@ impl ::protrust::CodedMessage for self::RepeatedGroup_extension {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[248, 2])?;
-                output.write_int32(a)?;
-            }
+            output.write_raw_tag_bytes(&[248, 2])?;
+            output.write_int32(a)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -4485,8 +4296,8 @@ impl ::protrust::CodedMessage for self::TestGroup {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                131 => input.read_message(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                176 => self.optional_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                131 => input.read_group(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                176 | 178 => self.optional_foreign_enum = ::std::option::Option::Some(input.read_enum_value()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -4498,13 +4309,12 @@ impl ::protrust::CodedMessage for self::TestGroup {
         if let ::std::option::Option::Some(optionalgroup) = optionalgroup {
             size += 2;
             size += ::protrust::io::sizes::group(&**optionalgroup);
+            size += 2;
         }
         let optional_foreign_enum = self.optional_foreign_enum;
         if let ::std::option::Option::Some(optional_foreign_enum) = optional_foreign_enum {
-            if optional_foreign_enum != Self::OPTIONAL_FOREIGN_ENUM_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(optional_foreign_enum);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(optional_foreign_enum);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -4518,10 +4328,8 @@ impl ::protrust::CodedMessage for self::TestGroup {
         }
         let optional_foreign_enum = self.optional_foreign_enum;
         if let ::std::option::Option::Some(optional_foreign_enum) = optional_foreign_enum {
-            if optional_foreign_enum != Self::OPTIONAL_FOREIGN_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[176, 1])?;
-                output.write_enum_value(optional_foreign_enum)?;
-            }
+            output.write_raw_tag_bytes(&[176, 1])?;
+            output.write_enum_value(optional_foreign_enum)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -4641,7 +4449,8 @@ pub mod test_group {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    136 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    136 | 138 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    132 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -4651,10 +4460,8 @@ pub mod test_group {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 2;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 2;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -4662,10 +4469,8 @@ pub mod test_group {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[136, 1])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[136, 1])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -4829,7 +4634,7 @@ pub mod test_nested_extension {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    136 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    136 | 138 => self.a = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -4839,10 +4644,8 @@ pub mod test_nested_extension {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 2;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 2;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -4850,10 +4653,8 @@ pub mod test_nested_extension {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[136, 1])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[136, 1])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -4969,39 +4770,39 @@ impl ::protrust::CodedMessage for self::TestRequired {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.a = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.dummy2 = ::std::option::Option::Some(input.read_int32()?),
-                24 => self.b = ::std::option::Option::Some(input.read_int32()?),
-                32 => self.dummy4 = ::std::option::Option::Some(input.read_int32()?),
-                40 => self.dummy5 = ::std::option::Option::Some(input.read_int32()?),
-                48 => self.dummy6 = ::std::option::Option::Some(input.read_int32()?),
-                56 => self.dummy7 = ::std::option::Option::Some(input.read_int32()?),
-                64 => self.dummy8 = ::std::option::Option::Some(input.read_int32()?),
-                72 => self.dummy9 = ::std::option::Option::Some(input.read_int32()?),
-                80 => self.dummy10 = ::std::option::Option::Some(input.read_int32()?),
-                88 => self.dummy11 = ::std::option::Option::Some(input.read_int32()?),
-                96 => self.dummy12 = ::std::option::Option::Some(input.read_int32()?),
-                104 => self.dummy13 = ::std::option::Option::Some(input.read_int32()?),
-                112 => self.dummy14 = ::std::option::Option::Some(input.read_int32()?),
-                120 => self.dummy15 = ::std::option::Option::Some(input.read_int32()?),
-                128 => self.dummy16 = ::std::option::Option::Some(input.read_int32()?),
-                136 => self.dummy17 = ::std::option::Option::Some(input.read_int32()?),
-                144 => self.dummy18 = ::std::option::Option::Some(input.read_int32()?),
-                152 => self.dummy19 = ::std::option::Option::Some(input.read_int32()?),
-                160 => self.dummy20 = ::std::option::Option::Some(input.read_int32()?),
-                168 => self.dummy21 = ::std::option::Option::Some(input.read_int32()?),
-                176 => self.dummy22 = ::std::option::Option::Some(input.read_int32()?),
-                184 => self.dummy23 = ::std::option::Option::Some(input.read_int32()?),
-                192 => self.dummy24 = ::std::option::Option::Some(input.read_int32()?),
-                200 => self.dummy25 = ::std::option::Option::Some(input.read_int32()?),
-                208 => self.dummy26 = ::std::option::Option::Some(input.read_int32()?),
-                216 => self.dummy27 = ::std::option::Option::Some(input.read_int32()?),
-                224 => self.dummy28 = ::std::option::Option::Some(input.read_int32()?),
-                232 => self.dummy29 = ::std::option::Option::Some(input.read_int32()?),
-                240 => self.dummy30 = ::std::option::Option::Some(input.read_int32()?),
-                248 => self.dummy31 = ::std::option::Option::Some(input.read_int32()?),
-                256 => self.dummy32 = ::std::option::Option::Some(input.read_int32()?),
-                264 => self.c = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.dummy2 = ::std::option::Option::Some(input.read_int32()?),
+                24 | 26 => self.b = ::std::option::Option::Some(input.read_int32()?),
+                32 | 34 => self.dummy4 = ::std::option::Option::Some(input.read_int32()?),
+                40 | 42 => self.dummy5 = ::std::option::Option::Some(input.read_int32()?),
+                48 | 50 => self.dummy6 = ::std::option::Option::Some(input.read_int32()?),
+                56 | 58 => self.dummy7 = ::std::option::Option::Some(input.read_int32()?),
+                64 | 66 => self.dummy8 = ::std::option::Option::Some(input.read_int32()?),
+                72 | 74 => self.dummy9 = ::std::option::Option::Some(input.read_int32()?),
+                80 | 82 => self.dummy10 = ::std::option::Option::Some(input.read_int32()?),
+                88 | 90 => self.dummy11 = ::std::option::Option::Some(input.read_int32()?),
+                96 | 98 => self.dummy12 = ::std::option::Option::Some(input.read_int32()?),
+                104 | 106 => self.dummy13 = ::std::option::Option::Some(input.read_int32()?),
+                112 | 114 => self.dummy14 = ::std::option::Option::Some(input.read_int32()?),
+                120 | 122 => self.dummy15 = ::std::option::Option::Some(input.read_int32()?),
+                128 | 130 => self.dummy16 = ::std::option::Option::Some(input.read_int32()?),
+                136 | 138 => self.dummy17 = ::std::option::Option::Some(input.read_int32()?),
+                144 | 146 => self.dummy18 = ::std::option::Option::Some(input.read_int32()?),
+                152 | 154 => self.dummy19 = ::std::option::Option::Some(input.read_int32()?),
+                160 | 162 => self.dummy20 = ::std::option::Option::Some(input.read_int32()?),
+                168 | 170 => self.dummy21 = ::std::option::Option::Some(input.read_int32()?),
+                176 | 178 => self.dummy22 = ::std::option::Option::Some(input.read_int32()?),
+                184 | 186 => self.dummy23 = ::std::option::Option::Some(input.read_int32()?),
+                192 | 194 => self.dummy24 = ::std::option::Option::Some(input.read_int32()?),
+                200 | 202 => self.dummy25 = ::std::option::Option::Some(input.read_int32()?),
+                208 | 210 => self.dummy26 = ::std::option::Option::Some(input.read_int32()?),
+                216 | 218 => self.dummy27 = ::std::option::Option::Some(input.read_int32()?),
+                224 | 226 => self.dummy28 = ::std::option::Option::Some(input.read_int32()?),
+                232 | 234 => self.dummy29 = ::std::option::Option::Some(input.read_int32()?),
+                240 | 242 => self.dummy30 = ::std::option::Option::Some(input.read_int32()?),
+                248 | 250 => self.dummy31 = ::std::option::Option::Some(input.read_int32()?),
+                256 | 258 => self.dummy32 = ::std::option::Option::Some(input.read_int32()?),
+                264 | 266 => self.c = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -5011,234 +4812,168 @@ impl ::protrust::CodedMessage for self::TestRequired {
         let mut size = 0i32;
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(a);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(a);
         }
         let dummy2 = self.dummy2;
         if let ::std::option::Option::Some(dummy2) = dummy2 {
-            if dummy2 != Self::DUMMY2_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy2);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy2);
         }
         let b = self.b;
         if let ::std::option::Option::Some(b) = b {
-            if b != Self::B_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(b);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(b);
         }
         let dummy4 = self.dummy4;
         if let ::std::option::Option::Some(dummy4) = dummy4 {
-            if dummy4 != Self::DUMMY4_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy4);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy4);
         }
         let dummy5 = self.dummy5;
         if let ::std::option::Option::Some(dummy5) = dummy5 {
-            if dummy5 != Self::DUMMY5_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy5);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy5);
         }
         let dummy6 = self.dummy6;
         if let ::std::option::Option::Some(dummy6) = dummy6 {
-            if dummy6 != Self::DUMMY6_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy6);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy6);
         }
         let dummy7 = self.dummy7;
         if let ::std::option::Option::Some(dummy7) = dummy7 {
-            if dummy7 != Self::DUMMY7_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy7);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy7);
         }
         let dummy8 = self.dummy8;
         if let ::std::option::Option::Some(dummy8) = dummy8 {
-            if dummy8 != Self::DUMMY8_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy8);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy8);
         }
         let dummy9 = self.dummy9;
         if let ::std::option::Option::Some(dummy9) = dummy9 {
-            if dummy9 != Self::DUMMY9_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy9);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy9);
         }
         let dummy10 = self.dummy10;
         if let ::std::option::Option::Some(dummy10) = dummy10 {
-            if dummy10 != Self::DUMMY10_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy10);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy10);
         }
         let dummy11 = self.dummy11;
         if let ::std::option::Option::Some(dummy11) = dummy11 {
-            if dummy11 != Self::DUMMY11_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy11);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy11);
         }
         let dummy12 = self.dummy12;
         if let ::std::option::Option::Some(dummy12) = dummy12 {
-            if dummy12 != Self::DUMMY12_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy12);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy12);
         }
         let dummy13 = self.dummy13;
         if let ::std::option::Option::Some(dummy13) = dummy13 {
-            if dummy13 != Self::DUMMY13_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy13);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy13);
         }
         let dummy14 = self.dummy14;
         if let ::std::option::Option::Some(dummy14) = dummy14 {
-            if dummy14 != Self::DUMMY14_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy14);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy14);
         }
         let dummy15 = self.dummy15;
         if let ::std::option::Option::Some(dummy15) = dummy15 {
-            if dummy15 != Self::DUMMY15_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy15);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy15);
         }
         let dummy16 = self.dummy16;
         if let ::std::option::Option::Some(dummy16) = dummy16 {
-            if dummy16 != Self::DUMMY16_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy16);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy16);
         }
         let dummy17 = self.dummy17;
         if let ::std::option::Option::Some(dummy17) = dummy17 {
-            if dummy17 != Self::DUMMY17_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy17);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy17);
         }
         let dummy18 = self.dummy18;
         if let ::std::option::Option::Some(dummy18) = dummy18 {
-            if dummy18 != Self::DUMMY18_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy18);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy18);
         }
         let dummy19 = self.dummy19;
         if let ::std::option::Option::Some(dummy19) = dummy19 {
-            if dummy19 != Self::DUMMY19_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy19);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy19);
         }
         let dummy20 = self.dummy20;
         if let ::std::option::Option::Some(dummy20) = dummy20 {
-            if dummy20 != Self::DUMMY20_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy20);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy20);
         }
         let dummy21 = self.dummy21;
         if let ::std::option::Option::Some(dummy21) = dummy21 {
-            if dummy21 != Self::DUMMY21_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy21);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy21);
         }
         let dummy22 = self.dummy22;
         if let ::std::option::Option::Some(dummy22) = dummy22 {
-            if dummy22 != Self::DUMMY22_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy22);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy22);
         }
         let dummy23 = self.dummy23;
         if let ::std::option::Option::Some(dummy23) = dummy23 {
-            if dummy23 != Self::DUMMY23_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy23);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy23);
         }
         let dummy24 = self.dummy24;
         if let ::std::option::Option::Some(dummy24) = dummy24 {
-            if dummy24 != Self::DUMMY24_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy24);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy24);
         }
         let dummy25 = self.dummy25;
         if let ::std::option::Option::Some(dummy25) = dummy25 {
-            if dummy25 != Self::DUMMY25_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy25);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy25);
         }
         let dummy26 = self.dummy26;
         if let ::std::option::Option::Some(dummy26) = dummy26 {
-            if dummy26 != Self::DUMMY26_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy26);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy26);
         }
         let dummy27 = self.dummy27;
         if let ::std::option::Option::Some(dummy27) = dummy27 {
-            if dummy27 != Self::DUMMY27_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy27);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy27);
         }
         let dummy28 = self.dummy28;
         if let ::std::option::Option::Some(dummy28) = dummy28 {
-            if dummy28 != Self::DUMMY28_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy28);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy28);
         }
         let dummy29 = self.dummy29;
         if let ::std::option::Option::Some(dummy29) = dummy29 {
-            if dummy29 != Self::DUMMY29_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy29);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy29);
         }
         let dummy30 = self.dummy30;
         if let ::std::option::Option::Some(dummy30) = dummy30 {
-            if dummy30 != Self::DUMMY30_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy30);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy30);
         }
         let dummy31 = self.dummy31;
         if let ::std::option::Option::Some(dummy31) = dummy31 {
-            if dummy31 != Self::DUMMY31_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy31);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy31);
         }
         let dummy32 = self.dummy32;
         if let ::std::option::Option::Some(dummy32) = dummy32 {
-            if dummy32 != Self::DUMMY32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(dummy32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(dummy32);
         }
         let c = self.c;
         if let ::std::option::Option::Some(c) = c {
-            if c != Self::C_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(c);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(c);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -5246,234 +4981,168 @@ impl ::protrust::CodedMessage for self::TestRequired {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(a)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(a)?;
         }
         let dummy2 = self.dummy2;
         if let ::std::option::Option::Some(dummy2) = dummy2 {
-            if dummy2 != Self::DUMMY2_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(dummy2)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(dummy2)?;
         }
         let b = self.b;
         if let ::std::option::Option::Some(b) = b {
-            if b != Self::B_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(b)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(b)?;
         }
         let dummy4 = self.dummy4;
         if let ::std::option::Option::Some(dummy4) = dummy4 {
-            if dummy4 != Self::DUMMY4_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_int32(dummy4)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_int32(dummy4)?;
         }
         let dummy5 = self.dummy5;
         if let ::std::option::Option::Some(dummy5) = dummy5 {
-            if dummy5 != Self::DUMMY5_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_int32(dummy5)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_int32(dummy5)?;
         }
         let dummy6 = self.dummy6;
         if let ::std::option::Option::Some(dummy6) = dummy6 {
-            if dummy6 != Self::DUMMY6_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_int32(dummy6)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_int32(dummy6)?;
         }
         let dummy7 = self.dummy7;
         if let ::std::option::Option::Some(dummy7) = dummy7 {
-            if dummy7 != Self::DUMMY7_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[56])?;
-                output.write_int32(dummy7)?;
-            }
+            output.write_raw_tag_bytes(&[56])?;
+            output.write_int32(dummy7)?;
         }
         let dummy8 = self.dummy8;
         if let ::std::option::Option::Some(dummy8) = dummy8 {
-            if dummy8 != Self::DUMMY8_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[64])?;
-                output.write_int32(dummy8)?;
-            }
+            output.write_raw_tag_bytes(&[64])?;
+            output.write_int32(dummy8)?;
         }
         let dummy9 = self.dummy9;
         if let ::std::option::Option::Some(dummy9) = dummy9 {
-            if dummy9 != Self::DUMMY9_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[72])?;
-                output.write_int32(dummy9)?;
-            }
+            output.write_raw_tag_bytes(&[72])?;
+            output.write_int32(dummy9)?;
         }
         let dummy10 = self.dummy10;
         if let ::std::option::Option::Some(dummy10) = dummy10 {
-            if dummy10 != Self::DUMMY10_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[80])?;
-                output.write_int32(dummy10)?;
-            }
+            output.write_raw_tag_bytes(&[80])?;
+            output.write_int32(dummy10)?;
         }
         let dummy11 = self.dummy11;
         if let ::std::option::Option::Some(dummy11) = dummy11 {
-            if dummy11 != Self::DUMMY11_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[88])?;
-                output.write_int32(dummy11)?;
-            }
+            output.write_raw_tag_bytes(&[88])?;
+            output.write_int32(dummy11)?;
         }
         let dummy12 = self.dummy12;
         if let ::std::option::Option::Some(dummy12) = dummy12 {
-            if dummy12 != Self::DUMMY12_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[96])?;
-                output.write_int32(dummy12)?;
-            }
+            output.write_raw_tag_bytes(&[96])?;
+            output.write_int32(dummy12)?;
         }
         let dummy13 = self.dummy13;
         if let ::std::option::Option::Some(dummy13) = dummy13 {
-            if dummy13 != Self::DUMMY13_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[104])?;
-                output.write_int32(dummy13)?;
-            }
+            output.write_raw_tag_bytes(&[104])?;
+            output.write_int32(dummy13)?;
         }
         let dummy14 = self.dummy14;
         if let ::std::option::Option::Some(dummy14) = dummy14 {
-            if dummy14 != Self::DUMMY14_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[112])?;
-                output.write_int32(dummy14)?;
-            }
+            output.write_raw_tag_bytes(&[112])?;
+            output.write_int32(dummy14)?;
         }
         let dummy15 = self.dummy15;
         if let ::std::option::Option::Some(dummy15) = dummy15 {
-            if dummy15 != Self::DUMMY15_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[120])?;
-                output.write_int32(dummy15)?;
-            }
+            output.write_raw_tag_bytes(&[120])?;
+            output.write_int32(dummy15)?;
         }
         let dummy16 = self.dummy16;
         if let ::std::option::Option::Some(dummy16) = dummy16 {
-            if dummy16 != Self::DUMMY16_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[128, 1])?;
-                output.write_int32(dummy16)?;
-            }
+            output.write_raw_tag_bytes(&[128, 1])?;
+            output.write_int32(dummy16)?;
         }
         let dummy17 = self.dummy17;
         if let ::std::option::Option::Some(dummy17) = dummy17 {
-            if dummy17 != Self::DUMMY17_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 1])?;
-                output.write_int32(dummy17)?;
-            }
+            output.write_raw_tag_bytes(&[136, 1])?;
+            output.write_int32(dummy17)?;
         }
         let dummy18 = self.dummy18;
         if let ::std::option::Option::Some(dummy18) = dummy18 {
-            if dummy18 != Self::DUMMY18_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 1])?;
-                output.write_int32(dummy18)?;
-            }
+            output.write_raw_tag_bytes(&[144, 1])?;
+            output.write_int32(dummy18)?;
         }
         let dummy19 = self.dummy19;
         if let ::std::option::Option::Some(dummy19) = dummy19 {
-            if dummy19 != Self::DUMMY19_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[152, 1])?;
-                output.write_int32(dummy19)?;
-            }
+            output.write_raw_tag_bytes(&[152, 1])?;
+            output.write_int32(dummy19)?;
         }
         let dummy20 = self.dummy20;
         if let ::std::option::Option::Some(dummy20) = dummy20 {
-            if dummy20 != Self::DUMMY20_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[160, 1])?;
-                output.write_int32(dummy20)?;
-            }
+            output.write_raw_tag_bytes(&[160, 1])?;
+            output.write_int32(dummy20)?;
         }
         let dummy21 = self.dummy21;
         if let ::std::option::Option::Some(dummy21) = dummy21 {
-            if dummy21 != Self::DUMMY21_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[168, 1])?;
-                output.write_int32(dummy21)?;
-            }
+            output.write_raw_tag_bytes(&[168, 1])?;
+            output.write_int32(dummy21)?;
         }
         let dummy22 = self.dummy22;
         if let ::std::option::Option::Some(dummy22) = dummy22 {
-            if dummy22 != Self::DUMMY22_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[176, 1])?;
-                output.write_int32(dummy22)?;
-            }
+            output.write_raw_tag_bytes(&[176, 1])?;
+            output.write_int32(dummy22)?;
         }
         let dummy23 = self.dummy23;
         if let ::std::option::Option::Some(dummy23) = dummy23 {
-            if dummy23 != Self::DUMMY23_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[184, 1])?;
-                output.write_int32(dummy23)?;
-            }
+            output.write_raw_tag_bytes(&[184, 1])?;
+            output.write_int32(dummy23)?;
         }
         let dummy24 = self.dummy24;
         if let ::std::option::Option::Some(dummy24) = dummy24 {
-            if dummy24 != Self::DUMMY24_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[192, 1])?;
-                output.write_int32(dummy24)?;
-            }
+            output.write_raw_tag_bytes(&[192, 1])?;
+            output.write_int32(dummy24)?;
         }
         let dummy25 = self.dummy25;
         if let ::std::option::Option::Some(dummy25) = dummy25 {
-            if dummy25 != Self::DUMMY25_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[200, 1])?;
-                output.write_int32(dummy25)?;
-            }
+            output.write_raw_tag_bytes(&[200, 1])?;
+            output.write_int32(dummy25)?;
         }
         let dummy26 = self.dummy26;
         if let ::std::option::Option::Some(dummy26) = dummy26 {
-            if dummy26 != Self::DUMMY26_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[208, 1])?;
-                output.write_int32(dummy26)?;
-            }
+            output.write_raw_tag_bytes(&[208, 1])?;
+            output.write_int32(dummy26)?;
         }
         let dummy27 = self.dummy27;
         if let ::std::option::Option::Some(dummy27) = dummy27 {
-            if dummy27 != Self::DUMMY27_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[216, 1])?;
-                output.write_int32(dummy27)?;
-            }
+            output.write_raw_tag_bytes(&[216, 1])?;
+            output.write_int32(dummy27)?;
         }
         let dummy28 = self.dummy28;
         if let ::std::option::Option::Some(dummy28) = dummy28 {
-            if dummy28 != Self::DUMMY28_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[224, 1])?;
-                output.write_int32(dummy28)?;
-            }
+            output.write_raw_tag_bytes(&[224, 1])?;
+            output.write_int32(dummy28)?;
         }
         let dummy29 = self.dummy29;
         if let ::std::option::Option::Some(dummy29) = dummy29 {
-            if dummy29 != Self::DUMMY29_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[232, 1])?;
-                output.write_int32(dummy29)?;
-            }
+            output.write_raw_tag_bytes(&[232, 1])?;
+            output.write_int32(dummy29)?;
         }
         let dummy30 = self.dummy30;
         if let ::std::option::Option::Some(dummy30) = dummy30 {
-            if dummy30 != Self::DUMMY30_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[240, 1])?;
-                output.write_int32(dummy30)?;
-            }
+            output.write_raw_tag_bytes(&[240, 1])?;
+            output.write_int32(dummy30)?;
         }
         let dummy31 = self.dummy31;
         if let ::std::option::Option::Some(dummy31) = dummy31 {
-            if dummy31 != Self::DUMMY31_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[248, 1])?;
-                output.write_int32(dummy31)?;
-            }
+            output.write_raw_tag_bytes(&[248, 1])?;
+            output.write_int32(dummy31)?;
         }
         let dummy32 = self.dummy32;
         if let ::std::option::Option::Some(dummy32) = dummy32 {
-            if dummy32 != Self::DUMMY32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[128, 2])?;
-                output.write_int32(dummy32)?;
-            }
+            output.write_raw_tag_bytes(&[128, 2])?;
+            output.write_int32(dummy32)?;
         }
         let c = self.c;
         if let ::std::option::Option::Some(c) = c {
-            if c != Self::C_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 2])?;
-                output.write_int32(c)?;
-            }
+            output.write_raw_tag_bytes(&[136, 2])?;
+            output.write_int32(c)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -6787,7 +6456,7 @@ impl ::protrust::CodedMessage for self::TestRequiredForeign {
             match tag.get() {
                 10 => input.read_message(&mut **self.optional_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 18 => self.repeated_message.add_entries(input, &TEST_REQUIRED_FOREIGN_REPEATED_MESSAGE_CODEC)?,
-                24 => self.dummy = ::std::option::Option::Some(input.read_int32()?),
+                24 | 26 => self.dummy = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -6803,10 +6472,8 @@ impl ::protrust::CodedMessage for self::TestRequiredForeign {
         size += self.repeated_message.calculate_size(&TEST_REQUIRED_FOREIGN_REPEATED_MESSAGE_CODEC);
         let dummy = self.dummy;
         if let ::std::option::Option::Some(dummy) = dummy {
-            if dummy != Self::DUMMY_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(dummy);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(dummy);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -6820,10 +6487,8 @@ impl ::protrust::CodedMessage for self::TestRequiredForeign {
         self.repeated_message.write_to(output, &TEST_REQUIRED_FOREIGN_REPEATED_MESSAGE_CODEC)?;
         let dummy = self.dummy;
         if let ::std::option::Option::Some(dummy) = dummy {
-            if dummy != Self::DUMMY_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(dummy)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(dummy)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -7393,8 +7058,8 @@ impl ::protrust::CodedMessage for self::TestReallyLargeTagNumber {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.a = ::std::option::Option::Some(input.read_int32()?),
-                2147483640 => self.bb = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                2147483640 | 2147483642 => self.bb = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -7404,17 +7069,13 @@ impl ::protrust::CodedMessage for self::TestReallyLargeTagNumber {
         let mut size = 0i32;
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(a);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(a);
         }
         let bb = self.bb;
         if let ::std::option::Option::Some(bb) = bb {
-            if bb != Self::BB_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::int32(bb);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::int32(bb);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -7422,17 +7083,13 @@ impl ::protrust::CodedMessage for self::TestReallyLargeTagNumber {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(a)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(a)?;
         }
         let bb = self.bb;
         if let ::std::option::Option::Some(bb) = bb {
-            if bb != Self::BB_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[248, 255, 255, 255, 7])?;
-                output.write_int32(bb)?;
-            }
+            output.write_raw_tag_bytes(&[248, 255, 255, 255, 7])?;
+            output.write_int32(bb)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -7544,7 +7201,7 @@ impl ::protrust::CodedMessage for self::TestRecursiveMessage {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => input.read_message(&mut **self.a.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                16 => self.i = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.i = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -7559,10 +7216,8 @@ impl ::protrust::CodedMessage for self::TestRecursiveMessage {
         }
         let i = self.i;
         if let ::std::option::Option::Some(i) = i {
-            if i != Self::I_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(i);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(i);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -7575,10 +7230,8 @@ impl ::protrust::CodedMessage for self::TestRecursiveMessage {
         }
         let i = self.i;
         if let ::std::option::Option::Some(i) = i {
-            if i != Self::I_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(i)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(i)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -7700,7 +7353,7 @@ impl ::protrust::CodedMessage for self::TestMutualRecursionA {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => input.read_message(&mut **self.bb.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                19 => input.read_message(&mut **self.subgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                19 => input.read_group(&mut **self.subgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -7717,6 +7370,7 @@ impl ::protrust::CodedMessage for self::TestMutualRecursionA {
         if let ::std::option::Option::Some(subgroup) = subgroup {
             size += 1;
             size += ::protrust::io::sizes::group(&**subgroup);
+            size += 1;
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -7964,6 +7618,7 @@ pub mod test_mutual_recursion_a {
                 match tag.get() {
                     26 => input.read_message(&mut **self.sub_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                     34 => input.read_message(&mut **self.not_in_this_scc.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                    20 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -8124,7 +7779,7 @@ impl ::protrust::CodedMessage for self::TestMutualRecursionB {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => input.read_message(&mut **self.a.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                16 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -8139,10 +7794,8 @@ impl ::protrust::CodedMessage for self::TestMutualRecursionB {
         }
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(optional_int32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(optional_int32);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -8155,10 +7808,8 @@ impl ::protrust::CodedMessage for self::TestMutualRecursionB {
         }
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(optional_int32)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(optional_int32)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -8379,7 +8030,7 @@ pub mod test_is_initialized {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    11 => input.read_message(&mut **self.subgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                    11 => input.read_group(&mut **self.subgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -8391,6 +8042,7 @@ pub mod test_is_initialized {
             if let ::std::option::Option::Some(subgroup) = subgroup {
                 size += 1;
                 size += ::protrust::io::sizes::group(&**subgroup);
+                size += 1;
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -8482,7 +8134,8 @@ pub mod test_is_initialized {
             fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
                 while let ::std::option::Option::Some(tag) = input.read_tag()? {
                     match tag.get() {
-                        16 => self.i = ::std::option::Option::Some(input.read_int32()?),
+                        16 | 18 => self.i = ::std::option::Option::Some(input.read_int32()?),
+                        12 => break,
                         _ => self.unknown_fields.merge_from(tag, input)?
                     }
                 }
@@ -8492,10 +8145,8 @@ pub mod test_is_initialized {
                 let mut size = 0i32;
                 let i = self.i;
                 if let ::std::option::Option::Some(i) = i {
-                    if i != Self::I_DEFAULT_VALUE {
-                        size += 1;
-                        size += ::protrust::io::sizes::int32(i);
-                    }
+                    size += 1;
+                    size += ::protrust::io::sizes::int32(i);
                 }
                 size += self.unknown_fields.calculate_size();
                 size
@@ -8503,10 +8154,8 @@ pub mod test_is_initialized {
             fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
                 let i = self.i;
                 if let ::std::option::Option::Some(i) = i {
-                    if i != Self::I_DEFAULT_VALUE {
-                        output.write_raw_tag_bytes(&[16])?;
-                        output.write_int32(i)?;
-                    }
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(i)?;
                 }
                 self.unknown_fields.write_to(output)?;
                 ::std::result::Result::Ok(())
@@ -8590,9 +8239,9 @@ impl ::protrust::CodedMessage for self::TestDupFieldNumber {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.a = ::std::option::Option::Some(input.read_int32()?),
-                19 => input.read_message(&mut **self.foo.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                27 => input.read_message(&mut **self.bar.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                8 | 10 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                19 => input.read_group(&mut **self.foo.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                27 => input.read_group(&mut **self.bar.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -8602,20 +8251,20 @@ impl ::protrust::CodedMessage for self::TestDupFieldNumber {
         let mut size = 0i32;
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(a);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(a);
         }
         let foo = &self.foo;
         if let ::std::option::Option::Some(foo) = foo {
             size += 1;
             size += ::protrust::io::sizes::group(&**foo);
+            size += 1;
         }
         let bar = &self.bar;
         if let ::std::option::Option::Some(bar) = bar {
             size += 1;
             size += ::protrust::io::sizes::group(&**bar);
+            size += 1;
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -8623,10 +8272,8 @@ impl ::protrust::CodedMessage for self::TestDupFieldNumber {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(a)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(a)?;
         }
         let foo = &self.foo;
         if let ::std::option::Option::Some(foo) = foo {
@@ -8809,7 +8456,8 @@ pub mod test_dup_field_number {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    8 | 10 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    20 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -8819,10 +8467,8 @@ pub mod test_dup_field_number {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -8830,10 +8476,8 @@ pub mod test_dup_field_number {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -8903,7 +8547,8 @@ pub mod test_dup_field_number {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    8 | 10 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    28 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -8913,10 +8558,8 @@ pub mod test_dup_field_number {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -8924,10 +8567,8 @@ pub mod test_dup_field_number {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -9308,7 +8949,7 @@ pub mod test_nested_message_has_bits {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.nestedmessage_repeated_int32.add_entries(input, &NESTED_MESSAGE_NESTEDMESSAGE_REPEATED_INT32_CODEC)?,
+                    8 | 10 => self.nestedmessage_repeated_int32.add_entries(input, &NESTED_MESSAGE_NESTEDMESSAGE_REPEATED_INT32_CODEC)?,
                     18 => self.nestedmessage_repeated_foreignmessage.add_entries(input, &NESTED_MESSAGE_NESTEDMESSAGE_REPEATED_FOREIGNMESSAGE_CODEC)?,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
@@ -9411,15 +9052,15 @@ impl ::protrust::CodedMessage for self::TestCamelCaseFieldNames {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.PrimitiveField = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.PrimitiveField = ::std::option::Option::Some(input.read_int32()?),
                 18 => self.StringField = ::std::option::Option::Some(input.read_string()?),
-                24 => self.EnumField = ::std::option::Option::Some(input.read_enum_value()?),
+                24 | 26 => self.EnumField = ::std::option::Option::Some(input.read_enum_value()?),
                 34 => input.read_message(&mut **self.MessageField.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 42 => self.StringPieceField = ::std::option::Option::Some(input.read_string()?),
                 50 => self.CordField = ::std::option::Option::Some(input.read_string()?),
-                56 => self.RepeatedPrimitiveField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDPRIMITIVEFIELD_CODEC)?,
+                56 | 58 => self.RepeatedPrimitiveField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDPRIMITIVEFIELD_CODEC)?,
                 66 => self.RepeatedStringField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDSTRINGFIELD_CODEC)?,
-                72 => self.RepeatedEnumField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDENUMFIELD_CODEC)?,
+                72 | 74 => self.RepeatedEnumField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDENUMFIELD_CODEC)?,
                 82 => self.RepeatedMessageField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDMESSAGEFIELD_CODEC)?,
                 90 => self.RepeatedStringPieceField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDSTRINGPIECEFIELD_CODEC)?,
                 98 => self.RepeatedCordField.add_entries(input, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDCORDFIELD_CODEC)?,
@@ -9432,24 +9073,18 @@ impl ::protrust::CodedMessage for self::TestCamelCaseFieldNames {
         let mut size = 0i32;
         let PrimitiveField = self.PrimitiveField;
         if let ::std::option::Option::Some(PrimitiveField) = PrimitiveField {
-            if PrimitiveField != Self::PRIMITIVEFIELD_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(PrimitiveField);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(PrimitiveField);
         }
         let StringField = &self.StringField;
         if let ::std::option::Option::Some(StringField) = StringField {
-            if StringField != Self::STRINGFIELD_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(StringField);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(StringField);
         }
         let EnumField = self.EnumField;
         if let ::std::option::Option::Some(EnumField) = EnumField {
-            if EnumField != Self::ENUMFIELD_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::enum_value(EnumField);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::enum_value(EnumField);
         }
         let MessageField = &self.MessageField;
         if let ::std::option::Option::Some(MessageField) = MessageField {
@@ -9458,17 +9093,13 @@ impl ::protrust::CodedMessage for self::TestCamelCaseFieldNames {
         }
         let StringPieceField = &self.StringPieceField;
         if let ::std::option::Option::Some(StringPieceField) = StringPieceField {
-            if StringPieceField != Self::STRINGPIECEFIELD_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(StringPieceField);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(StringPieceField);
         }
         let CordField = &self.CordField;
         if let ::std::option::Option::Some(CordField) = CordField {
-            if CordField != Self::CORDFIELD_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(CordField);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(CordField);
         }
         size += self.RepeatedPrimitiveField.calculate_size(&TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDPRIMITIVEFIELD_CODEC);
         size += self.RepeatedStringField.calculate_size(&TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDSTRINGFIELD_CODEC);
@@ -9482,24 +9113,18 @@ impl ::protrust::CodedMessage for self::TestCamelCaseFieldNames {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let PrimitiveField = self.PrimitiveField;
         if let ::std::option::Option::Some(PrimitiveField) = PrimitiveField {
-            if PrimitiveField != Self::PRIMITIVEFIELD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(PrimitiveField)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(PrimitiveField)?;
         }
         let StringField = &self.StringField;
         if let ::std::option::Option::Some(StringField) = StringField {
-            if StringField != Self::STRINGFIELD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(StringField)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(StringField)?;
         }
         let EnumField = self.EnumField;
         if let ::std::option::Option::Some(EnumField) = EnumField {
-            if EnumField != Self::ENUMFIELD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_enum_value(EnumField)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_enum_value(EnumField)?;
         }
         let MessageField = &self.MessageField;
         if let ::std::option::Option::Some(MessageField) = MessageField {
@@ -9508,17 +9133,13 @@ impl ::protrust::CodedMessage for self::TestCamelCaseFieldNames {
         }
         let StringPieceField = &self.StringPieceField;
         if let ::std::option::Option::Some(StringPieceField) = StringPieceField {
-            if StringPieceField != Self::STRINGPIECEFIELD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[42])?;
-                output.write_string(StringPieceField)?;
-            }
+            output.write_raw_tag_bytes(&[42])?;
+            output.write_string(StringPieceField)?;
         }
         let CordField = &self.CordField;
         if let ::std::option::Option::Some(CordField) = CordField {
-            if CordField != Self::CORDFIELD_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[50])?;
-                output.write_string(CordField)?;
-            }
+            output.write_raw_tag_bytes(&[50])?;
+            output.write_string(CordField)?;
         }
         self.RepeatedPrimitiveField.write_to(output, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDPRIMITIVEFIELD_CODEC)?;
         self.RepeatedStringField.write_to(output, &TEST_CAMEL_CASE_FIELD_NAMES_REPEATEDSTRINGFIELD_CODEC)?;
@@ -9931,8 +9552,8 @@ impl ::protrust::CodedMessage for self::TestFieldOrderings {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 90 => self.my_string = ::std::option::Option::Some(input.read_string()?),
-                8 => self.my_int = ::std::option::Option::Some(input.read_int64()?),
-                813 => self.my_float = ::std::option::Option::Some(input.read_float()?),
+                8 | 10 => self.my_int = ::std::option::Option::Some(input.read_int64()?),
+                813 | 810 => self.my_float = ::std::option::Option::Some(input.read_float()?),
                 1602 => input.read_message(&mut **self.optional_nested_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -9943,24 +9564,18 @@ impl ::protrust::CodedMessage for self::TestFieldOrderings {
         let mut size = 0i32;
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(my_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(my_string);
         }
         let my_int = self.my_int;
         if let ::std::option::Option::Some(my_int) = my_int {
-            if my_int != Self::MY_INT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int64(my_int);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int64(my_int);
         }
         let my_float = self.my_float;
         if let ::std::option::Option::Some(my_float) = my_float {
-            if my_float != Self::MY_FLOAT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::float(my_float);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::float(my_float);
         }
         let optional_nested_message = &self.optional_nested_message;
         if let ::std::option::Option::Some(optional_nested_message) = optional_nested_message {
@@ -9973,24 +9588,18 @@ impl ::protrust::CodedMessage for self::TestFieldOrderings {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[90])?;
-                output.write_string(my_string)?;
-            }
+            output.write_raw_tag_bytes(&[90])?;
+            output.write_string(my_string)?;
         }
         let my_int = self.my_int;
         if let ::std::option::Option::Some(my_int) = my_int {
-            if my_int != Self::MY_INT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int64(my_int)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int64(my_int)?;
         }
         let my_float = self.my_float;
         if let ::std::option::Option::Some(my_float) = my_float {
-            if my_float != Self::MY_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[173, 6])?;
-                output.write_float(my_float)?;
-            }
+            output.write_raw_tag_bytes(&[173, 6])?;
+            output.write_float(my_float)?;
         }
         let optional_nested_message = &self.optional_nested_message;
         if let ::std::option::Option::Some(optional_nested_message) = optional_nested_message {
@@ -10217,8 +9826,8 @@ pub mod test_field_orderings {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    16 => self.oo = ::std::option::Option::Some(input.read_int64()?),
-                    8 => self.bb = ::std::option::Option::Some(input.read_int32()?),
+                    16 | 18 => self.oo = ::std::option::Option::Some(input.read_int64()?),
+                    8 | 10 => self.bb = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -10228,17 +9837,13 @@ pub mod test_field_orderings {
             let mut size = 0i32;
             let oo = self.oo;
             if let ::std::option::Option::Some(oo) = oo {
-                if oo != Self::OO_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int64(oo);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int64(oo);
             }
             let bb = self.bb;
             if let ::std::option::Option::Some(bb) = bb {
-                if bb != Self::BB_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(bb);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(bb);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -10246,17 +9851,13 @@ pub mod test_field_orderings {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let oo = self.oo;
             if let ::std::option::Option::Some(oo) = oo {
-                if oo != Self::OO_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int64(oo)?;
-                }
+                output.write_raw_tag_bytes(&[16])?;
+                output.write_int64(oo)?;
             }
             let bb = self.bb;
             if let ::std::option::Option::Some(bb) = bb {
-                if bb != Self::BB_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(bb)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int32(bb)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -10378,10 +9979,8 @@ impl ::protrust::CodedMessage for self::TestExtensionOrderings1 {
         let mut size = 0i32;
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(my_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(my_string);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -10389,10 +9988,8 @@ impl ::protrust::CodedMessage for self::TestExtensionOrderings1 {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(my_string)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(my_string)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -10487,10 +10084,8 @@ impl ::protrust::CodedMessage for self::TestExtensionOrderings2 {
         let mut size = 0i32;
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(my_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(my_string);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -10498,10 +10093,8 @@ impl ::protrust::CodedMessage for self::TestExtensionOrderings2 {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let my_string = &self.my_string;
         if let ::std::option::Option::Some(my_string) = my_string {
-            if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(my_string)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(my_string)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -10594,10 +10187,8 @@ pub mod test_extension_orderings2 {
             let mut size = 0i32;
             let my_string = &self.my_string;
             if let ::std::option::Option::Some(my_string) = my_string {
-                if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::string(my_string);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::string(my_string);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -10605,10 +10196,8 @@ pub mod test_extension_orderings2 {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let my_string = &self.my_string;
             if let ::std::option::Option::Some(my_string) = my_string {
-                if my_string != Self::MY_STRING_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[10])?;
-                    output.write_string(my_string)?;
-                }
+                output.write_raw_tag_bytes(&[10])?;
+                output.write_string(my_string)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -10722,26 +10311,26 @@ impl ::protrust::CodedMessage for self::TestExtremeDefaultValues {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
                 10 => self.escaped_bytes = ::std::option::Option::Some(input.read_bytes()?),
-                16 => self.large_uint32 = ::std::option::Option::Some(input.read_uint32()?),
-                24 => self.large_uint64 = ::std::option::Option::Some(input.read_uint64()?),
-                32 => self.small_int32 = ::std::option::Option::Some(input.read_int32()?),
-                40 => self.small_int64 = ::std::option::Option::Some(input.read_int64()?),
-                168 => self.really_small_int32 = ::std::option::Option::Some(input.read_int32()?),
-                176 => self.really_small_int64 = ::std::option::Option::Some(input.read_int64()?),
+                16 | 18 => self.large_uint32 = ::std::option::Option::Some(input.read_uint32()?),
+                24 | 26 => self.large_uint64 = ::std::option::Option::Some(input.read_uint64()?),
+                32 | 34 => self.small_int32 = ::std::option::Option::Some(input.read_int32()?),
+                40 | 42 => self.small_int64 = ::std::option::Option::Some(input.read_int64()?),
+                168 | 170 => self.really_small_int32 = ::std::option::Option::Some(input.read_int32()?),
+                176 | 178 => self.really_small_int64 = ::std::option::Option::Some(input.read_int64()?),
                 50 => self.utf8_string = ::std::option::Option::Some(input.read_string()?),
-                61 => self.zero_float = ::std::option::Option::Some(input.read_float()?),
-                69 => self.one_float = ::std::option::Option::Some(input.read_float()?),
-                77 => self.small_float = ::std::option::Option::Some(input.read_float()?),
-                85 => self.negative_one_float = ::std::option::Option::Some(input.read_float()?),
-                93 => self.negative_float = ::std::option::Option::Some(input.read_float()?),
-                101 => self.large_float = ::std::option::Option::Some(input.read_float()?),
-                109 => self.small_negative_float = ::std::option::Option::Some(input.read_float()?),
-                113 => self.inf_double = ::std::option::Option::Some(input.read_double()?),
-                121 => self.neg_inf_double = ::std::option::Option::Some(input.read_double()?),
-                129 => self.nan_double = ::std::option::Option::Some(input.read_double()?),
-                141 => self.inf_float = ::std::option::Option::Some(input.read_float()?),
-                149 => self.neg_inf_float = ::std::option::Option::Some(input.read_float()?),
-                157 => self.nan_float = ::std::option::Option::Some(input.read_float()?),
+                61 | 58 => self.zero_float = ::std::option::Option::Some(input.read_float()?),
+                69 | 66 => self.one_float = ::std::option::Option::Some(input.read_float()?),
+                77 | 74 => self.small_float = ::std::option::Option::Some(input.read_float()?),
+                85 | 82 => self.negative_one_float = ::std::option::Option::Some(input.read_float()?),
+                93 | 90 => self.negative_float = ::std::option::Option::Some(input.read_float()?),
+                101 | 98 => self.large_float = ::std::option::Option::Some(input.read_float()?),
+                109 | 106 => self.small_negative_float = ::std::option::Option::Some(input.read_float()?),
+                113 | 114 => self.inf_double = ::std::option::Option::Some(input.read_double()?),
+                121 | 122 => self.neg_inf_double = ::std::option::Option::Some(input.read_double()?),
+                129 | 130 => self.nan_double = ::std::option::Option::Some(input.read_double()?),
+                141 | 138 => self.inf_float = ::std::option::Option::Some(input.read_float()?),
+                149 | 146 => self.neg_inf_float = ::std::option::Option::Some(input.read_float()?),
+                157 | 154 => self.nan_float = ::std::option::Option::Some(input.read_float()?),
                 162 => self.cpp_trigraph = ::std::option::Option::Some(input.read_string()?),
                 186 => self.string_with_zero = ::std::option::Option::Some(input.read_string()?),
                 194 => self.bytes_with_zero = ::std::option::Option::Some(input.read_bytes()?),
@@ -10757,192 +10346,138 @@ impl ::protrust::CodedMessage for self::TestExtremeDefaultValues {
         let mut size = 0i32;
         let escaped_bytes = &self.escaped_bytes;
         if let ::std::option::Option::Some(escaped_bytes) = escaped_bytes {
-            if escaped_bytes.as_slice() != Self::ESCAPED_BYTES_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::bytes(escaped_bytes);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::bytes(escaped_bytes);
         }
         let large_uint32 = self.large_uint32;
         if let ::std::option::Option::Some(large_uint32) = large_uint32 {
-            if large_uint32 != Self::LARGE_UINT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint32(large_uint32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint32(large_uint32);
         }
         let large_uint64 = self.large_uint64;
         if let ::std::option::Option::Some(large_uint64) = large_uint64 {
-            if large_uint64 != Self::LARGE_UINT64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint64(large_uint64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint64(large_uint64);
         }
         let small_int32 = self.small_int32;
         if let ::std::option::Option::Some(small_int32) = small_int32 {
-            if small_int32 != Self::SMALL_INT32_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(small_int32);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(small_int32);
         }
         let small_int64 = self.small_int64;
         if let ::std::option::Option::Some(small_int64) = small_int64 {
-            if small_int64 != Self::SMALL_INT64_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int64(small_int64);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int64(small_int64);
         }
         let really_small_int32 = self.really_small_int32;
         if let ::std::option::Option::Some(really_small_int32) = really_small_int32 {
-            if really_small_int32 != Self::REALLY_SMALL_INT32_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(really_small_int32);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(really_small_int32);
         }
         let really_small_int64 = self.really_small_int64;
         if let ::std::option::Option::Some(really_small_int64) = really_small_int64 {
-            if really_small_int64 != Self::REALLY_SMALL_INT64_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int64(really_small_int64);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int64(really_small_int64);
         }
         let utf8_string = &self.utf8_string;
         if let ::std::option::Option::Some(utf8_string) = utf8_string {
-            if utf8_string != Self::UTF8_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(utf8_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(utf8_string);
         }
         let zero_float = self.zero_float;
         if let ::std::option::Option::Some(zero_float) = zero_float {
-            if zero_float != Self::ZERO_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(zero_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(zero_float);
         }
         let one_float = self.one_float;
         if let ::std::option::Option::Some(one_float) = one_float {
-            if one_float != Self::ONE_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(one_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(one_float);
         }
         let small_float = self.small_float;
         if let ::std::option::Option::Some(small_float) = small_float {
-            if small_float != Self::SMALL_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(small_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(small_float);
         }
         let negative_one_float = self.negative_one_float;
         if let ::std::option::Option::Some(negative_one_float) = negative_one_float {
-            if negative_one_float != Self::NEGATIVE_ONE_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(negative_one_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(negative_one_float);
         }
         let negative_float = self.negative_float;
         if let ::std::option::Option::Some(negative_float) = negative_float {
-            if negative_float != Self::NEGATIVE_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(negative_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(negative_float);
         }
         let large_float = self.large_float;
         if let ::std::option::Option::Some(large_float) = large_float {
-            if large_float != Self::LARGE_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(large_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(large_float);
         }
         let small_negative_float = self.small_negative_float;
         if let ::std::option::Option::Some(small_negative_float) = small_negative_float {
-            if small_negative_float != Self::SMALL_NEGATIVE_FLOAT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::float(small_negative_float);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::float(small_negative_float);
         }
         let inf_double = self.inf_double;
         if let ::std::option::Option::Some(inf_double) = inf_double {
-            if inf_double != Self::INF_DOUBLE_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::double(inf_double);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::double(inf_double);
         }
         let neg_inf_double = self.neg_inf_double;
         if let ::std::option::Option::Some(neg_inf_double) = neg_inf_double {
-            if neg_inf_double != Self::NEG_INF_DOUBLE_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::double(neg_inf_double);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::double(neg_inf_double);
         }
         let nan_double = self.nan_double;
         if let ::std::option::Option::Some(nan_double) = nan_double {
-            if nan_double != Self::NAN_DOUBLE_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::double(nan_double);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::double(nan_double);
         }
         let inf_float = self.inf_float;
         if let ::std::option::Option::Some(inf_float) = inf_float {
-            if inf_float != Self::INF_FLOAT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::float(inf_float);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::float(inf_float);
         }
         let neg_inf_float = self.neg_inf_float;
         if let ::std::option::Option::Some(neg_inf_float) = neg_inf_float {
-            if neg_inf_float != Self::NEG_INF_FLOAT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::float(neg_inf_float);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::float(neg_inf_float);
         }
         let nan_float = self.nan_float;
         if let ::std::option::Option::Some(nan_float) = nan_float {
-            if nan_float != Self::NAN_FLOAT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::float(nan_float);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::float(nan_float);
         }
         let cpp_trigraph = &self.cpp_trigraph;
         if let ::std::option::Option::Some(cpp_trigraph) = cpp_trigraph {
-            if cpp_trigraph != Self::CPP_TRIGRAPH_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(cpp_trigraph);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(cpp_trigraph);
         }
         let string_with_zero = &self.string_with_zero;
         if let ::std::option::Option::Some(string_with_zero) = string_with_zero {
-            if string_with_zero != Self::STRING_WITH_ZERO_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(string_with_zero);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(string_with_zero);
         }
         let bytes_with_zero = &self.bytes_with_zero;
         if let ::std::option::Option::Some(bytes_with_zero) = bytes_with_zero {
-            if bytes_with_zero.as_slice() != Self::BYTES_WITH_ZERO_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::bytes(bytes_with_zero);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::bytes(bytes_with_zero);
         }
         let string_piece_with_zero = &self.string_piece_with_zero;
         if let ::std::option::Option::Some(string_piece_with_zero) = string_piece_with_zero {
-            if string_piece_with_zero != Self::STRING_PIECE_WITH_ZERO_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(string_piece_with_zero);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(string_piece_with_zero);
         }
         let cord_with_zero = &self.cord_with_zero;
         if let ::std::option::Option::Some(cord_with_zero) = cord_with_zero {
-            if cord_with_zero != Self::CORD_WITH_ZERO_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(cord_with_zero);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(cord_with_zero);
         }
         let replacement_string = &self.replacement_string;
         if let ::std::option::Option::Some(replacement_string) = replacement_string {
-            if replacement_string != Self::REPLACEMENT_STRING_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(replacement_string);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(replacement_string);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -10950,192 +10485,138 @@ impl ::protrust::CodedMessage for self::TestExtremeDefaultValues {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let escaped_bytes = &self.escaped_bytes;
         if let ::std::option::Option::Some(escaped_bytes) = escaped_bytes {
-            if escaped_bytes.as_slice() != Self::ESCAPED_BYTES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_bytes(escaped_bytes)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_bytes(escaped_bytes)?;
         }
         let large_uint32 = self.large_uint32;
         if let ::std::option::Option::Some(large_uint32) = large_uint32 {
-            if large_uint32 != Self::LARGE_UINT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_uint32(large_uint32)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_uint32(large_uint32)?;
         }
         let large_uint64 = self.large_uint64;
         if let ::std::option::Option::Some(large_uint64) = large_uint64 {
-            if large_uint64 != Self::LARGE_UINT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_uint64(large_uint64)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_uint64(large_uint64)?;
         }
         let small_int32 = self.small_int32;
         if let ::std::option::Option::Some(small_int32) = small_int32 {
-            if small_int32 != Self::SMALL_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_int32(small_int32)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_int32(small_int32)?;
         }
         let small_int64 = self.small_int64;
         if let ::std::option::Option::Some(small_int64) = small_int64 {
-            if small_int64 != Self::SMALL_INT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_int64(small_int64)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_int64(small_int64)?;
         }
         let really_small_int32 = self.really_small_int32;
         if let ::std::option::Option::Some(really_small_int32) = really_small_int32 {
-            if really_small_int32 != Self::REALLY_SMALL_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[168, 1])?;
-                output.write_int32(really_small_int32)?;
-            }
+            output.write_raw_tag_bytes(&[168, 1])?;
+            output.write_int32(really_small_int32)?;
         }
         let really_small_int64 = self.really_small_int64;
         if let ::std::option::Option::Some(really_small_int64) = really_small_int64 {
-            if really_small_int64 != Self::REALLY_SMALL_INT64_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[176, 1])?;
-                output.write_int64(really_small_int64)?;
-            }
+            output.write_raw_tag_bytes(&[176, 1])?;
+            output.write_int64(really_small_int64)?;
         }
         let utf8_string = &self.utf8_string;
         if let ::std::option::Option::Some(utf8_string) = utf8_string {
-            if utf8_string != Self::UTF8_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[50])?;
-                output.write_string(utf8_string)?;
-            }
+            output.write_raw_tag_bytes(&[50])?;
+            output.write_string(utf8_string)?;
         }
         let zero_float = self.zero_float;
         if let ::std::option::Option::Some(zero_float) = zero_float {
-            if zero_float != Self::ZERO_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[61])?;
-                output.write_float(zero_float)?;
-            }
+            output.write_raw_tag_bytes(&[61])?;
+            output.write_float(zero_float)?;
         }
         let one_float = self.one_float;
         if let ::std::option::Option::Some(one_float) = one_float {
-            if one_float != Self::ONE_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[69])?;
-                output.write_float(one_float)?;
-            }
+            output.write_raw_tag_bytes(&[69])?;
+            output.write_float(one_float)?;
         }
         let small_float = self.small_float;
         if let ::std::option::Option::Some(small_float) = small_float {
-            if small_float != Self::SMALL_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[77])?;
-                output.write_float(small_float)?;
-            }
+            output.write_raw_tag_bytes(&[77])?;
+            output.write_float(small_float)?;
         }
         let negative_one_float = self.negative_one_float;
         if let ::std::option::Option::Some(negative_one_float) = negative_one_float {
-            if negative_one_float != Self::NEGATIVE_ONE_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[85])?;
-                output.write_float(negative_one_float)?;
-            }
+            output.write_raw_tag_bytes(&[85])?;
+            output.write_float(negative_one_float)?;
         }
         let negative_float = self.negative_float;
         if let ::std::option::Option::Some(negative_float) = negative_float {
-            if negative_float != Self::NEGATIVE_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[93])?;
-                output.write_float(negative_float)?;
-            }
+            output.write_raw_tag_bytes(&[93])?;
+            output.write_float(negative_float)?;
         }
         let large_float = self.large_float;
         if let ::std::option::Option::Some(large_float) = large_float {
-            if large_float != Self::LARGE_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[101])?;
-                output.write_float(large_float)?;
-            }
+            output.write_raw_tag_bytes(&[101])?;
+            output.write_float(large_float)?;
         }
         let small_negative_float = self.small_negative_float;
         if let ::std::option::Option::Some(small_negative_float) = small_negative_float {
-            if small_negative_float != Self::SMALL_NEGATIVE_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[109])?;
-                output.write_float(small_negative_float)?;
-            }
+            output.write_raw_tag_bytes(&[109])?;
+            output.write_float(small_negative_float)?;
         }
         let inf_double = self.inf_double;
         if let ::std::option::Option::Some(inf_double) = inf_double {
-            if inf_double != Self::INF_DOUBLE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[113])?;
-                output.write_double(inf_double)?;
-            }
+            output.write_raw_tag_bytes(&[113])?;
+            output.write_double(inf_double)?;
         }
         let neg_inf_double = self.neg_inf_double;
         if let ::std::option::Option::Some(neg_inf_double) = neg_inf_double {
-            if neg_inf_double != Self::NEG_INF_DOUBLE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[121])?;
-                output.write_double(neg_inf_double)?;
-            }
+            output.write_raw_tag_bytes(&[121])?;
+            output.write_double(neg_inf_double)?;
         }
         let nan_double = self.nan_double;
         if let ::std::option::Option::Some(nan_double) = nan_double {
-            if nan_double != Self::NAN_DOUBLE_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[129, 1])?;
-                output.write_double(nan_double)?;
-            }
+            output.write_raw_tag_bytes(&[129, 1])?;
+            output.write_double(nan_double)?;
         }
         let inf_float = self.inf_float;
         if let ::std::option::Option::Some(inf_float) = inf_float {
-            if inf_float != Self::INF_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[141, 1])?;
-                output.write_float(inf_float)?;
-            }
+            output.write_raw_tag_bytes(&[141, 1])?;
+            output.write_float(inf_float)?;
         }
         let neg_inf_float = self.neg_inf_float;
         if let ::std::option::Option::Some(neg_inf_float) = neg_inf_float {
-            if neg_inf_float != Self::NEG_INF_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[149, 1])?;
-                output.write_float(neg_inf_float)?;
-            }
+            output.write_raw_tag_bytes(&[149, 1])?;
+            output.write_float(neg_inf_float)?;
         }
         let nan_float = self.nan_float;
         if let ::std::option::Option::Some(nan_float) = nan_float {
-            if nan_float != Self::NAN_FLOAT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[157, 1])?;
-                output.write_float(nan_float)?;
-            }
+            output.write_raw_tag_bytes(&[157, 1])?;
+            output.write_float(nan_float)?;
         }
         let cpp_trigraph = &self.cpp_trigraph;
         if let ::std::option::Option::Some(cpp_trigraph) = cpp_trigraph {
-            if cpp_trigraph != Self::CPP_TRIGRAPH_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[162, 1])?;
-                output.write_string(cpp_trigraph)?;
-            }
+            output.write_raw_tag_bytes(&[162, 1])?;
+            output.write_string(cpp_trigraph)?;
         }
         let string_with_zero = &self.string_with_zero;
         if let ::std::option::Option::Some(string_with_zero) = string_with_zero {
-            if string_with_zero != Self::STRING_WITH_ZERO_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[186, 1])?;
-                output.write_string(string_with_zero)?;
-            }
+            output.write_raw_tag_bytes(&[186, 1])?;
+            output.write_string(string_with_zero)?;
         }
         let bytes_with_zero = &self.bytes_with_zero;
         if let ::std::option::Option::Some(bytes_with_zero) = bytes_with_zero {
-            if bytes_with_zero.as_slice() != Self::BYTES_WITH_ZERO_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[194, 1])?;
-                output.write_bytes(bytes_with_zero)?;
-            }
+            output.write_raw_tag_bytes(&[194, 1])?;
+            output.write_bytes(bytes_with_zero)?;
         }
         let string_piece_with_zero = &self.string_piece_with_zero;
         if let ::std::option::Option::Some(string_piece_with_zero) = string_piece_with_zero {
-            if string_piece_with_zero != Self::STRING_PIECE_WITH_ZERO_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[202, 1])?;
-                output.write_string(string_piece_with_zero)?;
-            }
+            output.write_raw_tag_bytes(&[202, 1])?;
+            output.write_string(string_piece_with_zero)?;
         }
         let cord_with_zero = &self.cord_with_zero;
         if let ::std::option::Option::Some(cord_with_zero) = cord_with_zero {
-            if cord_with_zero != Self::CORD_WITH_ZERO_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[210, 1])?;
-                output.write_string(cord_with_zero)?;
-            }
+            output.write_raw_tag_bytes(&[210, 1])?;
+            output.write_string(cord_with_zero)?;
         }
         let replacement_string = &self.replacement_string;
         if let ::std::option::Option::Some(replacement_string) = replacement_string {
-            if replacement_string != Self::REPLACEMENT_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[218, 1])?;
-                output.write_string(replacement_string)?;
-            }
+            output.write_raw_tag_bytes(&[218, 1])?;
+            output.write_string(replacement_string)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12301,7 +11782,7 @@ impl ::protrust::CodedMessage for self::SparseEnumMessage {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.sparse_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                8 | 10 => self.sparse_enum = ::std::option::Option::Some(input.read_enum_value()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -12311,10 +11792,8 @@ impl ::protrust::CodedMessage for self::SparseEnumMessage {
         let mut size = 0i32;
         let sparse_enum = self.sparse_enum;
         if let ::std::option::Option::Some(sparse_enum) = sparse_enum {
-            if sparse_enum != Self::SPARSE_ENUM_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::enum_value(sparse_enum);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::enum_value(sparse_enum);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12322,10 +11801,8 @@ impl ::protrust::CodedMessage for self::SparseEnumMessage {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let sparse_enum = self.sparse_enum;
         if let ::std::option::Option::Some(sparse_enum) = sparse_enum {
-            if sparse_enum != Self::SPARSE_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_enum_value(sparse_enum)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_enum_value(sparse_enum)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12406,10 +11883,8 @@ impl ::protrust::CodedMessage for self::OneString {
         let mut size = 0i32;
         let data = &self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12417,10 +11892,8 @@ impl ::protrust::CodedMessage for self::OneString {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = &self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(data)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12575,10 +12048,8 @@ impl ::protrust::CodedMessage for self::OneBytes {
         let mut size = 0i32;
         let data = &self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data.as_slice() != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::bytes(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::bytes(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12586,10 +12057,8 @@ impl ::protrust::CodedMessage for self::OneBytes {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = &self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data.as_slice() != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_bytes(data)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_bytes(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12735,7 +12204,7 @@ impl ::protrust::CodedMessage for self::Int32Message {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.data = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.data = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -12745,10 +12214,8 @@ impl ::protrust::CodedMessage for self::Int32Message {
         let mut size = 0i32;
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12756,10 +12223,8 @@ impl ::protrust::CodedMessage for self::Int32Message {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(data)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12829,7 +12294,7 @@ impl ::protrust::CodedMessage for self::Uint32Message {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.data = ::std::option::Option::Some(input.read_uint32()?),
+                8 | 10 => self.data = ::std::option::Option::Some(input.read_uint32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -12839,10 +12304,8 @@ impl ::protrust::CodedMessage for self::Uint32Message {
         let mut size = 0i32;
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint32(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint32(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12850,10 +12313,8 @@ impl ::protrust::CodedMessage for self::Uint32Message {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_uint32(data)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_uint32(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -12923,7 +12384,7 @@ impl ::protrust::CodedMessage for self::Int64Message {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.data = ::std::option::Option::Some(input.read_int64()?),
+                8 | 10 => self.data = ::std::option::Option::Some(input.read_int64()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -12933,10 +12394,8 @@ impl ::protrust::CodedMessage for self::Int64Message {
         let mut size = 0i32;
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int64(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int64(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -12944,10 +12403,8 @@ impl ::protrust::CodedMessage for self::Int64Message {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int64(data)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int64(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -13017,7 +12474,7 @@ impl ::protrust::CodedMessage for self::Uint64Message {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.data = ::std::option::Option::Some(input.read_uint64()?),
+                8 | 10 => self.data = ::std::option::Option::Some(input.read_uint64()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -13027,10 +12484,8 @@ impl ::protrust::CodedMessage for self::Uint64Message {
         let mut size = 0i32;
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::uint64(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::uint64(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -13038,10 +12493,8 @@ impl ::protrust::CodedMessage for self::Uint64Message {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_uint64(data)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_uint64(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -13111,7 +12564,7 @@ impl ::protrust::CodedMessage for self::BoolMessage {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.data = ::std::option::Option::Some(input.read_bool()?),
+                8 | 10 => self.data = ::std::option::Option::Some(input.read_bool()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -13121,10 +12574,8 @@ impl ::protrust::CodedMessage for self::BoolMessage {
         let mut size = 0i32;
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::bool(data);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::bool(data);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -13132,10 +12583,8 @@ impl ::protrust::CodedMessage for self::BoolMessage {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let data = self.data;
         if let ::std::option::Option::Some(data) = data {
-            if data != Self::DATA_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_bool(data)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_bool(data)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -13206,22 +12655,22 @@ impl ::protrust::CodedMessage for self::TestOneof {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.foo = self::test_oneof::Foo::FooInt(input.read_int32()?),
+                8 | 10 => self.foo = self::test_oneof::Foo::FooInt(input.read_int32()?),
                 18 => self.foo = self::test_oneof::Foo::FooString(input.read_string()?),
                 26 => 
                     if let self::test_oneof::Foo::FooMessage(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_message(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::TestAllTypes as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_message(&mut *foo)?;
                         self.foo = self::test_oneof::Foo::FooMessage(foo)
                     },
                 35 => 
                     if let self::test_oneof::Foo::Foogroup(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_group(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::test_oneof::FooGroup as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_group(&mut *foo)?;
                         self.foo = self::test_oneof::Foo::Foogroup(foo)
                     },
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -13246,6 +12695,7 @@ impl ::protrust::CodedMessage for self::TestOneof {
         if let self::test_oneof::Foo::Foogroup(foo) = &self.foo {
             size += 1;
             size += ::protrust::io::sizes::group(&**foo);
+            size += 1;
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -13347,8 +12797,9 @@ pub mod test_oneof {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    40 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    40 | 42 => self.a = ::std::option::Option::Some(input.read_int32()?),
                     50 => self.b = ::std::option::Option::Some(input.read_string()?),
+                    36 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -13358,17 +12809,13 @@ pub mod test_oneof {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(a);
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::string(b);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::string(b);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -13376,17 +12823,13 @@ pub mod test_oneof {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[40])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[40])?;
+                output.write_int32(a)?;
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[50])?;
-                    output.write_string(b)?;
-                }
+                output.write_raw_tag_bytes(&[50])?;
+                output.write_string(b)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -13519,10 +12962,10 @@ impl ::protrust::CodedMessage for self::TestOneofBackwardsCompatible {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.foo_int = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.foo_int = ::std::option::Option::Some(input.read_int32()?),
                 18 => self.foo_string = ::std::option::Option::Some(input.read_string()?),
                 26 => input.read_message(&mut **self.foo_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                35 => input.read_message(&mut **self.foogroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                35 => input.read_group(&mut **self.foogroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -13532,17 +12975,13 @@ impl ::protrust::CodedMessage for self::TestOneofBackwardsCompatible {
         let mut size = 0i32;
         let foo_int = self.foo_int;
         if let ::std::option::Option::Some(foo_int) = foo_int {
-            if foo_int != Self::FOO_INT_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(foo_int);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(foo_int);
         }
         let foo_string = &self.foo_string;
         if let ::std::option::Option::Some(foo_string) = foo_string {
-            if foo_string != Self::FOO_STRING_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(foo_string);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(foo_string);
         }
         let foo_message = &self.foo_message;
         if let ::std::option::Option::Some(foo_message) = foo_message {
@@ -13553,6 +12992,7 @@ impl ::protrust::CodedMessage for self::TestOneofBackwardsCompatible {
         if let ::std::option::Option::Some(foogroup) = foogroup {
             size += 1;
             size += ::protrust::io::sizes::group(&**foogroup);
+            size += 1;
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -13560,17 +13000,13 @@ impl ::protrust::CodedMessage for self::TestOneofBackwardsCompatible {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let foo_int = self.foo_int;
         if let ::std::option::Option::Some(foo_int) = foo_int {
-            if foo_int != Self::FOO_INT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(foo_int)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(foo_int)?;
         }
         let foo_string = &self.foo_string;
         if let ::std::option::Option::Some(foo_string) = foo_string {
-            if foo_string != Self::FOO_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[18])?;
-                output.write_string(foo_string)?;
-            }
+            output.write_raw_tag_bytes(&[18])?;
+            output.write_string(foo_string)?;
         }
         let foo_message = &self.foo_message;
         if let ::std::option::Option::Some(foo_message) = foo_message {
@@ -13798,8 +13234,9 @@ pub mod test_oneof_backwards_compatible {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    40 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    40 | 42 => self.a = ::std::option::Option::Some(input.read_int32()?),
                     50 => self.b = ::std::option::Option::Some(input.read_string()?),
+                    36 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -13809,17 +13246,13 @@ pub mod test_oneof_backwards_compatible {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(a);
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::string(b);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::string(b);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -13827,17 +13260,13 @@ pub mod test_oneof_backwards_compatible {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[40])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[40])?;
+                output.write_int32(a)?;
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[50])?;
-                    output.write_string(b)?;
-                }
+                output.write_raw_tag_bytes(&[50])?;
+                output.write_string(b)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -13961,43 +13390,43 @@ impl ::protrust::CodedMessage for self::TestOneof2 {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.foo = self::test_oneof2::Foo::FooInt(input.read_int32()?),
+                8 | 10 => self.foo = self::test_oneof2::Foo::FooInt(input.read_int32()?),
                 18 => self.foo = self::test_oneof2::Foo::FooString(input.read_string()?),
                 26 => self.foo = self::test_oneof2::Foo::FooCord(input.read_string()?),
                 34 => self.foo = self::test_oneof2::Foo::FooStringPiece(input.read_string()?),
                 42 => self.foo = self::test_oneof2::Foo::FooBytes(input.read_bytes()?),
-                48 => self.foo = self::test_oneof2::Foo::FooEnum(input.read_enum_value()?),
+                48 | 50 => self.foo = self::test_oneof2::Foo::FooEnum(input.read_enum_value()?),
                 58 => 
                     if let self::test_oneof2::Foo::FooMessage(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_message(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::test_oneof2::NestedMessage as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_message(&mut *foo)?;
                         self.foo = self::test_oneof2::Foo::FooMessage(foo)
                     },
                 67 => 
                     if let self::test_oneof2::Foo::Foogroup(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_group(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::test_oneof2::FooGroup as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_group(&mut *foo)?;
                         self.foo = self::test_oneof2::Foo::Foogroup(foo)
                     },
                 90 => 
                     if let self::test_oneof2::Foo::FooLazyMessage(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_message(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::test_oneof2::NestedMessage as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_message(&mut *foo)?;
                         self.foo = self::test_oneof2::Foo::FooLazyMessage(foo)
                     },
-                96 => self.bar = self::test_oneof2::Bar::BarInt(input.read_int32()?),
+                96 | 98 => self.bar = self::test_oneof2::Bar::BarInt(input.read_int32()?),
                 106 => self.bar = self::test_oneof2::Bar::BarString(input.read_string()?),
                 114 => self.bar = self::test_oneof2::Bar::BarCord(input.read_string()?),
                 122 => self.bar = self::test_oneof2::Bar::BarStringPiece(input.read_string()?),
                 130 => self.bar = self::test_oneof2::Bar::BarBytes(input.read_bytes()?),
-                136 => self.bar = self::test_oneof2::Bar::BarEnum(input.read_enum_value()?),
-                144 => self.baz_int = ::std::option::Option::Some(input.read_int32()?),
+                136 | 138 => self.bar = self::test_oneof2::Bar::BarEnum(input.read_enum_value()?),
+                144 | 146 => self.baz_int = ::std::option::Option::Some(input.read_int32()?),
                 154 => self.baz_string = ::std::option::Option::Some(input.read_string()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -14037,6 +13466,7 @@ impl ::protrust::CodedMessage for self::TestOneof2 {
         if let self::test_oneof2::Foo::Foogroup(foo) = &self.foo {
             size += 1;
             size += ::protrust::io::sizes::group(&**foo);
+            size += 1;
         }
         if let self::test_oneof2::Foo::FooLazyMessage(foo) = &self.foo {
             size += 1;
@@ -14068,17 +13498,13 @@ impl ::protrust::CodedMessage for self::TestOneof2 {
         }
         let baz_int = self.baz_int;
         if let ::std::option::Option::Some(baz_int) = baz_int {
-            if baz_int != Self::BAZ_INT_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::int32(baz_int);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::int32(baz_int);
         }
         let baz_string = &self.baz_string;
         if let ::std::option::Option::Some(baz_string) = baz_string {
-            if baz_string != Self::BAZ_STRING_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::string(baz_string);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::string(baz_string);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -14147,17 +13573,13 @@ impl ::protrust::CodedMessage for self::TestOneof2 {
         }
         let baz_int = self.baz_int;
         if let ::std::option::Option::Some(baz_int) = baz_int {
-            if baz_int != Self::BAZ_INT_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 1])?;
-                output.write_int32(baz_int)?;
-            }
+            output.write_raw_tag_bytes(&[144, 1])?;
+            output.write_int32(baz_int)?;
         }
         let baz_string = &self.baz_string;
         if let ::std::option::Option::Some(baz_string) = baz_string {
-            if baz_string != Self::BAZ_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[154, 1])?;
-                output.write_string(baz_string)?;
-            }
+            output.write_raw_tag_bytes(&[154, 1])?;
+            output.write_string(baz_string)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -14380,8 +13802,9 @@ pub mod test_oneof2 {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    72 => self.a = ::std::option::Option::Some(input.read_int32()?),
+                    72 | 74 => self.a = ::std::option::Option::Some(input.read_int32()?),
                     82 => self.b = ::std::option::Option::Some(input.read_string()?),
+                    68 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -14391,17 +13814,13 @@ pub mod test_oneof2 {
             let mut size = 0i32;
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int32(a);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int32(a);
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::string(b);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::string(b);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -14409,17 +13828,13 @@ pub mod test_oneof2 {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let a = self.a;
             if let ::std::option::Option::Some(a) = a {
-                if a != Self::A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[72])?;
-                    output.write_int32(a)?;
-                }
+                output.write_raw_tag_bytes(&[72])?;
+                output.write_int32(a)?;
             }
             let b = &self.b;
             if let ::std::option::Option::Some(b) = b {
-                if b != Self::B_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[82])?;
-                    output.write_string(b)?;
-                }
+                output.write_raw_tag_bytes(&[82])?;
+                output.write_string(b)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -14541,8 +13956,8 @@ pub mod test_oneof2 {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    8 => self.qux_int = ::std::option::Option::Some(input.read_int64()?),
-                    16 => self.corge_int.add_entries(input, &NESTED_MESSAGE_CORGE_INT_CODEC)?,
+                    8 | 10 => self.qux_int = ::std::option::Option::Some(input.read_int64()?),
+                    16 | 18 => self.corge_int.add_entries(input, &NESTED_MESSAGE_CORGE_INT_CODEC)?,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -14552,10 +13967,8 @@ pub mod test_oneof2 {
             let mut size = 0i32;
             let qux_int = self.qux_int;
             if let ::std::option::Option::Some(qux_int) = qux_int {
-                if qux_int != Self::QUX_INT_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::int64(qux_int);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::int64(qux_int);
             }
             size += self.corge_int.calculate_size(&NESTED_MESSAGE_CORGE_INT_CODEC);
             size += self.unknown_fields.calculate_size();
@@ -14564,10 +13977,8 @@ pub mod test_oneof2 {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let qux_int = self.qux_int;
             if let ::std::option::Option::Some(qux_int) = qux_int {
-                if qux_int != Self::QUX_INT_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int64(qux_int)?;
-                }
+                output.write_raw_tag_bytes(&[8])?;
+                output.write_int64(qux_int)?;
             }
             self.corge_int.write_to(output, &NESTED_MESSAGE_CORGE_INT_CODEC)?;
             self.unknown_fields.write_to(output)?;
@@ -14710,14 +14121,14 @@ impl ::protrust::CodedMessage for self::TestRequiredOneof {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.foo = self::test_required_oneof::Foo::FooInt(input.read_int32()?),
+                8 | 10 => self.foo = self::test_required_oneof::Foo::FooInt(input.read_int32()?),
                 18 => self.foo = self::test_required_oneof::Foo::FooString(input.read_string()?),
                 26 => 
                     if let self::test_required_oneof::Foo::FooMessage(foo) = &mut self.foo {
-                        foo.merge_from(input)?;
+                        input.read_message(&mut **foo)?;
                     } else {
                         let mut foo = ::std::boxed::Box::new(<self::test_required_oneof::NestedMessage as ::protrust::LiteMessage>::new());
-                        foo.merge_from(input)?;
+                        input.read_message(&mut *foo)?;
                         self.foo = self::test_required_oneof::Foo::FooMessage(foo)
                     },
                 _ => self.unknown_fields.merge_from(tag, input)?
@@ -14820,7 +14231,7 @@ pub mod test_required_oneof {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    9 => self.required_double = ::std::option::Option::Some(input.read_double()?),
+                    9 | 10 => self.required_double = ::std::option::Option::Some(input.read_double()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -14830,10 +14241,8 @@ pub mod test_required_oneof {
             let mut size = 0i32;
             let required_double = self.required_double;
             if let ::std::option::Option::Some(required_double) = required_double {
-                if required_double != Self::REQUIRED_DOUBLE_DEFAULT_VALUE {
-                    size += 1;
-                    size += ::protrust::io::sizes::double(required_double);
-                }
+                size += 1;
+                size += ::protrust::io::sizes::double(required_double);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -14841,10 +14250,8 @@ pub mod test_required_oneof {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let required_double = self.required_double;
             if let ::std::option::Option::Some(required_double) = required_double {
-                if required_double != Self::REQUIRED_DOUBLE_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[9])?;
-                    output.write_double(required_double)?;
-                }
+                output.write_raw_tag_bytes(&[9])?;
+                output.write_double(required_double)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -14956,20 +14363,20 @@ impl ::protrust::CodedMessage for self::TestPackedTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                722 | 720 => self.packed_int32.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT32_CODEC)?,
-                730 | 728 => self.packed_int64.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT64_CODEC)?,
-                738 | 736 => self.packed_uint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT32_CODEC)?,
-                746 | 744 => self.packed_uint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT64_CODEC)?,
-                754 | 752 => self.packed_sint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT32_CODEC)?,
-                762 | 760 => self.packed_sint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT64_CODEC)?,
-                770 | 773 => self.packed_fixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED32_CODEC)?,
-                778 | 777 => self.packed_fixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED64_CODEC)?,
-                786 | 789 => self.packed_sfixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED32_CODEC)?,
-                794 | 793 => self.packed_sfixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED64_CODEC)?,
-                802 | 805 => self.packed_float.add_entries(input, &TEST_PACKED_TYPES_PACKED_FLOAT_CODEC)?,
-                810 | 809 => self.packed_double.add_entries(input, &TEST_PACKED_TYPES_PACKED_DOUBLE_CODEC)?,
-                818 | 816 => self.packed_bool.add_entries(input, &TEST_PACKED_TYPES_PACKED_BOOL_CODEC)?,
-                826 | 824 => self.packed_enum.add_entries(input, &TEST_PACKED_TYPES_PACKED_ENUM_CODEC)?,
+                720 | 722 => self.packed_int32.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT32_CODEC)?,
+                728 | 730 => self.packed_int64.add_entries(input, &TEST_PACKED_TYPES_PACKED_INT64_CODEC)?,
+                736 | 738 => self.packed_uint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT32_CODEC)?,
+                744 | 746 => self.packed_uint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_UINT64_CODEC)?,
+                752 | 754 => self.packed_sint32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT32_CODEC)?,
+                760 | 762 => self.packed_sint64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SINT64_CODEC)?,
+                773 | 770 => self.packed_fixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED32_CODEC)?,
+                777 | 778 => self.packed_fixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_FIXED64_CODEC)?,
+                789 | 786 => self.packed_sfixed32.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED32_CODEC)?,
+                793 | 794 => self.packed_sfixed64.add_entries(input, &TEST_PACKED_TYPES_PACKED_SFIXED64_CODEC)?,
+                805 | 802 => self.packed_float.add_entries(input, &TEST_PACKED_TYPES_PACKED_FLOAT_CODEC)?,
+                809 | 810 => self.packed_double.add_entries(input, &TEST_PACKED_TYPES_PACKED_DOUBLE_CODEC)?,
+                816 | 818 => self.packed_bool.add_entries(input, &TEST_PACKED_TYPES_PACKED_BOOL_CODEC)?,
+                824 | 826 => self.packed_enum.add_entries(input, &TEST_PACKED_TYPES_PACKED_ENUM_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -15281,20 +14688,20 @@ impl ::protrust::CodedMessage for self::TestUnpackedTypes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                720 => self.unpacked_int32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_INT32_CODEC)?,
-                728 => self.unpacked_int64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_INT64_CODEC)?,
-                736 => self.unpacked_uint32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_UINT32_CODEC)?,
-                744 => self.unpacked_uint64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_UINT64_CODEC)?,
-                752 => self.unpacked_sint32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SINT32_CODEC)?,
-                760 => self.unpacked_sint64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SINT64_CODEC)?,
-                773 => self.unpacked_fixed32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FIXED32_CODEC)?,
-                777 => self.unpacked_fixed64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FIXED64_CODEC)?,
-                789 => self.unpacked_sfixed32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SFIXED32_CODEC)?,
-                793 => self.unpacked_sfixed64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SFIXED64_CODEC)?,
-                805 => self.unpacked_float.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FLOAT_CODEC)?,
-                809 => self.unpacked_double.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_DOUBLE_CODEC)?,
-                816 => self.unpacked_bool.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_BOOL_CODEC)?,
-                824 => self.unpacked_enum.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_ENUM_CODEC)?,
+                720 | 722 => self.unpacked_int32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_INT32_CODEC)?,
+                728 | 730 => self.unpacked_int64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_INT64_CODEC)?,
+                736 | 738 => self.unpacked_uint32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_UINT32_CODEC)?,
+                744 | 746 => self.unpacked_uint64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_UINT64_CODEC)?,
+                752 | 754 => self.unpacked_sint32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SINT32_CODEC)?,
+                760 | 762 => self.unpacked_sint64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SINT64_CODEC)?,
+                773 | 770 => self.unpacked_fixed32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FIXED32_CODEC)?,
+                777 | 778 => self.unpacked_fixed64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FIXED64_CODEC)?,
+                789 | 786 => self.unpacked_sfixed32.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SFIXED32_CODEC)?,
+                793 | 794 => self.unpacked_sfixed64.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_SFIXED64_CODEC)?,
+                805 | 802 => self.unpacked_float.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_FLOAT_CODEC)?,
+                809 | 810 => self.unpacked_double.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_DOUBLE_CODEC)?,
+                816 | 818 => self.unpacked_bool.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_BOOL_CODEC)?,
+                824 | 826 => self.unpacked_enum.add_entries(input, &TEST_UNPACKED_TYPES_UNPACKED_ENUM_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -15692,13 +15099,13 @@ impl ::protrust::CodedMessage for self::TestDynamicExtensions {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                16005 => self.scalar_extension = ::std::option::Option::Some(input.read_fixed32()?),
-                16008 => self.enum_extension = ::std::option::Option::Some(input.read_enum_value()?),
-                16016 => self.dynamic_enum_extension = ::std::option::Option::Some(input.read_enum_value()?),
+                16005 | 16002 => self.scalar_extension = ::std::option::Option::Some(input.read_fixed32()?),
+                16008 | 16010 => self.enum_extension = ::std::option::Option::Some(input.read_enum_value()?),
+                16016 | 16018 => self.dynamic_enum_extension = ::std::option::Option::Some(input.read_enum_value()?),
                 16026 => input.read_message(&mut **self.message_extension.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 16034 => input.read_message(&mut **self.dynamic_message_extension.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 16042 => self.repeated_extension.add_entries(input, &TEST_DYNAMIC_EXTENSIONS_REPEATED_EXTENSION_CODEC)?,
-                16050 | 16048 => self.packed_extension.add_entries(input, &TEST_DYNAMIC_EXTENSIONS_PACKED_EXTENSION_CODEC)?,
+                16048 | 16050 => self.packed_extension.add_entries(input, &TEST_DYNAMIC_EXTENSIONS_PACKED_EXTENSION_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -15708,24 +15115,18 @@ impl ::protrust::CodedMessage for self::TestDynamicExtensions {
         let mut size = 0i32;
         let scalar_extension = self.scalar_extension;
         if let ::std::option::Option::Some(scalar_extension) = scalar_extension {
-            if scalar_extension != Self::SCALAR_EXTENSION_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::fixed32(scalar_extension);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::fixed32(scalar_extension);
         }
         let enum_extension = self.enum_extension;
         if let ::std::option::Option::Some(enum_extension) = enum_extension {
-            if enum_extension != Self::ENUM_EXTENSION_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(enum_extension);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(enum_extension);
         }
         let dynamic_enum_extension = self.dynamic_enum_extension;
         if let ::std::option::Option::Some(dynamic_enum_extension) = dynamic_enum_extension {
-            if dynamic_enum_extension != Self::DYNAMIC_ENUM_EXTENSION_DEFAULT_VALUE {
-                size += 2;
-                size += ::protrust::io::sizes::enum_value(dynamic_enum_extension);
-            }
+            size += 2;
+            size += ::protrust::io::sizes::enum_value(dynamic_enum_extension);
         }
         let message_extension = &self.message_extension;
         if let ::std::option::Option::Some(message_extension) = message_extension {
@@ -15745,24 +15146,18 @@ impl ::protrust::CodedMessage for self::TestDynamicExtensions {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let scalar_extension = self.scalar_extension;
         if let ::std::option::Option::Some(scalar_extension) = scalar_extension {
-            if scalar_extension != Self::SCALAR_EXTENSION_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[133, 125])?;
-                output.write_fixed32(scalar_extension)?;
-            }
+            output.write_raw_tag_bytes(&[133, 125])?;
+            output.write_fixed32(scalar_extension)?;
         }
         let enum_extension = self.enum_extension;
         if let ::std::option::Option::Some(enum_extension) = enum_extension {
-            if enum_extension != Self::ENUM_EXTENSION_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 125])?;
-                output.write_enum_value(enum_extension)?;
-            }
+            output.write_raw_tag_bytes(&[136, 125])?;
+            output.write_enum_value(enum_extension)?;
         }
         let dynamic_enum_extension = self.dynamic_enum_extension;
         if let ::std::option::Option::Some(dynamic_enum_extension) = dynamic_enum_extension {
-            if dynamic_enum_extension != Self::DYNAMIC_ENUM_EXTENSION_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[144, 125])?;
-                output.write_enum_value(dynamic_enum_extension)?;
-            }
+            output.write_raw_tag_bytes(&[144, 125])?;
+            output.write_enum_value(dynamic_enum_extension)?;
         }
         let message_extension = &self.message_extension;
         if let ::std::option::Option::Some(message_extension) = message_extension {
@@ -16049,7 +15444,7 @@ pub mod test_dynamic_extensions {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    16800 => self.dynamic_field = ::std::option::Option::Some(input.read_int32()?),
+                    16800 | 16802 => self.dynamic_field = ::std::option::Option::Some(input.read_int32()?),
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -16059,10 +15454,8 @@ pub mod test_dynamic_extensions {
             let mut size = 0i32;
             let dynamic_field = self.dynamic_field;
             if let ::std::option::Option::Some(dynamic_field) = dynamic_field {
-                if dynamic_field != Self::DYNAMIC_FIELD_DEFAULT_VALUE {
-                    size += 3;
-                    size += ::protrust::io::sizes::int32(dynamic_field);
-                }
+                size += 3;
+                size += ::protrust::io::sizes::int32(dynamic_field);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -16070,10 +15463,8 @@ pub mod test_dynamic_extensions {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let dynamic_field = self.dynamic_field;
             if let ::std::option::Option::Some(dynamic_field) = dynamic_field {
-                if dynamic_field != Self::DYNAMIC_FIELD_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[160, 131, 1])?;
-                    output.write_int32(dynamic_field)?;
-                }
+                output.write_raw_tag_bytes(&[160, 131, 1])?;
+                output.write_int32(dynamic_field)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -16183,12 +15574,12 @@ impl ::protrust::CodedMessage for self::TestRepeatedScalarDifferentTagSizes {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                101 => self.repeated_fixed32.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FIXED32_CODEC)?,
-                104 => self.repeated_int32.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_INT32_CODEC)?,
-                16369 => self.repeated_fixed64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FIXED64_CODEC)?,
-                16376 => self.repeated_int64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_INT64_CODEC)?,
-                2097141 => self.repeated_float.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FLOAT_CODEC)?,
-                2097144 => self.repeated_uint64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_UINT64_CODEC)?,
+                101 | 98 => self.repeated_fixed32.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FIXED32_CODEC)?,
+                104 | 106 => self.repeated_int32.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_INT32_CODEC)?,
+                16369 | 16370 => self.repeated_fixed64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FIXED64_CODEC)?,
+                16376 | 16378 => self.repeated_int64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_INT64_CODEC)?,
+                2097141 | 2097138 => self.repeated_float.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_FLOAT_CODEC)?,
+                2097144 | 2097146 => self.repeated_uint64.add_entries(input, &TEST_REPEATED_SCALAR_DIFFERENT_TAG_SIZES_REPEATED_UINT64_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -16353,7 +15744,7 @@ impl ::protrust::CodedMessage for self::TestParsingMerge {
                 10 => input.read_message(&mut **self.required_all_types.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 18 => input.read_message(&mut **self.optional_all_types.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 26 => self.repeated_all_types.add_entries(input, &TEST_PARSING_MERGE_REPEATED_ALL_TYPES_CODEC)?,
-                83 => input.read_message(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                83 => input.read_group(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 163 => self.repeatedgroup.add_entries(input, &TEST_PARSING_MERGE_REPEATEDGROUP_CODEC)?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
@@ -16377,6 +15768,7 @@ impl ::protrust::CodedMessage for self::TestParsingMerge {
         if let ::std::option::Option::Some(optionalgroup) = optionalgroup {
             size += 1;
             size += ::protrust::io::sizes::group(&**optionalgroup);
+            size += 1;
         }
         size += self.repeatedgroup.calculate_size(&TEST_PARSING_MERGE_REPEATEDGROUP_CODEC);
         size += self.unknown_fields.calculate_size();
@@ -16829,6 +16221,7 @@ pub mod test_parsing_merge {
                 while let ::std::option::Option::Some(tag) = input.read_tag()? {
                     match tag.get() {
                         90 => input.read_message(&mut **self.field1.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                        84 => break,
                         _ => self.unknown_fields.merge_from(tag, input)?
                     }
                 }
@@ -16930,6 +16323,7 @@ pub mod test_parsing_merge {
                 while let ::std::option::Option::Some(tag) = input.read_tag()? {
                     match tag.get() {
                         170 => input.read_message(&mut **self.field1.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                        164 => break,
                         _ => self.unknown_fields.merge_from(tag, input)?
                     }
                 }
@@ -17032,6 +16426,7 @@ pub mod test_parsing_merge {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
                     90 => input.read_message(&mut **self.optional_group_all_types.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                    84 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -17133,6 +16528,7 @@ pub mod test_parsing_merge {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
                     170 => input.read_message(&mut **self.repeated_group_all_types.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                    164 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -17246,10 +16642,8 @@ impl ::protrust::CodedMessage for self::TestCommentInjectionMessage {
         let mut size = 0i32;
         let a = &self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::string(a);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::string(a);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -17257,10 +16651,8 @@ impl ::protrust::CodedMessage for self::TestCommentInjectionMessage {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let a = &self.a;
         if let ::std::option::Option::Some(a) = a {
-            if a != Self::A_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[10])?;
-                output.write_string(a)?;
-            }
+            output.write_raw_tag_bytes(&[10])?;
+            output.write_string(a)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -17589,12 +16981,12 @@ impl ::protrust::CodedMessage for self::TestJsonName {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.field_name1 = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.fieldName2 = ::std::option::Option::Some(input.read_int32()?),
-                24 => self.FieldName3 = ::std::option::Option::Some(input.read_int32()?),
-                32 => self._field_name4 = ::std::option::Option::Some(input.read_int32()?),
-                40 => self.FIELD_NAME5 = ::std::option::Option::Some(input.read_int32()?),
-                48 => self.field_name6 = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.field_name1 = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.fieldName2 = ::std::option::Option::Some(input.read_int32()?),
+                24 | 26 => self.FieldName3 = ::std::option::Option::Some(input.read_int32()?),
+                32 | 34 => self._field_name4 = ::std::option::Option::Some(input.read_int32()?),
+                40 | 42 => self.FIELD_NAME5 = ::std::option::Option::Some(input.read_int32()?),
+                48 | 50 => self.field_name6 = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -17604,45 +16996,33 @@ impl ::protrust::CodedMessage for self::TestJsonName {
         let mut size = 0i32;
         let field_name1 = self.field_name1;
         if let ::std::option::Option::Some(field_name1) = field_name1 {
-            if field_name1 != Self::FIELD_NAME1_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field_name1);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field_name1);
         }
         let fieldName2 = self.fieldName2;
         if let ::std::option::Option::Some(fieldName2) = fieldName2 {
-            if fieldName2 != Self::FIELDNAME2_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(fieldName2);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(fieldName2);
         }
         let FieldName3 = self.FieldName3;
         if let ::std::option::Option::Some(FieldName3) = FieldName3 {
-            if FieldName3 != Self::FIELDNAME3_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(FieldName3);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(FieldName3);
         }
         let _field_name4 = self._field_name4;
         if let ::std::option::Option::Some(_field_name4) = _field_name4 {
-            if _field_name4 != Self::_FIELD_NAME4_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(_field_name4);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(_field_name4);
         }
         let FIELD_NAME5 = self.FIELD_NAME5;
         if let ::std::option::Option::Some(FIELD_NAME5) = FIELD_NAME5 {
-            if FIELD_NAME5 != Self::FIELD_NAME5_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(FIELD_NAME5);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(FIELD_NAME5);
         }
         let field_name6 = self.field_name6;
         if let ::std::option::Option::Some(field_name6) = field_name6 {
-            if field_name6 != Self::FIELD_NAME6_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field_name6);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field_name6);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -17650,45 +17030,33 @@ impl ::protrust::CodedMessage for self::TestJsonName {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let field_name1 = self.field_name1;
         if let ::std::option::Option::Some(field_name1) = field_name1 {
-            if field_name1 != Self::FIELD_NAME1_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(field_name1)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(field_name1)?;
         }
         let fieldName2 = self.fieldName2;
         if let ::std::option::Option::Some(fieldName2) = fieldName2 {
-            if fieldName2 != Self::FIELDNAME2_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(fieldName2)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(fieldName2)?;
         }
         let FieldName3 = self.FieldName3;
         if let ::std::option::Option::Some(FieldName3) = FieldName3 {
-            if FieldName3 != Self::FIELDNAME3_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(FieldName3)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(FieldName3)?;
         }
         let _field_name4 = self._field_name4;
         if let ::std::option::Option::Some(_field_name4) = _field_name4 {
-            if _field_name4 != Self::_FIELD_NAME4_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_int32(_field_name4)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_int32(_field_name4)?;
         }
         let FIELD_NAME5 = self.FIELD_NAME5;
         if let ::std::option::Option::Some(FIELD_NAME5) = FIELD_NAME5 {
-            if FIELD_NAME5 != Self::FIELD_NAME5_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[40])?;
-                output.write_int32(FIELD_NAME5)?;
-            }
+            output.write_raw_tag_bytes(&[40])?;
+            output.write_int32(FIELD_NAME5)?;
         }
         let field_name6 = self.field_name6;
         if let ::std::option::Option::Some(field_name6) = field_name6 {
-            if field_name6 != Self::FIELD_NAME6_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_int32(field_name6)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_int32(field_name6)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())
@@ -17962,23 +17330,23 @@ impl ::protrust::CodedMessage for self::TestHugeFieldNumbers {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                4294960000 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
-                4294960008 => self.fixed_32 = ::std::option::Option::Some(input.read_int32()?),
-                4294960016 => self.repeated_int32.add_entries(input, &TEST_HUGE_FIELD_NUMBERS_REPEATED_INT32_CODEC)?,
-                4294960026 | 4294960024 => self.packed_int32.add_entries(input, &TEST_HUGE_FIELD_NUMBERS_PACKED_INT32_CODEC)?,
-                4294960032 => self.optional_enum = ::std::option::Option::Some(input.read_enum_value()?),
+                4294960000 | 4294960002 => self.optional_int32 = ::std::option::Option::Some(input.read_int32()?),
+                4294960008 | 4294960010 => self.fixed_32 = ::std::option::Option::Some(input.read_int32()?),
+                4294960016 | 4294960018 => self.repeated_int32.add_entries(input, &TEST_HUGE_FIELD_NUMBERS_REPEATED_INT32_CODEC)?,
+                4294960024 | 4294960026 => self.packed_int32.add_entries(input, &TEST_HUGE_FIELD_NUMBERS_PACKED_INT32_CODEC)?,
+                4294960032 | 4294960034 => self.optional_enum = ::std::option::Option::Some(input.read_enum_value()?),
                 4294960042 => self.optional_string = ::std::option::Option::Some(input.read_string()?),
                 4294960050 => self.optional_bytes = ::std::option::Option::Some(input.read_bytes()?),
                 4294960058 => input.read_message(&mut **self.optional_message.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
-                4294960067 => input.read_message(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
+                4294960067 => input.read_group(&mut **self.optionalgroup.get_or_insert_with(|| ::std::boxed::Box::new(::protrust::LiteMessage::new())))?,
                 4294960082 => self.string_string_map.add_entries(input, &TEST_HUGE_FIELD_NUMBERS_STRING_STRING_MAP_CODEC)?,
-                4294960088 => self.oneof_field = self::test_huge_field_numbers::OneofField::OneofUint32(input.read_uint32()?),
+                4294960088 | 4294960090 => self.oneof_field = self::test_huge_field_numbers::OneofField::OneofUint32(input.read_uint32()?),
                 4294960098 => 
                     if let self::test_huge_field_numbers::OneofField::OneofTestAllTypes(oneof_field) = &mut self.oneof_field {
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut **oneof_field)?;
                     } else {
                         let mut oneof_field = ::std::boxed::Box::new(<self::TestAllTypes as ::protrust::LiteMessage>::new());
-                        oneof_field.merge_from(input)?;
+                        input.read_message(&mut *oneof_field)?;
                         self.oneof_field = self::test_huge_field_numbers::OneofField::OneofTestAllTypes(oneof_field)
                     },
                 4294960106 => self.oneof_field = self::test_huge_field_numbers::OneofField::OneofString(input.read_string()?),
@@ -17992,40 +17360,30 @@ impl ::protrust::CodedMessage for self::TestHugeFieldNumbers {
         let mut size = 0i32;
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::int32(optional_int32);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::int32(optional_int32);
         }
         let fixed_32 = self.fixed_32;
         if let ::std::option::Option::Some(fixed_32) = fixed_32 {
-            if fixed_32 != Self::FIXED_32_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::int32(fixed_32);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::int32(fixed_32);
         }
         size += self.repeated_int32.calculate_size(&TEST_HUGE_FIELD_NUMBERS_REPEATED_INT32_CODEC);
         size += self.packed_int32.calculate_size(&TEST_HUGE_FIELD_NUMBERS_PACKED_INT32_CODEC);
         let optional_enum = self.optional_enum;
         if let ::std::option::Option::Some(optional_enum) = optional_enum {
-            if optional_enum != Self::OPTIONAL_ENUM_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::enum_value(optional_enum);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::enum_value(optional_enum);
         }
         let optional_string = &self.optional_string;
         if let ::std::option::Option::Some(optional_string) = optional_string {
-            if optional_string != Self::OPTIONAL_STRING_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::string(optional_string);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::string(optional_string);
         }
         let optional_bytes = &self.optional_bytes;
         if let ::std::option::Option::Some(optional_bytes) = optional_bytes {
-            if optional_bytes.as_slice() != Self::OPTIONAL_BYTES_DEFAULT_VALUE {
-                size += 5;
-                size += ::protrust::io::sizes::bytes(optional_bytes);
-            }
+            size += 5;
+            size += ::protrust::io::sizes::bytes(optional_bytes);
         }
         let optional_message = &self.optional_message;
         if let ::std::option::Option::Some(optional_message) = optional_message {
@@ -18036,6 +17394,7 @@ impl ::protrust::CodedMessage for self::TestHugeFieldNumbers {
         if let ::std::option::Option::Some(optionalgroup) = optionalgroup {
             size += 5;
             size += ::protrust::io::sizes::group(&**optionalgroup);
+            size += 5;
         }
         size += self.string_string_map.calculate_size(&TEST_HUGE_FIELD_NUMBERS_STRING_STRING_MAP_CODEC);
         if let self::test_huge_field_numbers::OneofField::OneofUint32(oneof_field) = self.oneof_field {
@@ -18060,40 +17419,30 @@ impl ::protrust::CodedMessage for self::TestHugeFieldNumbers {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let optional_int32 = self.optional_int32;
         if let ::std::option::Option::Some(optional_int32) = optional_int32 {
-            if optional_int32 != Self::OPTIONAL_INT32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[128, 199, 255, 255, 15])?;
-                output.write_int32(optional_int32)?;
-            }
+            output.write_raw_tag_bytes(&[128, 199, 255, 255, 15])?;
+            output.write_int32(optional_int32)?;
         }
         let fixed_32 = self.fixed_32;
         if let ::std::option::Option::Some(fixed_32) = fixed_32 {
-            if fixed_32 != Self::FIXED_32_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[136, 199, 255, 255, 15])?;
-                output.write_int32(fixed_32)?;
-            }
+            output.write_raw_tag_bytes(&[136, 199, 255, 255, 15])?;
+            output.write_int32(fixed_32)?;
         }
         self.repeated_int32.write_to(output, &TEST_HUGE_FIELD_NUMBERS_REPEATED_INT32_CODEC)?;
         self.packed_int32.write_to(output, &TEST_HUGE_FIELD_NUMBERS_PACKED_INT32_CODEC)?;
         let optional_enum = self.optional_enum;
         if let ::std::option::Option::Some(optional_enum) = optional_enum {
-            if optional_enum != Self::OPTIONAL_ENUM_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[160, 199, 255, 255, 15])?;
-                output.write_enum_value(optional_enum)?;
-            }
+            output.write_raw_tag_bytes(&[160, 199, 255, 255, 15])?;
+            output.write_enum_value(optional_enum)?;
         }
         let optional_string = &self.optional_string;
         if let ::std::option::Option::Some(optional_string) = optional_string {
-            if optional_string != Self::OPTIONAL_STRING_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[170, 199, 255, 255, 15])?;
-                output.write_string(optional_string)?;
-            }
+            output.write_raw_tag_bytes(&[170, 199, 255, 255, 15])?;
+            output.write_string(optional_string)?;
         }
         let optional_bytes = &self.optional_bytes;
         if let ::std::option::Option::Some(optional_bytes) = optional_bytes {
-            if optional_bytes.as_slice() != Self::OPTIONAL_BYTES_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[178, 199, 255, 255, 15])?;
-                output.write_bytes(optional_bytes)?;
-            }
+            output.write_raw_tag_bytes(&[178, 199, 255, 255, 15])?;
+            output.write_bytes(optional_bytes)?;
         }
         let optional_message = &self.optional_message;
         if let ::std::option::Option::Some(optional_message) = optional_message {
@@ -18553,7 +17902,8 @@ pub mod test_huge_field_numbers {
         fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
             while let ::std::option::Option::Some(tag) = input.read_tag()? {
                 match tag.get() {
-                    4294960072 => self.group_a = ::std::option::Option::Some(input.read_int32()?),
+                    4294960072 | 4294960074 => self.group_a = ::std::option::Option::Some(input.read_int32()?),
+                    4294960068 => break,
                     _ => self.unknown_fields.merge_from(tag, input)?
                 }
             }
@@ -18563,10 +17913,8 @@ pub mod test_huge_field_numbers {
             let mut size = 0i32;
             let group_a = self.group_a;
             if let ::std::option::Option::Some(group_a) = group_a {
-                if group_a != Self::GROUP_A_DEFAULT_VALUE {
-                    size += 5;
-                    size += ::protrust::io::sizes::int32(group_a);
-                }
+                size += 5;
+                size += ::protrust::io::sizes::int32(group_a);
             }
             size += self.unknown_fields.calculate_size();
             size
@@ -18574,10 +17922,8 @@ pub mod test_huge_field_numbers {
         fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
             let group_a = self.group_a;
             if let ::std::option::Option::Some(group_a) = group_a {
-                if group_a != Self::GROUP_A_DEFAULT_VALUE {
-                    output.write_raw_tag_bytes(&[200, 199, 255, 255, 15])?;
-                    output.write_int32(group_a)?;
-                }
+                output.write_raw_tag_bytes(&[200, 199, 255, 255, 15])?;
+                output.write_int32(group_a)?;
             }
             self.unknown_fields.write_to(output)?;
             ::std::result::Result::Ok(())
@@ -18666,15 +18012,15 @@ impl ::protrust::CodedMessage for self::TestExtensionInsideTable {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.field1 = ::std::option::Option::Some(input.read_int32()?),
-                16 => self.field2 = ::std::option::Option::Some(input.read_int32()?),
-                24 => self.field3 = ::std::option::Option::Some(input.read_int32()?),
-                32 => self.field4 = ::std::option::Option::Some(input.read_int32()?),
-                48 => self.field6 = ::std::option::Option::Some(input.read_int32()?),
-                56 => self.field7 = ::std::option::Option::Some(input.read_int32()?),
-                64 => self.field8 = ::std::option::Option::Some(input.read_int32()?),
-                72 => self.field9 = ::std::option::Option::Some(input.read_int32()?),
-                80 => self.field10 = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.field1 = ::std::option::Option::Some(input.read_int32()?),
+                16 | 18 => self.field2 = ::std::option::Option::Some(input.read_int32()?),
+                24 | 26 => self.field3 = ::std::option::Option::Some(input.read_int32()?),
+                32 | 34 => self.field4 = ::std::option::Option::Some(input.read_int32()?),
+                48 | 50 => self.field6 = ::std::option::Option::Some(input.read_int32()?),
+                56 | 58 => self.field7 = ::std::option::Option::Some(input.read_int32()?),
+                64 | 66 => self.field8 = ::std::option::Option::Some(input.read_int32()?),
+                72 | 74 => self.field9 = ::std::option::Option::Some(input.read_int32()?),
+                80 | 82 => self.field10 = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -18684,66 +18030,48 @@ impl ::protrust::CodedMessage for self::TestExtensionInsideTable {
         let mut size = 0i32;
         let field1 = self.field1;
         if let ::std::option::Option::Some(field1) = field1 {
-            if field1 != Self::FIELD1_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field1);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field1);
         }
         let field2 = self.field2;
         if let ::std::option::Option::Some(field2) = field2 {
-            if field2 != Self::FIELD2_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field2);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field2);
         }
         let field3 = self.field3;
         if let ::std::option::Option::Some(field3) = field3 {
-            if field3 != Self::FIELD3_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field3);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field3);
         }
         let field4 = self.field4;
         if let ::std::option::Option::Some(field4) = field4 {
-            if field4 != Self::FIELD4_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field4);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field4);
         }
         let field6 = self.field6;
         if let ::std::option::Option::Some(field6) = field6 {
-            if field6 != Self::FIELD6_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field6);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field6);
         }
         let field7 = self.field7;
         if let ::std::option::Option::Some(field7) = field7 {
-            if field7 != Self::FIELD7_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field7);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field7);
         }
         let field8 = self.field8;
         if let ::std::option::Option::Some(field8) = field8 {
-            if field8 != Self::FIELD8_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field8);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field8);
         }
         let field9 = self.field9;
         if let ::std::option::Option::Some(field9) = field9 {
-            if field9 != Self::FIELD9_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field9);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field9);
         }
         let field10 = self.field10;
         if let ::std::option::Option::Some(field10) = field10 {
-            if field10 != Self::FIELD10_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(field10);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(field10);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -18751,66 +18079,48 @@ impl ::protrust::CodedMessage for self::TestExtensionInsideTable {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let field1 = self.field1;
         if let ::std::option::Option::Some(field1) = field1 {
-            if field1 != Self::FIELD1_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(field1)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(field1)?;
         }
         let field2 = self.field2;
         if let ::std::option::Option::Some(field2) = field2 {
-            if field2 != Self::FIELD2_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[16])?;
-                output.write_int32(field2)?;
-            }
+            output.write_raw_tag_bytes(&[16])?;
+            output.write_int32(field2)?;
         }
         let field3 = self.field3;
         if let ::std::option::Option::Some(field3) = field3 {
-            if field3 != Self::FIELD3_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[24])?;
-                output.write_int32(field3)?;
-            }
+            output.write_raw_tag_bytes(&[24])?;
+            output.write_int32(field3)?;
         }
         let field4 = self.field4;
         if let ::std::option::Option::Some(field4) = field4 {
-            if field4 != Self::FIELD4_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[32])?;
-                output.write_int32(field4)?;
-            }
+            output.write_raw_tag_bytes(&[32])?;
+            output.write_int32(field4)?;
         }
         let field6 = self.field6;
         if let ::std::option::Option::Some(field6) = field6 {
-            if field6 != Self::FIELD6_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[48])?;
-                output.write_int32(field6)?;
-            }
+            output.write_raw_tag_bytes(&[48])?;
+            output.write_int32(field6)?;
         }
         let field7 = self.field7;
         if let ::std::option::Option::Some(field7) = field7 {
-            if field7 != Self::FIELD7_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[56])?;
-                output.write_int32(field7)?;
-            }
+            output.write_raw_tag_bytes(&[56])?;
+            output.write_int32(field7)?;
         }
         let field8 = self.field8;
         if let ::std::option::Option::Some(field8) = field8 {
-            if field8 != Self::FIELD8_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[64])?;
-                output.write_int32(field8)?;
-            }
+            output.write_raw_tag_bytes(&[64])?;
+            output.write_int32(field8)?;
         }
         let field9 = self.field9;
         if let ::std::option::Option::Some(field9) = field9 {
-            if field9 != Self::FIELD9_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[72])?;
-                output.write_int32(field9)?;
-            }
+            output.write_raw_tag_bytes(&[72])?;
+            output.write_int32(field9)?;
         }
         let field10 = self.field10;
         if let ::std::option::Option::Some(field10) = field10 {
-            if field10 != Self::FIELD10_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[80])?;
-                output.write_int32(field10)?;
-            }
+            output.write_raw_tag_bytes(&[80])?;
+            output.write_int32(field10)?;
         }
         self.unknown_fields.write_to(output)?;
         self.extensions.write_to(output)?;

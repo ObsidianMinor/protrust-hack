@@ -96,8 +96,8 @@ impl crate::CodedMessage for self::Timestamp {
     fn merge_from(&mut self, input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.seconds = input.read_int64()?,
-                16 => self.nanos = input.read_int32()?,
+                8 | 10 => self.seconds = input.read_int64()?,
+                16 | 18 => self.nanos = input.read_int32()?,
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }

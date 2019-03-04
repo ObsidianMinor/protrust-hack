@@ -244,7 +244,7 @@ impl Generator<'_, CodeGeneratorRequest, CodeGeneratorResponse> {
                     }
                 indent!(mod_file, {
                     for (msg, fields) in map.iter() {
-                        genln!(mod_file, "(::std::any::TypeId::of::<self::{}::{}>(), &[", names::get_rust_file_mod_name(msg.file()), names::get_message_type_name(msg));
+                        genln!(mod_file, "(::std::any::TypeId::of::<{}>(), &[", names::get_full_message_type_name(msg, None));
                         indent!(mod_file, {
                             for field in fields {
                                 match field.scope() {
@@ -541,6 +541,18 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
         Ok(())
     }
 
+    fn try_get_group_field(&self) -> Option<&FieldDescriptor> {
+        match self.input.scope() {
+            CompositeScope::Message(m) => {
+                m.fields()
+                    .iter()
+                    .find(|f| f.name() == &self.input.name().to_lowercase() && f.field_type().is_group())
+                    .map(|r| &**r)
+            },
+            _ => None
+        }
+    }
+
     pub fn generate_coded_message_impl(&mut self) -> Result {
         genln!(self.output; "impl {crate_name}::CodedMessage for {full_type_name} {{" => self.vars, crate_name, full_type_name);
         indent!(self.output, {
@@ -557,6 +569,12 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
                             Generator::<FieldDescriptor, _>::from_other(self, field)
                                 .generate_merge_arm()?;
                         }
+
+                        if let Some(field) = self.try_get_group_field() {
+                            let tag = io::Tag::new(field.number(), WireType::EndGroup);
+                            genln!(self.output, "{} => break,", tag);
+                        }
+
                         genln!(
                             self.output,
                             "_ => self.unknown_fields.merge_from(tag, input)?"
@@ -834,10 +852,11 @@ generator_new!(FieldDescriptor, proto, options;
     },
     "message_type", names::get_full_message_type_name(proto.message(), Some(Scope::Field(proto))),
     "tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), proto.wire_type()).get()).to_string(),
+    "end_tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), WireType::EndGroup).get()).to_string(),
     "tag", io::Tag::new(proto.number(), proto.wire_type()).get().to_string(),
     "tags", {
-        if proto.packed() {
-            format!("{} | {}", io::Tag::new(proto.number(), proto.wire_type()).get(), io::Tag::new(proto.number(), proto.field_type().wire_type()).get())
+        if proto.field_type().wire_type().is_packable() {
+            format!("{} | {}", io::Tag::new(proto.number(), proto.field_type().wire_type()).get(), io::Tag::new(proto.number(), WireType::LengthDelimited).get())
         } else {
             io::Tag::new(proto.number(), proto.wire_type()).get().to_string()
         }
@@ -965,8 +984,8 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
             _ => match self.input.scope() {
                 FieldScope::Message(_) => match self.input.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        gen!(self.output; "input.read_message(&mut **self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())))?" => self.vars, field_name, crate_name)
-                    }
+                        gen!(self.output; "input.read_{proto_type}(&mut **self.{field_name}.get_or_insert_with(|| ::std::boxed::Box::new({crate_name}::LiteMessage::new())))?" => self.vars, field_name, proto_type, crate_name)
+                    },
                     _ => {
                         gen!(self.output; "self.{field_name} = " => self.vars, field_name);
                         if self.input.file().syntax() == Syntax::Proto2 {
@@ -985,12 +1004,12 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         indent!(self.output, {
                             genln!(self.output; "if let self::{module}::{oneof}::{name}({field_name}) = &mut self.{field_name} {{" => self.vars, oneof, name, module, field_name);
                             indent!(self.output, {
-                                genln!(self.output; "{field_name}.merge_from(input)?;" => self.vars, field_name);
+                                genln!(self.output; "input.read_{proto_type}(&mut **{field_name})?;" => self.vars, proto_type, field_name);
                             });
                             genln!(self.output, "}} else {{");
                             indent!(self.output, {
                                 genln!(self.output; "let mut {field_name} = ::std::boxed::Box::new(<{oneof_field_type} as {crate_name}::LiteMessage>::new());" => self.vars, field_name, oneof_field_type, crate_name);
-                                genln!(self.output; "{field_name}.merge_from(input)?;" => self.vars, field_name);
+                                genln!(self.output; "input.read_{proto_type}(&mut *{field_name})?;" => self.vars, proto_type, field_name);
                                 genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{name}({field_name})" => self.vars, field_name, oneof, module, name);
                             });
                             genln!(self.output, "}}");
@@ -1065,16 +1084,19 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         self.output.indent();
                     }
                     _ => {
-                        if self.input.file().syntax() == Syntax::Proto2 {
-                            genln!(self.output; "if let ::std::option::Option::Some({field_name}) = {field_name} {{" => self.vars, field_name);
-                            self.output.indent();
-                        }
-                        match self.input.field_type() {
-                            FieldType::Bytes => {
-                                genln!(self.output; "if {field_name}.as_slice() != Self::{default} {{" => self.vars, field_name, default);
-                            }
+                        match self.input.file().syntax() {
+                            Syntax::Proto2 => {
+                                genln!(self.output; "if let ::std::option::Option::Some({field_name}) = {field_name} {{" => self.vars, field_name);
+                            },
                             _ => {
-                                genln!(self.output; "if {field_name} != Self::{default} {{" => self.vars, field_name, default);
+                                match self.input.field_type() {
+                                    FieldType::Bytes => {
+                                        genln!(self.output; "if {field_name}.as_slice() != Self::{default} {{" => self.vars, field_name, default);
+                                    }
+                                    _ => {
+                                        genln!(self.output; "if {field_name} != Self::{default} {{" => self.vars, field_name, default);
+                                    }
+                                }
                             }
                         }
                         self.output.indent();
@@ -1093,6 +1115,10 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         genln!(self.output; "size = size.checked_add({crate_name}::io::sizes::{proto_type}({field_name}));" => self.vars, field_name, crate_name, proto_type);
                     }
                 }
+
+                if let FieldType::Group(_) = self.input.field_type() {
+                    genln!(self.output; "size = size.checked_add({end_tag_size})?;" => self.vars, end_tag_size);
+                }
             } else {
                 genln!(self.output; "size += {tag_size};" => self.vars, tag_size);
 
@@ -1104,27 +1130,14 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         genln!(self.output; "size += {crate_name}::io::sizes::{proto_type}({field_name});" => self.vars, field_name, crate_name, proto_type);
                     }
                 }
-            }
 
-            if let FieldScope::Oneof(_) = self.input.scope() {
-                self.output.unindent();
-                gen!(self.output, "\n}}");
-            } else {
-                match self.input.field_type() {
-                    FieldType::Message(_) | FieldType::Group(_) => {
-                        self.output.unindent();
-                        gen!(self.output, "\n}}");
-                    }
-                    _ => {
-                        if self.input.file().syntax() == Syntax::Proto2 {
-                            self.output.unindent();
-                            gen!(self.output, "\n}}");
-                        }
-                        self.output.unindent();
-                        gen!(self.output, "\n}}");
-                    }
+                if let FieldType::Group(_) = self.input.field_type() {
+                    genln!(self.output; "size += {end_tag_size};" => self.vars, end_tag_size);
                 }
             }
+
+            self.output.unindent();
+            gen!(self.output, "\n}}");
         }
 
         Ok(())
@@ -1154,16 +1167,19 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         self.output.indent();
                     }
                     _ => {
-                        if self.input.file().syntax() == Syntax::Proto2 {
-                            genln!(self.output; "if let ::std::option::Option::Some({field_name}) = {field_name} {{" => self.vars, field_name);
-                            self.output.indent();
-                        }
-                        match self.input.field_type() {
-                            FieldType::Bytes => {
-                                genln!(self.output; "if {field_name}.as_slice() != Self::{default} {{" => self.vars, field_name, default);
-                            }
+                        match self.input.file().syntax() {
+                            Syntax::Proto2 => {
+                                genln!(self.output; "if let ::std::option::Option::Some({field_name}) = {field_name} {{" => self.vars, field_name);
+                            },
                             _ => {
-                                genln!(self.output; "if {field_name} != Self::{default} {{" => self.vars, field_name, default);
+                                match self.input.field_type() {
+                                    FieldType::Bytes => {
+                                        genln!(self.output; "if {field_name}.as_slice() != Self::{default} {{" => self.vars, field_name, default);
+                                    }
+                                    _ => {
+                                        genln!(self.output; "if {field_name} != Self::{default} {{" => self.vars, field_name, default);
+                                    }
+                                }
                             }
                         }
                         self.output.indent();
@@ -1185,25 +1201,8 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                 genln!(self.output; "output.write_raw_tag_bytes(&{end_tag_bytes})?;" => self.vars, end_tag_bytes);
             }
 
-            if let FieldScope::Oneof(_) = self.input.scope() {
-                self.output.unindent();
-                genln!(self.output, "}}");
-            } else {
-                match self.input.field_type() {
-                    FieldType::Message(_) | FieldType::Group(_) => {
-                        self.output.unindent();
-                        genln!(self.output, "}}");
-                    }
-                    _ => {
-                        if self.input.file().syntax() == Syntax::Proto2 {
-                            self.output.unindent();
-                            genln!(self.output, "}}");
-                        }
-                        self.output.unindent();
-                        genln!(self.output, "}}");
-                    }
-                }
-            }
+            self.output.unindent();
+            genln!(self.output, "}}");
         }
 
         Ok(())

@@ -3,7 +3,8 @@
 use crate::CodedMessage;
 use std::cmp::min;
 use std::convert::{TryFrom, TryInto};
-use std::fmt::{Display, Error, Formatter};
+use std::error::Error;
+use std::fmt::{self, Display, Formatter};
 use std::io::{Read, Write};
 use std::mem;
 use std::num::NonZeroU32;
@@ -62,8 +63,11 @@ impl TryFrom<u8> for WireType {
 pub struct FieldNumber(NonZeroU32);
 
 impl FieldNumber {
+    /// The max value of a field number as a u32
+    pub const MAX_RAW: u32 = 536870911;
+
     /// The max value of a field number
-    pub const MAX_VALUE: u32 = 536870911;
+    pub const MAX_VALUE: FieldNumber = unsafe { FieldNumber::new_unchecked(FieldNumber::MAX_RAW) };
 
     /// Create a field number without checking the value.
     ///
@@ -78,7 +82,7 @@ impl FieldNumber {
     /// Creates a field number if the given value is not zero or more than 536870911
     #[inline]
     pub fn new(n: u32) -> Option<FieldNumber> {
-        if n != 0 && n <= Self::MAX_VALUE {
+        if n != 0 && n <= Self::MAX_RAW {
             unsafe { Some(FieldNumber(NonZeroU32::new_unchecked(n))) }
         } else {
             None
@@ -404,19 +408,27 @@ impl From<std::string::FromUtf8Error> for InputError {
 }
 
 impl Display for InputError {
-    fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
+    fn fmt(&self, fmt: &mut Formatter) -> Result<(), fmt::Error> {
         use self::InputError::*;
         match self {
             MalformedVarint => write!(fmt, "the input contained an invalid variable length integer"),
             NegativeSize => write!(fmt, "the input contained a length delimited value which reported it had a negative size"),
             InvalidTag(val) => write!(fmt, "the input contained an tag that was either invalid or was unexpected at this point in the input: {}", val),
-            IoError(e) => write!(fmt, "{}", e),
-            InvalidString(e) => write!(fmt, "{}", e)
+            IoError(_) => write!(fmt, "an error occured in the underlying input"),
+            InvalidString(_) => write!(fmt, "the input contained an invalid UTF8 string")
         }
     }
 }
 
-impl std::error::Error for InputError {}
+impl Error for InputError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            InputError::IoError(ref e) => Some(e),
+            InputError::InvalidString(ref e) => Some(e),
+            _ => None
+        }
+    }
+}
 
 /// The result of a read from a CodedInput
 pub type InputResult<T> = Result<T, InputError>;
@@ -476,12 +488,24 @@ impl<'a> CodedInput<'a> {
             self.inner.read_exact(buf)
         }
     }
+
+    pub(crate) fn read_length(&mut self) -> InputResult<i32> {
+        let length = self.read_int32()?;
+        if length < 0 {
+            Err(InputError::NegativeSize)
+        } else {
+            Ok(length)
+        }
+    }
+
     pub(crate) fn registry(&self) -> Option<&'static crate::ExtensionRegistry> {
         self.registry
     }
+
     pub(crate) fn last_tag(&self) -> Option<Tag> {
         self.last_tag
     }
+
     pub(crate) fn push_limit(&mut self, limit: i32) -> Option<i32> {
         let old = {
             if let Some(existing) = self.limit {
@@ -493,12 +517,15 @@ impl<'a> CodedInput<'a> {
         self.limit = Some(limit);
         old
     }
+
     pub(crate) fn reached_limit(&self) -> bool {
         self.limit == Some(0)
     }
+
     pub(crate) fn pop_limit(&mut self, previous: Option<i32>) {
         mem::replace(&mut self.limit, previous);
     }
+
     pub(crate) fn skip(&mut self, tag: Tag) -> InputResult<()> {
         match tag.wire_type() {
             WireType::Varint => {
@@ -511,8 +538,13 @@ impl<'a> CodedInput<'a> {
                 self.read_bytes()?;
             }
             WireType::StartGroup => {
+                let end = Tag::new(tag.number(), WireType::EndGroup);
                 while let Some(tag) = self.read_tag()? {
-                    self.skip(tag)?;
+                    if tag == end {
+                        break;
+                    } else {
+                        self.skip(tag)?;
+                    }
                 }
             }
             WireType::Bit32 => {
@@ -530,7 +562,7 @@ impl<'a> CodedInput<'a> {
     }
     /// Reads a message from the input, merging it with an existing coded message
     pub fn read_message(&mut self, message: &mut dyn CodedMessage) -> InputResult<()> {
-        let len = self.read_int32()?;
+        let len = self.read_length()?;
         let old = self.push_limit(len);
         message.merge_from(self)?;
         if !self.reached_limit() {
@@ -554,7 +586,7 @@ impl<'a> CodedInput<'a> {
     }
     /// Reads a length delimited `bytes` value from the input
     pub fn read_bytes(&mut self) -> InputResult<Vec<u8>> {
-        let len = self.read_uint32()? as usize;
+        let len = self.read_length()? as usize;
         let mut buf = Vec::with_capacity(len);
         unsafe {
             buf.set_len(len);
@@ -619,21 +651,21 @@ impl<'a> CodedInput<'a> {
     }
     /// Reads a `uint32` value from the input
     pub fn read_uint32(&mut self) -> InputResult<u32> {
-        let mut shift = 0i32;
-        let mut result = 0i32;
+        let mut shift = 0u32;
+        let mut result = 0u32;
         let mut buf = [0u8; 1];
         while shift < 32 {
             self.read_exact(&mut buf)?;
-            result |= ((buf[0] & 0x7F) as i32) << shift;
+            result |= ((buf[0] & 0x7F) as u32) << shift;
             if (buf[0] & 0x80) == 0 {
-                return Ok(result as u32);
+                return Ok(result);
             }
             shift += 7;
         }
         while shift < 64 {
             self.read_exact(&mut buf)?;
             if (buf[0] & 0x80) == 0 {
-                return Ok(result as u32);
+                return Ok(result);
             }
             shift += 7;
         }
@@ -641,12 +673,12 @@ impl<'a> CodedInput<'a> {
     }
     /// Reads a `uint64` value from the input
     pub fn read_uint64(&mut self) -> InputResult<u64> {
-        let mut shift = 0i32;
+        let mut shift = 0u32;
         let mut result = 0u64;
         let mut buf = [0u8; 1];
         while shift < 64 {
             self.read_exact(&mut buf)?;
-            result |= ((buf[0] & 0x7F) << shift) as u64;
+            result |= ((buf[0] & 0x7F) as u64) << shift;
             if (buf[0] & 0x80) == 0 {
                 return Ok(result);
             }
@@ -656,8 +688,8 @@ impl<'a> CodedInput<'a> {
     }
     /// Reads a tag from the input
     pub fn read_tag(&mut self) -> InputResult<Option<Tag>> {
-        let mut shift = 0i32;
-        let mut result = 0i32;
+        let mut shift = 0u32;
+        let mut result = 0u32;
         let mut buf = [0u8; 1];
         let mut in_tag = false; // the first byte we read we check for eof, after that we're in a tag and "UnexpectedEof" happens on eof
         while shift < 32 {
@@ -672,12 +704,12 @@ impl<'a> CodedInput<'a> {
             } else {
                 self.read_exact(&mut buf)?;
             }
-            result |= ((buf[0] & 0x7F) as i32) << shift;
+            result |= ((buf[0] & 0x7F) as u32) << shift;
             if (buf[0] & 0x80) == 0 {
-                return match Tag::new_from_raw(result as u32) {
+                return match Tag::new_from_raw(result) {
                     None => {
                         self.last_tag = None;
-                        Err(InputError::InvalidTag(result as u32))
+                        Err(InputError::InvalidTag(result))
                     }
                     tag => {
                         self.last_tag = tag;
@@ -690,10 +722,10 @@ impl<'a> CodedInput<'a> {
         while shift < 64 {
             self.read_exact(&mut buf)?;
             if (buf[0] & 0x80) == 0 {
-                return match Tag::new_from_raw(result as u32) {
+                return match Tag::new_from_raw(result) {
                     None => {
                         self.last_tag = None;
-                        Err(InputError::InvalidTag(result as u32))
+                        Err(InputError::InvalidTag(result))
                     }
                     tag => {
                         self.last_tag = tag;
@@ -729,7 +761,7 @@ impl From<std::io::Error> for OutputError {
 }
 
 impl Display for OutputError {
-    fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
+    fn fmt(&self, fmt: &mut Formatter) -> Result<(), fmt::Error> {
         use self::OutputError::*;
         match self {
             ValueTooLarge => write!(fmt, "a contained value reported it's length in bytes exceeds 2147483647 and is too large to write as an length delimited field"),
@@ -738,7 +770,14 @@ impl Display for OutputError {
     }
 }
 
-impl std::error::Error for OutputError {}
+impl Error for OutputError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            OutputError::IoError(ref e) => Some(e),
+            _ => None
+        }
+    }
+}
 
 /// The result of a write to a [CodedOutput](#CodedOutput)
 pub type OutputResult = Result<(), OutputError>;
@@ -846,12 +885,12 @@ impl<'a> CodedOutput<'a> {
 
     /// Writes a `sint64` value to the output
     pub fn write_sint64(&mut self, value: i64) -> OutputResult {
-        unsafe { self.write_int64(mem::transmute((value << 1) ^ (value >> 63))) }
+        self.write_uint64(((value << 1) ^ (value >> 63)) as u64)
     }
 
     /// Writes a `sint32` value to the output
     pub fn write_sint32(&mut self, value: i32) -> OutputResult {
-        unsafe { self.write_int32(mem::transmute((value << 1) ^ (value >> 31))) }
+        self.write_uint32(((value << 1) ^ (value >> 31)) as u32)
     }
 
     /// Writes a `uint64` value to the output
@@ -916,4 +955,253 @@ impl<'a> CodedOutput<'a> {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+    use std::fmt::Debug;
+    use super::{FieldNumber, Tag, CodedInput, CodedOutput, InputError, InputResult, OutputResult};
+
+    #[test]
+    fn field_number_checks() {
+        fn go_round(v: u32) -> Option<u32> {
+            FieldNumber::new(v).map(FieldNumber::get)
+        }
+
+        assert_eq!(go_round(FieldNumber::MAX_RAW), Some(FieldNumber::MAX_RAW));
+        assert_eq!(go_round(1), Some(1));
+        assert_eq!(go_round(2), Some(2));
+        assert_eq!(go_round(0), None);
+        assert_eq!(go_round(FieldNumber::MAX_RAW + 1), None);
+    }
+
+    #[test]
+    fn tag_checks() {
+        fn go_round_raw(v: u32) -> Option<u32> {
+            Tag::new_from_raw(v).map(Tag::get)
+        }
+
+        fn go_round_tag(t: Tag) -> Tag {
+            Tag::new(t.number(), t.wire_type())
+        }
+
+        assert_eq!(go_round_raw(0), None);
+        assert_eq!(go_round_raw(1), None);
+        assert_eq!(go_round_raw(6), None);
+        assert_eq!(go_round_raw(33), Some(33));
+        let mut t;
+        unsafe {
+            for value in &[33, 8] {
+                t = Tag::new_unchecked(*value);
+                assert_eq!(go_round_tag(t), t);
+            }
+        }
+    }
+
+    // fuzzy roundtrips
+
+    type Result = std::result::Result<(), Box<std::error::Error>>;
+
+    fn roundtrip<T: Debug + PartialEq, W, R>(values: &[T], write: W, read: R) -> Result
+        where 
+            W: Fn(&mut CodedOutput, &T) -> OutputResult,
+            R: Fn(&mut CodedInput) -> InputResult<T> {
+        let mut coded_vec = Vec::new();
+        let mut output = CodedOutput::new(&mut coded_vec);
+
+        for value in values {
+            write(&mut output, value)?;
+        }
+
+        let mut slice = coded_vec.as_slice();
+        let mut input = CodedInput::new(&mut slice);
+        let mut returned_values = std::collections::VecDeque::with_capacity(values.len());
+
+        for _ in 0..values.len() {
+            returned_values.push_back(read(&mut input)?);
+        }
+
+        assert_eq!(returned_values, values);
+
+        Ok(())
+    }
+
+    #[test]
+    fn roundtrip_double() -> Result {
+        roundtrip(&[0.0, 1.0, 0.1, -1.0, std::f64::INFINITY, std::f64::MAX, std::f64::MIN, std::f64::NEG_INFINITY],
+            |o, v| o.write_double(*v),
+            |i| i.read_double())
+    }
+
+    #[test]
+    fn roundtrip_float() -> Result {
+        roundtrip(&[0.0, 1.0, 0.1, -1.0, std::f32::INFINITY, std::f32::MAX, std::f32::MIN, std::f32::NEG_INFINITY],
+            |o, v| o.write_float(*v),
+            |i| i.read_float())
+    }
+
+    #[test]
+    fn roundtrip_int32() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+            |o, v| o.write_int32(*v),
+            |i| i.read_int32())
+    }
+
+    #[test]
+    fn roundtrip_int64() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+            |o, v| o.write_int64(*v),
+            |i| i.read_int64())
+    }
+
+    #[test]
+    fn roundtrip_uint32() -> Result {
+        roundtrip(&[0, 1, 2, 3, std::u32::MAX],
+            |o, v| o.write_uint32(*v),
+            |i| i.read_uint32())
+    }
+
+    #[test]
+    fn roundtrip_uint64() -> Result {
+        roundtrip(&[0, 1, 2, 3, std::u64::MAX],
+            |o, v| o.write_uint64(*v),
+            |i| i.read_uint64())
+    }
+
+    #[test]
+    fn roundtrip_sint32() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+            |o, v| o.write_sint32(*v),
+            |i| i.read_sint32())
+    }
+
+    #[test]
+    fn roundtrip_sint64() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+            |o, v| o.write_sint64(*v),
+            |i| i.read_sint64())
+    }
+
+    #[test]
+    fn roundtrip_fixed32() -> Result {
+        roundtrip(&[0, 1, 2, 3, std::u32::MAX],
+            |o, v| o.write_fixed32(*v),
+            |i| i.read_fixed32())
+    }
+
+    #[test]
+    fn roundtrip_fixed64() -> Result {
+        roundtrip(&[0, 1, 2, 3, std::u64::MAX],
+            |o, v| o.write_fixed64(*v),
+            |i| i.read_fixed64())
+    }
+
+    #[test]
+    fn roundtrip_sfixed32() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+            |o, v| o.write_sfixed32(*v),
+            |i| i.read_sfixed32())
+    }
+
+    #[test]
+    fn roundtrip_sfixed64() -> Result {
+        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+            |o, v| o.write_sfixed64(*v),
+            |i| i.read_sfixed64())
+    }
+
+    #[test]
+    fn roundtrip_bool() -> Result {
+        roundtrip(&[true, false],
+            |o, v| o.write_bool(*v),
+            |i| i.read_bool())
+    }
+
+    #[test]
+    fn roundtrip_string() -> Result {
+        roundtrip(&["Hello world".to_string(), "".to_string()],
+            |o, v| o.write_string(v),
+            |i| i.read_string())
+    }
+
+    #[test]
+    fn roundtrip_bytes() -> Result {
+        roundtrip(&[vec![1, 2, 3]],
+            |o, v| o.write_bytes(v),
+            |i| i.read_bytes())
+    }
+
+    #[test]
+    fn malformed_varint_returns_err() {
+        let data = [255; 11];
+        let mut slice: &[u8] = &data;
+        let mut input = CodedInput::new(&mut slice);
+
+        match input.read_int32() {
+            Err(InputError::MalformedVarint) => { },
+            _ => assert!(false)
+        }
+    }
+
+    #[test]
+    fn negative_size_returns_err() -> Result {
+        let mut data = Vec::new();
+        let mut output = CodedOutput::new(&mut data);
+        output.write_int32(-1)?;
+
+        let mut slice = data.as_slice();
+        let mut input = CodedInput::new(&mut slice);
+
+        match input.read_bytes() {
+            Err(InputError::NegativeSize) => Ok(()),
+            Ok(_) => { assert!(false, "read_bytes returned true"); unreachable!() },
+            Err(e) => Err(Box::new(e))
+        }
+    }
+
+    #[test]
+    fn bad_tag_returns_err() {
+        let data = [0u8];
+        let mut slice: &[u8] = &data;
+        let mut input = CodedInput::new(&mut slice);
+
+        match input.read_tag() {
+            Err(InputError::InvalidTag(0)) => { },
+            _ => assert!(false, "read_tag didn't return an invalid tag error")
+        }
+    }
+
+    #[test]
+    fn eof_tag_returns_none() {
+        let data: [u8; 0] = [];
+        let mut slice: &[u8] = &data;
+        let mut input = CodedInput::new(&mut slice);
+
+        match input.read_tag() {
+            Ok(None) => { },
+            _ => assert!(false, "read_tag didn't return none")
+        }
+    }
+
+    #[test]
+    fn eof_in_tag_returns_err() {
+        let data = [255u8];
+        let mut slice: &[u8] = &data;
+        let mut input = CodedInput::new(&mut slice);
+
+        match input.read_tag() {
+            Err(InputError::IoError(_)) => { },
+            _ => assert!(false, "read_tag didn't error out")
+        }
+    }
+
+    #[test]
+    fn eof_with_limit_in_varint_value_returns_err() {
+        let data = [255u8];
+        let mut slice: &[u8] = &data;
+        let mut input = CodedInput::new(&mut slice);
+        input.limit = Some(1);
+
+        match input.read_uint64() {
+            Err(InputError::IoError(_)) => { },
+            _ => assert!(false, "read_uint64 didn't error out")
+        }
+    }
+}

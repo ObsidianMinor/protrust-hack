@@ -51,8 +51,8 @@ impl<T> RepeatedField<T> {
 impl<T: Clone> RepeatedField<T> {
     pub fn add_entries(&mut self, input: &mut CodedInput, codec: &Codec<T>) -> InputResult<()> {
         if let Some(tag) = input.last_tag() {
-            if tag.wire_type() == WireType::LengthDelimited && codec.is_packed() {
-                let new_limit = input.read_int32()?;
+            if tag.wire_type() == WireType::LengthDelimited && codec.packable() {
+                let new_limit = input.read_length()?;
                 let old = input.push_limit(new_limit);
                 while !input.reached_limit() {
                     self.push(codec.read_from(input)?);

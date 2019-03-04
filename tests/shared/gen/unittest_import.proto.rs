@@ -17,7 +17,7 @@ impl ::protrust::CodedMessage for self::ImportMessage {
     fn merge_from(&mut self, input: &mut ::protrust::io::CodedInput) -> ::protrust::io::InputResult<()> {
         while let ::std::option::Option::Some(tag) = input.read_tag()? {
             match tag.get() {
-                8 => self.d = ::std::option::Option::Some(input.read_int32()?),
+                8 | 10 => self.d = ::std::option::Option::Some(input.read_int32()?),
                 _ => self.unknown_fields.merge_from(tag, input)?
             }
         }
@@ -27,10 +27,8 @@ impl ::protrust::CodedMessage for self::ImportMessage {
         let mut size = 0i32;
         let d = self.d;
         if let ::std::option::Option::Some(d) = d {
-            if d != Self::D_DEFAULT_VALUE {
-                size += 1;
-                size += ::protrust::io::sizes::int32(d);
-            }
+            size += 1;
+            size += ::protrust::io::sizes::int32(d);
         }
         size += self.unknown_fields.calculate_size();
         size
@@ -38,10 +36,8 @@ impl ::protrust::CodedMessage for self::ImportMessage {
     fn write_to(&self, output: &mut ::protrust::io::CodedOutput) -> ::protrust::io::OutputResult {
         let d = self.d;
         if let ::std::option::Option::Some(d) = d {
-            if d != Self::D_DEFAULT_VALUE {
-                output.write_raw_tag_bytes(&[8])?;
-                output.write_int32(d)?;
-            }
+            output.write_raw_tag_bytes(&[8])?;
+            output.write_int32(d)?;
         }
         self.unknown_fields.write_to(output)?;
         ::std::result::Result::Ok(())

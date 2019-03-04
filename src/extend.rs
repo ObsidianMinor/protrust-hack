@@ -438,6 +438,7 @@ pub struct RepeatedExtensionValue<V: 'static> {
     codec: &'static Codec<V>
 }
 
+#[doc(hidden)]
 impl<V: Clone + 'static> CodedMessage for RepeatedExtensionValue<V> {
     fn merge_from(&mut self, input: &mut CodedInput) -> InputResult<()> {
         self.value.add_entries(input, self.codec)
