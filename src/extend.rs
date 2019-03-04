@@ -1,9 +1,8 @@
-use crate::{EnumValue, VariantUndefinedError, Codec, CodedMessage, LiteMessage};
+use crate::{EnumValue, Enum, Codec, CodedMessage, LiteMessage};
 use crate::io::{Tag, CodedInput, CodedOutput, InputResult, OutputResult};
 use crate::collections::RepeatedField;
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
-use std::convert::TryFrom;
 use std::fmt::{self, Debug};
 use std::marker::PhantomData;
 
@@ -324,7 +323,7 @@ macro_rules! extension_field_or_default_static {
 
 extension_field_or_default!(f32, f64, i32, u32, i64, u64);
 
-impl<E: Clone + Into<i32> + TryFrom<i32, Error = VariantUndefinedError>> ExtensionField<EnumValue<E>> {
+impl<E: Enum> ExtensionField<EnumValue<E>> {
     pub fn get_or_default(&self) -> EnumValue<E> {
         self.value.clone().unwrap_or_else(|| self.default.clone().unwrap())
     }
