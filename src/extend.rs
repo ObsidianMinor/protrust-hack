@@ -32,19 +32,6 @@ pub trait ExtensionMessage: LiteMessage {
         instance
     }
 
-    #[inline]
-    fn read_new(input: &mut std::io::Read, registry: Option<&'static ExtensionRegistry>) -> InputResult<Self> {
-        let mut reader = CodedInput::new(input).with_registry(registry);
-        ExtensionMessage::read_new_from_input(&mut reader, registry)
-    }
-
-    #[inline]
-    fn read_new_from_input(input: &mut CodedInput, registry: Option<&'static ExtensionRegistry>) -> InputResult<Self> {
-        let mut instance = Self::with_registry(registry);
-        instance.merge_from(input)?;
-        Ok(instance)
-    }
-
     /// Gets the value of the specified extension field or None if it is not registered in this message.
     fn field<V: Clone + PartialEq + PartialEq<D> + Debug + Sync, D: Debug + Sync>(&self, extension: &'static Extension<Self, V, D>) -> Option<&ExtensionField<V, D>>;
     /// Gets the value of the specified extension field mutably or None if it is not registered in this message.

@@ -9,7 +9,23 @@ use protrust::plugin::{
     CodeGeneratorRequest, CodeGeneratorResponse, code_generator_response::File,
 };
 use protrust::prelude::*;
-use protrust::reflect::*;
+use protrust::reflect::{
+    Descriptor,
+    Syntax,
+    DescriptorPool,
+    FileDescriptor,
+    MessageDescriptor,
+    CompositeScope,
+    FieldDescriptor,
+    FieldScope,
+    FieldType,
+    FieldLabel,
+    DefaultValue,
+    EnumDescriptor,
+    EnumValueDescriptor,
+    OneofDescriptor,
+    SourceCodeInfo
+};
 use pulldown_cmark::{Event, Parser, Tag};
 use std::collections::HashMap;
 use std::fmt::Write;
@@ -1516,7 +1532,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                         });
                         genln!(self.output, "}}");
                     }
-                    _ => panic!("Unknown syntax"),
+                    _ => unreachable!(),
                 }
             }
         }
@@ -1603,7 +1619,27 @@ impl<W: Write> Generator<'_, EnumDescriptor, Printer<W>> {
             }
         });
         genln!(self.output, "}}");
-        genln!(self.output; "unsafe impl {crate_name}::Enum for {full_type_name} {{ }}" => self.vars, crate_name, full_type_name);
+        genln!(self.output; "impl {crate_name}::Enum for {full_type_name} {{" => self.vars, crate_name, full_type_name);
+        indent!(self.output, {
+            genln!(self.output; "fn descriptor() -> &'static {crate_name}::reflect::EnumDescriptor {{" => self.vars, crate_name);
+            indent!(self.output, {
+                genln!(self.output, "&self{}::file()", str::repeat("::super", {
+                    match self.input.scope() {
+                        CompositeScope::Message(m) => message_depth(m),
+                        CompositeScope::File(_) => 0
+                    }
+                }));
+                let mut enum_access = format!(".enums()[{}]", self.input.scope_index());
+                let mut scope = self.input.scope();
+                while let CompositeScope::Message(m) = scope {
+                    enum_access.insert_str(0, &format!(".messages()[{}]", m.scope_index()));
+                    scope = m.scope();
+                }
+                gen!(self.output, "{}", enum_access);
+            });
+            genln!(self.output, "}}");
+        });
+        genln!(self.output, "}}");
         genln!(self.output; "impl ::std::convert::TryFrom<i32> for {full_type_name} {{" => self.vars, full_type_name);
         indent!(self.output, {
             genln!(self.output; "type Error = {crate_name}::VariantUndefinedError;" => self.vars, crate_name);

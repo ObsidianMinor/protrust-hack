@@ -330,7 +330,11 @@ pub enum NullValue {
     /// Null value.
     NullValue,
 }
-unsafe impl crate::Enum for self::NullValue { }
+impl crate::Enum for self::NullValue {
+    fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+        &self::file().enums()[0]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::NullValue {
     type Error = crate::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {

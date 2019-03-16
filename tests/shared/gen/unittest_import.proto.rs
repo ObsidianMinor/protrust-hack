@@ -104,7 +104,11 @@ pub enum ImportEnum {
     ImportBar,
     ImportBaz,
 }
-unsafe impl ::protrust::Enum for self::ImportEnum { }
+impl ::protrust::Enum for self::ImportEnum {
+    fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+        &self::file().enums()[0]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::ImportEnum {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -133,7 +137,11 @@ pub enum ImportEnumForMap {
     Foo,
     Bar,
 }
-unsafe impl ::protrust::Enum for self::ImportEnumForMap { }
+impl ::protrust::Enum for self::ImportEnumForMap {
+    fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+        &self::file().enums()[1]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::ImportEnumForMap {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {

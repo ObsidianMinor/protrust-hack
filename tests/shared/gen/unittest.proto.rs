@@ -3490,7 +3490,11 @@ pub mod test_all_types {
         /// Intentionally negative.
         Neg,
     }
-    unsafe impl ::protrust::Enum for self::NestedEnum { }
+    impl ::protrust::Enum for self::NestedEnum {
+        fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+            &self::file().messages()[0].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
         type Error = ::protrust::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -14064,7 +14068,11 @@ pub mod test_oneof2 {
         Bar,
         Baz,
     }
-    unsafe impl ::protrust::Enum for self::NestedEnum { }
+    impl ::protrust::Enum for self::NestedEnum {
+        fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+            &self::file().messages()[45].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
         type Error = ::protrust::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -15531,7 +15539,11 @@ pub mod test_dynamic_extensions {
         DynamicBar,
         DynamicBaz,
     }
-    unsafe impl ::protrust::Enum for self::DynamicEnumType { }
+    impl ::protrust::Enum for self::DynamicEnumType {
+        fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+            &self::file().messages()[51].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::DynamicEnumType {
         type Error = ::protrust::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -18502,7 +18514,11 @@ pub enum ForeignEnum {
     ForeignBar,
     ForeignBaz,
 }
-unsafe impl ::protrust::Enum for self::ForeignEnum { }
+impl ::protrust::Enum for self::ForeignEnum {
+    fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+        &self::file().enums()[0]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::ForeignEnum {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -18533,7 +18549,11 @@ pub enum TestEnumWithDupValue {
     Foo2,
     Bar2,
 }
-unsafe impl ::protrust::Enum for self::TestEnumWithDupValue { }
+impl ::protrust::Enum for self::TestEnumWithDupValue {
+    fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+        &self::file().enums()[1]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::TestEnumWithDupValue {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {
@@ -18570,7 +18590,11 @@ pub enum TestSparseEnum {
     SparseF,
     SparseG,
 }
-unsafe impl ::protrust::Enum for self::TestSparseEnum { }
+impl ::protrust::Enum for self::TestSparseEnum {
+    fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+        &self::file().enums()[2]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::TestSparseEnum {
     type Error = ::protrust::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {

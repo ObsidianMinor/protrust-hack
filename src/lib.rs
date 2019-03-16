@@ -27,7 +27,7 @@
 //! as an extension registry containing all the extensions in the generated code output.
 
 #![feature(const_fn)]
-#![feature(try_from)]
+#![feature(specialization)]
 
 mod internal;
 mod extend;
@@ -158,15 +158,20 @@ pub trait Message: LiteMessage {
 /// The error result for when an enum value is undefined
 pub struct VariantUndefinedError;
 
-#[doc(hidden)]
-pub unsafe trait Enum: Into<i32> + TryFrom<i32, Error = VariantUndefinedError> + PartialEq + Eq + Copy + Clone {}
+/// The common trait for enum types
+pub 
+unsafe 
+trait Enum: Into<i32> + TryFrom<i32, Error = VariantUndefinedError> + PartialEq + Eq + Copy + Clone {
+    #[cfg(feature = "reflection")]
+    fn descriptor() -> &'static reflect::EnumDescriptor { unimplemented!() }
+}
 
 /// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
 ///
 /// In Rust, an enum value without an associated discriminant is undefined behavior.
 /// In Protocol Buffers, there is no guarantee that an enum value will be valid.
 /// Thus, this union is introduced to allow for both undefined enum values and defined enum values.
-#[derive(Copy, Debug, Clone)]
+#[derive(Copy, Debug, Clone, PartialEq, Eq)]
 pub enum EnumValue<E> {
     /// A defined enum value
     Defined(E),
@@ -174,7 +179,7 @@ pub enum EnumValue<E> {
     Undefined(i32),
 }
 
-impl<E: Enum> EnumValue<E> {
+impl<E> EnumValue<E> {
     /// Converts from an EnumValue<E> to Option<E>, discarding the undefined value if it exists
     pub fn defined(self) -> Option<E> {
         match self {
@@ -206,15 +211,7 @@ fn expect_failed(msg: &str) -> ! {
     panic!("{}", msg)
 }
 
-impl<E: Enum> PartialEq for EnumValue<E> {
-    fn eq(&self, other: &Self) -> bool {
-        Into::<i32>::into(self.clone()) == Into::<i32>::into(other.clone())
-    }
-}
-
-impl<E: Enum> Eq for EnumValue<E> {}
-
-impl<E: Enum> From<i32> for EnumValue<E> {
+impl<E: TryFrom<i32, Error = VariantUndefinedError>> From<i32> for EnumValue<E> {
     fn from(value: i32) -> EnumValue<E> {
         if let Ok(e) = E::try_from(value) {
             EnumValue::Defined(e)
@@ -224,18 +221,12 @@ impl<E: Enum> From<i32> for EnumValue<E> {
     }
 }
 
-impl<E: Enum> From<EnumValue<E>> for i32 {
+impl<E: Clone + Into<i32>> From<EnumValue<E>> for i32 {
     fn from(value: EnumValue<E>) -> i32 {
         match value {
             EnumValue::Defined(ref e) => e.clone().into(),
             EnumValue::Undefined(v) => v,
         }
-    }
-}
-
-impl<E: Enum> From<E> for EnumValue<E> {
-    fn from(value: E) -> EnumValue<E> {
-        EnumValue::Defined(value)
     }
 }
 

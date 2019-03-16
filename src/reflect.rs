@@ -2,6 +2,7 @@
 
 pub use crate::descriptor::field_descriptor_proto::Label as FieldLabel;
 
+use crate::{CodedMessage, LiteMessage, Message, ExtensionMessage, ExtensionRegistry};
 use crate::descriptor::{
     DescriptorProto, EnumDescriptorProto, EnumOptions, EnumValueDescriptorProto, EnumValueOptions,
     FieldDescriptorProto, FieldOptions, FileDescriptorProto, FileOptions, MessageOptions,
@@ -9,6 +10,7 @@ use crate::descriptor::{
     ServiceOptions,
 };
 use crate::io::{FieldNumber, WireType};
+use std::any::Any;
 use std::collections::HashMap;
 use std::fmt::{self, Debug, Formatter};
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
@@ -716,9 +718,80 @@ impl CompositeScope {
 /// This type is like Any and allows for downcasting the type to a concrete type.
 ///
 /// It also has the methods of CodedMessage, allowing for reading, merging, and calculating the size of an unknown message
-pub trait AnyMessage: crate::CodedMessage + std::any::Any {}
+pub trait AnyMessage: CodedMessage + Any + Debug {
+    /// Clones the message, returning a new box containing it
+    fn clone(&self) -> Box<dyn AnyMessage>;
 
-impl<T: crate::CodedMessage + std::any::Any> AnyMessage for T {}
+    /// Compares two message instances of any type
+    fn eq(&self, other: &dyn AnyMessage) -> bool;
+
+    /// Attempts to merge the two messages together. 
+    /// If the two messages are not of the same type, this does nothing.
+    fn merge(&mut self, other: &dyn AnyMessage);
+
+    /// Gets the descriptor for this message
+    fn descriptor(&self) -> &MessageDescriptor;
+
+    /// For extension messages, gets the registry in use by the message
+    fn registry(&self) -> Option<&'static ExtensionRegistry>;
+
+    /// For extension messages, replaces the registry in use by the message
+    fn replace_registry(&mut self, extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry>;
+}
+
+impl<T: Message + Any> AnyMessage for T {
+    fn clone(&self) -> Box<dyn AnyMessage> {
+        Box::new(Clone::clone(self))
+    }
+
+    fn eq(&self, other: &dyn AnyMessage) -> bool {
+        match (Any::downcast_ref::<T>(self), AnyMessage::downcast_ref::<T>(other)) {
+            (Some(f), Some(s)) => PartialEq::eq(f, s),
+            _ => false
+        }
+    }
+
+    fn merge(&mut self, other: &dyn AnyMessage) {
+        match (Any::downcast_mut::<T>(self), AnyMessage::downcast_ref::<T>(other)) {
+            (Some(f), Some(s)) => LiteMessage::merge(f, s),
+            _ => { }
+        }
+    }
+
+    fn descriptor(&self) -> &MessageDescriptor {
+        <T as Message>::descriptor()
+    }
+
+    default fn registry(&self) -> Option<&'static ExtensionRegistry> {
+        None
+    }
+
+    default fn replace_registry(&mut self, _extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry> {
+        None
+    }
+}
+
+impl<T: Message + ExtensionMessage + Any> AnyMessage for T {
+    fn registry(&self) -> Option<&'static ExtensionRegistry> {
+        self.registry()
+    }
+
+    fn replace_registry(&mut self, extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry> {
+        self.replace_registry(extensions)
+    }
+}
+
+impl PartialEq for dyn AnyMessage {
+    fn eq(&self, other: &dyn AnyMessage) -> bool {
+        self.eq(other)
+    }
+}
+
+impl Clone for Box<dyn AnyMessage> {
+    fn clone(&self) -> Box<dyn AnyMessage> {
+        AnyMessage::clone(&**self)
+    }
+}
 
 impl dyn AnyMessage {
     #[inline]
@@ -752,7 +825,7 @@ pub trait AnyBoxExt: Sized + crate::internal::Sealed {
     fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Self>;
 }
 
-impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> {}
+impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> { }
 
 impl AnyBoxExt for Box<dyn AnyMessage + 'static> {
     #[inline]
@@ -1089,13 +1162,11 @@ impl Descriptor for MessageDescriptor {
     }
     fn file(&self) -> &FileDescriptor {
         let mut scope = self.scope();
-        while let CompositeScope::Message(m) = scope {
-            scope = m.scope();
-        }
-
-        match scope {
-            CompositeScope::File(f) => f,
-            _ => unreachable!(),
+        loop {
+            match scope {
+                CompositeScope::Message(m) => scope = m.scope(),
+                CompositeScope::File(f) => return f
+            }
         }
     }
 }

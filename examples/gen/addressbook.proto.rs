@@ -302,7 +302,11 @@ pub mod person {
         Home,
         Work,
     }
-    unsafe impl ::protrust::Enum for self::PhoneType { }
+    impl ::protrust::Enum for self::PhoneType {
+        fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+            &self::file().messages()[0].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::PhoneType {
         type Error = ::protrust::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, ::protrust::VariantUndefinedError> {

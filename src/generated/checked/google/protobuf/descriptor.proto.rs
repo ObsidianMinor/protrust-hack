@@ -2031,7 +2031,11 @@ pub mod field_descriptor_proto {
         /// Uses ZigZag encoding.
         Sint64,
     }
-    unsafe impl crate::Enum for self::Type { }
+    impl crate::Enum for self::Type {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[4].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::Type {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -2090,7 +2094,11 @@ pub mod field_descriptor_proto {
         Required,
         Repeated,
     }
-    unsafe impl crate::Enum for self::Label { }
+    impl crate::Enum for self::Label {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[4].enums()[1]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::Label {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -4730,7 +4738,11 @@ pub mod file_options {
         /// Generate code using MessageLite and the lite runtime.
         LiteRuntime,
     }
-    unsafe impl crate::Enum for self::OptimizeMode { }
+    impl crate::Enum for self::OptimizeMode {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[10].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::OptimizeMode {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -5517,7 +5529,11 @@ pub mod field_options {
         Cord,
         StringPiece,
     }
-    unsafe impl crate::Enum for self::CType { }
+    impl crate::Enum for self::CType {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[12].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::CType {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -5548,7 +5564,11 @@ pub mod field_options {
         /// Use JavaScript numbers.
         JsNumber,
     }
-    unsafe impl crate::Enum for self::JSType { }
+    impl crate::Enum for self::JSType {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[12].enums()[1]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::JSType {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -6296,7 +6316,11 @@ pub mod method_options {
         /// idempotent, but may have side effects
         Idempotent,
     }
-    unsafe impl crate::Enum for self::IdempotencyLevel { }
+    impl crate::Enum for self::IdempotencyLevel {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[17].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::IdempotencyLevel {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {

@@ -602,7 +602,11 @@ pub mod field {
         /// Field type sint64.
         TypeSint64,
     }
-    unsafe impl crate::Enum for self::Kind { }
+    impl crate::Enum for self::Kind {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[1].enums()[0]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::Kind {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -668,7 +672,11 @@ pub mod field {
         /// For repeated fields.
         Repeated,
     }
-    unsafe impl crate::Enum for self::Cardinality { }
+    impl crate::Enum for self::Cardinality {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+            &self::file().messages()[1].enums()[1]
+        }
+    }
     impl ::std::convert::TryFrom<i32> for self::Cardinality {
         type Error = crate::VariantUndefinedError;
         fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
@@ -1114,7 +1122,11 @@ pub enum Syntax {
     /// Syntax `proto3`.
     Proto3,
 }
-unsafe impl crate::Enum for self::Syntax { }
+impl crate::Enum for self::Syntax {
+    fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+        &self::file().enums()[0]
+    }
+}
 impl ::std::convert::TryFrom<i32> for self::Syntax {
     type Error = crate::VariantUndefinedError;
     fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {

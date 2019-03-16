@@ -1,5 +1,3 @@
-#![feature(try_from)]
-
 mod shared;
 
 use protrust::prelude::*;

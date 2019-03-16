@@ -1,5 +1,3 @@
-#![feature(try_from)]
-
 #[rustfmt::skip]
 #[allow(dead_code)]
 mod gen;

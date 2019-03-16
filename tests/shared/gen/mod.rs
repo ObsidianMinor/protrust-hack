@@ -1903,46 +1903,6 @@ fn extensions_init() {
         self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([
         ]);
         self::EXTENSIONS_REGISTRY = ::std::option::Option::Some(::protrust::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[
-            (::std::any::TypeId::of::<self::unittest_proto::TestUnpackedExtensions>(), &[
-                &self::unittest_proto::UNPACKED_INT32_EXTENSION,
-                &self::unittest_proto::UNPACKED_INT64_EXTENSION,
-                &self::unittest_proto::UNPACKED_UINT32_EXTENSION,
-                &self::unittest_proto::UNPACKED_UINT64_EXTENSION,
-                &self::unittest_proto::UNPACKED_SINT32_EXTENSION,
-                &self::unittest_proto::UNPACKED_SINT64_EXTENSION,
-                &self::unittest_proto::UNPACKED_FIXED32_EXTENSION,
-                &self::unittest_proto::UNPACKED_FIXED64_EXTENSION,
-                &self::unittest_proto::UNPACKED_SFIXED32_EXTENSION,
-                &self::unittest_proto::UNPACKED_SFIXED64_EXTENSION,
-                &self::unittest_proto::UNPACKED_FLOAT_EXTENSION,
-                &self::unittest_proto::UNPACKED_DOUBLE_EXTENSION,
-                &self::unittest_proto::UNPACKED_BOOL_EXTENSION,
-                &self::unittest_proto::UNPACKED_ENUM_EXTENSION,
-            ]),
-            (::std::any::TypeId::of::<self::unittest_proto::TestGroupExtension>(), &[
-                &self::unittest_proto::test_nested_extension::OPTIONALGROUP_EXTENSION,
-                &self::unittest_proto::test_nested_extension::OPTIONAL_FOREIGN_ENUM_EXTENSION,
-            ]),
-            (::std::any::TypeId::of::<self::unittest_proto::TestParsingMerge>(), &[
-                &self::unittest_proto::test_parsing_merge::OPTIONAL_EXT,
-                &self::unittest_proto::test_parsing_merge::REPEATED_EXT,
-            ]),
-            (::std::any::TypeId::of::<self::unittest_proto::TestPackedExtensions>(), &[
-                &self::unittest_proto::PACKED_INT32_EXTENSION,
-                &self::unittest_proto::PACKED_INT64_EXTENSION,
-                &self::unittest_proto::PACKED_UINT32_EXTENSION,
-                &self::unittest_proto::PACKED_UINT64_EXTENSION,
-                &self::unittest_proto::PACKED_SINT32_EXTENSION,
-                &self::unittest_proto::PACKED_SINT64_EXTENSION,
-                &self::unittest_proto::PACKED_FIXED32_EXTENSION,
-                &self::unittest_proto::PACKED_FIXED64_EXTENSION,
-                &self::unittest_proto::PACKED_SFIXED32_EXTENSION,
-                &self::unittest_proto::PACKED_SFIXED64_EXTENSION,
-                &self::unittest_proto::PACKED_FLOAT_EXTENSION,
-                &self::unittest_proto::PACKED_DOUBLE_EXTENSION,
-                &self::unittest_proto::PACKED_BOOL_EXTENSION,
-                &self::unittest_proto::PACKED_ENUM_EXTENSION,
-            ]),
             (::std::any::TypeId::of::<self::unittest_proto::TestAllExtensions>(), &[
                 &self::unittest_proto::OPTIONAL_INT32_EXTENSION,
                 &self::unittest_proto::OPTIONAL_INT64_EXTENSION,
@@ -2024,8 +1984,51 @@ fn extensions_init() {
                 &self::unittest_proto::test_required::SINGLE,
                 &self::unittest_proto::test_required::MULTI,
             ]),
+            (::std::any::TypeId::of::<self::unittest_proto::TestExtensionInsideTable>(), &[
+                &self::unittest_proto::TEST_EXTENSION_INSIDE_TABLE_EXTENSION,
+            ]),
+            (::std::any::TypeId::of::<self::unittest_proto::TestParsingMerge>(), &[
+                &self::unittest_proto::test_parsing_merge::OPTIONAL_EXT,
+                &self::unittest_proto::test_parsing_merge::REPEATED_EXT,
+            ]),
             (::std::any::TypeId::of::<self::unittest_proto::TestHugeFieldNumbers>(), &[
                 &self::unittest_proto::TEST_ALL_TYPES,
+            ]),
+            (::std::any::TypeId::of::<self::unittest_proto::TestUnpackedExtensions>(), &[
+                &self::unittest_proto::UNPACKED_INT32_EXTENSION,
+                &self::unittest_proto::UNPACKED_INT64_EXTENSION,
+                &self::unittest_proto::UNPACKED_UINT32_EXTENSION,
+                &self::unittest_proto::UNPACKED_UINT64_EXTENSION,
+                &self::unittest_proto::UNPACKED_SINT32_EXTENSION,
+                &self::unittest_proto::UNPACKED_SINT64_EXTENSION,
+                &self::unittest_proto::UNPACKED_FIXED32_EXTENSION,
+                &self::unittest_proto::UNPACKED_FIXED64_EXTENSION,
+                &self::unittest_proto::UNPACKED_SFIXED32_EXTENSION,
+                &self::unittest_proto::UNPACKED_SFIXED64_EXTENSION,
+                &self::unittest_proto::UNPACKED_FLOAT_EXTENSION,
+                &self::unittest_proto::UNPACKED_DOUBLE_EXTENSION,
+                &self::unittest_proto::UNPACKED_BOOL_EXTENSION,
+                &self::unittest_proto::UNPACKED_ENUM_EXTENSION,
+            ]),
+            (::std::any::TypeId::of::<self::unittest_proto::TestPackedExtensions>(), &[
+                &self::unittest_proto::PACKED_INT32_EXTENSION,
+                &self::unittest_proto::PACKED_INT64_EXTENSION,
+                &self::unittest_proto::PACKED_UINT32_EXTENSION,
+                &self::unittest_proto::PACKED_UINT64_EXTENSION,
+                &self::unittest_proto::PACKED_SINT32_EXTENSION,
+                &self::unittest_proto::PACKED_SINT64_EXTENSION,
+                &self::unittest_proto::PACKED_FIXED32_EXTENSION,
+                &self::unittest_proto::PACKED_FIXED64_EXTENSION,
+                &self::unittest_proto::PACKED_SFIXED32_EXTENSION,
+                &self::unittest_proto::PACKED_SFIXED64_EXTENSION,
+                &self::unittest_proto::PACKED_FLOAT_EXTENSION,
+                &self::unittest_proto::PACKED_DOUBLE_EXTENSION,
+                &self::unittest_proto::PACKED_BOOL_EXTENSION,
+                &self::unittest_proto::PACKED_ENUM_EXTENSION,
+            ]),
+            (::std::any::TypeId::of::<self::unittest_proto::TestGroupExtension>(), &[
+                &self::unittest_proto::test_nested_extension::OPTIONALGROUP_EXTENSION,
+                &self::unittest_proto::test_nested_extension::OPTIONAL_FOREIGN_ENUM_EXTENSION,
             ]),
             (::std::any::TypeId::of::<self::unittest_proto::TestFieldOrderings>(), &[
                 &self::unittest_proto::MY_EXTENSION_STRING,
@@ -2033,9 +2036,6 @@ fn extensions_init() {
                 &self::unittest_proto::test_extension_orderings1::TEST_EXT_ORDERINGS1,
                 &self::unittest_proto::test_extension_orderings2::TEST_EXT_ORDERINGS2,
                 &self::unittest_proto::test_extension_orderings2::test_extension_orderings3::TEST_EXT_ORDERINGS3,
-            ]),
-            (::std::any::TypeId::of::<self::unittest_proto::TestExtensionInsideTable>(), &[
-                &self::unittest_proto::TEST_EXTENSION_INSIDE_TABLE_EXTENSION,
             ]),
         ]));
     }
