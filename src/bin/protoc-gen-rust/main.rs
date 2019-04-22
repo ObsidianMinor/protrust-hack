@@ -28,7 +28,7 @@ impl Default for Options {
             crate_name: "::protrust".to_string(),
             no_json: false,
             size_checks: false,
-            external_modules: Vec::new()
+            external_modules: Vec::new(),
         }
     }
 }
@@ -75,7 +75,9 @@ fn parse_options(params: &str) -> Result<Options, String> {
                 }
                 ("no_json", None) => options.no_json = true,
                 ("checked_size", None) => options.size_checks = true,
-                ("external_modules", Some(value)) => value.split('+').for_each(|s| options.external_modules.push(s.to_string())),
+                ("external_modules", Some(value)) => value
+                    .split('+')
+                    .for_each(|s| options.external_modules.push(s.to_string())),
                 (k, v) => return Err(format!("Unknown option: {}={:#?}", k, v)),
             }
         }

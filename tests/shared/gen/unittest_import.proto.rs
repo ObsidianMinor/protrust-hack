@@ -8,7 +8,7 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     super::pool().find_file_by_name("unittest_import.proto").unwrap()
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ImportMessage {
     d: ::std::option::Option<i32>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -130,7 +130,7 @@ impl ::std::convert::From<self::ImportEnum> for i32 {
         }
     }
 }
-/// To use an enum in a map, it must has the first value as 0.
+///  To use an enum in a map, it must has the first value as 0.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ImportEnumForMap {
     Unknown,

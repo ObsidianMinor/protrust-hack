@@ -8,17 +8,16 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     super::pool().find_file_by_name("google/protobuf/empty.proto").unwrap()
 }
 
-/// A generic empty message that you can re-use to avoid defining duplicated
-/// empty messages in your APIs. A typical example is to use it as the request
-/// or the response type of an API method. For instance:
-/// ```text
-///  service Foo {
-///    rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-///  }
-/// ```
+///  A generic empty message that you can re-use to avoid defining duplicated
+///  empty messages in your APIs. A typical example is to use it as the request
+///  or the response type of an API method. For instance:
 /// 
-/// The JSON representation for `Empty` is empty JSON object `{}`.
-#[derive(Clone, Debug, PartialEq)]
+///      service Foo {
+///        rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+///      }
+/// 
+///  The JSON representation for `Empty` is empty JSON object `{}`.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Empty {
     unknown_fields: crate::UnknownFieldSet,
 }

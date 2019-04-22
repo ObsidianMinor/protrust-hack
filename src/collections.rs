@@ -23,7 +23,7 @@ use std::ops::{Deref, DerefMut};
 ///
 /// [`Vec<T>`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 /// [`Codec`]: ../struct.Codec.html
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct RepeatedField<T>(Vec<T>);
 
 impl<T> Deref for RepeatedField<T> {
@@ -178,9 +178,15 @@ impl<T: LiteMessage> RepeatedField<T> {
 pub struct MapField<K, V>(HashMap<K, V>);
 
 #[doc(hidden)]
-impl<K: Eq + Hash, V: PartialEq> MapField<K, V> {
+impl<K: Hash + Eq, V: PartialEq> MapField<K, V> {
     pub fn new() -> MapField<K, V> {
         MapField(HashMap::new())
+    }
+}
+
+impl<K: Eq + Hash, V> Default for MapField<K, V> {
+    fn default() -> Self {
+        MapField(Default::default())
     }
 }
 

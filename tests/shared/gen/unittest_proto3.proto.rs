@@ -8,9 +8,9 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     super::pool().find_file_by_name("unittest_proto3.proto").unwrap()
 }
 
-/// This proto includes every type of field in both singular and repeated
-/// forms.
-#[derive(Clone, Debug, PartialEq)]
+///  This proto includes every type of field in both singular and repeated
+///  forms.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestAllTypes {
     optional_int32: i32,
     optional_int64: i64,
@@ -641,7 +641,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_int32`]: #method.optional_int32
     pub const OPTIONAL_INT32_DEFAULT_VALUE: i32 = 0;
-    /// Singular
+    ///  Singular
     pub fn optional_int32(&self) -> i32 {
         self.optional_int32
     }
@@ -1000,7 +1000,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_public_import_message`]: #method.optional_public_import_message
     pub const OPTIONAL_PUBLIC_IMPORT_MESSAGE_FIELD_NUMBER: i32 = 26;
-    /// Defined in unittest_import_public.proto
+    ///  Defined in unittest_import_public.proto
     pub fn optional_public_import_message(&self) -> &::std::option::Option<::std::boxed::Box<self::super::unittest_import_public_proto::PublicImportMessage>> {
         &self.optional_public_import_message
     }
@@ -1040,7 +1040,7 @@ impl self::TestAllTypes {
     ///
     /// [`repeated_int32`]: #method.repeated_int32
     pub const REPEATED_INT32_FIELD_NUMBER: i32 = 31;
-    /// Repeated
+    ///  Repeated
     pub fn repeated_int32(&self) -> &::protrust::collections::RepeatedField<i32> {
         &self.repeated_int32
     }
@@ -1336,6 +1336,198 @@ impl self::TestAllTypes {
     pub fn repeated_lazy_message_mut(&mut self) -> &mut ::protrust::collections::RepeatedField<self::test_all_types::NestedMessage> {
         &mut self.repeated_lazy_message
     }
+    /// Gets the field number of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_FIELD_NUMBER: i32 = 111;
+    /// A constant value representing the default value of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_DEFAULT_VALUE: u32 = 0;
+    pub fn oneof_uint32(&self) -> ::std::option::Option<&u32> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_uint32'] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub fn oneof_uint32_mut(&mut self) -> &mut u32 {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(ref mut value) => value,
+            _ => {
+                self.set_oneof_uint32(::std::default::Default::default());
+                self.oneof_uint32_mut()
+            }
+        }
+    }
+    pub fn has_oneof_uint32(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_uint32(&mut self, value: u32) {
+        self.oneof_field = self::test_all_types::OneofField::OneofUint32(value)
+    }
+    pub fn take_oneof_uint32(&mut self) -> ::std::option::Option<u32> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofUint32(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_uint32(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_nested_message`] field
+    ///
+    /// [`oneof_nested_message`]: #method.oneof_nested_message
+    pub const ONEOF_NESTED_MESSAGE_FIELD_NUMBER: i32 = 112;
+    pub fn oneof_nested_message(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(ref oneof_field) => ::std::option::Option::Some(&**oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_nested_message'] field
+    ///
+    /// [`oneof_nested_message`]: #method.oneof_nested_message
+    pub fn oneof_nested_message_mut(&mut self) -> &mut self::test_all_types::NestedMessage {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(ref mut value) => value,
+            _ => {
+                self.set_oneof_nested_message(::std::default::Default::default());
+                self.oneof_nested_message_mut()
+            }
+        }
+    }
+    pub fn has_oneof_nested_message(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_nested_message(&mut self, value: self::test_all_types::NestedMessage) {
+        self.oneof_field = self::test_all_types::OneofField::OneofNestedMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_oneof_nested_message(&mut self) -> ::std::option::Option<self::test_all_types::NestedMessage> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofNestedMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_nested_message(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_FIELD_NUMBER: i32 = 113;
+    /// A constant value representing the default value of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn oneof_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofString(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_string'] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub fn oneof_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofString(ref mut value) => value,
+            _ => {
+                self.set_oneof_string(::std::default::Default::default());
+                self.oneof_string_mut()
+            }
+        }
+    }
+    pub fn has_oneof_string(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_string(&mut self, value: ::std::string::String) {
+        self.oneof_field = self::test_all_types::OneofField::OneofString(value)
+    }
+    pub fn take_oneof_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_string(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_FIELD_NUMBER: i32 = 114;
+    /// A constant value representing the default value of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn oneof_bytes(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_bytes'] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub fn oneof_bytes_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(ref mut value) => value,
+            _ => {
+                self.set_oneof_bytes(::std::default::Default::default());
+                self.oneof_bytes_mut()
+            }
+        }
+    }
+    pub fn has_oneof_bytes(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_bytes(&mut self, value: ::std::vec::Vec<u8>) {
+        self.oneof_field = self::test_all_types::OneofField::OneofBytes(value)
+    }
+    pub fn take_oneof_bytes(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofBytes(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_bytes(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
     /// Gets a shared reference to the [`oneof_field`] oneof field
     ///
     /// [`oneof_field`]: enum.OneofField.html
@@ -1349,10 +1541,10 @@ impl self::TestAllTypes {
         &mut self.oneof_field
     }
 }
-/// This proto includes every type of field in both singular and repeated
-/// forms.
+///  This proto includes every type of field in both singular and repeated
+///  forms.
 pub mod test_all_types {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         bb: i32,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -1413,9 +1605,9 @@ pub mod test_all_types {
         ///
         /// [`bb`]: #method.bb
         pub const BB_DEFAULT_VALUE: i32 = 0;
-        /// The field name "b" fails to compile in proto1 because it conflicts with
-        /// a local variable named "b" in one of the generated methods.  Doh.
-        /// This file needs to compile in proto1 to test backwards-compatibility.
+        ///  The field name "b" fails to compile in proto1 because it conflicts with
+        ///  a local variable named "b" in one of the generated methods.  Doh.
+        ///  This file needs to compile in proto1 to test backwards-compatibility.
         pub fn bb(&self) -> i32 {
             self.bb
         }
@@ -1432,12 +1624,12 @@ pub mod test_all_types {
         Foo,
         Bar,
         Baz,
-        /// Intentionally negative.
+        ///  Intentionally negative.
         Neg,
     }
     impl ::protrust::Enum for self::NestedEnum {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[0].enums()[0]
+            &self::super::file().messages()[0].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
@@ -1474,8 +1666,13 @@ pub mod test_all_types {
         OneofString(::std::string::String),
         OneofBytes(::std::vec::Vec<u8>),
     }
+    impl ::std::default::Default for self::OneofField {
+        fn default() -> Self {
+            self::OneofField::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestPackedTypes {
     packed_int32: ::protrust::collections::RepeatedField<i32>,
     packed_int64: ::protrust::collections::RepeatedField<i64>,
@@ -1795,8 +1992,8 @@ impl self::TestPackedTypes {
         &mut self.packed_enum
     }
 }
-/// Explicitly set packed to false
-#[derive(Clone, Debug, PartialEq)]
+///  Explicitly set packed to false
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestUnpackedTypes {
     repeated_int32: ::protrust::collections::RepeatedField<i32>,
     repeated_int64: ::protrust::collections::RepeatedField<i64>,
@@ -2116,8 +2313,8 @@ impl self::TestUnpackedTypes {
         &mut self.repeated_nested_enum
     }
 }
-/// This proto includes a recusively nested message.
-#[derive(Clone, Debug, PartialEq)]
+///  This proto includes a recusively nested message.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct NestedTestAllTypes {
     child: ::std::option::Option<::std::boxed::Box<self::NestedTestAllTypes>>,
     payload: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
@@ -2215,9 +2412,9 @@ impl self::NestedTestAllTypes {
         &mut self.payload
     }
 }
-/// Define these after TestAllTypes to make sure the compiler can handle
-/// that.
-#[derive(Clone, Debug, PartialEq)]
+///  Define these after TestAllTypes to make sure the compiler can handle
+///  that.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ForeignMessage {
     c: i32,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -2288,8 +2485,8 @@ impl self::ForeignMessage {
         &mut self.c
     }
 }
-/// TestEmptyMessage is used to test behavior of unknown fields.
-#[derive(Clone, Debug, PartialEq)]
+///  TestEmptyMessage is used to test behavior of unknown fields.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestEmptyMessage {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -2329,9 +2526,9 @@ impl ::protrust::Message for self::TestEmptyMessage {
 }
 impl self::TestEmptyMessage {
 }
-/// Same layout as TestOneof2 in unittest.proto to test unknown enum value
-/// parsing behavior in oneof.
-#[derive(Clone, Debug, PartialEq)]
+///  Same layout as TestOneof2 in unittest.proto to test unknown enum value
+///  parsing behavior in oneof.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestOneof2 {
     foo: self::test_oneof2::Foo,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -2384,6 +2581,55 @@ impl ::protrust::Message for self::TestOneof2 {
     }
 }
 impl self::TestOneof2 {
+    /// Gets the field number of the [`foo_enum`] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub const FOO_ENUM_FIELD_NUMBER: i32 = 6;
+    /// A constant value representing the default value of the [`foo_enum`] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub const FOO_ENUM_DEFAULT_VALUE: ::protrust::EnumValue<self::test_oneof2::NestedEnum> = ::protrust::EnumValue::Defined(self::test_oneof2::NestedEnum::Unknown);
+    pub fn foo_enum(&self) -> ::std::option::Option<&::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooEnum(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_enum'] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub fn foo_enum_mut(&mut self) -> &mut ::protrust::EnumValue<self::test_oneof2::NestedEnum> {
+        match self.foo {
+            self::test_oneof2::Foo::FooEnum(ref mut value) => value,
+            _ => {
+                self.set_foo_enum(::std::default::Default::default());
+                self.foo_enum_mut()
+            }
+        }
+    }
+    pub fn has_foo_enum(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooEnum(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_enum(&mut self, value: ::protrust::EnumValue<self::test_oneof2::NestedEnum>) {
+        self.foo = self::test_oneof2::Foo::FooEnum(value)
+    }
+    pub fn take_foo_enum(&mut self) -> ::std::option::Option<::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooEnum(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_enum(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
     /// Gets a shared reference to the [`foo`] oneof field
     ///
     /// [`foo`]: enum.Foo.html
@@ -2397,8 +2643,8 @@ impl self::TestOneof2 {
         &mut self.foo
     }
 }
-/// Same layout as TestOneof2 in unittest.proto to test unknown enum value
-/// parsing behavior in oneof.
+///  Same layout as TestOneof2 in unittest.proto to test unknown enum value
+///  parsing behavior in oneof.
 pub mod test_oneof2 {
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum NestedEnum {
@@ -2409,7 +2655,7 @@ pub mod test_oneof2 {
     }
     impl ::protrust::Enum for self::NestedEnum {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[6].enums()[0]
+            &self::super::file().messages()[6].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
@@ -2440,6 +2686,11 @@ pub mod test_oneof2 {
         /// No value
         None,
         FooEnum(::protrust::EnumValue<self::super::test_oneof2::NestedEnum>),
+    }
+    impl ::std::default::Default for self::Foo {
+        fn default() -> Self {
+            self::Foo::None
+        }
     }
 }
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]

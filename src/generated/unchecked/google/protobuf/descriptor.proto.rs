@@ -8,9 +8,9 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     super::pool().find_file_by_name("google/protobuf/descriptor.proto").unwrap()
 }
 
-/// The protocol compiler can output a FileDescriptorSet containing the .proto
-/// files it parses.
-#[derive(Clone, Debug, PartialEq)]
+///  The protocol compiler can output a FileDescriptorSet containing the .proto
+///  files it parses.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FileDescriptorSet {
     file: crate::collections::RepeatedField<self::FileDescriptorProto>,
     unknown_fields: crate::UnknownFieldSet,
@@ -76,8 +76,8 @@ impl self::FileDescriptorSet {
         &mut self.file
     }
 }
-/// Describes a complete .proto file.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a complete .proto file.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FileDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     package: ::std::option::Option<::std::string::String>,
@@ -272,7 +272,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`name`]: #method.name
     pub const NAME_DEFAULT_VALUE: &'static str = "";
-    /// file name, relative to root of source tree
+    ///  file name, relative to root of source tree
     pub fn name(&self) -> &str {
         self.name.as_ref().map(|v| &**v).unwrap_or(Self::NAME_DEFAULT_VALUE)
     }
@@ -321,7 +321,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`package`]: #method.package
     pub const PACKAGE_DEFAULT_VALUE: &'static str = "";
-    /// e.g. "foo", "foo.bar", etc.
+    ///  e.g. "foo", "foo.bar", etc.
     pub fn package(&self) -> &str {
         self.package.as_ref().map(|v| &**v).unwrap_or(Self::PACKAGE_DEFAULT_VALUE)
     }
@@ -366,7 +366,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`dependency`]: #method.dependency
     pub const DEPENDENCY_FIELD_NUMBER: i32 = 3;
-    /// Names of files imported by this file.
+    ///  Names of files imported by this file.
     pub fn dependency(&self) -> &crate::collections::RepeatedField<::std::string::String> {
         &self.dependency
     }
@@ -380,7 +380,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`public_dependency`]: #method.public_dependency
     pub const PUBLIC_DEPENDENCY_FIELD_NUMBER: i32 = 10;
-    /// Indexes of the public imported files in the dependency list above.
+    ///  Indexes of the public imported files in the dependency list above.
     pub fn public_dependency(&self) -> &crate::collections::RepeatedField<i32> {
         &self.public_dependency
     }
@@ -394,8 +394,8 @@ impl self::FileDescriptorProto {
     ///
     /// [`weak_dependency`]: #method.weak_dependency
     pub const WEAK_DEPENDENCY_FIELD_NUMBER: i32 = 11;
-    /// Indexes of the weak imported files in the dependency list.
-    /// For Google-internal migration only. Do not use.
+    ///  Indexes of the weak imported files in the dependency list.
+    ///  For Google-internal migration only. Do not use.
     pub fn weak_dependency(&self) -> &crate::collections::RepeatedField<i32> {
         &self.weak_dependency
     }
@@ -409,7 +409,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`message_type`]: #method.message_type
     pub const MESSAGE_TYPE_FIELD_NUMBER: i32 = 4;
-    /// All top-level definitions in this file.
+    ///  All top-level definitions in this file.
     pub fn message_type(&self) -> &crate::collections::RepeatedField<self::DescriptorProto> {
         &self.message_type
     }
@@ -462,7 +462,7 @@ impl self::FileDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
-    pub fn options_option(&self) -> ::std::option::Option<&self::FileOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::FileOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -499,11 +499,11 @@ impl self::FileDescriptorProto {
     ///
     /// [`source_code_info`]: #method.source_code_info
     pub const SOURCE_CODE_INFO_FIELD_NUMBER: i32 = 9;
-    /// This field contains optional information about the original source code.
-    /// You may safely remove this entire field without harming runtime
-    /// functionality of the descriptors -- the information is needed only by
-    /// development tools.
-    pub fn source_code_info_option(&self) -> ::std::option::Option<&self::SourceCodeInfo> {
+    ///  This field contains optional information about the original source code.
+    ///  You may safely remove this entire field without harming runtime
+    ///  functionality of the descriptors -- the information is needed only by
+    ///  development tools.
+    pub fn source_code_info(&self) -> ::std::option::Option<&self::SourceCodeInfo> {
         self.source_code_info.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`source_code_info`] field
@@ -544,8 +544,8 @@ impl self::FileDescriptorProto {
     ///
     /// [`syntax`]: #method.syntax
     pub const SYNTAX_DEFAULT_VALUE: &'static str = "";
-    /// The syntax of the proto file.
-    /// The supported values are "proto2" and "proto3".
+    ///  The syntax of the proto file.
+    ///  The supported values are "proto2" and "proto3".
     pub fn syntax(&self) -> &str {
         self.syntax.as_ref().map(|v| &**v).unwrap_or(Self::SYNTAX_DEFAULT_VALUE)
     }
@@ -587,8 +587,8 @@ impl self::FileDescriptorProto {
         self.syntax = ::std::option::Option::None
     }
 }
-/// Describes a message type.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a message type.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct DescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     field: crate::collections::RepeatedField<self::FieldDescriptorProto>,
@@ -872,7 +872,7 @@ impl self::DescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 7;
-    pub fn options_option(&self) -> ::std::option::Option<&self::MessageOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::MessageOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -922,8 +922,8 @@ impl self::DescriptorProto {
     ///
     /// [`reserved_name`]: #method.reserved_name
     pub const RESERVED_NAME_FIELD_NUMBER: i32 = 10;
-    /// Reserved field names, which may not be used by fields in the same message.
-    /// A given name may only be reserved once.
+    ///  Reserved field names, which may not be used by fields in the same message.
+    ///  A given name may only be reserved once.
     pub fn reserved_name(&self) -> &crate::collections::RepeatedField<::std::string::String> {
         &self.reserved_name
     }
@@ -934,9 +934,9 @@ impl self::DescriptorProto {
         &mut self.reserved_name
     }
 }
-/// Describes a message type.
+///  Describes a message type.
 pub mod descriptor_proto {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct ExtensionRange {
         start: ::std::option::Option<i32>,
         end: ::std::option::Option<i32>,
@@ -1103,7 +1103,7 @@ pub mod descriptor_proto {
         ///
         /// [`options`]: #method.options
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        pub fn options_option(&self) -> ::std::option::Option<&self::super::ExtensionRangeOptions> {
+        pub fn options(&self) -> ::std::option::Option<&self::super::ExtensionRangeOptions> {
             self.options.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`options`] field
@@ -1137,10 +1137,10 @@ pub mod descriptor_proto {
             self.options = ::std::option::Option::None
         }
     }
-    /// Range of reserved tag numbers. Reserved tag numbers may not be used by
-    /// fields or extension ranges in the same message. Reserved ranges may
-    /// not overlap.
-    #[derive(Clone, Debug, PartialEq)]
+    ///  Range of reserved tag numbers. Reserved tag numbers may not be used by
+    ///  fields or extension ranges in the same message. Reserved ranges may
+    ///  not overlap.
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct ReservedRange {
         start: ::std::option::Option<i32>,
         end: ::std::option::Option<i32>,
@@ -1215,7 +1215,7 @@ pub mod descriptor_proto {
         ///
         /// [`start`]: #method.start
         pub const START_DEFAULT_VALUE: i32 = 0;
-        /// Inclusive.
+        ///  Inclusive.
         pub fn start(&self) -> i32 {
             self.start.unwrap_or(Self::START_DEFAULT_VALUE)
         }
@@ -1252,7 +1252,7 @@ pub mod descriptor_proto {
         ///
         /// [`end`]: #method.end
         pub const END_DEFAULT_VALUE: i32 = 0;
-        /// Exclusive.
+        ///  Exclusive.
         pub fn end(&self) -> i32 {
             self.end.unwrap_or(Self::END_DEFAULT_VALUE)
         }
@@ -1283,7 +1283,7 @@ pub mod descriptor_proto {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ExtensionRangeOptions {
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet,
@@ -1336,10 +1336,13 @@ impl crate::LiteMessage for self::ExtensionRangeOptions {
 impl crate::ExtensionMessage for self::ExtensionRangeOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::ExtensionRangeOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -1351,7 +1354,7 @@ impl self::ExtensionRangeOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -1362,8 +1365,8 @@ impl self::ExtensionRangeOptions {
         &mut self.uninterpreted_option
     }
 }
-/// Describes a field within a message.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a field within a message.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FieldDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     number: ::std::option::Option<i32>,
@@ -1680,8 +1683,8 @@ impl self::FieldDescriptorProto {
     ///
     /// [`type`]: #method.type
     pub const TYPE_DEFAULT_VALUE: crate::EnumValue<self::field_descriptor_proto::Type> = crate::EnumValue::Undefined(0);
-    /// If type_name is set, this need not be set.  If both this and type_name
-    /// are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
+    ///  If type_name is set, this need not be set.  If both this and type_name
+    ///  are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
     pub fn r#type(&self) -> crate::EnumValue<self::field_descriptor_proto::Type> {
         self.r#type.unwrap_or(Self::TYPE_DEFAULT_VALUE)
     }
@@ -1718,11 +1721,11 @@ impl self::FieldDescriptorProto {
     ///
     /// [`type_name`]: #method.type_name
     pub const TYPE_NAME_DEFAULT_VALUE: &'static str = "";
-    /// For message and enum types, this is the name of the type.  If the name
-    /// starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping
-    /// rules are used to find the type (i.e. first the nested types within this
-    /// message are searched, then within the parent, on up to the root
-    /// namespace).
+    ///  For message and enum types, this is the name of the type.  If the name
+    ///  starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping
+    ///  rules are used to find the type (i.e. first the nested types within this
+    ///  message are searched, then within the parent, on up to the root
+    ///  namespace).
     pub fn type_name(&self) -> &str {
         self.type_name.as_ref().map(|v| &**v).unwrap_or(Self::TYPE_NAME_DEFAULT_VALUE)
     }
@@ -1771,8 +1774,8 @@ impl self::FieldDescriptorProto {
     ///
     /// [`extendee`]: #method.extendee
     pub const EXTENDEE_DEFAULT_VALUE: &'static str = "";
-    /// For extensions, this is the name of the type being extended.  It is
-    /// resolved in the same manner as type_name.
+    ///  For extensions, this is the name of the type being extended.  It is
+    ///  resolved in the same manner as type_name.
     pub fn extendee(&self) -> &str {
         self.extendee.as_ref().map(|v| &**v).unwrap_or(Self::EXTENDEE_DEFAULT_VALUE)
     }
@@ -1821,11 +1824,11 @@ impl self::FieldDescriptorProto {
     ///
     /// [`default_value`]: #method.default_value
     pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-    /// For numeric types, contains the original text representation of the value.
-    /// For booleans, "true" or "false".
-    /// For strings, contains the default text contents (not escaped in any way).
-    /// For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
-    /// TODO(kenton):  Base-64 encode?
+    ///  For numeric types, contains the original text representation of the value.
+    ///  For booleans, "true" or "false".
+    ///  For strings, contains the default text contents (not escaped in any way).
+    ///  For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
+    ///  TODO(kenton):  Base-64 encode?
     pub fn default_value(&self) -> &str {
         self.default_value.as_ref().map(|v| &**v).unwrap_or(Self::DEFAULT_VALUE_DEFAULT_VALUE)
     }
@@ -1874,8 +1877,8 @@ impl self::FieldDescriptorProto {
     ///
     /// [`oneof_index`]: #method.oneof_index
     pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-    /// If set, gives the index of a oneof in the containing type's oneof_decl
-    /// list.  This field is a member of that oneof.
+    ///  If set, gives the index of a oneof in the containing type's oneof_decl
+    ///  list.  This field is a member of that oneof.
     pub fn oneof_index(&self) -> i32 {
         self.oneof_index.unwrap_or(Self::ONEOF_INDEX_DEFAULT_VALUE)
     }
@@ -1912,10 +1915,10 @@ impl self::FieldDescriptorProto {
     ///
     /// [`json_name`]: #method.json_name
     pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
-    /// JSON name of this field. The value is set by protocol compiler. If the
-    /// user has set a "json_name" option on this field, that option's value
-    /// will be used. Otherwise, it's deduced from the field's name by converting
-    /// it to camelCase.
+    ///  JSON name of this field. The value is set by protocol compiler. If the
+    ///  user has set a "json_name" option on this field, that option's value
+    ///  will be used. Otherwise, it's deduced from the field's name by converting
+    ///  it to camelCase.
     pub fn json_name(&self) -> &str {
         self.json_name.as_ref().map(|v| &**v).unwrap_or(Self::JSON_NAME_DEFAULT_VALUE)
     }
@@ -1960,7 +1963,7 @@ impl self::FieldDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 8;
-    pub fn options_option(&self) -> ::std::option::Option<&self::FieldOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::FieldOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -1994,46 +1997,46 @@ impl self::FieldDescriptorProto {
         self.options = ::std::option::Option::None
     }
 }
-/// Describes a field within a message.
+///  Describes a field within a message.
 pub mod field_descriptor_proto {
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum Type {
-        /// 0 is reserved for errors.
-        /// Order is weird for historical reasons.
+        ///  0 is reserved for errors.
+        ///  Order is weird for historical reasons.
         Double,
         Float,
-        /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
-        /// negative values are likely.
+        ///  Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
+        ///  negative values are likely.
         Int64,
         Uint64,
-        /// Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
-        /// negative values are likely.
+        ///  Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
+        ///  negative values are likely.
         Int32,
         Fixed64,
         Fixed32,
         Bool,
         String,
-        /// Tag-delimited aggregate.
-        /// Group type is deprecated and not supported in proto3. However, Proto3
-        /// implementations should still be able to parse the group wire format and
-        /// treat group fields as unknown fields.
+        ///  Tag-delimited aggregate.
+        ///  Group type is deprecated and not supported in proto3. However, Proto3
+        ///  implementations should still be able to parse the group wire format and
+        ///  treat group fields as unknown fields.
         Group,
-        /// Length-delimited aggregate.
+        ///  Length-delimited aggregate.
         Message,
-        /// New in version 2.
+        ///  New in version 2.
         Bytes,
         Uint32,
         Enum,
         Sfixed32,
         Sfixed64,
-        /// Uses ZigZag encoding.
+        ///  Uses ZigZag encoding.
         Sint32,
-        /// Uses ZigZag encoding.
+        ///  Uses ZigZag encoding.
         Sint64,
     }
     impl crate::Enum for self::Type {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[4].enums()[0]
+            &self::super::file().messages()[4].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::Type {
@@ -2089,14 +2092,14 @@ pub mod field_descriptor_proto {
     }
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum Label {
-        /// 0 is reserved for errors
+        ///  0 is reserved for errors
         Optional,
         Required,
         Repeated,
     }
     impl crate::Enum for self::Label {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[4].enums()[1]
+            &self::super::file().messages()[4].enums()[1]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::Label {
@@ -2121,8 +2124,8 @@ pub mod field_descriptor_proto {
         }
     }
 }
-/// Describes a oneof.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a oneof.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct OneofDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     options: ::std::option::Option<::std::boxed::Box<self::OneofOptions>>,
@@ -2251,7 +2254,7 @@ impl self::OneofDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 2;
-    pub fn options_option(&self) -> ::std::option::Option<&self::OneofOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::OneofOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2285,8 +2288,8 @@ impl self::OneofDescriptorProto {
         self.options = ::std::option::Option::None
     }
 }
-/// Describes an enum type.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes an enum type.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct EnumDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     value: crate::collections::RepeatedField<self::EnumValueDescriptorProto>,
@@ -2455,7 +2458,7 @@ impl self::EnumDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options_option(&self) -> ::std::option::Option<&self::EnumOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::EnumOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2492,9 +2495,9 @@ impl self::EnumDescriptorProto {
     ///
     /// [`reserved_range`]: #method.reserved_range
     pub const RESERVED_RANGE_FIELD_NUMBER: i32 = 4;
-    /// Range of reserved numeric values. Reserved numeric values may not be used
-    /// by enum values in the same enum declaration. Reserved ranges may not
-    /// overlap.
+    ///  Range of reserved numeric values. Reserved numeric values may not be used
+    ///  by enum values in the same enum declaration. Reserved ranges may not
+    ///  overlap.
     pub fn reserved_range(&self) -> &crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange> {
         &self.reserved_range
     }
@@ -2508,8 +2511,8 @@ impl self::EnumDescriptorProto {
     ///
     /// [`reserved_name`]: #method.reserved_name
     pub const RESERVED_NAME_FIELD_NUMBER: i32 = 5;
-    /// Reserved enum value names, which may not be reused. A given name may only
-    /// be reserved once.
+    ///  Reserved enum value names, which may not be reused. A given name may only
+    ///  be reserved once.
     pub fn reserved_name(&self) -> &crate::collections::RepeatedField<::std::string::String> {
         &self.reserved_name
     }
@@ -2520,15 +2523,15 @@ impl self::EnumDescriptorProto {
         &mut self.reserved_name
     }
 }
-/// Describes an enum type.
+///  Describes an enum type.
 pub mod enum_descriptor_proto {
-    /// Range of reserved numeric values. Reserved values may not be used by
-    /// entries in the same enum. Reserved ranges may not overlap.
+    ///  Range of reserved numeric values. Reserved values may not be used by
+    ///  entries in the same enum. Reserved ranges may not overlap.
     /// 
-    /// Note that this is distinct from DescriptorProto.ReservedRange in that it
-    /// is inclusive such that it can appropriately represent the entire int32
-    /// domain.
-    #[derive(Clone, Debug, PartialEq)]
+    ///  Note that this is distinct from DescriptorProto.ReservedRange in that it
+    ///  is inclusive such that it can appropriately represent the entire int32
+    ///  domain.
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct EnumReservedRange {
         start: ::std::option::Option<i32>,
         end: ::std::option::Option<i32>,
@@ -2603,7 +2606,7 @@ pub mod enum_descriptor_proto {
         ///
         /// [`start`]: #method.start
         pub const START_DEFAULT_VALUE: i32 = 0;
-        /// Inclusive.
+        ///  Inclusive.
         pub fn start(&self) -> i32 {
             self.start.unwrap_or(Self::START_DEFAULT_VALUE)
         }
@@ -2640,7 +2643,7 @@ pub mod enum_descriptor_proto {
         ///
         /// [`end`]: #method.end
         pub const END_DEFAULT_VALUE: i32 = 0;
-        /// Inclusive.
+        ///  Inclusive.
         pub fn end(&self) -> i32 {
             self.end.unwrap_or(Self::END_DEFAULT_VALUE)
         }
@@ -2671,8 +2674,8 @@ pub mod enum_descriptor_proto {
         }
     }
 }
-/// Describes a value within an enum.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a value within an enum.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct EnumValueDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     number: ::std::option::Option<i32>,
@@ -2851,7 +2854,7 @@ impl self::EnumValueDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options_option(&self) -> ::std::option::Option<&self::EnumValueOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::EnumValueOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -2885,8 +2888,8 @@ impl self::EnumValueDescriptorProto {
         self.options = ::std::option::Option::None
     }
 }
-/// Describes a service.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a service.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ServiceDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     method: crate::collections::RepeatedField<self::MethodDescriptorProto>,
@@ -3038,7 +3041,7 @@ impl self::ServiceDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-    pub fn options_option(&self) -> ::std::option::Option<&self::ServiceOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::ServiceOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -3072,8 +3075,8 @@ impl self::ServiceDescriptorProto {
         self.options = ::std::option::Option::None
     }
 }
-/// Describes a method of a service.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes a method of a service.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct MethodDescriptorProto {
     name: ::std::option::Option<::std::string::String>,
     input_type: ::std::option::Option<::std::string::String>,
@@ -3262,8 +3265,8 @@ impl self::MethodDescriptorProto {
     ///
     /// [`input_type`]: #method.input_type
     pub const INPUT_TYPE_DEFAULT_VALUE: &'static str = "";
-    /// Input and output type names.  These are resolved in the same way as
-    /// FieldDescriptorProto.type_name, but must refer to a message type.
+    ///  Input and output type names.  These are resolved in the same way as
+    ///  FieldDescriptorProto.type_name, but must refer to a message type.
     pub fn input_type(&self) -> &str {
         self.input_type.as_ref().map(|v| &**v).unwrap_or(Self::INPUT_TYPE_DEFAULT_VALUE)
     }
@@ -3356,7 +3359,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`options`]: #method.options
     pub const OPTIONS_FIELD_NUMBER: i32 = 4;
-    pub fn options_option(&self) -> ::std::option::Option<&self::MethodOptions> {
+    pub fn options(&self) -> ::std::option::Option<&self::MethodOptions> {
         self.options.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`options`] field
@@ -3397,7 +3400,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`client_streaming`]: #method.client_streaming
     pub const CLIENT_STREAMING_DEFAULT_VALUE: bool = false;
-    /// Identifies if client streams multiple client messages
+    ///  Identifies if client streams multiple client messages
     pub fn client_streaming(&self) -> bool {
         self.client_streaming.unwrap_or(Self::CLIENT_STREAMING_DEFAULT_VALUE)
     }
@@ -3434,7 +3437,7 @@ impl self::MethodDescriptorProto {
     ///
     /// [`server_streaming`]: #method.server_streaming
     pub const SERVER_STREAMING_DEFAULT_VALUE: bool = false;
-    /// Identifies if server streams multiple server messages
+    ///  Identifies if server streams multiple server messages
     pub fn server_streaming(&self) -> bool {
         self.server_streaming.unwrap_or(Self::SERVER_STREAMING_DEFAULT_VALUE)
     }
@@ -3464,7 +3467,7 @@ impl self::MethodDescriptorProto {
         self.server_streaming = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FileOptions {
     java_package: ::std::option::Option<::std::string::String>,
     java_outer_classname: ::std::option::Option<::std::string::String>,
@@ -3797,10 +3800,13 @@ impl crate::LiteMessage for self::FileOptions {
 impl crate::ExtensionMessage for self::FileOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::FileOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -3816,10 +3822,10 @@ impl self::FileOptions {
     ///
     /// [`java_package`]: #method.java_package
     pub const JAVA_PACKAGE_DEFAULT_VALUE: &'static str = "";
-    /// Sets the Java package where classes generated from this .proto will be
-    /// placed.  By default, the proto package is used, but this is often
-    /// inappropriate because proto packages do not normally start with backwards
-    /// domain names.
+    ///  Sets the Java package where classes generated from this .proto will be
+    ///  placed.  By default, the proto package is used, but this is often
+    ///  inappropriate because proto packages do not normally start with backwards
+    ///  domain names.
     pub fn java_package(&self) -> &str {
         self.java_package.as_ref().map(|v| &**v).unwrap_or(Self::JAVA_PACKAGE_DEFAULT_VALUE)
     }
@@ -3868,11 +3874,11 @@ impl self::FileOptions {
     ///
     /// [`java_outer_classname`]: #method.java_outer_classname
     pub const JAVA_OUTER_CLASSNAME_DEFAULT_VALUE: &'static str = "";
-    /// If set, all the classes from the .proto file are wrapped in a single
-    /// outer class with the given name.  This applies to both Proto1
-    /// (equivalent to the old "--one_java_file" option) and Proto2 (where
-    /// a .proto always translates to a single class, but you may want to
-    /// explicitly choose the class name).
+    ///  If set, all the classes from the .proto file are wrapped in a single
+    ///  outer class with the given name.  This applies to both Proto1
+    ///  (equivalent to the old "--one_java_file" option) and Proto2 (where
+    ///  a .proto always translates to a single class, but you may want to
+    ///  explicitly choose the class name).
     pub fn java_outer_classname(&self) -> &str {
         self.java_outer_classname.as_ref().map(|v| &**v).unwrap_or(Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE)
     }
@@ -3921,12 +3927,12 @@ impl self::FileOptions {
     ///
     /// [`java_multiple_files`]: #method.java_multiple_files
     pub const JAVA_MULTIPLE_FILES_DEFAULT_VALUE: bool = false;
-    /// If set true, then the Java code generator will generate a separate .java
-    /// file for each top-level message, enum, and service defined in the .proto
-    /// file.  Thus, these types will *not* be nested inside the outer class
-    /// named by java_outer_classname.  However, the outer class will still be
-    /// generated to contain the file's getDescriptor() method as well as any
-    /// top-level extensions defined in the file.
+    ///  If set true, then the Java code generator will generate a separate .java
+    ///  file for each top-level message, enum, and service defined in the .proto
+    ///  file.  Thus, these types will *not* be nested inside the outer class
+    ///  named by java_outer_classname.  However, the outer class will still be
+    ///  generated to contain the file's getDescriptor() method as well as any
+    ///  top-level extensions defined in the file.
     pub fn java_multiple_files(&self) -> bool {
         self.java_multiple_files.unwrap_or(Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE)
     }
@@ -3963,7 +3969,7 @@ impl self::FileOptions {
     ///
     /// [`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash
     pub const JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE: bool = false;
-    /// This option does nothing.
+    ///  This option does nothing.
     pub fn java_generate_equals_and_hash(&self) -> bool {
         self.java_generate_equals_and_hash.unwrap_or(Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE)
     }
@@ -4000,12 +4006,12 @@ impl self::FileOptions {
     ///
     /// [`java_string_check_utf8`]: #method.java_string_check_utf8
     pub const JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE: bool = false;
-    /// If set true, then the Java2 code generator will generate code that
-    /// throws an exception whenever an attempt is made to assign a non-UTF-8
-    /// byte sequence to a string field.
-    /// Message reflection will do the same.
-    /// However, an extension field still accepts non-UTF-8 byte sequences.
-    /// This option has no effect on when used with the lite runtime.
+    ///  If set true, then the Java2 code generator will generate code that
+    ///  throws an exception whenever an attempt is made to assign a non-UTF-8
+    ///  byte sequence to a string field.
+    ///  Message reflection will do the same.
+    ///  However, an extension field still accepts non-UTF-8 byte sequences.
+    ///  This option has no effect on when used with the lite runtime.
     pub fn java_string_check_utf8(&self) -> bool {
         self.java_string_check_utf8.unwrap_or(Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE)
     }
@@ -4078,13 +4084,11 @@ impl self::FileOptions {
     ///
     /// [`go_package`]: #method.go_package
     pub const GO_PACKAGE_DEFAULT_VALUE: &'static str = "";
-    /// Sets the Go package where structs generated from this .proto will be
-    /// placed. If omitted, the Go package will be derived from the following:
-    /// 
-    ///   * The basename of the package import path, if provided.
-    ///   * Otherwise, the package statement in the .proto file, if present.
-    ///   * Otherwise, the basename of the .proto file, without extension.
-    ///   
+    ///  Sets the Go package where structs generated from this .proto will be
+    ///  placed. If omitted, the Go package will be derived from the following:
+    ///    - The basename of the package import path, if provided.
+    ///    - Otherwise, the package statement in the .proto file, if present.
+    ///    - Otherwise, the basename of the .proto file, without extension.
     pub fn go_package(&self) -> &str {
         self.go_package.as_ref().map(|v| &**v).unwrap_or(Self::GO_PACKAGE_DEFAULT_VALUE)
     }
@@ -4133,16 +4137,16 @@ impl self::FileOptions {
     ///
     /// [`cc_generic_services`]: #method.cc_generic_services
     pub const CC_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-    /// Should generic services be generated in each language?  "Generic" services
-    /// are not specific to any particular RPC system.  They are generated by the
-    /// main code generators in each language (without additional plugins).
-    /// Generic services were the only kind of service generation supported by
-    /// early versions of google.protobuf.
+    ///  Should generic services be generated in each language?  "Generic" services
+    ///  are not specific to any particular RPC system.  They are generated by the
+    ///  main code generators in each language (without additional plugins).
+    ///  Generic services were the only kind of service generation supported by
+    ///  early versions of google.protobuf.
     /// 
-    /// Generic services are now considered deprecated in favor of using plugins
-    /// that generate code specific to your particular RPC system.  Therefore,
-    /// these default to false.  Old code which depends on generic services should
-    /// explicitly set them to true.
+    ///  Generic services are now considered deprecated in favor of using plugins
+    ///  that generate code specific to your particular RPC system.  Therefore,
+    ///  these default to false.  Old code which depends on generic services should
+    ///  explicitly set them to true.
     pub fn cc_generic_services(&self) -> bool {
         self.cc_generic_services.unwrap_or(Self::CC_GENERIC_SERVICES_DEFAULT_VALUE)
     }
@@ -4287,10 +4291,10 @@ impl self::FileOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this file deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for everything in the file, or it will be completely ignored; in the very
-    /// least, this is a formalization for deprecating files.
+    ///  Is this file deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for everything in the file, or it will be completely ignored; in the very
+    ///  least, this is a formalization for deprecating files.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -4327,8 +4331,8 @@ impl self::FileOptions {
     ///
     /// [`cc_enable_arenas`]: #method.cc_enable_arenas
     pub const CC_ENABLE_ARENAS_DEFAULT_VALUE: bool = false;
-    /// Enables the use of arenas for the proto messages in this file. This applies
-    /// only to generated classes for C++.
+    ///  Enables the use of arenas for the proto messages in this file. This applies
+    ///  only to generated classes for C++.
     pub fn cc_enable_arenas(&self) -> bool {
         self.cc_enable_arenas.unwrap_or(Self::CC_ENABLE_ARENAS_DEFAULT_VALUE)
     }
@@ -4365,8 +4369,8 @@ impl self::FileOptions {
     ///
     /// [`objc_class_prefix`]: #method.objc_class_prefix
     pub const OBJC_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-    /// Sets the objective c class prefix which is prepended to all objective c
-    /// generated classes from this .proto. There is no default.
+    ///  Sets the objective c class prefix which is prepended to all objective c
+    ///  generated classes from this .proto. There is no default.
     pub fn objc_class_prefix(&self) -> &str {
         self.objc_class_prefix.as_ref().map(|v| &**v).unwrap_or(Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE)
     }
@@ -4415,7 +4419,7 @@ impl self::FileOptions {
     ///
     /// [`csharp_namespace`]: #method.csharp_namespace
     pub const CSHARP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-    /// Namespace for generated classes; defaults to the package.
+    ///  Namespace for generated classes; defaults to the package.
     pub fn csharp_namespace(&self) -> &str {
         self.csharp_namespace.as_ref().map(|v| &**v).unwrap_or(Self::CSHARP_NAMESPACE_DEFAULT_VALUE)
     }
@@ -4464,10 +4468,10 @@ impl self::FileOptions {
     ///
     /// [`swift_prefix`]: #method.swift_prefix
     pub const SWIFT_PREFIX_DEFAULT_VALUE: &'static str = "";
-    /// By default Swift generators will take the proto package and CamelCase it
-    /// replacing '.' with underscore and use that to prefix the types/symbols
-    /// defined. When this options is provided, they will use this value instead
-    /// to prefix the types/symbols defined.
+    ///  By default Swift generators will take the proto package and CamelCase it
+    ///  replacing '.' with underscore and use that to prefix the types/symbols
+    ///  defined. When this options is provided, they will use this value instead
+    ///  to prefix the types/symbols defined.
     pub fn swift_prefix(&self) -> &str {
         self.swift_prefix.as_ref().map(|v| &**v).unwrap_or(Self::SWIFT_PREFIX_DEFAULT_VALUE)
     }
@@ -4516,8 +4520,8 @@ impl self::FileOptions {
     ///
     /// [`php_class_prefix`]: #method.php_class_prefix
     pub const PHP_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-    /// Sets the php class prefix which is prepended to all php generated classes
-    /// from this .proto. Default is empty.
+    ///  Sets the php class prefix which is prepended to all php generated classes
+    ///  from this .proto. Default is empty.
     pub fn php_class_prefix(&self) -> &str {
         self.php_class_prefix.as_ref().map(|v| &**v).unwrap_or(Self::PHP_CLASS_PREFIX_DEFAULT_VALUE)
     }
@@ -4566,9 +4570,9 @@ impl self::FileOptions {
     ///
     /// [`php_namespace`]: #method.php_namespace
     pub const PHP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-    /// Use this option to change the namespace of php generated classes. Default
-    /// is empty. When this option is empty, the package name will be used for
-    /// determining the namespace.
+    ///  Use this option to change the namespace of php generated classes. Default
+    ///  is empty. When this option is empty, the package name will be used for
+    ///  determining the namespace.
     pub fn php_namespace(&self) -> &str {
         self.php_namespace.as_ref().map(|v| &**v).unwrap_or(Self::PHP_NAMESPACE_DEFAULT_VALUE)
     }
@@ -4617,9 +4621,9 @@ impl self::FileOptions {
     ///
     /// [`php_metadata_namespace`]: #method.php_metadata_namespace
     pub const PHP_METADATA_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-    /// Use this option to change the namespace of php generated metadata classes.
-    /// Default is empty. When this option is empty, the proto file name will be used
-    /// for determining the namespace.
+    ///  Use this option to change the namespace of php generated metadata classes.
+    ///  Default is empty. When this option is empty, the proto file name will be used
+    ///  for determining the namespace.
     pub fn php_metadata_namespace(&self) -> &str {
         self.php_metadata_namespace.as_ref().map(|v| &**v).unwrap_or(Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE)
     }
@@ -4668,9 +4672,9 @@ impl self::FileOptions {
     ///
     /// [`ruby_package`]: #method.ruby_package
     pub const RUBY_PACKAGE_DEFAULT_VALUE: &'static str = "";
-    /// Use this option to change the package of ruby generated classes. Default
-    /// is empty. When this option is not set, the package name will be used for
-    /// determining the ruby package.
+    ///  Use this option to change the package of ruby generated classes. Default
+    ///  is empty. When this option is not set, the package name will be used for
+    ///  determining the ruby package.
     pub fn ruby_package(&self) -> &str {
         self.ruby_package.as_ref().map(|v| &**v).unwrap_or(Self::RUBY_PACKAGE_DEFAULT_VALUE)
     }
@@ -4715,8 +4719,8 @@ impl self::FileOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here.
-    /// See the documentation for the "Options" section above.
+    ///  The parser stores options it doesn't recognize here.
+    ///  See the documentation for the "Options" section above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -4728,19 +4732,19 @@ impl self::FileOptions {
     }
 }
 pub mod file_options {
-    /// Generated classes can be optimized for speed or code size.
+    ///  Generated classes can be optimized for speed or code size.
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum OptimizeMode {
-        /// Generate complete code for parsing, serialization,
+        ///  Generate complete code for parsing, serialization,
         Speed,
-        /// etc.
+        ///  etc.
         CodeSize,
-        /// Generate code using MessageLite and the lite runtime.
+        ///  Generate code using MessageLite and the lite runtime.
         LiteRuntime,
     }
     impl crate::Enum for self::OptimizeMode {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[10].enums()[0]
+            &self::super::file().messages()[10].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::OptimizeMode {
@@ -4765,7 +4769,7 @@ pub mod file_options {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct MessageOptions {
     message_set_wire_format: ::std::option::Option<bool>,
     no_standard_descriptor_accessor: ::std::option::Option<bool>,
@@ -4874,10 +4878,13 @@ impl crate::LiteMessage for self::MessageOptions {
 impl crate::ExtensionMessage for self::MessageOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::MessageOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -4893,24 +4900,24 @@ impl self::MessageOptions {
     ///
     /// [`message_set_wire_format`]: #method.message_set_wire_format
     pub const MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE: bool = false;
-    /// Set true to use the old proto1 MessageSet wire format for extensions.
-    /// This is provided for backwards-compatibility with the MessageSet wire
-    /// format.  You should not use this for any other reason:  It's less
-    /// efficient, has fewer features, and is more complicated.
+    ///  Set true to use the old proto1 MessageSet wire format for extensions.
+    ///  This is provided for backwards-compatibility with the MessageSet wire
+    ///  format.  You should not use this for any other reason:  It's less
+    ///  efficient, has fewer features, and is more complicated.
     /// 
-    /// The message must be defined exactly as follows:
-    /// message Foo {
-    /// option message_set_wire_format = true;
-    /// extensions 4 to max;
-    /// }
-    /// Note that the message cannot have any defined fields; MessageSets only
-    /// have extensions.
+    ///  The message must be defined exactly as follows:
+    ///    message Foo {
+    ///      option message_set_wire_format = true;
+    ///      extensions 4 to max;
+    ///    }
+    ///  Note that the message cannot have any defined fields; MessageSets only
+    ///  have extensions.
     /// 
-    /// All extensions of your type must be singular messages; e.g. they cannot
-    /// be int32s, enums, or repeated messages.
+    ///  All extensions of your type must be singular messages; e.g. they cannot
+    ///  be int32s, enums, or repeated messages.
     /// 
-    /// Because this is an option, the above two restrictions are not enforced by
-    /// the protocol compiler.
+    ///  Because this is an option, the above two restrictions are not enforced by
+    ///  the protocol compiler.
     pub fn message_set_wire_format(&self) -> bool {
         self.message_set_wire_format.unwrap_or(Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE)
     }
@@ -4947,9 +4954,9 @@ impl self::MessageOptions {
     ///
     /// [`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor
     pub const NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE: bool = false;
-    /// Disables the generation of the standard "descriptor()" accessor, which can
-    /// conflict with a field of the same name.  This is meant to make migration
-    /// from proto1 easier; new code should avoid fields named "descriptor".
+    ///  Disables the generation of the standard "descriptor()" accessor, which can
+    ///  conflict with a field of the same name.  This is meant to make migration
+    ///  from proto1 easier; new code should avoid fields named "descriptor".
     pub fn no_standard_descriptor_accessor(&self) -> bool {
         self.no_standard_descriptor_accessor.unwrap_or(Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE)
     }
@@ -4986,10 +4993,10 @@ impl self::MessageOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this message deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for the message, or it will be completely ignored; in the very least,
-    /// this is a formalization for deprecating messages.
+    ///  Is this message deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for the message, or it will be completely ignored; in the very least,
+    ///  this is a formalization for deprecating messages.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -5026,27 +5033,27 @@ impl self::MessageOptions {
     ///
     /// [`map_entry`]: #method.map_entry
     pub const MAP_ENTRY_DEFAULT_VALUE: bool = false;
-    /// Whether the message is an automatically generated map entry type for the
-    /// maps field.
+    ///  Whether the message is an automatically generated map entry type for the
+    ///  maps field.
     /// 
-    /// For maps fields:
-    /// map<KeyType, ValueType> map_field = 1;
-    /// The parsed descriptor looks like:
-    /// message MapFieldEntry {
-    /// option map_entry = true;
-    /// optional KeyType key = 1;
-    /// optional ValueType value = 2;
-    /// }
-    /// repeated MapFieldEntry map_field = 1;
+    ///  For maps fields:
+    ///      map<KeyType, ValueType> map_field = 1;
+    ///  The parsed descriptor looks like:
+    ///      message MapFieldEntry {
+    ///          option map_entry = true;
+    ///          optional KeyType key = 1;
+    ///          optional ValueType value = 2;
+    ///      }
+    ///      repeated MapFieldEntry map_field = 1;
     /// 
-    /// Implementations may choose not to generate the map_entry=true message, but
-    /// use a native map in the target language to hold the keys and values.
-    /// The reflection APIs in such implementions still need to work as
-    /// if the field is a repeated message field.
+    ///  Implementations may choose not to generate the map_entry=true message, but
+    ///  use a native map in the target language to hold the keys and values.
+    ///  The reflection APIs in such implementions still need to work as
+    ///  if the field is a repeated message field.
     /// 
-    /// NOTE: Do not set the option in .proto files. Always use the maps syntax
-    /// instead. The option should only be implicitly set by the proto compiler
-    /// parser.
+    ///  NOTE: Do not set the option in .proto files. Always use the maps syntax
+    ///  instead. The option should only be implicitly set by the proto compiler
+    ///  parser.
     pub fn map_entry(&self) -> bool {
         self.map_entry.unwrap_or(Self::MAP_ENTRY_DEFAULT_VALUE)
     }
@@ -5079,7 +5086,7 @@ impl self::MessageOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -5090,7 +5097,7 @@ impl self::MessageOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FieldOptions {
     ctype: ::std::option::Option<crate::EnumValue<self::field_options::CType>>,
     packed: ::std::option::Option<bool>,
@@ -5227,10 +5234,13 @@ impl crate::LiteMessage for self::FieldOptions {
 impl crate::ExtensionMessage for self::FieldOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::FieldOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5246,10 +5256,10 @@ impl self::FieldOptions {
     ///
     /// [`ctype`]: #method.ctype
     pub const CTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::CType> = crate::EnumValue::Defined(self::field_options::CType::String);
-    /// The ctype option instructs the C++ code generator to use a different
-    /// representation of the field than it normally would.  See the specific
-    /// options below.  This option is not yet implemented in the open source
-    /// release -- sorry, we'll try to include it in a future version!
+    ///  The ctype option instructs the C++ code generator to use a different
+    ///  representation of the field than it normally would.  See the specific
+    ///  options below.  This option is not yet implemented in the open source
+    ///  release -- sorry, we'll try to include it in a future version!
     pub fn ctype(&self) -> crate::EnumValue<self::field_options::CType> {
         self.ctype.unwrap_or(Self::CTYPE_DEFAULT_VALUE)
     }
@@ -5286,11 +5296,11 @@ impl self::FieldOptions {
     ///
     /// [`packed`]: #method.packed
     pub const PACKED_DEFAULT_VALUE: bool = false;
-    /// The packed option can be enabled for repeated primitive fields to enable
-    /// a more efficient representation on the wire. Rather than repeatedly
-    /// writing the tag and type for each element, the entire array is encoded as
-    /// a single length-delimited blob. In proto3, only explicit setting it to
-    /// false will avoid using packed encoding.
+    ///  The packed option can be enabled for repeated primitive fields to enable
+    ///  a more efficient representation on the wire. Rather than repeatedly
+    ///  writing the tag and type for each element, the entire array is encoded as
+    ///  a single length-delimited blob. In proto3, only explicit setting it to
+    ///  false will avoid using packed encoding.
     pub fn packed(&self) -> bool {
         self.packed.unwrap_or(Self::PACKED_DEFAULT_VALUE)
     }
@@ -5327,17 +5337,17 @@ impl self::FieldOptions {
     ///
     /// [`jstype`]: #method.jstype
     pub const JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::JSType> = crate::EnumValue::Defined(self::field_options::JSType::JsNormal);
-    /// The jstype option determines the JavaScript type used for values of the
-    /// field.  The option is permitted only for 64 bit integral and fixed types
-    /// (int64, uint64, sint64, fixed64, sfixed64).  A field with jstype JS_STRING
-    /// is represented as JavaScript string, which avoids loss of precision that
-    /// can happen when a large value is converted to a floating point JavaScript.
-    /// Specifying JS_NUMBER for the jstype causes the generated JavaScript code to
-    /// use the JavaScript "number" type.  The behavior of the default option
-    /// JS_NORMAL is implementation dependent.
+    ///  The jstype option determines the JavaScript type used for values of the
+    ///  field.  The option is permitted only for 64 bit integral and fixed types
+    ///  (int64, uint64, sint64, fixed64, sfixed64).  A field with jstype JS_STRING
+    ///  is represented as JavaScript string, which avoids loss of precision that
+    ///  can happen when a large value is converted to a floating point JavaScript.
+    ///  Specifying JS_NUMBER for the jstype causes the generated JavaScript code to
+    ///  use the JavaScript "number" type.  The behavior of the default option
+    ///  JS_NORMAL is implementation dependent.
     /// 
-    /// This option is an enum to permit additional types to be added, e.g.
-    /// goog.math.Integer.
+    ///  This option is an enum to permit additional types to be added, e.g.
+    ///  goog.math.Integer.
     pub fn jstype(&self) -> crate::EnumValue<self::field_options::JSType> {
         self.jstype.unwrap_or(Self::JSTYPE_DEFAULT_VALUE)
     }
@@ -5374,33 +5384,34 @@ impl self::FieldOptions {
     ///
     /// [`lazy`]: #method.lazy
     pub const LAZY_DEFAULT_VALUE: bool = false;
-    /// Should this field be parsed lazily?  Lazy applies only to message-type
-    /// fields.  It means that when the outer message is initially parsed, the
-    /// inner message's contents will not be parsed but instead stored in encoded
-    /// form.  The inner message will actually be parsed when it is first accessed.
+    ///  Should this field be parsed lazily?  Lazy applies only to message-type
+    ///  fields.  It means that when the outer message is initially parsed, the
+    ///  inner message's contents will not be parsed but instead stored in encoded
+    ///  form.  The inner message will actually be parsed when it is first accessed.
     /// 
-    /// This is only a hint.  Implementations are free to choose whether to use
-    /// eager or lazy parsing regardless of the value of this option.  However,
-    /// setting this option true suggests that the protocol author believes that
-    /// using lazy parsing on this field is worth the additional bookkeeping
-    /// overhead typically needed to implement it.
+    ///  This is only a hint.  Implementations are free to choose whether to use
+    ///  eager or lazy parsing regardless of the value of this option.  However,
+    ///  setting this option true suggests that the protocol author believes that
+    ///  using lazy parsing on this field is worth the additional bookkeeping
+    ///  overhead typically needed to implement it.
     /// 
-    /// This option does not affect the public interface of any generated code;
-    /// all method signatures remain the same.  Furthermore, thread-safety of the
-    /// interface is not affected by this option; const methods remain safe to
-    /// call from multiple threads concurrently, while non-const methods continue
-    /// to require exclusive access.
+    ///  This option does not affect the public interface of any generated code;
+    ///  all method signatures remain the same.  Furthermore, thread-safety of the
+    ///  interface is not affected by this option; const methods remain safe to
+    ///  call from multiple threads concurrently, while non-const methods continue
+    ///  to require exclusive access.
     /// 
-    /// Note that implementations may choose not to check required fields within
-    /// a lazy sub-message.  That is, calling IsInitialized() on the outer message
-    /// may return true even if the inner message has missing required fields.
-    /// This is necessary because otherwise the inner message would have to be
-    /// parsed in order to perform the check, defeating the purpose of lazy
-    /// parsing.  An implementation which chooses not to check required fields
-    /// must be consistent about it.  That is, for any particular sub-message, the
-    /// implementation must either *always* check its required fields, or *never*
-    /// check its required fields, regardless of whether or not the message has
-    /// been parsed.
+    /// 
+    ///  Note that implementations may choose not to check required fields within
+    ///  a lazy sub-message.  That is, calling IsInitialized() on the outer message
+    ///  may return true even if the inner message has missing required fields.
+    ///  This is necessary because otherwise the inner message would have to be
+    ///  parsed in order to perform the check, defeating the purpose of lazy
+    ///  parsing.  An implementation which chooses not to check required fields
+    ///  must be consistent about it.  That is, for any particular sub-message, the
+    ///  implementation must either *always* check its required fields, or *never*
+    ///  check its required fields, regardless of whether or not the message has
+    ///  been parsed.
     pub fn lazy(&self) -> bool {
         self.lazy.unwrap_or(Self::LAZY_DEFAULT_VALUE)
     }
@@ -5437,10 +5448,10 @@ impl self::FieldOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this field deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for accessors, or it will be completely ignored; in the very least, this
-    /// is a formalization for deprecating fields.
+    ///  Is this field deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for accessors, or it will be completely ignored; in the very least, this
+    ///  is a formalization for deprecating fields.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -5477,7 +5488,7 @@ impl self::FieldOptions {
     ///
     /// [`weak`]: #method.weak
     pub const WEAK_DEFAULT_VALUE: bool = false;
-    /// For Google-internal migration only. Do not use.
+    ///  For Google-internal migration only. Do not use.
     pub fn weak(&self) -> bool {
         self.weak.unwrap_or(Self::WEAK_DEFAULT_VALUE)
     }
@@ -5510,7 +5521,7 @@ impl self::FieldOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -5524,14 +5535,14 @@ impl self::FieldOptions {
 pub mod field_options {
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum CType {
-        /// Default mode.
+        ///  Default mode.
         String,
         Cord,
         StringPiece,
     }
     impl crate::Enum for self::CType {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[12].enums()[0]
+            &self::super::file().messages()[12].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::CType {
@@ -5557,16 +5568,16 @@ pub mod field_options {
     }
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum JSType {
-        /// Use the default type.
+        ///  Use the default type.
         JsNormal,
-        /// Use JavaScript strings.
+        ///  Use JavaScript strings.
         JsString,
-        /// Use JavaScript numbers.
+        ///  Use JavaScript numbers.
         JsNumber,
     }
     impl crate::Enum for self::JSType {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[12].enums()[1]
+            &self::super::file().messages()[12].enums()[1]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::JSType {
@@ -5591,7 +5602,7 @@ pub mod field_options {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct OneofOptions {
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
     unknown_fields: crate::UnknownFieldSet,
@@ -5644,10 +5655,13 @@ impl crate::LiteMessage for self::OneofOptions {
 impl crate::ExtensionMessage for self::OneofOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::OneofOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5659,7 +5673,7 @@ impl self::OneofOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -5670,7 +5684,7 @@ impl self::OneofOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct EnumOptions {
     allow_alias: ::std::option::Option<bool>,
     deprecated: ::std::option::Option<bool>,
@@ -5751,10 +5765,13 @@ impl crate::LiteMessage for self::EnumOptions {
 impl crate::ExtensionMessage for self::EnumOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::EnumOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5770,8 +5787,8 @@ impl self::EnumOptions {
     ///
     /// [`allow_alias`]: #method.allow_alias
     pub const ALLOW_ALIAS_DEFAULT_VALUE: bool = false;
-    /// Set this option to true to allow mapping different tag names to the same
-    /// value.
+    ///  Set this option to true to allow mapping different tag names to the same
+    ///  value.
     pub fn allow_alias(&self) -> bool {
         self.allow_alias.unwrap_or(Self::ALLOW_ALIAS_DEFAULT_VALUE)
     }
@@ -5808,10 +5825,10 @@ impl self::EnumOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this enum deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for the enum, or it will be completely ignored; in the very least, this
-    /// is a formalization for deprecating enums.
+    ///  Is this enum deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for the enum, or it will be completely ignored; in the very least, this
+    ///  is a formalization for deprecating enums.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -5844,7 +5861,7 @@ impl self::EnumOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -5855,7 +5872,7 @@ impl self::EnumOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct EnumValueOptions {
     deprecated: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
@@ -5922,10 +5939,13 @@ impl crate::LiteMessage for self::EnumValueOptions {
 impl crate::ExtensionMessage for self::EnumValueOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::EnumValueOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -5941,10 +5961,10 @@ impl self::EnumValueOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this enum value deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for the enum value, or it will be completely ignored; in the very least,
-    /// this is a formalization for deprecating enum values.
+    ///  Is this enum value deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for the enum value, or it will be completely ignored; in the very least,
+    ///  this is a formalization for deprecating enum values.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -5977,7 +5997,7 @@ impl self::EnumValueOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -5988,7 +6008,7 @@ impl self::EnumValueOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ServiceOptions {
     deprecated: ::std::option::Option<bool>,
     uninterpreted_option: crate::collections::RepeatedField<self::UninterpretedOption>,
@@ -6055,10 +6075,13 @@ impl crate::LiteMessage for self::ServiceOptions {
 impl crate::ExtensionMessage for self::ServiceOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::ServiceOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -6074,10 +6097,10 @@ impl self::ServiceOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this service deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for the service, or it will be completely ignored; in the very least,
-    /// this is a formalization for deprecating services.
+    ///  Is this service deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for the service, or it will be completely ignored; in the very least,
+    ///  this is a formalization for deprecating services.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -6110,7 +6133,7 @@ impl self::ServiceOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -6121,7 +6144,7 @@ impl self::ServiceOptions {
         &mut self.uninterpreted_option
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct MethodOptions {
     deprecated: ::std::option::Option<bool>,
     idempotency_level: ::std::option::Option<crate::EnumValue<self::method_options::IdempotencyLevel>>,
@@ -6202,10 +6225,13 @@ impl crate::LiteMessage for self::MethodOptions {
 impl crate::ExtensionMessage for self::MethodOptions {
     fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static crate::ExtensionRegistry>) -> ::std::option::Option<&'static crate::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&crate::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<&mut crate::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&crate::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut crate::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: crate::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static crate::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static crate::RepeatedExtension<Self, V>) -> Option<&crate::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static crate::Extension<Self, V, D>) -> ::std::option::Option<crate::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static crate::RepeatedExtension<Self, V>) -> ::std::option::Option<crate::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl crate::Message for self::MethodOptions {
     fn descriptor() -> &'static crate::reflect::MessageDescriptor {
@@ -6221,10 +6247,10 @@ impl self::MethodOptions {
     ///
     /// [`deprecated`]: #method.deprecated
     pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-    /// Is this method deprecated?
-    /// Depending on the target platform, this can emit Deprecated annotations
-    /// for the method, or it will be completely ignored; in the very least,
-    /// this is a formalization for deprecating methods.
+    ///  Is this method deprecated?
+    ///  Depending on the target platform, this can emit Deprecated annotations
+    ///  for the method, or it will be completely ignored; in the very least,
+    ///  this is a formalization for deprecating methods.
     pub fn deprecated(&self) -> bool {
         self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
     }
@@ -6293,7 +6319,7 @@ impl self::MethodOptions {
     ///
     /// [`uninterpreted_option`]: #method.uninterpreted_option
     pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-    /// The parser stores options it doesn't recognize here. See above.
+    ///  The parser stores options it doesn't recognize here. See above.
     pub fn uninterpreted_option(&self) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
         &self.uninterpreted_option
     }
@@ -6305,20 +6331,20 @@ impl self::MethodOptions {
     }
 }
 pub mod method_options {
-    /// Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
-    /// or neither? HTTP based RPC implementation may choose GET verb for safe
-    /// methods, and PUT verb for idempotent methods instead of the default POST.
+    ///  Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
+    ///  or neither? HTTP based RPC implementation may choose GET verb for safe
+    ///  methods, and PUT verb for idempotent methods instead of the default POST.
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum IdempotencyLevel {
         IdempotencyUnknown,
-        /// implies idempotent
+        ///  implies idempotent
         NoSideEffects,
-        /// idempotent, but may have side effects
+        ///  idempotent, but may have side effects
         Idempotent,
     }
     impl crate::Enum for self::IdempotencyLevel {
         fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-            &self::file().messages()[17].enums()[0]
+            &self::super::file().messages()[17].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::IdempotencyLevel {
@@ -6343,13 +6369,13 @@ pub mod method_options {
         }
     }
 }
-/// A message representing a option the parser does not recognize. This only
-/// appears in options protos created by the compiler::Parser class.
-/// DescriptorPool resolves these when building Descriptor objects. Therefore,
-/// options protos in descriptor objects (e.g. returned by Descriptor::options(),
-/// or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
-/// in them.
-#[derive(Clone, Debug, PartialEq)]
+///  A message representing a option the parser does not recognize. This only
+///  appears in options protos created by the compiler::Parser class.
+///  DescriptorPool resolves these when building Descriptor objects. Therefore,
+///  options protos in descriptor objects (e.g. returned by Descriptor::options(),
+///  or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
+///  in them.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct UninterpretedOption {
     name: crate::collections::RepeatedField<self::uninterpreted_option::NamePart>,
     identifier_value: ::std::option::Option<::std::string::String>,
@@ -6506,8 +6532,8 @@ impl self::UninterpretedOption {
     ///
     /// [`identifier_value`]: #method.identifier_value
     pub const IDENTIFIER_VALUE_DEFAULT_VALUE: &'static str = "";
-    /// The value of the uninterpreted option, in whatever type the tokenizer
-    /// identified it as during parsing. Exactly one of these should be set.
+    ///  The value of the uninterpreted option, in whatever type the tokenizer
+    ///  identified it as during parsing. Exactly one of these should be set.
     pub fn identifier_value(&self) -> &str {
         self.identifier_value.as_ref().map(|v| &**v).unwrap_or(Self::IDENTIFIER_VALUE_DEFAULT_VALUE)
     }
@@ -6753,19 +6779,19 @@ impl self::UninterpretedOption {
         self.aggregate_value = ::std::option::Option::None
     }
 }
-/// A message representing a option the parser does not recognize. This only
-/// appears in options protos created by the compiler::Parser class.
-/// DescriptorPool resolves these when building Descriptor objects. Therefore,
-/// options protos in descriptor objects (e.g. returned by Descriptor::options(),
-/// or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
-/// in them.
+///  A message representing a option the parser does not recognize. This only
+///  appears in options protos created by the compiler::Parser class.
+///  DescriptorPool resolves these when building Descriptor objects. Therefore,
+///  options protos in descriptor objects (e.g. returned by Descriptor::options(),
+///  or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
+///  in them.
 pub mod uninterpreted_option {
-    /// The name of the uninterpreted option.  Each string represents a segment in
-    /// a dot-separated name.  is_extension is true iff a segment represents an
-    /// extension (denoted with parentheses in options specs in .proto files).
-    /// E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
-    /// "foo.(bar.baz).qux".
-    #[derive(Clone, Debug, PartialEq)]
+    ///  The name of the uninterpreted option.  Each string represents a segment in
+    ///  a dot-separated name.  is_extension is true iff a segment represents an
+    ///  extension (denoted with parentheses in options specs in .proto files).
+    ///  E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
+    ///  "foo.(bar.baz).qux".
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NamePart {
         name_part: ::std::option::Option<::std::string::String>,
         is_extension: ::std::option::Option<bool>,
@@ -6927,9 +6953,9 @@ pub mod uninterpreted_option {
         }
     }
 }
-/// Encapsulates information about the original source file from which a
-/// FileDescriptorProto was generated.
-#[derive(Clone, Debug, PartialEq)]
+///  Encapsulates information about the original source file from which a
+///  FileDescriptorProto was generated.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct SourceCodeInfo {
     location: crate::collections::RepeatedField<self::source_code_info::Location>,
     unknown_fields: crate::UnknownFieldSet,
@@ -6985,51 +7011,49 @@ impl self::SourceCodeInfo {
     ///
     /// [`location`]: #method.location
     pub const LOCATION_FIELD_NUMBER: i32 = 1;
-    /// A Location identifies a piece of source code in a .proto file which
-    /// corresponds to a particular definition.  This information is intended
-    /// to be useful to IDEs, code indexers, documentation generators, and similar
-    /// tools.
+    ///  A Location identifies a piece of source code in a .proto file which
+    ///  corresponds to a particular definition.  This information is intended
+    ///  to be useful to IDEs, code indexers, documentation generators, and similar
+    ///  tools.
     /// 
-    /// For example, say we have a file like:
-    /// message Foo {
-    /// optional string foo = 1;
-    /// }
-    /// Let's look at just the field definition:
-    /// optional string foo = 1;
-    /// ^       ^^     ^^  ^  ^^^
-    /// a       bc     de  f  ghi
-    /// We have the following locations:
-    /// span   path               represents
-    /// [a,i)  [ 4, 0, 2, 0 ]     The whole field definition.
-    /// [a,b)  [ 4, 0, 2, 0, 4 ]  The label (optional).
-    /// [c,d)  [ 4, 0, 2, 0, 5 ]  The type (string).
-    /// [e,f)  [ 4, 0, 2, 0, 1 ]  The name (foo).
-    /// [g,h)  [ 4, 0, 2, 0, 3 ]  The number (1).
+    ///  For example, say we have a file like:
+    ///    message Foo {
+    ///      optional string foo = 1;
+    ///    }
+    ///  Let's look at just the field definition:
+    ///    optional string foo = 1;
+    ///    ^       ^^     ^^  ^  ^^^
+    ///    a       bc     de  f  ghi
+    ///  We have the following locations:
+    ///    span   path               represents
+    ///    [a,i)  [ 4, 0, 2, 0 ]     The whole field definition.
+    ///    [a,b)  [ 4, 0, 2, 0, 4 ]  The label (optional).
+    ///    [c,d)  [ 4, 0, 2, 0, 5 ]  The type (string).
+    ///    [e,f)  [ 4, 0, 2, 0, 1 ]  The name (foo).
+    ///    [g,h)  [ 4, 0, 2, 0, 3 ]  The number (1).
     /// 
-    /// Notes:
-    /// 
-    ///   * A location may refer to a repeated field itself (i.e. not to any
-    ///   particular index within it).  This is used whenever a set of elements are
-    ///   logically enclosed in a single code segment.  For example, an entire
-    ///   extend block (possibly containing multiple extension definitions) will
-    ///   have an outer location whose path refers to the "extensions" repeated
-    ///   field without an index.
-    ///   * Multiple locations may have the same path.  This happens when a single
-    ///   logical declaration is spread out across multiple places.  The most
-    ///   obvious example is the "extend" block again -- there may be multiple
-    ///   extend blocks in the same scope, each of which will have the same path.
-    ///   * A location's span is not always a subset of its parent's span.  For
-    ///   example, the "extendee" of an extension declaration appears at the
-    ///   beginning of the "extend" block and is shared by all extensions within
-    ///   the block.
-    ///   * Just because a location's span is a subset of some other location's span
-    ///   does not mean that it is a descendent.  For example, a "group" defines
-    ///   both a type and a field in a single declaration.  Thus, the locations
-    ///   corresponding to the type and field and their components will overlap.
-    ///   * Code which tries to interpret locations should probably be designed to
-    ///   ignore those that it doesn't understand, as more types of locations could
-    ///   be recorded in the future.
-    ///   
+    ///  Notes:
+    ///  - A location may refer to a repeated field itself (i.e. not to any
+    ///    particular index within it).  This is used whenever a set of elements are
+    ///    logically enclosed in a single code segment.  For example, an entire
+    ///    extend block (possibly containing multiple extension definitions) will
+    ///    have an outer location whose path refers to the "extensions" repeated
+    ///    field without an index.
+    ///  - Multiple locations may have the same path.  This happens when a single
+    ///    logical declaration is spread out across multiple places.  The most
+    ///    obvious example is the "extend" block again -- there may be multiple
+    ///    extend blocks in the same scope, each of which will have the same path.
+    ///  - A location's span is not always a subset of its parent's span.  For
+    ///    example, the "extendee" of an extension declaration appears at the
+    ///    beginning of the "extend" block and is shared by all extensions within
+    ///    the block.
+    ///  - Just because a location's span is a subset of some other location's span
+    ///    does not mean that it is a descendent.  For example, a "group" defines
+    ///    both a type and a field in a single declaration.  Thus, the locations
+    ///    corresponding to the type and field and their components will overlap.
+    ///  - Code which tries to interpret locations should probably be designed to
+    ///    ignore those that it doesn't understand, as more types of locations could
+    ///    be recorded in the future.
     pub fn location(&self) -> &crate::collections::RepeatedField<self::source_code_info::Location> {
         &self.location
     }
@@ -7040,10 +7064,10 @@ impl self::SourceCodeInfo {
         &mut self.location
     }
 }
-/// Encapsulates information about the original source file from which a
-/// FileDescriptorProto was generated.
+///  Encapsulates information about the original source file from which a
+///  FileDescriptorProto was generated.
 pub mod source_code_info {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Location {
         path: crate::collections::RepeatedField<i32>,
         span: crate::collections::RepeatedField<i32>,
@@ -7138,29 +7162,29 @@ pub mod source_code_info {
         ///
         /// [`path`]: #method.path
         pub const PATH_FIELD_NUMBER: i32 = 1;
-        /// Identifies which part of the FileDescriptorProto was defined at this
-        /// location.
+        ///  Identifies which part of the FileDescriptorProto was defined at this
+        ///  location.
         /// 
-        /// Each element is a field number or an index.  They form a path from
-        /// the root FileDescriptorProto to the place where the definition.  For
-        /// example, this path:
-        /// [ 4, 3, 2, 7, 1 ]
-        /// refers to:
-        /// file.message_type(3)  // 4, 3
-        /// .field(7)         // 2, 7
-        /// .name()           // 1
-        /// This is because FileDescriptorProto.message_type has field number 4:
-        /// repeated DescriptorProto message_type = 4;
-        /// and DescriptorProto.field has field number 2:
-        /// repeated FieldDescriptorProto field = 2;
-        /// and FieldDescriptorProto.name has field number 1:
-        /// optional string name = 1;
+        ///  Each element is a field number or an index.  They form a path from
+        ///  the root FileDescriptorProto to the place where the definition.  For
+        ///  example, this path:
+        ///    [ 4, 3, 2, 7, 1 ]
+        ///  refers to:
+        ///    file.message_type(3)  // 4, 3
+        ///        .field(7)         // 2, 7
+        ///        .name()           // 1
+        ///  This is because FileDescriptorProto.message_type has field number 4:
+        ///    repeated DescriptorProto message_type = 4;
+        ///  and DescriptorProto.field has field number 2:
+        ///    repeated FieldDescriptorProto field = 2;
+        ///  and FieldDescriptorProto.name has field number 1:
+        ///    optional string name = 1;
         /// 
-        /// Thus, the above path gives the location of a field name.  If we removed
-        /// the last element:
-        /// [ 4, 3, 2, 7 ]
-        /// this path refers to the whole field declaration (from the beginning
-        /// of the label to the terminating semicolon).
+        ///  Thus, the above path gives the location of a field name.  If we removed
+        ///  the last element:
+        ///    [ 4, 3, 2, 7 ]
+        ///  this path refers to the whole field declaration (from the beginning
+        ///  of the label to the terminating semicolon).
         pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
             &self.path
         }
@@ -7174,11 +7198,11 @@ pub mod source_code_info {
         ///
         /// [`span`]: #method.span
         pub const SPAN_FIELD_NUMBER: i32 = 2;
-        /// Always has exactly three or four elements: start line, start column,
-        /// end line (optional, otherwise assumed same as start line), end column.
-        /// These are packed into a single field for efficiency.  Note that line
-        /// and column numbers are zero-based -- typically you will want to add
-        /// 1 to each before displaying to a user.
+        ///  Always has exactly three or four elements: start line, start column,
+        ///  end line (optional, otherwise assumed same as start line), end column.
+        ///  These are packed into a single field for efficiency.  Note that line
+        ///  and column numbers are zero-based -- typically you will want to add
+        ///  1 to each before displaying to a user.
         pub fn span(&self) -> &crate::collections::RepeatedField<i32> {
             &self.span
         }
@@ -7196,53 +7220,53 @@ pub mod source_code_info {
         ///
         /// [`leading_comments`]: #method.leading_comments
         pub const LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
-        /// If this SourceCodeInfo represents a complete declaration, these are any
-        /// comments appearing before and after the declaration which appear to be
-        /// attached to the declaration.
+        ///  If this SourceCodeInfo represents a complete declaration, these are any
+        ///  comments appearing before and after the declaration which appear to be
+        ///  attached to the declaration.
         /// 
-        /// A series of line comments appearing on consecutive lines, with no other
-        /// tokens appearing on those lines, will be treated as a single comment.
+        ///  A series of line comments appearing on consecutive lines, with no other
+        ///  tokens appearing on those lines, will be treated as a single comment.
         /// 
-        /// leading_detached_comments will keep paragraphs of comments that appear
-        /// before (but not connected to) the current element. Each paragraph,
-        /// separated by empty lines, will be one comment element in the repeated
-        /// field.
+        ///  leading_detached_comments will keep paragraphs of comments that appear
+        ///  before (but not connected to) the current element. Each paragraph,
+        ///  separated by empty lines, will be one comment element in the repeated
+        ///  field.
         /// 
-        /// Only the comment content is provided; comment markers (e.g. //) are
-        /// stripped out.  For block comments, leading whitespace and an asterisk
-        /// will be stripped from the beginning of each line other than the first.
-        /// Newlines are included in the output.
+        ///  Only the comment content is provided; comment markers (e.g. //) are
+        ///  stripped out.  For block comments, leading whitespace and an asterisk
+        ///  will be stripped from the beginning of each line other than the first.
+        ///  Newlines are included in the output.
         /// 
-        /// Examples:
+        ///  Examples:
         /// 
-        /// optional int32 foo = 1;  // Comment attached to foo.
-        /// // Comment attached to bar.
-        /// optional int32 bar = 2;
+        ///    optional int32 foo = 1;  // Comment attached to foo.
+        ///    // Comment attached to bar.
+        ///    optional int32 bar = 2;
         /// 
-        /// optional string baz = 3;
-        /// // Comment attached to baz.
-        /// // Another line attached to baz.
+        ///    optional string baz = 3;
+        ///    // Comment attached to baz.
+        ///    // Another line attached to baz.
         /// 
-        /// // Comment attached to qux.
-        /// //
-        /// // Another line attached to qux.
-        /// optional double qux = 4;
+        ///    // Comment attached to qux.
+        ///    //
+        ///    // Another line attached to qux.
+        ///    optional double qux = 4;
         /// 
-        /// // Detached comment for corge. This is not leading or trailing comments
-        /// // to qux or corge because there are blank lines separating it from
-        /// // both.
+        ///    // Detached comment for corge. This is not leading or trailing comments
+        ///    // to qux or corge because there are blank lines separating it from
+        ///    // both.
         /// 
-        /// // Detached comment for corge paragraph 2.
+        ///    // Detached comment for corge paragraph 2.
         /// 
-        /// optional string corge = 5;
-        /// /* Block comment attached
-        /// * to corge.  Leading asterisks
-        /// * will be removed. */
-        /// /* Block comment attached to
-        /// * grault. */
-        /// optional int32 grault = 6;
+        ///    optional string corge = 5;
+        ///    /* Block comment attached
+        ///     * to corge.  Leading asterisks
+        ///     * will be removed. */
+        ///    /* Block comment attached to
+        ///     * grault. */
+        ///    optional int32 grault = 6;
         /// 
-        /// // ignored detached comments.
+        ///    // ignored detached comments.
         pub fn leading_comments(&self) -> &str {
             self.leading_comments.as_ref().map(|v| &**v).unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
         }
@@ -7346,10 +7370,10 @@ pub mod source_code_info {
         }
     }
 }
-/// Describes the relationship between generated code and its original source
-/// file. A GeneratedCodeInfo message is associated with only one generated
-/// source file, but may contain references to different source .proto files.
-#[derive(Clone, Debug, PartialEq)]
+///  Describes the relationship between generated code and its original source
+///  file. A GeneratedCodeInfo message is associated with only one generated
+///  source file, but may contain references to different source .proto files.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct GeneratedCodeInfo {
     annotation: crate::collections::RepeatedField<self::generated_code_info::Annotation>,
     unknown_fields: crate::UnknownFieldSet,
@@ -7405,8 +7429,8 @@ impl self::GeneratedCodeInfo {
     ///
     /// [`annotation`]: #method.annotation
     pub const ANNOTATION_FIELD_NUMBER: i32 = 1;
-    /// An Annotation connects some span of text in generated code to an element
-    /// of its generating .proto file.
+    ///  An Annotation connects some span of text in generated code to an element
+    ///  of its generating .proto file.
     pub fn annotation(&self) -> &crate::collections::RepeatedField<self::generated_code_info::Annotation> {
         &self.annotation
     }
@@ -7417,11 +7441,11 @@ impl self::GeneratedCodeInfo {
         &mut self.annotation
     }
 }
-/// Describes the relationship between generated code and its original source
-/// file. A GeneratedCodeInfo message is associated with only one generated
-/// source file, but may contain references to different source .proto files.
+///  Describes the relationship between generated code and its original source
+///  file. A GeneratedCodeInfo message is associated with only one generated
+///  source file, but may contain references to different source .proto files.
 pub mod generated_code_info {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Annotation {
         path: crate::collections::RepeatedField<i32>,
         source_file: ::std::option::Option<::std::string::String>,
@@ -7516,8 +7540,8 @@ pub mod generated_code_info {
         ///
         /// [`path`]: #method.path
         pub const PATH_FIELD_NUMBER: i32 = 1;
-        /// Identifies the element in the original source .proto file. This field
-        /// is formatted the same as SourceCodeInfo.Location.path.
+        ///  Identifies the element in the original source .proto file. This field
+        ///  is formatted the same as SourceCodeInfo.Location.path.
         pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
             &self.path
         }
@@ -7535,7 +7559,7 @@ pub mod generated_code_info {
         ///
         /// [`source_file`]: #method.source_file
         pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
-        /// Identifies the filesystem path to the original source .proto.
+        ///  Identifies the filesystem path to the original source .proto.
         pub fn source_file(&self) -> &str {
             self.source_file.as_ref().map(|v| &**v).unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
         }
@@ -7584,8 +7608,8 @@ pub mod generated_code_info {
         ///
         /// [`begin`]: #method.begin
         pub const BEGIN_DEFAULT_VALUE: i32 = 0;
-        /// Identifies the starting offset in bytes in the generated code
-        /// that relates to the identified object.
+        ///  Identifies the starting offset in bytes in the generated code
+        ///  that relates to the identified object.
         pub fn begin(&self) -> i32 {
             self.begin.unwrap_or(Self::BEGIN_DEFAULT_VALUE)
         }
@@ -7622,9 +7646,9 @@ pub mod generated_code_info {
         ///
         /// [`end`]: #method.end
         pub const END_DEFAULT_VALUE: i32 = 0;
-        /// Identifies the ending offset in bytes in the generated code that
-        /// relates to the identified offset. The end offset should be one past
-        /// the last relevant byte (so the length of the text = end - begin).
+        ///  Identifies the ending offset in bytes in the generated code that
+        ///  relates to the identified offset. The end offset should be one past
+        ///  the last relevant byte (so the length of the text = end - begin).
         pub fn end(&self) -> i32 {
             self.end.unwrap_or(Self::END_DEFAULT_VALUE)
         }

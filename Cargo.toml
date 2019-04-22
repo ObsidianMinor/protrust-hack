@@ -14,7 +14,7 @@ required-features = ["plugin"]
 default = ["reflection", "json", "plugin", "chrono-time"]
 
 # Reflection is optional, you can remove reflection if you are only using LITE_RUNTIME files
-reflection = []
+reflection = ["fnv"]
 
 # Proto3 JSON mapping is optional, you can remove JSON mapping if unused or if using proto2 files exclusively
 json = ["base64", "reflection"]
@@ -23,12 +23,13 @@ json = ["base64", "reflection"]
 checked_size = []
 
 # Includes utility modules for writing protoc plugins
-plugin = ["pulldown-cmark", "reflection"]
+plugin = ["reflection", "pulldown-cmark"]
 
 # Methods for converting to and from chrono structures in google.protobuf.Timestamp and google.protobuf.Duration
 chrono-time = ["chrono", "reflection"]
 
 [dependencies]
+fnv = { version = "1.0.6", optional = true }
 chrono = { version = "0.4", optional = true }
 base64 = { version = "0.10.*", optional = true }
-pulldown-cmark = { version = "0.2.0", optional = true, default-features = false }
+pulldown-cmark = { version = "0.4.0", optional = true }

@@ -8,15 +8,15 @@ pub fn file() -> &'static crate::reflect::FileDescriptor {
     super::pool().find_file_by_name("google/protobuf/struct.proto").unwrap()
 }
 
-/// `Struct` represents a structured data value, consisting of fields
-/// which map to dynamically typed values. In some languages, `Struct`
-/// might be supported by a native representation. For example, in
-/// scripting languages like JS a struct is represented as an
-/// object. The details of that representation are described together
-/// with the proto support for the language.
+///  `Struct` represents a structured data value, consisting of fields
+///  which map to dynamically typed values. In some languages, `Struct`
+///  might be supported by a native representation. For example, in
+///  scripting languages like JS a struct is represented as an
+///  object. The details of that representation are described together
+///  with the proto support for the language.
 /// 
-/// The JSON representation for `Struct` is JSON object.
-#[derive(Clone, Debug, PartialEq)]
+///  The JSON representation for `Struct` is JSON object.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Struct {
     fields: crate::collections::MapField<::std::string::String, self::Value>,
     unknown_fields: crate::UnknownFieldSet,
@@ -66,7 +66,7 @@ impl self::Struct {
     ///
     /// [`fields`]: #method.fields
     pub const FIELDS_FIELD_NUMBER: i32 = 1;
-    /// Unordered map of dynamically typed values.
+    ///  Unordered map of dynamically typed values.
     pub fn fields(&self) -> &crate::collections::MapField<::std::string::String, self::Value> {
         &self.fields
     }
@@ -77,13 +77,13 @@ impl self::Struct {
         &mut self.fields
     }
 }
-/// `Value` represents a dynamically typed value which can be either
-/// null, a number, a string, a boolean, a recursive struct value, or a
-/// list of values. A producer of value is expected to set one of that
-/// variants, absence of any variant indicates an error.
+///  `Value` represents a dynamically typed value which can be either
+///  null, a number, a string, a boolean, a recursive struct value, or a
+///  list of values. A producer of value is expected to set one of that
+///  variants, absence of any variant indicates an error.
 /// 
-/// The JSON representation for `Value` is JSON value.
-#[derive(Clone, Debug, PartialEq)]
+///  The JSON representation for `Value` is JSON value.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Value {
     kind: self::value::Kind,
     unknown_fields: crate::UnknownFieldSet,
@@ -218,6 +218,298 @@ impl crate::Message for self::Value {
     }
 }
 impl self::Value {
+    /// Gets the field number of the [`null_value`] field
+    ///
+    /// [`null_value`]: #method.null_value
+    pub const NULL_VALUE_FIELD_NUMBER: i32 = 1;
+    /// A constant value representing the default value of the [`null_value`] field
+    ///
+    /// [`null_value`]: #method.null_value
+    pub const NULL_VALUE_DEFAULT_VALUE: crate::EnumValue<self::NullValue> = crate::EnumValue::Defined(self::NullValue::NullValue);
+    ///  Represents a null value.
+    pub fn null_value(&self) -> ::std::option::Option<&crate::EnumValue<self::NullValue>> {
+        match &self.kind {
+            self::value::Kind::NullValue(ref kind) => ::std::option::Option::Some(kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['null_value'] field
+    ///
+    /// [`null_value`]: #method.null_value
+    pub fn null_value_mut(&mut self) -> &mut crate::EnumValue<self::NullValue> {
+        match self.kind {
+            self::value::Kind::NullValue(ref mut value) => value,
+            _ => {
+                self.set_null_value(::std::default::Default::default());
+                self.null_value_mut()
+            }
+        }
+    }
+    pub fn has_null_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::NullValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_null_value(&mut self, value: crate::EnumValue<self::NullValue>) {
+        self.kind = self::value::Kind::NullValue(value)
+    }
+    pub fn take_null_value(&mut self) -> ::std::option::Option<crate::EnumValue<self::NullValue>> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::NullValue(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_null_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
+    /// Gets the field number of the [`number_value`] field
+    ///
+    /// [`number_value`]: #method.number_value
+    pub const NUMBER_VALUE_FIELD_NUMBER: i32 = 2;
+    /// A constant value representing the default value of the [`number_value`] field
+    ///
+    /// [`number_value`]: #method.number_value
+    pub const NUMBER_VALUE_DEFAULT_VALUE: f64 = 0.0;
+    ///  Represents a double value.
+    pub fn number_value(&self) -> ::std::option::Option<&f64> {
+        match &self.kind {
+            self::value::Kind::NumberValue(ref kind) => ::std::option::Option::Some(kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['number_value'] field
+    ///
+    /// [`number_value`]: #method.number_value
+    pub fn number_value_mut(&mut self) -> &mut f64 {
+        match self.kind {
+            self::value::Kind::NumberValue(ref mut value) => value,
+            _ => {
+                self.set_number_value(::std::default::Default::default());
+                self.number_value_mut()
+            }
+        }
+    }
+    pub fn has_number_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::NumberValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_number_value(&mut self, value: f64) {
+        self.kind = self::value::Kind::NumberValue(value)
+    }
+    pub fn take_number_value(&mut self) -> ::std::option::Option<f64> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::NumberValue(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_number_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
+    /// Gets the field number of the [`string_value`] field
+    ///
+    /// [`string_value`]: #method.string_value
+    pub const STRING_VALUE_FIELD_NUMBER: i32 = 3;
+    /// A constant value representing the default value of the [`string_value`] field
+    ///
+    /// [`string_value`]: #method.string_value
+    pub const STRING_VALUE_DEFAULT_VALUE: &'static str = "";
+    ///  Represents a string value.
+    pub fn string_value(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.kind {
+            self::value::Kind::StringValue(ref kind) => ::std::option::Option::Some(kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['string_value'] field
+    ///
+    /// [`string_value`]: #method.string_value
+    pub fn string_value_mut(&mut self) -> &mut ::std::string::String {
+        match self.kind {
+            self::value::Kind::StringValue(ref mut value) => value,
+            _ => {
+                self.set_string_value(::std::default::Default::default());
+                self.string_value_mut()
+            }
+        }
+    }
+    pub fn has_string_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::StringValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_string_value(&mut self, value: ::std::string::String) {
+        self.kind = self::value::Kind::StringValue(value)
+    }
+    pub fn take_string_value(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::StringValue(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_string_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
+    /// Gets the field number of the [`bool_value`] field
+    ///
+    /// [`bool_value`]: #method.bool_value
+    pub const BOOL_VALUE_FIELD_NUMBER: i32 = 4;
+    /// A constant value representing the default value of the [`bool_value`] field
+    ///
+    /// [`bool_value`]: #method.bool_value
+    pub const BOOL_VALUE_DEFAULT_VALUE: bool = false;
+    ///  Represents a boolean value.
+    pub fn bool_value(&self) -> ::std::option::Option<&bool> {
+        match &self.kind {
+            self::value::Kind::BoolValue(ref kind) => ::std::option::Option::Some(kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bool_value'] field
+    ///
+    /// [`bool_value`]: #method.bool_value
+    pub fn bool_value_mut(&mut self) -> &mut bool {
+        match self.kind {
+            self::value::Kind::BoolValue(ref mut value) => value,
+            _ => {
+                self.set_bool_value(::std::default::Default::default());
+                self.bool_value_mut()
+            }
+        }
+    }
+    pub fn has_bool_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::BoolValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bool_value(&mut self, value: bool) {
+        self.kind = self::value::Kind::BoolValue(value)
+    }
+    pub fn take_bool_value(&mut self) -> ::std::option::Option<bool> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::BoolValue(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bool_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
+    /// Gets the field number of the [`struct_value`] field
+    ///
+    /// [`struct_value`]: #method.struct_value
+    pub const STRUCT_VALUE_FIELD_NUMBER: i32 = 5;
+    ///  Represents a structured value.
+    pub fn struct_value(&self) -> ::std::option::Option<&self::Struct> {
+        match &self.kind {
+            self::value::Kind::StructValue(ref kind) => ::std::option::Option::Some(&**kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['struct_value'] field
+    ///
+    /// [`struct_value`]: #method.struct_value
+    pub fn struct_value_mut(&mut self) -> &mut self::Struct {
+        match self.kind {
+            self::value::Kind::StructValue(ref mut value) => value,
+            _ => {
+                self.set_struct_value(::std::default::Default::default());
+                self.struct_value_mut()
+            }
+        }
+    }
+    pub fn has_struct_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::StructValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_struct_value(&mut self, value: self::Struct) {
+        self.kind = self::value::Kind::StructValue(::std::boxed::Box::new(value))
+    }
+    pub fn take_struct_value(&mut self) -> ::std::option::Option<self::Struct> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::StructValue(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_struct_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
+    /// Gets the field number of the [`list_value`] field
+    ///
+    /// [`list_value`]: #method.list_value
+    pub const LIST_VALUE_FIELD_NUMBER: i32 = 6;
+    ///  Represents a repeated `Value`.
+    pub fn list_value(&self) -> ::std::option::Option<&self::ListValue> {
+        match &self.kind {
+            self::value::Kind::ListValue(ref kind) => ::std::option::Option::Some(&**kind),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['list_value'] field
+    ///
+    /// [`list_value`]: #method.list_value
+    pub fn list_value_mut(&mut self) -> &mut self::ListValue {
+        match self.kind {
+            self::value::Kind::ListValue(ref mut value) => value,
+            _ => {
+                self.set_list_value(::std::default::Default::default());
+                self.list_value_mut()
+            }
+        }
+    }
+    pub fn has_list_value(&self) -> bool {
+        match &self.kind {
+            self::value::Kind::ListValue(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_list_value(&mut self, value: self::ListValue) {
+        self.kind = self::value::Kind::ListValue(::std::boxed::Box::new(value))
+    }
+    pub fn take_list_value(&mut self) -> ::std::option::Option<self::ListValue> {
+        match ::std::mem::replace(&mut self.kind, self::value::Kind::None) {
+            self::value::Kind::ListValue(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.kind = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_list_value(&mut self) {
+        self.kind = self::value::Kind::None
+    }
     /// Gets a shared reference to the [`kind`] oneof field
     ///
     /// [`kind`]: enum.Kind.html
@@ -231,36 +523,41 @@ impl self::Value {
         &mut self.kind
     }
 }
-/// `Value` represents a dynamically typed value which can be either
-/// null, a number, a string, a boolean, a recursive struct value, or a
-/// list of values. A producer of value is expected to set one of that
-/// variants, absence of any variant indicates an error.
+///  `Value` represents a dynamically typed value which can be either
+///  null, a number, a string, a boolean, a recursive struct value, or a
+///  list of values. A producer of value is expected to set one of that
+///  variants, absence of any variant indicates an error.
 /// 
-/// The JSON representation for `Value` is JSON value.
+///  The JSON representation for `Value` is JSON value.
 pub mod value {
-    /// The kind of value.
+    ///  The kind of value.
     #[derive(Clone, Debug, PartialEq)]
     pub enum Kind {
         /// No value
         None,
-        /// Represents a null value.
+        ///  Represents a null value.
         NullValue(crate::EnumValue<self::super::NullValue>),
-        /// Represents a double value.
+        ///  Represents a double value.
         NumberValue(f64),
-        /// Represents a string value.
+        ///  Represents a string value.
         StringValue(::std::string::String),
-        /// Represents a boolean value.
+        ///  Represents a boolean value.
         BoolValue(bool),
-        /// Represents a structured value.
+        ///  Represents a structured value.
         StructValue(::std::boxed::Box<self::super::Struct>),
-        /// Represents a repeated `Value`.
+        ///  Represents a repeated `Value`.
         ListValue(::std::boxed::Box<self::super::ListValue>),
     }
+    impl ::std::default::Default for self::Kind {
+        fn default() -> Self {
+            self::Kind::None
+        }
+    }
 }
-/// `ListValue` is a wrapper around a repeated field of values.
+///  `ListValue` is a wrapper around a repeated field of values.
 /// 
-/// The JSON representation for `ListValue` is JSON array.
-#[derive(Clone, Debug, PartialEq)]
+///  The JSON representation for `ListValue` is JSON array.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ListValue {
     values: crate::collections::RepeatedField<self::Value>,
     unknown_fields: crate::UnknownFieldSet,
@@ -310,7 +607,7 @@ impl self::ListValue {
     ///
     /// [`values`]: #method.values
     pub const VALUES_FIELD_NUMBER: i32 = 1;
-    /// Repeated field of dynamically typed values.
+    ///  Repeated field of dynamically typed values.
     pub fn values(&self) -> &crate::collections::RepeatedField<self::Value> {
         &self.values
     }
@@ -321,13 +618,13 @@ impl self::ListValue {
         &mut self.values
     }
 }
-/// `NullValue` is a singleton enumeration to represent the null value for the
-/// `Value` type union.
+///  `NullValue` is a singleton enumeration to represent the null value for the
+///  `Value` type union.
 /// 
-/// The JSON representation for `NullValue` is JSON `null`.
+///   The JSON representation for `NullValue` is JSON `null`.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum NullValue {
-    /// Null value.
+    ///  Null value.
     NullValue,
 }
 impl crate::Enum for self::NullValue {

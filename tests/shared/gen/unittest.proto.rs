@@ -8,7 +8,7 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     super::pool().find_file_by_name("unittest.proto").unwrap()
 }
 
-/// Singular
+///  Singular
 pub static OPTIONAL_INT32_EXTENSION: ::protrust::Extension<self::TestAllExtensions, i32, i32> = ::protrust::Extension::int32(8, 0);
 pub static OPTIONAL_INT64_EXTENSION: ::protrust::Extension<self::TestAllExtensions, i64, i64> = ::protrust::Extension::int64(16, 0);
 pub static OPTIONAL_UINT32_EXTENSION: ::protrust::Extension<self::TestAllExtensions, u32, u32> = ::protrust::Extension::uint32(24, 0);
@@ -35,7 +35,7 @@ pub static OPTIONAL_STRING_PIECE_EXTENSION: ::protrust::Extension<self::TestAllE
 pub static OPTIONAL_CORD_EXTENSION: ::protrust::Extension<self::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(202, "");
 pub static OPTIONAL_PUBLIC_IMPORT_MESSAGE_EXTENSION: ::protrust::Extension<self::TestAllExtensions, self::super::unittest_import_public_proto::PublicImportMessage, self::super::unittest_import_public_proto::PublicImportMessage> = ::protrust::Extension::message(210);
 pub static OPTIONAL_LAZY_MESSAGE_EXTENSION: ::protrust::Extension<self::TestAllExtensions, self::test_all_types::NestedMessage, self::test_all_types::NestedMessage> = ::protrust::Extension::message(218);
-/// Repeated
+///  Repeated
 pub static REPEATED_INT32_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, i32> = ::protrust::RepeatedExtension::int32(248);
 pub static REPEATED_INT64_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, i64> = ::protrust::RepeatedExtension::int64(256);
 pub static REPEATED_UINT32_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, u32> = ::protrust::RepeatedExtension::uint32(264);
@@ -61,7 +61,7 @@ pub static REPEATED_IMPORT_ENUM_EXTENSION: ::protrust::RepeatedExtension<self::T
 pub static REPEATED_STRING_PIECE_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, ::std::string::String> = ::protrust::RepeatedExtension::string(434);
 pub static REPEATED_CORD_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, ::std::string::String> = ::protrust::RepeatedExtension::string(442);
 pub static REPEATED_LAZY_MESSAGE_EXTENSION: ::protrust::RepeatedExtension<self::TestAllExtensions, self::test_all_types::NestedMessage> = ::protrust::RepeatedExtension::message(458);
-/// Singular with defaults
+///  Singular with defaults
 pub static DEFAULT_INT32_EXTENSION: ::protrust::Extension<self::TestAllExtensions, i32, i32> = ::protrust::Extension::int32(488, 41);
 pub static DEFAULT_INT64_EXTENSION: ::protrust::Extension<self::TestAllExtensions, i64, i64> = ::protrust::Extension::int64(496, 42);
 pub static DEFAULT_UINT32_EXTENSION: ::protrust::Extension<self::TestAllExtensions, u32, u32> = ::protrust::Extension::uint32(504, 43);
@@ -82,7 +82,7 @@ pub static DEFAULT_FOREIGN_ENUM_EXTENSION: ::protrust::Extension<self::TestAllEx
 pub static DEFAULT_IMPORT_ENUM_EXTENSION: ::protrust::Extension<self::TestAllExtensions, ::protrust::EnumValue<self::super::unittest_import_proto::ImportEnum>, ::protrust::EnumValue<self::super::unittest_import_proto::ImportEnum>> = ::protrust::Extension::enum_value(664, ::protrust::EnumValue::Defined(self::super::unittest_import_proto::ImportEnum::ImportBar));
 pub static DEFAULT_STRING_PIECE_EXTENSION: ::protrust::Extension<self::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(674, "abc");
 pub static DEFAULT_CORD_EXTENSION: ::protrust::Extension<self::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(682, "123");
-/// For oneof test
+///  For oneof test
 pub static ONEOF_UINT32_EXTENSION: ::protrust::Extension<self::TestAllExtensions, u32, u32> = ::protrust::Extension::uint32(888, 0);
 pub static ONEOF_NESTED_MESSAGE_EXTENSION: ::protrust::Extension<self::TestAllExtensions, self::test_all_types::NestedMessage, self::test_all_types::NestedMessage> = ::protrust::Extension::message(898);
 pub static ONEOF_STRING_EXTENSION: ::protrust::Extension<self::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(906, "");
@@ -119,9 +119,9 @@ pub static UNPACKED_BOOL_EXTENSION: ::protrust::RepeatedExtension<self::TestUnpa
 pub static UNPACKED_ENUM_EXTENSION: ::protrust::RepeatedExtension<self::TestUnpackedExtensions, ::protrust::EnumValue<self::ForeignEnum>> = ::protrust::RepeatedExtension::enum_value(824);
 pub static TEST_ALL_TYPES: ::protrust::Extension<self::TestHugeFieldNumbers, self::TestAllTypes, self::TestAllTypes> = ::protrust::Extension::message(4294880002);
 pub static TEST_EXTENSION_INSIDE_TABLE_EXTENSION: ::protrust::Extension<self::TestExtensionInsideTable, i32, i32> = ::protrust::Extension::int32(40, 0);
-/// This proto includes every type of field in both singular and repeated
-/// forms.
-#[derive(Clone, Debug, PartialEq)]
+///  This proto includes every type of field in both singular and repeated
+///  forms.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestAllTypes {
     optional_int32: ::std::option::Option<i32>,
     optional_int64: ::std::option::Option<i64>,
@@ -1112,7 +1112,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_int32`]: #method.optional_int32
     pub const OPTIONAL_INT32_DEFAULT_VALUE: i32 = 0;
-    /// Singular
+    ///  Singular
     pub fn optional_int32(&self) -> i32 {
         self.optional_int32.unwrap_or(Self::OPTIONAL_INT32_DEFAULT_VALUE)
     }
@@ -1673,7 +1673,7 @@ impl self::TestAllTypes {
     ///
     /// [`optionalgroup`]: #method.optionalgroup
     pub const OPTIONALGROUP_FIELD_NUMBER: i32 = 16;
-    pub fn optionalgroup_option(&self) -> ::std::option::Option<&self::test_all_types::OptionalGroup> {
+    pub fn optionalgroup(&self) -> ::std::option::Option<&self::test_all_types::OptionalGroup> {
         self.optionalgroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optionalgroup`] field
@@ -1710,7 +1710,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_nested_message`]: #method.optional_nested_message
     pub const OPTIONAL_NESTED_MESSAGE_FIELD_NUMBER: i32 = 18;
-    pub fn optional_nested_message_option(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
+    pub fn optional_nested_message(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
         self.optional_nested_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_nested_message`] field
@@ -1747,7 +1747,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_foreign_message`]: #method.optional_foreign_message
     pub const OPTIONAL_FOREIGN_MESSAGE_FIELD_NUMBER: i32 = 19;
-    pub fn optional_foreign_message_option(&self) -> ::std::option::Option<&self::ForeignMessage> {
+    pub fn optional_foreign_message(&self) -> ::std::option::Option<&self::ForeignMessage> {
         self.optional_foreign_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_foreign_message`] field
@@ -1784,7 +1784,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_import_message`]: #method.optional_import_message
     pub const OPTIONAL_IMPORT_MESSAGE_FIELD_NUMBER: i32 = 20;
-    pub fn optional_import_message_option(&self) -> ::std::option::Option<&self::super::unittest_import_proto::ImportMessage> {
+    pub fn optional_import_message(&self) -> ::std::option::Option<&self::super::unittest_import_proto::ImportMessage> {
         self.optional_import_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_import_message`] field
@@ -2025,8 +2025,8 @@ impl self::TestAllTypes {
     ///
     /// [`optional_public_import_message`]: #method.optional_public_import_message
     pub const OPTIONAL_PUBLIC_IMPORT_MESSAGE_FIELD_NUMBER: i32 = 26;
-    /// Defined in unittest_import_public.proto
-    pub fn optional_public_import_message_option(&self) -> ::std::option::Option<&self::super::unittest_import_public_proto::PublicImportMessage> {
+    ///  Defined in unittest_import_public.proto
+    pub fn optional_public_import_message(&self) -> ::std::option::Option<&self::super::unittest_import_public_proto::PublicImportMessage> {
         self.optional_public_import_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_public_import_message`] field
@@ -2063,7 +2063,7 @@ impl self::TestAllTypes {
     ///
     /// [`optional_lazy_message`]: #method.optional_lazy_message
     pub const OPTIONAL_LAZY_MESSAGE_FIELD_NUMBER: i32 = 27;
-    pub fn optional_lazy_message_option(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
+    pub fn optional_lazy_message(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
         self.optional_lazy_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_lazy_message`] field
@@ -2100,7 +2100,7 @@ impl self::TestAllTypes {
     ///
     /// [`repeated_int32`]: #method.repeated_int32
     pub const REPEATED_INT32_FIELD_NUMBER: i32 = 31;
-    /// Repeated
+    ///  Repeated
     pub fn repeated_int32(&self) -> &::protrust::collections::RepeatedField<i32> {
         &self.repeated_int32
     }
@@ -2430,7 +2430,7 @@ impl self::TestAllTypes {
     ///
     /// [`default_int32`]: #method.default_int32
     pub const DEFAULT_INT32_DEFAULT_VALUE: i32 = 41;
-    /// Singular with defaults
+    ///  Singular with defaults
     pub fn default_int32(&self) -> i32 {
         self.default_int32.unwrap_or(Self::DEFAULT_INT32_DEFAULT_VALUE)
     }
@@ -3191,6 +3191,198 @@ impl self::TestAllTypes {
     pub fn clear_default_cord(&mut self) {
         self.default_cord = ::std::option::Option::None
     }
+    /// Gets the field number of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_FIELD_NUMBER: i32 = 111;
+    /// A constant value representing the default value of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_DEFAULT_VALUE: u32 = 0;
+    pub fn oneof_uint32(&self) -> ::std::option::Option<&u32> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_uint32'] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub fn oneof_uint32_mut(&mut self) -> &mut u32 {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(ref mut value) => value,
+            _ => {
+                self.set_oneof_uint32(::std::default::Default::default());
+                self.oneof_uint32_mut()
+            }
+        }
+    }
+    pub fn has_oneof_uint32(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofUint32(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_uint32(&mut self, value: u32) {
+        self.oneof_field = self::test_all_types::OneofField::OneofUint32(value)
+    }
+    pub fn take_oneof_uint32(&mut self) -> ::std::option::Option<u32> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofUint32(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_uint32(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_nested_message`] field
+    ///
+    /// [`oneof_nested_message`]: #method.oneof_nested_message
+    pub const ONEOF_NESTED_MESSAGE_FIELD_NUMBER: i32 = 112;
+    pub fn oneof_nested_message(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(ref oneof_field) => ::std::option::Option::Some(&**oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_nested_message'] field
+    ///
+    /// [`oneof_nested_message`]: #method.oneof_nested_message
+    pub fn oneof_nested_message_mut(&mut self) -> &mut self::test_all_types::NestedMessage {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(ref mut value) => value,
+            _ => {
+                self.set_oneof_nested_message(::std::default::Default::default());
+                self.oneof_nested_message_mut()
+            }
+        }
+    }
+    pub fn has_oneof_nested_message(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofNestedMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_nested_message(&mut self, value: self::test_all_types::NestedMessage) {
+        self.oneof_field = self::test_all_types::OneofField::OneofNestedMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_oneof_nested_message(&mut self) -> ::std::option::Option<self::test_all_types::NestedMessage> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofNestedMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_nested_message(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_FIELD_NUMBER: i32 = 113;
+    /// A constant value representing the default value of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn oneof_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofString(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_string'] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub fn oneof_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofString(ref mut value) => value,
+            _ => {
+                self.set_oneof_string(::std::default::Default::default());
+                self.oneof_string_mut()
+            }
+        }
+    }
+    pub fn has_oneof_string(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_string(&mut self, value: ::std::string::String) {
+        self.oneof_field = self::test_all_types::OneofField::OneofString(value)
+    }
+    pub fn take_oneof_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_string(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_FIELD_NUMBER: i32 = 114;
+    /// A constant value representing the default value of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn oneof_bytes(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_bytes'] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub fn oneof_bytes_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
+        match self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(ref mut value) => value,
+            _ => {
+                self.set_oneof_bytes(::std::default::Default::default());
+                self.oneof_bytes_mut()
+            }
+        }
+    }
+    pub fn has_oneof_bytes(&self) -> bool {
+        match &self.oneof_field {
+            self::test_all_types::OneofField::OneofBytes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_bytes(&mut self, value: ::std::vec::Vec<u8>) {
+        self.oneof_field = self::test_all_types::OneofField::OneofBytes(value)
+    }
+    pub fn take_oneof_bytes(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_all_types::OneofField::None) {
+            self::test_all_types::OneofField::OneofBytes(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_bytes(&mut self) {
+        self.oneof_field = self::test_all_types::OneofField::None
+    }
     /// Gets a shared reference to the [`oneof_field`] oneof field
     ///
     /// [`oneof_field`]: enum.OneofField.html
@@ -3204,10 +3396,10 @@ impl self::TestAllTypes {
         &mut self.oneof_field
     }
 }
-/// This proto includes every type of field in both singular and repeated
-/// forms.
+///  This proto includes every type of field in both singular and repeated
+///  forms.
 pub mod test_all_types {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         bb: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -3268,9 +3460,9 @@ pub mod test_all_types {
         ///
         /// [`bb`]: #method.bb
         pub const BB_DEFAULT_VALUE: i32 = 0;
-        /// The field name "b" fails to compile in proto1 because it conflicts with
-        /// a local variable named "b" in one of the generated methods.  Doh.
-        /// This file needs to compile in proto1 to test backwards-compatibility.
+        ///  The field name "b" fails to compile in proto1 because it conflicts with
+        ///  a local variable named "b" in one of the generated methods.  Doh.
+        ///  This file needs to compile in proto1 to test backwards-compatibility.
         pub fn bb(&self) -> i32 {
             self.bb.unwrap_or(Self::BB_DEFAULT_VALUE)
         }
@@ -3300,7 +3492,7 @@ pub mod test_all_types {
             self.bb = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OptionalGroup {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -3391,7 +3583,7 @@ pub mod test_all_types {
             self.a = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct RepeatedGroup {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -3487,12 +3679,12 @@ pub mod test_all_types {
         Foo,
         Bar,
         Baz,
-        /// Intentionally negative.
+        ///  Intentionally negative.
         Neg,
     }
     impl ::protrust::Enum for self::NestedEnum {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[0].enums()[0]
+            &self::super::file().messages()[0].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
@@ -3518,7 +3710,7 @@ pub mod test_all_types {
             }
         }
     }
-    /// For oneof test
+    ///  For oneof test
     #[derive(Clone, Debug, PartialEq)]
     pub enum OneofField {
         /// No value
@@ -3528,9 +3720,14 @@ pub mod test_all_types {
         OneofString(::std::string::String),
         OneofBytes(::std::vec::Vec<u8>),
     }
+    impl ::std::default::Default for self::OneofField {
+        fn default() -> Self {
+            self::OneofField::None
+        }
+    }
 }
-/// This proto includes a recusively nested message.
-#[derive(Clone, Debug, PartialEq)]
+///  This proto includes a recusively nested message.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct NestedTestAllTypes {
     child: ::std::option::Option<::std::boxed::Box<self::NestedTestAllTypes>>,
     payload: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
@@ -3628,7 +3825,7 @@ impl self::NestedTestAllTypes {
     ///
     /// [`child`]: #method.child
     pub const CHILD_FIELD_NUMBER: i32 = 1;
-    pub fn child_option(&self) -> ::std::option::Option<&self::NestedTestAllTypes> {
+    pub fn child(&self) -> ::std::option::Option<&self::NestedTestAllTypes> {
         self.child.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`child`] field
@@ -3665,7 +3862,7 @@ impl self::NestedTestAllTypes {
     ///
     /// [`payload`]: #method.payload
     pub const PAYLOAD_FIELD_NUMBER: i32 = 2;
-    pub fn payload_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn payload(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.payload.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`payload`] field
@@ -3712,7 +3909,7 @@ impl self::NestedTestAllTypes {
         &mut self.repeated_child
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestDeprecatedFields {
     deprecated_int32: ::std::option::Option<i32>,
     oneof_fields: self::test_deprecated_fields::OneofFields,
@@ -3815,6 +4012,55 @@ impl self::TestDeprecatedFields {
     pub fn clear_deprecated_int32(&mut self) {
         self.deprecated_int32 = ::std::option::Option::None
     }
+    /// Gets the field number of the [`deprecated_int32_in_oneof`] field
+    ///
+    /// [`deprecated_int32_in_oneof`]: #method.deprecated_int32_in_oneof
+    pub const DEPRECATED_INT32_IN_ONEOF_FIELD_NUMBER: i32 = 2;
+    /// A constant value representing the default value of the [`deprecated_int32_in_oneof`] field
+    ///
+    /// [`deprecated_int32_in_oneof`]: #method.deprecated_int32_in_oneof
+    pub const DEPRECATED_INT32_IN_ONEOF_DEFAULT_VALUE: i32 = 0;
+    pub fn deprecated_int32_in_oneof(&self) -> ::std::option::Option<&i32> {
+        match &self.oneof_fields {
+            self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(ref oneof_fields) => ::std::option::Option::Some(oneof_fields),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['deprecated_int32_in_oneof'] field
+    ///
+    /// [`deprecated_int32_in_oneof`]: #method.deprecated_int32_in_oneof
+    pub fn deprecated_int32_in_oneof_mut(&mut self) -> &mut i32 {
+        match self.oneof_fields {
+            self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(ref mut value) => value,
+            _ => {
+                self.set_deprecated_int32_in_oneof(::std::default::Default::default());
+                self.deprecated_int32_in_oneof_mut()
+            }
+        }
+    }
+    pub fn has_deprecated_int32_in_oneof(&self) -> bool {
+        match &self.oneof_fields {
+            self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_deprecated_int32_in_oneof(&mut self, value: i32) {
+        self.oneof_fields = self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(value)
+    }
+    pub fn take_deprecated_int32_in_oneof(&mut self) -> ::std::option::Option<i32> {
+        match ::std::mem::replace(&mut self.oneof_fields, self::test_deprecated_fields::OneofFields::None) {
+            self::test_deprecated_fields::OneofFields::DeprecatedInt32InOneof(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_fields = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_deprecated_int32_in_oneof(&mut self) {
+        self.oneof_fields = self::test_deprecated_fields::OneofFields::None
+    }
     /// Gets a shared reference to the [`oneof_fields`] oneof field
     ///
     /// [`oneof_fields`]: enum.OneofFields.html
@@ -3835,8 +4081,13 @@ pub mod test_deprecated_fields {
         None,
         DeprecatedInt32InOneof(i32),
     }
+    impl ::std::default::Default for self::OneofFields {
+        fn default() -> Self {
+            self::OneofFields::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestDeprecatedMessage {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -3876,9 +4127,9 @@ impl ::protrust::Message for self::TestDeprecatedMessage {
 }
 impl self::TestDeprecatedMessage {
 }
-/// Define these after TestAllTypes to make sure the compiler can handle
-/// that.
-#[derive(Clone, Debug, PartialEq)]
+///  Define these after TestAllTypes to make sure the compiler can handle
+///  that.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct ForeignMessage {
     c: ::std::option::Option<i32>,
     d: ::std::option::Option<i32>,
@@ -4018,7 +4269,7 @@ impl self::ForeignMessage {
         self.d = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestReservedFields {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -4058,7 +4309,7 @@ impl ::protrust::Message for self::TestReservedFields {
 }
 impl self::TestReservedFields {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestAllExtensions {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -4098,10 +4349,13 @@ impl ::protrust::LiteMessage for self::TestAllExtensions {
 impl ::protrust::ExtensionMessage for self::TestAllExtensions {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestAllExtensions {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -4110,7 +4364,7 @@ impl ::protrust::Message for self::TestAllExtensions {
 }
 impl self::TestAllExtensions {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct OptionalGroup_extension {
     a: ::std::option::Option<i32>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -4200,7 +4454,7 @@ impl self::OptionalGroup_extension {
         self.a = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct RepeatedGroup_extension {
     a: ::std::option::Option<i32>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -4290,7 +4544,7 @@ impl self::RepeatedGroup_extension {
         self.a = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestGroup {
     optionalgroup: ::std::option::Option<::std::boxed::Box<self::test_group::OptionalGroup>>,
     optional_foreign_enum: ::std::option::Option<::protrust::EnumValue<self::ForeignEnum>>,
@@ -4373,7 +4627,7 @@ impl self::TestGroup {
     ///
     /// [`optionalgroup`]: #method.optionalgroup
     pub const OPTIONALGROUP_FIELD_NUMBER: i32 = 16;
-    pub fn optionalgroup_option(&self) -> ::std::option::Option<&self::test_group::OptionalGroup> {
+    pub fn optionalgroup(&self) -> ::std::option::Option<&self::test_group::OptionalGroup> {
         self.optionalgroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optionalgroup`] field
@@ -4444,7 +4698,7 @@ impl self::TestGroup {
     }
 }
 pub mod test_group {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OptionalGroup {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -4536,7 +4790,7 @@ pub mod test_group {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestGroupExtension {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -4576,10 +4830,13 @@ impl ::protrust::LiteMessage for self::TestGroupExtension {
 impl ::protrust::ExtensionMessage for self::TestGroupExtension {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestGroupExtension {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -4588,7 +4845,7 @@ impl ::protrust::Message for self::TestGroupExtension {
 }
 impl self::TestGroupExtension {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestNestedExtension {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -4629,7 +4886,7 @@ impl ::protrust::Message for self::TestNestedExtension {
 impl self::TestNestedExtension {
 }
 pub mod test_nested_extension {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OptionalGroup_extension {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -4719,21 +4976,21 @@ pub mod test_nested_extension {
             self.a = ::std::option::Option::None
         }
     }
-    /// Check for bug where string extensions declared in tested scope did not
-    /// compile.
+    ///  Check for bug where string extensions declared in tested scope did not
+    ///  compile.
     pub static TEST: ::protrust::Extension<self::super::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(8018, "test");
-    /// Used to test if generated extension name is correct when there are
-    /// underscores.
+    ///  Used to test if generated extension name is correct when there are
+    ///  underscores.
     pub static NESTED_STRING_EXTENSION: ::protrust::Extension<self::super::TestAllExtensions, ::std::string::String, &'static str> = ::protrust::Extension::string(8026, "");
     pub static OPTIONALGROUP_EXTENSION: ::protrust::Extension<self::super::TestGroupExtension, self::super::test_nested_extension::OptionalGroup_extension, self::super::test_nested_extension::OptionalGroup_extension> = ::protrust::Extension::group(131, 132);
     pub static OPTIONAL_FOREIGN_ENUM_EXTENSION: ::protrust::Extension<self::super::TestGroupExtension, ::protrust::EnumValue<self::super::ForeignEnum>, ::protrust::EnumValue<self::super::ForeignEnum>> = ::protrust::Extension::enum_value(176, ::protrust::EnumValue::Undefined(0));
 }
-/// We have separate messages for testing required fields because it's
-/// annoying to have to fill in required fields in TestProto in order to
-/// do anything with it.  Note that we don't need to test every type of
-/// required filed because the code output is basically identical to
-/// optional fields for all types.
-#[derive(Clone, Debug, PartialEq)]
+///  We have separate messages for testing required fields because it's
+///  annoying to have to fill in required fields in TestProto in order to
+///  do anything with it.  Note that we don't need to test every type of
+///  required filed because the code output is basically identical to
+///  optional fields for all types.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRequired {
     a: ::std::option::Option<i32>,
     dummy2: ::std::option::Option<i32>,
@@ -5362,8 +5619,8 @@ impl self::TestRequired {
     ///
     /// [`dummy4`]: #method.dummy4
     pub const DUMMY4_DEFAULT_VALUE: i32 = 0;
-    /// Pad the field count to 32 so that we can test that IsInitialized()
-    /// properly checks multiple elements of has_bits_.
+    ///  Pad the field count to 32 so that we can test that IsInitialized()
+    ///  properly checks multiple elements of has_bits_.
     pub fn dummy4(&self) -> i32 {
         self.dummy4.unwrap_or(Self::DUMMY4_DEFAULT_VALUE)
     }
@@ -6437,16 +6694,16 @@ impl self::TestRequired {
         self.c = ::std::option::Option::None
     }
 }
-/// We have separate messages for testing required fields because it's
-/// annoying to have to fill in required fields in TestProto in order to
-/// do anything with it.  Note that we don't need to test every type of
-/// required filed because the code output is basically identical to
-/// optional fields for all types.
+///  We have separate messages for testing required fields because it's
+///  annoying to have to fill in required fields in TestProto in order to
+///  do anything with it.  Note that we don't need to test every type of
+///  required filed because the code output is basically identical to
+///  optional fields for all types.
 pub mod test_required {
     pub static SINGLE: ::protrust::Extension<self::super::TestAllExtensions, self::super::TestRequired, self::super::TestRequired> = ::protrust::Extension::message(8002);
     pub static MULTI: ::protrust::RepeatedExtension<self::super::TestAllExtensions, self::super::TestRequired> = ::protrust::RepeatedExtension::message(8010);
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRequiredForeign {
     optional_message: ::std::option::Option<::std::boxed::Box<self::TestRequired>>,
     repeated_message: ::protrust::collections::RepeatedField<self::TestRequired>,
@@ -6537,7 +6794,7 @@ impl self::TestRequiredForeign {
     ///
     /// [`optional_message`]: #method.optional_message
     pub const OPTIONAL_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn optional_message_option(&self) -> ::std::option::Option<&self::TestRequired> {
+    pub fn optional_message(&self) -> ::std::option::Option<&self::TestRequired> {
         self.optional_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_message`] field
@@ -6620,7 +6877,7 @@ impl self::TestRequiredForeign {
         self.dummy = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRequiredMessage {
     optional_message: ::std::option::Option<::std::boxed::Box<self::TestRequired>>,
     repeated_message: ::protrust::collections::RepeatedField<self::TestRequired>,
@@ -6718,7 +6975,7 @@ impl self::TestRequiredMessage {
     ///
     /// [`optional_message`]: #method.optional_message
     pub const OPTIONAL_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn optional_message_option(&self) -> ::std::option::Option<&self::TestRequired> {
+    pub fn optional_message(&self) -> ::std::option::Option<&self::TestRequired> {
         self.optional_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_message`] field
@@ -6768,7 +7025,7 @@ impl self::TestRequiredMessage {
     ///
     /// [`required_message`]: #method.required_message
     pub const REQUIRED_MESSAGE_FIELD_NUMBER: i32 = 3;
-    pub fn required_message_option(&self) -> ::std::option::Option<&self::TestRequired> {
+    pub fn required_message(&self) -> ::std::option::Option<&self::TestRequired> {
         self.required_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`required_message`] field
@@ -6802,8 +7059,8 @@ impl self::TestRequiredMessage {
         self.required_message = ::std::option::Option::None
     }
 }
-/// Test that we can use NestedMessage from outside TestAllTypes.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that we can use NestedMessage from outside TestAllTypes.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestForeignNested {
     foreign_nested: ::std::option::Option<::std::boxed::Box<self::test_all_types::NestedMessage>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -6870,7 +7127,7 @@ impl self::TestForeignNested {
     ///
     /// [`foreign_nested`]: #method.foreign_nested
     pub const FOREIGN_NESTED_FIELD_NUMBER: i32 = 1;
-    pub fn foreign_nested_option(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
+    pub fn foreign_nested(&self) -> ::std::option::Option<&self::test_all_types::NestedMessage> {
         self.foreign_nested.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`foreign_nested`] field
@@ -6904,8 +7161,8 @@ impl self::TestForeignNested {
         self.foreign_nested = ::std::option::Option::None
     }
 }
-/// TestEmptyMessage is used to test unknown field support.
-#[derive(Clone, Debug, PartialEq)]
+///  TestEmptyMessage is used to test unknown field support.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestEmptyMessage {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -6945,9 +7202,9 @@ impl ::protrust::Message for self::TestEmptyMessage {
 }
 impl self::TestEmptyMessage {
 }
-/// Like above, but declare all field numbers as potential extensions.  No
-/// actual extensions should ever be defined for this type.
-#[derive(Clone, Debug, PartialEq)]
+///  Like above, but declare all field numbers as potential extensions.  No
+///  actual extensions should ever be defined for this type.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestEmptyMessageWithExtensions {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -6987,10 +7244,13 @@ impl ::protrust::LiteMessage for self::TestEmptyMessageWithExtensions {
 impl ::protrust::ExtensionMessage for self::TestEmptyMessageWithExtensions {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestEmptyMessageWithExtensions {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -6999,7 +7259,7 @@ impl ::protrust::Message for self::TestEmptyMessageWithExtensions {
 }
 impl self::TestEmptyMessageWithExtensions {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestMultipleExtensionRanges {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -7039,10 +7299,13 @@ impl ::protrust::LiteMessage for self::TestMultipleExtensionRanges {
 impl ::protrust::ExtensionMessage for self::TestMultipleExtensionRanges {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestMultipleExtensionRanges {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -7051,8 +7314,8 @@ impl ::protrust::Message for self::TestMultipleExtensionRanges {
 }
 impl self::TestMultipleExtensionRanges {
 }
-/// Test that really large tag numbers don't break anything.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that really large tag numbers don't break anything.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestReallyLargeTagNumber {
     a: ::std::option::Option<i32>,
     bb: ::std::option::Option<i32>,
@@ -7127,8 +7390,8 @@ impl self::TestReallyLargeTagNumber {
     ///
     /// [`a`]: #method.a
     pub const A_DEFAULT_VALUE: i32 = 0;
-    /// The largest possible tag number is 2^28 - 1, since the wire format uses
-    /// three bits to communicate wire type.
+    ///  The largest possible tag number is 2^28 - 1, since the wire format uses
+    ///  three bits to communicate wire type.
     pub fn a(&self) -> i32 {
         self.a.unwrap_or(Self::A_DEFAULT_VALUE)
     }
@@ -7194,7 +7457,7 @@ impl self::TestReallyLargeTagNumber {
         self.bb = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRecursiveMessage {
     a: ::std::option::Option<::std::boxed::Box<self::TestRecursiveMessage>>,
     i: ::std::option::Option<i32>,
@@ -7275,7 +7538,7 @@ impl self::TestRecursiveMessage {
     ///
     /// [`a`]: #method.a
     pub const A_FIELD_NUMBER: i32 = 1;
-    pub fn a_option(&self) -> ::std::option::Option<&self::TestRecursiveMessage> {
+    pub fn a(&self) -> ::std::option::Option<&self::TestRecursiveMessage> {
         self.a.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`a`] field
@@ -7345,8 +7608,8 @@ impl self::TestRecursiveMessage {
         self.i = ::std::option::Option::None
     }
 }
-/// Test that mutual recursion works.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that mutual recursion works.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestMutualRecursionA {
     bb: ::std::option::Option<::std::boxed::Box<self::TestMutualRecursionB>>,
     subgroup: ::std::option::Option<::std::boxed::Box<self::test_mutual_recursion_a::SubGroup>>,
@@ -7436,7 +7699,7 @@ impl self::TestMutualRecursionA {
     ///
     /// [`bb`]: #method.bb
     pub const BB_FIELD_NUMBER: i32 = 1;
-    pub fn bb_option(&self) -> ::std::option::Option<&self::TestMutualRecursionB> {
+    pub fn bb(&self) -> ::std::option::Option<&self::TestMutualRecursionB> {
         self.bb.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`bb`] field
@@ -7473,7 +7736,7 @@ impl self::TestMutualRecursionA {
     ///
     /// [`subgroup`]: #method.subgroup
     pub const SUBGROUP_FIELD_NUMBER: i32 = 2;
-    pub fn subgroup_option(&self) -> ::std::option::Option<&self::test_mutual_recursion_a::SubGroup> {
+    pub fn subgroup(&self) -> ::std::option::Option<&self::test_mutual_recursion_a::SubGroup> {
         self.subgroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`subgroup`] field
@@ -7507,9 +7770,9 @@ impl self::TestMutualRecursionA {
         self.subgroup = ::std::option::Option::None
     }
 }
-/// Test that mutual recursion works.
+///  Test that mutual recursion works.
 pub mod test_mutual_recursion_a {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct SubMessage {
         b: ::std::option::Option<::std::boxed::Box<self::super::TestMutualRecursionB>>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -7576,7 +7839,7 @@ pub mod test_mutual_recursion_a {
         ///
         /// [`b`]: #method.b
         pub const B_FIELD_NUMBER: i32 = 1;
-        pub fn b_option(&self) -> ::std::option::Option<&self::super::TestMutualRecursionB> {
+        pub fn b(&self) -> ::std::option::Option<&self::super::TestMutualRecursionB> {
             self.b.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`b`] field
@@ -7610,7 +7873,7 @@ pub mod test_mutual_recursion_a {
             self.b = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct SubGroup {
         sub_message: ::std::option::Option<::std::boxed::Box<self::SubMessage>>,
         not_in_this_scc: ::std::option::Option<::std::boxed::Box<self::super::TestAllTypes>>,
@@ -7699,8 +7962,8 @@ pub mod test_mutual_recursion_a {
         ///
         /// [`sub_message`]: #method.sub_message
         pub const SUB_MESSAGE_FIELD_NUMBER: i32 = 3;
-        /// Needed because of bug in javatest
-        pub fn sub_message_option(&self) -> ::std::option::Option<&self::SubMessage> {
+        ///  Needed because of bug in javatest
+        pub fn sub_message(&self) -> ::std::option::Option<&self::SubMessage> {
             self.sub_message.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`sub_message`] field
@@ -7737,7 +8000,7 @@ pub mod test_mutual_recursion_a {
         ///
         /// [`not_in_this_scc`]: #method.not_in_this_scc
         pub const NOT_IN_THIS_SCC_FIELD_NUMBER: i32 = 4;
-        pub fn not_in_this_scc_option(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
+        pub fn not_in_this_scc(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
             self.not_in_this_scc.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`not_in_this_scc`] field
@@ -7772,7 +8035,7 @@ pub mod test_mutual_recursion_a {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestMutualRecursionB {
     a: ::std::option::Option<::std::boxed::Box<self::TestMutualRecursionA>>,
     optional_int32: ::std::option::Option<i32>,
@@ -7853,7 +8116,7 @@ impl self::TestMutualRecursionB {
     ///
     /// [`a`]: #method.a
     pub const A_FIELD_NUMBER: i32 = 1;
-    pub fn a_option(&self) -> ::std::option::Option<&self::TestMutualRecursionA> {
+    pub fn a(&self) -> ::std::option::Option<&self::TestMutualRecursionA> {
         self.a.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`a`] field
@@ -7923,7 +8186,7 @@ impl self::TestMutualRecursionB {
         self.optional_int32 = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestIsInitialized {
     sub_message: ::std::option::Option<::std::boxed::Box<self::test_is_initialized::SubMessage>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -7990,7 +8253,7 @@ impl self::TestIsInitialized {
     ///
     /// [`sub_message`]: #method.sub_message
     pub const SUB_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn sub_message_option(&self) -> ::std::option::Option<&self::test_is_initialized::SubMessage> {
+    pub fn sub_message(&self) -> ::std::option::Option<&self::test_is_initialized::SubMessage> {
         self.sub_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`sub_message`] field
@@ -8025,7 +8288,7 @@ impl self::TestIsInitialized {
     }
 }
 pub mod test_is_initialized {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct SubMessage {
         subgroup: ::std::option::Option<::std::boxed::Box<self::sub_message::SubGroup>>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -8094,7 +8357,7 @@ pub mod test_is_initialized {
         ///
         /// [`subgroup`]: #method.subgroup
         pub const SUBGROUP_FIELD_NUMBER: i32 = 1;
-        pub fn subgroup_option(&self) -> ::std::option::Option<&self::sub_message::SubGroup> {
+        pub fn subgroup(&self) -> ::std::option::Option<&self::sub_message::SubGroup> {
             self.subgroup.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`subgroup`] field
@@ -8129,7 +8392,7 @@ pub mod test_is_initialized {
         }
     }
     pub mod sub_message {
-        #[derive(Clone, Debug, PartialEq)]
+        #[derive(Clone, Debug, PartialEq, Default)]
         pub struct SubGroup {
             i: ::std::option::Option<i32>,
             unknown_fields: ::protrust::UnknownFieldSet,
@@ -8228,11 +8491,11 @@ pub mod test_is_initialized {
         }
     }
 }
-/// Test that groups have disjoint field numbers from their siblings and
-/// parents.  This is NOT possible in proto1; only google.protobuf.  When attempting
-/// to compile with proto1, this will emit an error; so we only include it
-/// in protobuf_unittest_proto.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that groups have disjoint field numbers from their siblings and
+///  parents.  This is NOT possible in proto1; only google.protobuf.  When attempting
+///  to compile with proto1, this will emit an error; so we only include it
+///  in protobuf_unittest_proto.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestDupFieldNumber {
     a: ::std::option::Option<i32>,
     foo: ::std::option::Option<::std::boxed::Box<self::test_dup_field_number::Foo>>,
@@ -8342,7 +8605,7 @@ impl self::TestDupFieldNumber {
     ///
     /// [`a`]: #method.a
     pub const A_DEFAULT_VALUE: i32 = 0;
-    /// NO_PROTO1
+    ///  NO_PROTO1
     pub fn a(&self) -> i32 {
         self.a.unwrap_or(Self::A_DEFAULT_VALUE)
     }
@@ -8375,7 +8638,7 @@ impl self::TestDupFieldNumber {
     ///
     /// [`foo`]: #method.foo
     pub const FOO_FIELD_NUMBER: i32 = 2;
-    pub fn foo_option(&self) -> ::std::option::Option<&self::test_dup_field_number::Foo> {
+    pub fn foo(&self) -> ::std::option::Option<&self::test_dup_field_number::Foo> {
         self.foo.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`foo`] field
@@ -8412,7 +8675,7 @@ impl self::TestDupFieldNumber {
     ///
     /// [`bar`]: #method.bar
     pub const BAR_FIELD_NUMBER: i32 = 3;
-    pub fn bar_option(&self) -> ::std::option::Option<&self::test_dup_field_number::Bar> {
+    pub fn bar(&self) -> ::std::option::Option<&self::test_dup_field_number::Bar> {
         self.bar.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`bar`] field
@@ -8446,12 +8709,12 @@ impl self::TestDupFieldNumber {
         self.bar = ::std::option::Option::None
     }
 }
-/// Test that groups have disjoint field numbers from their siblings and
-/// parents.  This is NOT possible in proto1; only google.protobuf.  When attempting
-/// to compile with proto1, this will emit an error; so we only include it
-/// in protobuf_unittest_proto.
+///  Test that groups have disjoint field numbers from their siblings and
+///  parents.  This is NOT possible in proto1; only google.protobuf.  When attempting
+///  to compile with proto1, this will emit an error; so we only include it
+///  in protobuf_unittest_proto.
 pub mod test_dup_field_number {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Foo {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -8542,7 +8805,7 @@ pub mod test_dup_field_number {
             self.a = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Bar {
         a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -8634,8 +8897,8 @@ pub mod test_dup_field_number {
         }
     }
 }
-/// Additional messages for testing lazy fields.
-#[derive(Clone, Debug, PartialEq)]
+///  Additional messages for testing lazy fields.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestEagerMessage {
     sub_message: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -8702,7 +8965,7 @@ impl self::TestEagerMessage {
     ///
     /// [`sub_message`]: #method.sub_message
     pub const SUB_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn sub_message_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn sub_message(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.sub_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`sub_message`] field
@@ -8736,7 +8999,7 @@ impl self::TestEagerMessage {
         self.sub_message = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestLazyMessage {
     sub_message: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -8803,7 +9066,7 @@ impl self::TestLazyMessage {
     ///
     /// [`sub_message`]: #method.sub_message
     pub const SUB_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn sub_message_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn sub_message(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.sub_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`sub_message`] field
@@ -8837,8 +9100,8 @@ impl self::TestLazyMessage {
         self.sub_message = ::std::option::Option::None
     }
 }
-/// Needed for a Python test.
-#[derive(Clone, Debug, PartialEq)]
+///  Needed for a Python test.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestNestedMessageHasBits {
     optional_nested_message: ::std::option::Option<::std::boxed::Box<self::test_nested_message_has_bits::NestedMessage>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -8905,7 +9168,7 @@ impl self::TestNestedMessageHasBits {
     ///
     /// [`optional_nested_message`]: #method.optional_nested_message
     pub const OPTIONAL_NESTED_MESSAGE_FIELD_NUMBER: i32 = 1;
-    pub fn optional_nested_message_option(&self) -> ::std::option::Option<&self::test_nested_message_has_bits::NestedMessage> {
+    pub fn optional_nested_message(&self) -> ::std::option::Option<&self::test_nested_message_has_bits::NestedMessage> {
         self.optional_nested_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_nested_message`] field
@@ -8939,9 +9202,9 @@ impl self::TestNestedMessageHasBits {
         self.optional_nested_message = ::std::option::Option::None
     }
 }
-/// Needed for a Python test.
+///  Needed for a Python test.
 pub mod test_nested_message_has_bits {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         nestedmessage_repeated_int32: ::protrust::collections::RepeatedField<i32>,
         nestedmessage_repeated_foreignmessage: ::protrust::collections::RepeatedField<self::super::ForeignMessage>,
@@ -9028,9 +9291,9 @@ pub mod test_nested_message_has_bits {
         }
     }
 }
-/// Test message with CamelCase field names.  This violates Protocol Buffer
-/// standard style.
-#[derive(Clone, Debug, PartialEq)]
+///  Test message with CamelCase field names.  This violates Protocol Buffer
+///  standard style.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestCamelCaseFieldNames {
     PrimitiveField: ::std::option::Option<i32>,
     StringField: ::std::option::Option<::std::string::String>,
@@ -9332,7 +9595,7 @@ impl self::TestCamelCaseFieldNames {
     ///
     /// [`MessageField`]: #method.MessageField
     pub const MESSAGEFIELD_FIELD_NUMBER: i32 = 4;
-    pub fn MessageField_option(&self) -> ::std::option::Option<&self::ForeignMessage> {
+    pub fn MessageField(&self) -> ::std::option::Option<&self::ForeignMessage> {
         self.MessageField.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`MessageField`] field
@@ -9540,9 +9803,9 @@ impl self::TestCamelCaseFieldNames {
         &mut self.RepeatedCordField
     }
 }
-/// We list fields out of order, to ensure that we're using field number and not
-/// field index to determine serialization order.
-#[derive(Clone, Debug, PartialEq)]
+///  We list fields out of order, to ensure that we're using field number and not
+///  field index to determine serialization order.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestFieldOrderings {
     my_string: ::std::option::Option<::std::string::String>,
     my_int: ::std::option::Option<i64>,
@@ -9648,10 +9911,13 @@ impl ::protrust::LiteMessage for self::TestFieldOrderings {
 impl ::protrust::ExtensionMessage for self::TestFieldOrderings {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestFieldOrderings {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -9783,7 +10049,7 @@ impl self::TestFieldOrderings {
     ///
     /// [`optional_nested_message`]: #method.optional_nested_message
     pub const OPTIONAL_NESTED_MESSAGE_FIELD_NUMBER: i32 = 200;
-    pub fn optional_nested_message_option(&self) -> ::std::option::Option<&self::test_field_orderings::NestedMessage> {
+    pub fn optional_nested_message(&self) -> ::std::option::Option<&self::test_field_orderings::NestedMessage> {
         self.optional_nested_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_nested_message`] field
@@ -9817,10 +10083,10 @@ impl self::TestFieldOrderings {
         self.optional_nested_message = ::std::option::Option::None
     }
 }
-/// We list fields out of order, to ensure that we're using field number and not
-/// field index to determine serialization order.
+///  We list fields out of order, to ensure that we're using field number and not
+///  field index to determine serialization order.
 pub mod test_field_orderings {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         oo: ::std::option::Option<i64>,
         bb: ::std::option::Option<i32>,
@@ -9931,9 +10197,9 @@ pub mod test_field_orderings {
         ///
         /// [`bb`]: #method.bb
         pub const BB_DEFAULT_VALUE: i32 = 0;
-        /// The field name "b" fails to compile in proto1 because it conflicts with
-        /// a local variable named "b" in one of the generated methods.  Doh.
-        /// This file needs to compile in proto1 to test backwards-compatibility.
+        ///  The field name "b" fails to compile in proto1 because it conflicts with
+        ///  a local variable named "b" in one of the generated methods.  Doh.
+        ///  This file needs to compile in proto1 to test backwards-compatibility.
         pub fn bb(&self) -> i32 {
             self.bb.unwrap_or(Self::BB_DEFAULT_VALUE)
         }
@@ -9964,7 +10230,7 @@ pub mod test_field_orderings {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestExtensionOrderings1 {
     my_string: ::std::option::Option<::std::string::String>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -10069,7 +10335,7 @@ impl self::TestExtensionOrderings1 {
 pub mod test_extension_orderings1 {
     pub static TEST_EXT_ORDERINGS1: ::protrust::Extension<self::super::TestFieldOrderings, self::super::TestExtensionOrderings1, self::super::TestExtensionOrderings1> = ::protrust::Extension::message(106);
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestExtensionOrderings2 {
     my_string: ::std::option::Option<::std::string::String>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -10172,7 +10438,7 @@ impl self::TestExtensionOrderings2 {
     }
 }
 pub mod test_extension_orderings2 {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct TestExtensionOrderings3 {
         my_string: ::std::option::Option<::std::string::String>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -10279,7 +10545,7 @@ pub mod test_extension_orderings2 {
     }
     pub static TEST_EXT_ORDERINGS2: ::protrust::Extension<self::super::TestFieldOrderings, self::super::TestExtensionOrderings2, self::super::TestExtensionOrderings2> = ::protrust::Extension::message(98);
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestExtremeDefaultValues {
     escaped_bytes: ::std::option::Option<::std::vec::Vec<u8>>,
     large_uint32: ::std::option::Option<u32>,
@@ -10968,9 +11234,9 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`utf8_string`]: #method.utf8_string
     pub const UTF8_STRING_DEFAULT_VALUE: &'static str = "\u{1234}";
-    /// The default value here is UTF-8 for "\u1234".  (We could also just type
-    /// the UTF-8 text directly into this text file rather than escape it, but
-    /// lots of people use editors that would be confused by this.)
+    ///  The default value here is UTF-8 for "\u1234".  (We could also just type
+    ///  the UTF-8 text directly into this text file rather than escape it, but
+    ///  lots of people use editors that would be confused by this.)
     pub fn utf8_string(&self) -> &str {
         self.utf8_string.as_ref().map(|v| &**v).unwrap_or(Self::UTF8_STRING_DEFAULT_VALUE)
     }
@@ -11019,7 +11285,7 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`zero_float`]: #method.zero_float
     pub const ZERO_FLOAT_DEFAULT_VALUE: f32 = 0.0;
-    /// Tests for single-precision floating-point values.
+    ///  Tests for single-precision floating-point values.
     pub fn zero_float(&self) -> f32 {
         self.zero_float.unwrap_or(Self::ZERO_FLOAT_DEFAULT_VALUE)
     }
@@ -11200,7 +11466,7 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`large_float`]: #method.large_float
     pub const LARGE_FLOAT_DEFAULT_VALUE: f32 = 200000000.0;
-    /// Using exponents
+    ///  Using exponents
     pub fn large_float(&self) -> f32 {
         self.large_float.unwrap_or(Self::LARGE_FLOAT_DEFAULT_VALUE)
     }
@@ -11273,7 +11539,7 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`inf_double`]: #method.inf_double
     pub const INF_DOUBLE_DEFAULT_VALUE: f64 = ::std::f64::INFINITY;
-    /// Text for nonfinite floating-point values.
+    ///  Text for nonfinite floating-point values.
     pub fn inf_double(&self) -> f64 {
         self.inf_double.unwrap_or(Self::INF_DOUBLE_DEFAULT_VALUE)
     }
@@ -11490,11 +11756,11 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`cpp_trigraph`]: #method.cpp_trigraph
     pub const CPP_TRIGRAPH_DEFAULT_VALUE: &'static str = "? ? ?? ?? ??? ??/ ??-";
-    /// Tests for C++ trigraphs.
-    /// Trigraphs should be escaped in C++ generated files, but they should not be
-    /// escaped for other languages.
-    /// Note that in .proto file, "?" is a valid way to escape ? in string
-    /// literals.
+    ///  Tests for C++ trigraphs.
+    ///  Trigraphs should be escaped in C++ generated files, but they should not be
+    ///  escaped for other languages.
+    ///  Note that in .proto file, "\?" is a valid way to escape ? in string
+    ///  literals.
     pub fn cpp_trigraph(&self) -> &str {
         self.cpp_trigraph.as_ref().map(|v| &**v).unwrap_or(Self::CPP_TRIGRAPH_DEFAULT_VALUE)
     }
@@ -11543,7 +11809,7 @@ impl self::TestExtremeDefaultValues {
     ///
     /// [`string_with_zero`]: #method.string_with_zero
     pub const STRING_WITH_ZERO_DEFAULT_VALUE: &'static str = "hel\u{0}lo";
-    /// String defaults containing the character '\000'
+    ///  String defaults containing the character '\000'
     pub fn string_with_zero(&self) -> &str {
         self.string_with_zero.as_ref().map(|v| &**v).unwrap_or(Self::STRING_WITH_ZERO_DEFAULT_VALUE)
     }
@@ -11777,7 +12043,7 @@ impl self::TestExtremeDefaultValues {
         self.replacement_string = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct SparseEnumMessage {
     sparse_enum: ::std::option::Option<::protrust::EnumValue<self::TestSparseEnum>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -11867,8 +12133,8 @@ impl self::SparseEnumMessage {
         self.sparse_enum = ::std::option::Option::None
     }
 }
-/// Test String and Bytes: string is for valid UTF-8 strings
-#[derive(Clone, Debug, PartialEq)]
+///  Test String and Bytes: string is for valid UTF-8 strings
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct OneString {
     data: ::std::option::Option<::std::string::String>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -11970,7 +12236,7 @@ impl self::OneString {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct MoreString {
     data: ::protrust::collections::RepeatedField<::std::string::String>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12033,7 +12299,7 @@ impl self::MoreString {
         &mut self.data
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct OneBytes {
     data: ::std::option::Option<::std::vec::Vec<u8>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12135,7 +12401,7 @@ impl self::OneBytes {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct MoreBytes {
     data: ::protrust::collections::RepeatedField<::std::vec::Vec<u8>>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12198,8 +12464,8 @@ impl self::MoreBytes {
         &mut self.data
     }
 }
-/// Test int32, uint32, int64, uint64, and bool are all compatible
-#[derive(Clone, Debug, PartialEq)]
+///  Test int32, uint32, int64, uint64, and bool are all compatible
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Int32Message {
     data: ::std::option::Option<i32>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12289,7 +12555,7 @@ impl self::Int32Message {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Uint32Message {
     data: ::std::option::Option<u32>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12379,7 +12645,7 @@ impl self::Uint32Message {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Int64Message {
     data: ::std::option::Option<i64>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12469,7 +12735,7 @@ impl self::Int64Message {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Uint64Message {
     data: ::std::option::Option<u64>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12559,7 +12825,7 @@ impl self::Uint64Message {
         self.data = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct BoolMessage {
     data: ::std::option::Option<bool>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12649,8 +12915,8 @@ impl self::BoolMessage {
         self.data = ::std::option::Option::None
     }
 }
-/// Test oneofs.
-#[derive(Clone, Debug, PartialEq)]
+///  Test oneofs.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestOneof {
     foo: self::test_oneof::Foo,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -12776,6 +13042,194 @@ impl ::protrust::Message for self::TestOneof {
     }
 }
 impl self::TestOneof {
+    /// Gets the field number of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_FIELD_NUMBER: i32 = 1;
+    /// A constant value representing the default value of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_DEFAULT_VALUE: i32 = 0;
+    pub fn foo_int(&self) -> ::std::option::Option<&i32> {
+        match &self.foo {
+            self::test_oneof::Foo::FooInt(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_int'] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub fn foo_int_mut(&mut self) -> &mut i32 {
+        match self.foo {
+            self::test_oneof::Foo::FooInt(ref mut value) => value,
+            _ => {
+                self.set_foo_int(::std::default::Default::default());
+                self.foo_int_mut()
+            }
+        }
+    }
+    pub fn has_foo_int(&self) -> bool {
+        match &self.foo {
+            self::test_oneof::Foo::FooInt(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_int(&mut self, value: i32) {
+        self.foo = self::test_oneof::Foo::FooInt(value)
+    }
+    pub fn take_foo_int(&mut self) -> ::std::option::Option<i32> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof::Foo::None) {
+            self::test_oneof::Foo::FooInt(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_int(&mut self) {
+        self.foo = self::test_oneof::Foo::None
+    }
+    /// Gets the field number of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_FIELD_NUMBER: i32 = 2;
+    /// A constant value representing the default value of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn foo_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.foo {
+            self::test_oneof::Foo::FooString(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_string'] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub fn foo_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.foo {
+            self::test_oneof::Foo::FooString(ref mut value) => value,
+            _ => {
+                self.set_foo_string(::std::default::Default::default());
+                self.foo_string_mut()
+            }
+        }
+    }
+    pub fn has_foo_string(&self) -> bool {
+        match &self.foo {
+            self::test_oneof::Foo::FooString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_string(&mut self, value: ::std::string::String) {
+        self.foo = self::test_oneof::Foo::FooString(value)
+    }
+    pub fn take_foo_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof::Foo::None) {
+            self::test_oneof::Foo::FooString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_string(&mut self) {
+        self.foo = self::test_oneof::Foo::None
+    }
+    /// Gets the field number of the [`foo_message`] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub const FOO_MESSAGE_FIELD_NUMBER: i32 = 3;
+    pub fn foo_message(&self) -> ::std::option::Option<&self::TestAllTypes> {
+        match &self.foo {
+            self::test_oneof::Foo::FooMessage(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_message'] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub fn foo_message_mut(&mut self) -> &mut self::TestAllTypes {
+        match self.foo {
+            self::test_oneof::Foo::FooMessage(ref mut value) => value,
+            _ => {
+                self.set_foo_message(::std::default::Default::default());
+                self.foo_message_mut()
+            }
+        }
+    }
+    pub fn has_foo_message(&self) -> bool {
+        match &self.foo {
+            self::test_oneof::Foo::FooMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_message(&mut self, value: self::TestAllTypes) {
+        self.foo = self::test_oneof::Foo::FooMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_foo_message(&mut self) -> ::std::option::Option<self::TestAllTypes> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof::Foo::None) {
+            self::test_oneof::Foo::FooMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_message(&mut self) {
+        self.foo = self::test_oneof::Foo::None
+    }
+    /// Gets the field number of the [`foogroup`] field
+    ///
+    /// [`foogroup`]: #method.foogroup
+    pub const FOOGROUP_FIELD_NUMBER: i32 = 4;
+    pub fn foogroup(&self) -> ::std::option::Option<&self::test_oneof::FooGroup> {
+        match &self.foo {
+            self::test_oneof::Foo::Foogroup(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foogroup'] field
+    ///
+    /// [`foogroup`]: #method.foogroup
+    pub fn foogroup_mut(&mut self) -> &mut self::test_oneof::FooGroup {
+        match self.foo {
+            self::test_oneof::Foo::Foogroup(ref mut value) => value,
+            _ => {
+                self.set_foogroup(::std::default::Default::default());
+                self.foogroup_mut()
+            }
+        }
+    }
+    pub fn has_foogroup(&self) -> bool {
+        match &self.foo {
+            self::test_oneof::Foo::Foogroup(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foogroup(&mut self, value: self::test_oneof::FooGroup) {
+        self.foo = self::test_oneof::Foo::Foogroup(::std::boxed::Box::new(value))
+    }
+    pub fn take_foogroup(&mut self) -> ::std::option::Option<self::test_oneof::FooGroup> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof::Foo::None) {
+            self::test_oneof::Foo::Foogroup(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foogroup(&mut self) {
+        self.foo = self::test_oneof::Foo::None
+    }
     /// Gets a shared reference to the [`foo`] oneof field
     ///
     /// [`foo`]: enum.Foo.html
@@ -12789,9 +13243,9 @@ impl self::TestOneof {
         &mut self.foo
     }
 }
-/// Test oneofs.
+///  Test oneofs.
 pub mod test_oneof {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FooGroup {
         a: ::std::option::Option<i32>,
         b: ::std::option::Option<::std::string::String>,
@@ -12953,8 +13407,13 @@ pub mod test_oneof {
         FooMessage(::std::boxed::Box<self::super::TestAllTypes>),
         Foogroup(::std::boxed::Box<self::super::test_oneof::FooGroup>),
     }
+    impl ::std::default::Default for self::Foo {
+        fn default() -> Self {
+            self::Foo::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestOneofBackwardsCompatible {
     foo_int: ::std::option::Option<i32>,
     foo_string: ::std::option::Option<::std::string::String>,
@@ -13156,7 +13615,7 @@ impl self::TestOneofBackwardsCompatible {
     ///
     /// [`foo_message`]: #method.foo_message
     pub const FOO_MESSAGE_FIELD_NUMBER: i32 = 3;
-    pub fn foo_message_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn foo_message(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.foo_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`foo_message`] field
@@ -13193,7 +13652,7 @@ impl self::TestOneofBackwardsCompatible {
     ///
     /// [`foogroup`]: #method.foogroup
     pub const FOOGROUP_FIELD_NUMBER: i32 = 4;
-    pub fn foogroup_option(&self) -> ::std::option::Option<&self::test_oneof_backwards_compatible::FooGroup> {
+    pub fn foogroup(&self) -> ::std::option::Option<&self::test_oneof_backwards_compatible::FooGroup> {
         self.foogroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`foogroup`] field
@@ -13228,7 +13687,7 @@ impl self::TestOneofBackwardsCompatible {
     }
 }
 pub mod test_oneof_backwards_compatible {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FooGroup {
         a: ::std::option::Option<i32>,
         b: ::std::option::Option<::std::string::String>,
@@ -13382,7 +13841,7 @@ pub mod test_oneof_backwards_compatible {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestOneof2 {
     baz_int: ::std::option::Option<i32>,
     baz_string: ::std::option::Option<::std::string::String>,
@@ -13686,6 +14145,729 @@ impl ::protrust::Message for self::TestOneof2 {
     }
 }
 impl self::TestOneof2 {
+    /// Gets the field number of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_FIELD_NUMBER: i32 = 1;
+    /// A constant value representing the default value of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_DEFAULT_VALUE: i32 = 0;
+    pub fn foo_int(&self) -> ::std::option::Option<&i32> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooInt(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_int'] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub fn foo_int_mut(&mut self) -> &mut i32 {
+        match self.foo {
+            self::test_oneof2::Foo::FooInt(ref mut value) => value,
+            _ => {
+                self.set_foo_int(::std::default::Default::default());
+                self.foo_int_mut()
+            }
+        }
+    }
+    pub fn has_foo_int(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooInt(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_int(&mut self, value: i32) {
+        self.foo = self::test_oneof2::Foo::FooInt(value)
+    }
+    pub fn take_foo_int(&mut self) -> ::std::option::Option<i32> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooInt(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_int(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_FIELD_NUMBER: i32 = 2;
+    /// A constant value representing the default value of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn foo_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooString(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_string'] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub fn foo_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.foo {
+            self::test_oneof2::Foo::FooString(ref mut value) => value,
+            _ => {
+                self.set_foo_string(::std::default::Default::default());
+                self.foo_string_mut()
+            }
+        }
+    }
+    pub fn has_foo_string(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_string(&mut self, value: ::std::string::String) {
+        self.foo = self::test_oneof2::Foo::FooString(value)
+    }
+    pub fn take_foo_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_string(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_cord`] field
+    ///
+    /// [`foo_cord`]: #method.foo_cord
+    pub const FOO_CORD_FIELD_NUMBER: i32 = 3;
+    /// A constant value representing the default value of the [`foo_cord`] field
+    ///
+    /// [`foo_cord`]: #method.foo_cord
+    pub const FOO_CORD_DEFAULT_VALUE: &'static str = "";
+    pub fn foo_cord(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooCord(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_cord'] field
+    ///
+    /// [`foo_cord`]: #method.foo_cord
+    pub fn foo_cord_mut(&mut self) -> &mut ::std::string::String {
+        match self.foo {
+            self::test_oneof2::Foo::FooCord(ref mut value) => value,
+            _ => {
+                self.set_foo_cord(::std::default::Default::default());
+                self.foo_cord_mut()
+            }
+        }
+    }
+    pub fn has_foo_cord(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooCord(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_cord(&mut self, value: ::std::string::String) {
+        self.foo = self::test_oneof2::Foo::FooCord(value)
+    }
+    pub fn take_foo_cord(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooCord(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_cord(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_string_piece`] field
+    ///
+    /// [`foo_string_piece`]: #method.foo_string_piece
+    pub const FOO_STRING_PIECE_FIELD_NUMBER: i32 = 4;
+    /// A constant value representing the default value of the [`foo_string_piece`] field
+    ///
+    /// [`foo_string_piece`]: #method.foo_string_piece
+    pub const FOO_STRING_PIECE_DEFAULT_VALUE: &'static str = "";
+    pub fn foo_string_piece(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooStringPiece(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_string_piece'] field
+    ///
+    /// [`foo_string_piece`]: #method.foo_string_piece
+    pub fn foo_string_piece_mut(&mut self) -> &mut ::std::string::String {
+        match self.foo {
+            self::test_oneof2::Foo::FooStringPiece(ref mut value) => value,
+            _ => {
+                self.set_foo_string_piece(::std::default::Default::default());
+                self.foo_string_piece_mut()
+            }
+        }
+    }
+    pub fn has_foo_string_piece(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooStringPiece(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_string_piece(&mut self, value: ::std::string::String) {
+        self.foo = self::test_oneof2::Foo::FooStringPiece(value)
+    }
+    pub fn take_foo_string_piece(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooStringPiece(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_string_piece(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_bytes`] field
+    ///
+    /// [`foo_bytes`]: #method.foo_bytes
+    pub const FOO_BYTES_FIELD_NUMBER: i32 = 5;
+    /// A constant value representing the default value of the [`foo_bytes`] field
+    ///
+    /// [`foo_bytes`]: #method.foo_bytes
+    pub const FOO_BYTES_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn foo_bytes(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooBytes(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_bytes'] field
+    ///
+    /// [`foo_bytes`]: #method.foo_bytes
+    pub fn foo_bytes_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
+        match self.foo {
+            self::test_oneof2::Foo::FooBytes(ref mut value) => value,
+            _ => {
+                self.set_foo_bytes(::std::default::Default::default());
+                self.foo_bytes_mut()
+            }
+        }
+    }
+    pub fn has_foo_bytes(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooBytes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_bytes(&mut self, value: ::std::vec::Vec<u8>) {
+        self.foo = self::test_oneof2::Foo::FooBytes(value)
+    }
+    pub fn take_foo_bytes(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooBytes(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_bytes(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_enum`] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub const FOO_ENUM_FIELD_NUMBER: i32 = 6;
+    /// A constant value representing the default value of the [`foo_enum`] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub const FOO_ENUM_DEFAULT_VALUE: ::protrust::EnumValue<self::test_oneof2::NestedEnum> = ::protrust::EnumValue::Undefined(0);
+    pub fn foo_enum(&self) -> ::std::option::Option<&::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooEnum(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_enum'] field
+    ///
+    /// [`foo_enum`]: #method.foo_enum
+    pub fn foo_enum_mut(&mut self) -> &mut ::protrust::EnumValue<self::test_oneof2::NestedEnum> {
+        match self.foo {
+            self::test_oneof2::Foo::FooEnum(ref mut value) => value,
+            _ => {
+                self.set_foo_enum(::std::default::Default::default());
+                self.foo_enum_mut()
+            }
+        }
+    }
+    pub fn has_foo_enum(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooEnum(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_enum(&mut self, value: ::protrust::EnumValue<self::test_oneof2::NestedEnum>) {
+        self.foo = self::test_oneof2::Foo::FooEnum(value)
+    }
+    pub fn take_foo_enum(&mut self) -> ::std::option::Option<::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooEnum(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_enum(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_message`] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub const FOO_MESSAGE_FIELD_NUMBER: i32 = 7;
+    pub fn foo_message(&self) -> ::std::option::Option<&self::test_oneof2::NestedMessage> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooMessage(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_message'] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub fn foo_message_mut(&mut self) -> &mut self::test_oneof2::NestedMessage {
+        match self.foo {
+            self::test_oneof2::Foo::FooMessage(ref mut value) => value,
+            _ => {
+                self.set_foo_message(::std::default::Default::default());
+                self.foo_message_mut()
+            }
+        }
+    }
+    pub fn has_foo_message(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_message(&mut self, value: self::test_oneof2::NestedMessage) {
+        self.foo = self::test_oneof2::Foo::FooMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_foo_message(&mut self) -> ::std::option::Option<self::test_oneof2::NestedMessage> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_message(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foogroup`] field
+    ///
+    /// [`foogroup`]: #method.foogroup
+    pub const FOOGROUP_FIELD_NUMBER: i32 = 8;
+    pub fn foogroup(&self) -> ::std::option::Option<&self::test_oneof2::FooGroup> {
+        match &self.foo {
+            self::test_oneof2::Foo::Foogroup(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foogroup'] field
+    ///
+    /// [`foogroup`]: #method.foogroup
+    pub fn foogroup_mut(&mut self) -> &mut self::test_oneof2::FooGroup {
+        match self.foo {
+            self::test_oneof2::Foo::Foogroup(ref mut value) => value,
+            _ => {
+                self.set_foogroup(::std::default::Default::default());
+                self.foogroup_mut()
+            }
+        }
+    }
+    pub fn has_foogroup(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::Foogroup(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foogroup(&mut self, value: self::test_oneof2::FooGroup) {
+        self.foo = self::test_oneof2::Foo::Foogroup(::std::boxed::Box::new(value))
+    }
+    pub fn take_foogroup(&mut self) -> ::std::option::Option<self::test_oneof2::FooGroup> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::Foogroup(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foogroup(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`foo_lazy_message`] field
+    ///
+    /// [`foo_lazy_message`]: #method.foo_lazy_message
+    pub const FOO_LAZY_MESSAGE_FIELD_NUMBER: i32 = 11;
+    pub fn foo_lazy_message(&self) -> ::std::option::Option<&self::test_oneof2::NestedMessage> {
+        match &self.foo {
+            self::test_oneof2::Foo::FooLazyMessage(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_lazy_message'] field
+    ///
+    /// [`foo_lazy_message`]: #method.foo_lazy_message
+    pub fn foo_lazy_message_mut(&mut self) -> &mut self::test_oneof2::NestedMessage {
+        match self.foo {
+            self::test_oneof2::Foo::FooLazyMessage(ref mut value) => value,
+            _ => {
+                self.set_foo_lazy_message(::std::default::Default::default());
+                self.foo_lazy_message_mut()
+            }
+        }
+    }
+    pub fn has_foo_lazy_message(&self) -> bool {
+        match &self.foo {
+            self::test_oneof2::Foo::FooLazyMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_lazy_message(&mut self, value: self::test_oneof2::NestedMessage) {
+        self.foo = self::test_oneof2::Foo::FooLazyMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_foo_lazy_message(&mut self) -> ::std::option::Option<self::test_oneof2::NestedMessage> {
+        match ::std::mem::replace(&mut self.foo, self::test_oneof2::Foo::None) {
+            self::test_oneof2::Foo::FooLazyMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_lazy_message(&mut self) {
+        self.foo = self::test_oneof2::Foo::None
+    }
+    /// Gets the field number of the [`bar_int`] field
+    ///
+    /// [`bar_int`]: #method.bar_int
+    pub const BAR_INT_FIELD_NUMBER: i32 = 12;
+    /// A constant value representing the default value of the [`bar_int`] field
+    ///
+    /// [`bar_int`]: #method.bar_int
+    pub const BAR_INT_DEFAULT_VALUE: i32 = 5;
+    pub fn bar_int(&self) -> ::std::option::Option<&i32> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarInt(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_int'] field
+    ///
+    /// [`bar_int`]: #method.bar_int
+    pub fn bar_int_mut(&mut self) -> &mut i32 {
+        match self.bar {
+            self::test_oneof2::Bar::BarInt(ref mut value) => value,
+            _ => {
+                self.set_bar_int(::std::default::Default::default());
+                self.bar_int_mut()
+            }
+        }
+    }
+    pub fn has_bar_int(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarInt(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_int(&mut self, value: i32) {
+        self.bar = self::test_oneof2::Bar::BarInt(value)
+    }
+    pub fn take_bar_int(&mut self) -> ::std::option::Option<i32> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarInt(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_int(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
+    /// Gets the field number of the [`bar_string`] field
+    ///
+    /// [`bar_string`]: #method.bar_string
+    pub const BAR_STRING_FIELD_NUMBER: i32 = 13;
+    /// A constant value representing the default value of the [`bar_string`] field
+    ///
+    /// [`bar_string`]: #method.bar_string
+    pub const BAR_STRING_DEFAULT_VALUE: &'static str = "STRING";
+    pub fn bar_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarString(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_string'] field
+    ///
+    /// [`bar_string`]: #method.bar_string
+    pub fn bar_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.bar {
+            self::test_oneof2::Bar::BarString(ref mut value) => value,
+            _ => {
+                self.set_bar_string(::std::default::Default::default());
+                self.bar_string_mut()
+            }
+        }
+    }
+    pub fn has_bar_string(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_string(&mut self, value: ::std::string::String) {
+        self.bar = self::test_oneof2::Bar::BarString(value)
+    }
+    pub fn take_bar_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_string(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
+    /// Gets the field number of the [`bar_cord`] field
+    ///
+    /// [`bar_cord`]: #method.bar_cord
+    pub const BAR_CORD_FIELD_NUMBER: i32 = 14;
+    /// A constant value representing the default value of the [`bar_cord`] field
+    ///
+    /// [`bar_cord`]: #method.bar_cord
+    pub const BAR_CORD_DEFAULT_VALUE: &'static str = "CORD";
+    pub fn bar_cord(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarCord(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_cord'] field
+    ///
+    /// [`bar_cord`]: #method.bar_cord
+    pub fn bar_cord_mut(&mut self) -> &mut ::std::string::String {
+        match self.bar {
+            self::test_oneof2::Bar::BarCord(ref mut value) => value,
+            _ => {
+                self.set_bar_cord(::std::default::Default::default());
+                self.bar_cord_mut()
+            }
+        }
+    }
+    pub fn has_bar_cord(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarCord(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_cord(&mut self, value: ::std::string::String) {
+        self.bar = self::test_oneof2::Bar::BarCord(value)
+    }
+    pub fn take_bar_cord(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarCord(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_cord(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
+    /// Gets the field number of the [`bar_string_piece`] field
+    ///
+    /// [`bar_string_piece`]: #method.bar_string_piece
+    pub const BAR_STRING_PIECE_FIELD_NUMBER: i32 = 15;
+    /// A constant value representing the default value of the [`bar_string_piece`] field
+    ///
+    /// [`bar_string_piece`]: #method.bar_string_piece
+    pub const BAR_STRING_PIECE_DEFAULT_VALUE: &'static str = "SPIECE";
+    pub fn bar_string_piece(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarStringPiece(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_string_piece'] field
+    ///
+    /// [`bar_string_piece`]: #method.bar_string_piece
+    pub fn bar_string_piece_mut(&mut self) -> &mut ::std::string::String {
+        match self.bar {
+            self::test_oneof2::Bar::BarStringPiece(ref mut value) => value,
+            _ => {
+                self.set_bar_string_piece(::std::default::Default::default());
+                self.bar_string_piece_mut()
+            }
+        }
+    }
+    pub fn has_bar_string_piece(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarStringPiece(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_string_piece(&mut self, value: ::std::string::String) {
+        self.bar = self::test_oneof2::Bar::BarStringPiece(value)
+    }
+    pub fn take_bar_string_piece(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarStringPiece(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_string_piece(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
+    /// Gets the field number of the [`bar_bytes`] field
+    ///
+    /// [`bar_bytes`]: #method.bar_bytes
+    pub const BAR_BYTES_FIELD_NUMBER: i32 = 16;
+    /// A constant value representing the default value of the [`bar_bytes`] field
+    ///
+    /// [`bar_bytes`]: #method.bar_bytes
+    pub const BAR_BYTES_DEFAULT_VALUE: &'static [u8] = &[66, 89, 84, 69, 83];
+    pub fn bar_bytes(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarBytes(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_bytes'] field
+    ///
+    /// [`bar_bytes`]: #method.bar_bytes
+    pub fn bar_bytes_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
+        match self.bar {
+            self::test_oneof2::Bar::BarBytes(ref mut value) => value,
+            _ => {
+                self.set_bar_bytes(::std::default::Default::default());
+                self.bar_bytes_mut()
+            }
+        }
+    }
+    pub fn has_bar_bytes(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarBytes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_bytes(&mut self, value: ::std::vec::Vec<u8>) {
+        self.bar = self::test_oneof2::Bar::BarBytes(value)
+    }
+    pub fn take_bar_bytes(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarBytes(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_bytes(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
+    /// Gets the field number of the [`bar_enum`] field
+    ///
+    /// [`bar_enum`]: #method.bar_enum
+    pub const BAR_ENUM_FIELD_NUMBER: i32 = 17;
+    /// A constant value representing the default value of the [`bar_enum`] field
+    ///
+    /// [`bar_enum`]: #method.bar_enum
+    pub const BAR_ENUM_DEFAULT_VALUE: ::protrust::EnumValue<self::test_oneof2::NestedEnum> = ::protrust::EnumValue::Defined(self::super::test_oneof2::NestedEnum::Bar);
+    pub fn bar_enum(&self) -> ::std::option::Option<&::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match &self.bar {
+            self::test_oneof2::Bar::BarEnum(ref bar) => ::std::option::Option::Some(bar),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['bar_enum'] field
+    ///
+    /// [`bar_enum`]: #method.bar_enum
+    pub fn bar_enum_mut(&mut self) -> &mut ::protrust::EnumValue<self::test_oneof2::NestedEnum> {
+        match self.bar {
+            self::test_oneof2::Bar::BarEnum(ref mut value) => value,
+            _ => {
+                self.set_bar_enum(::std::default::Default::default());
+                self.bar_enum_mut()
+            }
+        }
+    }
+    pub fn has_bar_enum(&self) -> bool {
+        match &self.bar {
+            self::test_oneof2::Bar::BarEnum(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_bar_enum(&mut self, value: ::protrust::EnumValue<self::test_oneof2::NestedEnum>) {
+        self.bar = self::test_oneof2::Bar::BarEnum(value)
+    }
+    pub fn take_bar_enum(&mut self) -> ::std::option::Option<::protrust::EnumValue<self::test_oneof2::NestedEnum>> {
+        match ::std::mem::replace(&mut self.bar, self::test_oneof2::Bar::None) {
+            self::test_oneof2::Bar::BarEnum(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.bar = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_bar_enum(&mut self) {
+        self.bar = self::test_oneof2::Bar::None
+    }
     /// Gets the field number of the [`baz_int`] field
     ///
     /// [`baz_int`]: #method.baz_int
@@ -13796,7 +14978,7 @@ impl self::TestOneof2 {
     }
 }
 pub mod test_oneof2 {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FooGroup {
         a: ::std::option::Option<i32>,
         b: ::std::option::Option<::std::string::String>,
@@ -13949,7 +15131,7 @@ pub mod test_oneof2 {
             self.b = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         qux_int: ::std::option::Option<i64>,
         corge_int: ::protrust::collections::RepeatedField<i32>,
@@ -14070,7 +15252,7 @@ pub mod test_oneof2 {
     }
     impl ::protrust::Enum for self::NestedEnum {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[45].enums()[0]
+            &self::super::file().messages()[45].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::NestedEnum {
@@ -14108,6 +15290,11 @@ pub mod test_oneof2 {
         Foogroup(::std::boxed::Box<self::super::test_oneof2::FooGroup>),
         FooLazyMessage(::std::boxed::Box<self::super::test_oneof2::NestedMessage>),
     }
+    impl ::std::default::Default for self::Foo {
+        fn default() -> Self {
+            self::Foo::None
+        }
+    }
     #[derive(Clone, Debug, PartialEq)]
     pub enum Bar {
         /// No value
@@ -14119,8 +15306,13 @@ pub mod test_oneof2 {
         BarBytes(::std::vec::Vec<u8>),
         BarEnum(::protrust::EnumValue<self::super::test_oneof2::NestedEnum>),
     }
+    impl ::std::default::Default for self::Bar {
+        fn default() -> Self {
+            self::Bar::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRequiredOneof {
     foo: self::test_required_oneof::Foo,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -14216,6 +15408,149 @@ impl ::protrust::Message for self::TestRequiredOneof {
     }
 }
 impl self::TestRequiredOneof {
+    /// Gets the field number of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_FIELD_NUMBER: i32 = 1;
+    /// A constant value representing the default value of the [`foo_int`] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub const FOO_INT_DEFAULT_VALUE: i32 = 0;
+    pub fn foo_int(&self) -> ::std::option::Option<&i32> {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooInt(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_int'] field
+    ///
+    /// [`foo_int`]: #method.foo_int
+    pub fn foo_int_mut(&mut self) -> &mut i32 {
+        match self.foo {
+            self::test_required_oneof::Foo::FooInt(ref mut value) => value,
+            _ => {
+                self.set_foo_int(::std::default::Default::default());
+                self.foo_int_mut()
+            }
+        }
+    }
+    pub fn has_foo_int(&self) -> bool {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooInt(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_int(&mut self, value: i32) {
+        self.foo = self::test_required_oneof::Foo::FooInt(value)
+    }
+    pub fn take_foo_int(&mut self) -> ::std::option::Option<i32> {
+        match ::std::mem::replace(&mut self.foo, self::test_required_oneof::Foo::None) {
+            self::test_required_oneof::Foo::FooInt(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_int(&mut self) {
+        self.foo = self::test_required_oneof::Foo::None
+    }
+    /// Gets the field number of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_FIELD_NUMBER: i32 = 2;
+    /// A constant value representing the default value of the [`foo_string`] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub const FOO_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn foo_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooString(ref foo) => ::std::option::Option::Some(foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_string'] field
+    ///
+    /// [`foo_string`]: #method.foo_string
+    pub fn foo_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.foo {
+            self::test_required_oneof::Foo::FooString(ref mut value) => value,
+            _ => {
+                self.set_foo_string(::std::default::Default::default());
+                self.foo_string_mut()
+            }
+        }
+    }
+    pub fn has_foo_string(&self) -> bool {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_string(&mut self, value: ::std::string::String) {
+        self.foo = self::test_required_oneof::Foo::FooString(value)
+    }
+    pub fn take_foo_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.foo, self::test_required_oneof::Foo::None) {
+            self::test_required_oneof::Foo::FooString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_string(&mut self) {
+        self.foo = self::test_required_oneof::Foo::None
+    }
+    /// Gets the field number of the [`foo_message`] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub const FOO_MESSAGE_FIELD_NUMBER: i32 = 3;
+    pub fn foo_message(&self) -> ::std::option::Option<&self::test_required_oneof::NestedMessage> {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooMessage(ref foo) => ::std::option::Option::Some(&**foo),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['foo_message'] field
+    ///
+    /// [`foo_message`]: #method.foo_message
+    pub fn foo_message_mut(&mut self) -> &mut self::test_required_oneof::NestedMessage {
+        match self.foo {
+            self::test_required_oneof::Foo::FooMessage(ref mut value) => value,
+            _ => {
+                self.set_foo_message(::std::default::Default::default());
+                self.foo_message_mut()
+            }
+        }
+    }
+    pub fn has_foo_message(&self) -> bool {
+        match &self.foo {
+            self::test_required_oneof::Foo::FooMessage(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_foo_message(&mut self, value: self::test_required_oneof::NestedMessage) {
+        self.foo = self::test_required_oneof::Foo::FooMessage(::std::boxed::Box::new(value))
+    }
+    pub fn take_foo_message(&mut self) -> ::std::option::Option<self::test_required_oneof::NestedMessage> {
+        match ::std::mem::replace(&mut self.foo, self::test_required_oneof::Foo::None) {
+            self::test_required_oneof::Foo::FooMessage(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.foo = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_foo_message(&mut self) {
+        self.foo = self::test_required_oneof::Foo::None
+    }
     /// Gets a shared reference to the [`foo`] oneof field
     ///
     /// [`foo`]: enum.Foo.html
@@ -14230,7 +15565,7 @@ impl self::TestRequiredOneof {
     }
 }
 pub mod test_required_oneof {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct NestedMessage {
         required_double: ::std::option::Option<f64>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -14334,8 +15669,13 @@ pub mod test_required_oneof {
         FooString(::std::string::String),
         FooMessage(::std::boxed::Box<self::super::test_required_oneof::NestedMessage>),
     }
+    impl ::std::default::Default for self::Foo {
+        fn default() -> Self {
+            self::Foo::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestPackedTypes {
     packed_int32: ::protrust::collections::RepeatedField<i32>,
     packed_int64: ::protrust::collections::RepeatedField<i64>,
@@ -14658,9 +15998,9 @@ impl self::TestPackedTypes {
         &mut self.packed_enum
     }
 }
-/// A message with the same fields as TestPackedTypes, but without packing. Used
-/// to test packed <-> unpacked wire compatibility.
-#[derive(Clone, Debug, PartialEq)]
+///  A message with the same fields as TestPackedTypes, but without packing. Used
+///  to test packed <-> unpacked wire compatibility.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestUnpackedTypes {
     unpacked_int32: ::protrust::collections::RepeatedField<i32>,
     unpacked_int64: ::protrust::collections::RepeatedField<i64>,
@@ -14983,7 +16323,7 @@ impl self::TestUnpackedTypes {
         &mut self.unpacked_enum
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestPackedExtensions {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -15023,10 +16363,13 @@ impl ::protrust::LiteMessage for self::TestPackedExtensions {
 impl ::protrust::ExtensionMessage for self::TestPackedExtensions {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestPackedExtensions {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -15035,7 +16378,7 @@ impl ::protrust::Message for self::TestPackedExtensions {
 }
 impl self::TestPackedExtensions {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestUnpackedExtensions {
     unknown_fields: ::protrust::UnknownFieldSet,
     extensions: ::protrust::ExtensionSet<Self>,
@@ -15075,10 +16418,13 @@ impl ::protrust::LiteMessage for self::TestUnpackedExtensions {
 impl ::protrust::ExtensionMessage for self::TestUnpackedExtensions {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestUnpackedExtensions {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -15087,10 +16433,10 @@ impl ::protrust::Message for self::TestUnpackedExtensions {
 }
 impl self::TestUnpackedExtensions {
 }
-/// Used by ExtensionSetTest/DynamicExtensions.  The test actually builds
-/// a set of extensions to TestAllExtensions dynamically, based on the fields
-/// of this message type.
-#[derive(Clone, Debug, PartialEq)]
+///  Used by ExtensionSetTest/DynamicExtensions.  The test actually builds
+///  a set of extensions to TestAllExtensions dynamically, based on the fields
+///  of this message type.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestDynamicExtensions {
     scalar_extension: ::std::option::Option<u32>,
     enum_extension: ::std::option::Option<::protrust::EnumValue<self::ForeignEnum>>,
@@ -15342,7 +16688,7 @@ impl self::TestDynamicExtensions {
     ///
     /// [`message_extension`]: #method.message_extension
     pub const MESSAGE_EXTENSION_FIELD_NUMBER: i32 = 2003;
-    pub fn message_extension_option(&self) -> ::std::option::Option<&self::ForeignMessage> {
+    pub fn message_extension(&self) -> ::std::option::Option<&self::ForeignMessage> {
         self.message_extension.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`message_extension`] field
@@ -15379,7 +16725,7 @@ impl self::TestDynamicExtensions {
     ///
     /// [`dynamic_message_extension`]: #method.dynamic_message_extension
     pub const DYNAMIC_MESSAGE_EXTENSION_FIELD_NUMBER: i32 = 2004;
-    pub fn dynamic_message_extension_option(&self) -> ::std::option::Option<&self::test_dynamic_extensions::DynamicMessageType> {
+    pub fn dynamic_message_extension(&self) -> ::std::option::Option<&self::test_dynamic_extensions::DynamicMessageType> {
         self.dynamic_message_extension.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`dynamic_message_extension`] field
@@ -15439,11 +16785,11 @@ impl self::TestDynamicExtensions {
         &mut self.packed_extension
     }
 }
-/// Used by ExtensionSetTest/DynamicExtensions.  The test actually builds
-/// a set of extensions to TestAllExtensions dynamically, based on the fields
-/// of this message type.
+///  Used by ExtensionSetTest/DynamicExtensions.  The test actually builds
+///  a set of extensions to TestAllExtensions dynamically, based on the fields
+///  of this message type.
 pub mod test_dynamic_extensions {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct DynamicMessageType {
         dynamic_field: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -15541,7 +16887,7 @@ pub mod test_dynamic_extensions {
     }
     impl ::protrust::Enum for self::DynamicEnumType {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[51].enums()[0]
+            &self::super::file().messages()[51].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::DynamicEnumType {
@@ -15566,7 +16912,7 @@ pub mod test_dynamic_extensions {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestRepeatedScalarDifferentTagSizes {
     repeated_fixed32: ::protrust::collections::RepeatedField<u32>,
     repeated_int32: ::protrust::collections::RepeatedField<i32>,
@@ -15654,9 +17000,9 @@ impl self::TestRepeatedScalarDifferentTagSizes {
     ///
     /// [`repeated_fixed32`]: #method.repeated_fixed32
     pub const REPEATED_FIXED32_FIELD_NUMBER: i32 = 12;
-    /// Parsing repeated fixed size values used to fail. This message needs to be
-    /// used in order to get a tag of the right size; all of the repeated fields
-    /// in TestAllTypes didn't trigger the check.
+    ///  Parsing repeated fixed size values used to fail. This message needs to be
+    ///  used in order to get a tag of the right size; all of the repeated fields
+    ///  in TestAllTypes didn't trigger the check.
     pub fn repeated_fixed32(&self) -> &::protrust::collections::RepeatedField<u32> {
         &self.repeated_fixed32
     }
@@ -15670,7 +17016,7 @@ impl self::TestRepeatedScalarDifferentTagSizes {
     ///
     /// [`repeated_int32`]: #method.repeated_int32
     pub const REPEATED_INT32_FIELD_NUMBER: i32 = 13;
-    /// Check for a varint type, just for good measure.
+    ///  Check for a varint type, just for good measure.
     pub fn repeated_int32(&self) -> &::protrust::collections::RepeatedField<i32> {
         &self.repeated_int32
     }
@@ -15684,7 +17030,7 @@ impl self::TestRepeatedScalarDifferentTagSizes {
     ///
     /// [`repeated_fixed64`]: #method.repeated_fixed64
     pub const REPEATED_FIXED64_FIELD_NUMBER: i32 = 2046;
-    /// These have two-byte tags.
+    ///  These have two-byte tags.
     pub fn repeated_fixed64(&self) -> &::protrust::collections::RepeatedField<u64> {
         &self.repeated_fixed64
     }
@@ -15711,7 +17057,7 @@ impl self::TestRepeatedScalarDifferentTagSizes {
     ///
     /// [`repeated_float`]: #method.repeated_float
     pub const REPEATED_FLOAT_FIELD_NUMBER: i32 = 262142;
-    /// Three byte tags.
+    ///  Three byte tags.
     pub fn repeated_float(&self) -> &::protrust::collections::RepeatedField<f32> {
         &self.repeated_float
     }
@@ -15735,9 +17081,9 @@ impl self::TestRepeatedScalarDifferentTagSizes {
         &mut self.repeated_uint64
     }
 }
-/// Test that if an optional or required message/group field appears multiple
-/// times in the input, they need to be merged.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that if an optional or required message/group field appears multiple
+///  times in the input, they need to be merged.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestParsingMerge {
     required_all_types: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
     optional_all_types: ::std::option::Option<::std::boxed::Box<self::TestAllTypes>>,
@@ -15862,10 +17208,13 @@ impl ::protrust::LiteMessage for self::TestParsingMerge {
 impl ::protrust::ExtensionMessage for self::TestParsingMerge {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestParsingMerge {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -15877,7 +17226,7 @@ impl self::TestParsingMerge {
     ///
     /// [`required_all_types`]: #method.required_all_types
     pub const REQUIRED_ALL_TYPES_FIELD_NUMBER: i32 = 1;
-    pub fn required_all_types_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn required_all_types(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.required_all_types.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`required_all_types`] field
@@ -15914,7 +17263,7 @@ impl self::TestParsingMerge {
     ///
     /// [`optional_all_types`]: #method.optional_all_types
     pub const OPTIONAL_ALL_TYPES_FIELD_NUMBER: i32 = 2;
-    pub fn optional_all_types_option(&self) -> ::std::option::Option<&self::TestAllTypes> {
+    pub fn optional_all_types(&self) -> ::std::option::Option<&self::TestAllTypes> {
         self.optional_all_types.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_all_types`] field
@@ -15964,7 +17313,7 @@ impl self::TestParsingMerge {
     ///
     /// [`optionalgroup`]: #method.optionalgroup
     pub const OPTIONALGROUP_FIELD_NUMBER: i32 = 10;
-    pub fn optionalgroup_option(&self) -> ::std::option::Option<&self::test_parsing_merge::OptionalGroup> {
+    pub fn optionalgroup(&self) -> ::std::option::Option<&self::test_parsing_merge::OptionalGroup> {
         self.optionalgroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optionalgroup`] field
@@ -16011,15 +17360,15 @@ impl self::TestParsingMerge {
         &mut self.repeatedgroup
     }
 }
-/// Test that if an optional or required message/group field appears multiple
-/// times in the input, they need to be merged.
+///  Test that if an optional or required message/group field appears multiple
+///  times in the input, they need to be merged.
 pub mod test_parsing_merge {
-    /// RepeatedFieldsGenerator defines matching field types as TestParsingMerge,
-    /// except that all fields are repeated. In the tests, we will serialize the
-    /// RepeatedFieldsGenerator to bytes, and parse the bytes to TestParsingMerge.
-    /// Repeated fields in RepeatedFieldsGenerator are expected to be merged into
-    /// the corresponding required/optional fields in TestParsingMerge.
-    #[derive(Clone, Debug, PartialEq)]
+    ///  RepeatedFieldsGenerator defines matching field types as TestParsingMerge,
+    ///  except that all fields are repeated. In the tests, we will serialize the
+    ///  RepeatedFieldsGenerator to bytes, and parse the bytes to TestParsingMerge.
+    ///  Repeated fields in RepeatedFieldsGenerator are expected to be merged into
+    ///  the corresponding required/optional fields in TestParsingMerge.
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct RepeatedFieldsGenerator {
         field1: ::protrust::collections::RepeatedField<self::super::TestAllTypes>,
         field2: ::protrust::collections::RepeatedField<self::super::TestAllTypes>,
@@ -16217,13 +17566,13 @@ pub mod test_parsing_merge {
             &mut self.ext2
         }
     }
-    /// RepeatedFieldsGenerator defines matching field types as TestParsingMerge,
-    /// except that all fields are repeated. In the tests, we will serialize the
-    /// RepeatedFieldsGenerator to bytes, and parse the bytes to TestParsingMerge.
-    /// Repeated fields in RepeatedFieldsGenerator are expected to be merged into
-    /// the corresponding required/optional fields in TestParsingMerge.
+    ///  RepeatedFieldsGenerator defines matching field types as TestParsingMerge,
+    ///  except that all fields are repeated. In the tests, we will serialize the
+    ///  RepeatedFieldsGenerator to bytes, and parse the bytes to TestParsingMerge.
+    ///  Repeated fields in RepeatedFieldsGenerator are expected to be merged into
+    ///  the corresponding required/optional fields in TestParsingMerge.
     pub mod repeated_fields_generator {
-        #[derive(Clone, Debug, PartialEq)]
+        #[derive(Clone, Debug, PartialEq, Default)]
         pub struct Group1 {
             field1: ::std::option::Option<::std::boxed::Box<self::super::super::TestAllTypes>>,
             unknown_fields: ::protrust::UnknownFieldSet,
@@ -16291,7 +17640,7 @@ pub mod test_parsing_merge {
             ///
             /// [`field1`]: #method.field1
             pub const FIELD1_FIELD_NUMBER: i32 = 11;
-            pub fn field1_option(&self) -> ::std::option::Option<&self::super::super::TestAllTypes> {
+            pub fn field1(&self) -> ::std::option::Option<&self::super::super::TestAllTypes> {
                 self.field1.as_ref().map(|b| &**b)
             }
             /// Returns a unique reference to the [`field1`] field
@@ -16325,7 +17674,7 @@ pub mod test_parsing_merge {
                 self.field1 = ::std::option::Option::None
             }
         }
-        #[derive(Clone, Debug, PartialEq)]
+        #[derive(Clone, Debug, PartialEq, Default)]
         pub struct Group2 {
             field1: ::std::option::Option<::std::boxed::Box<self::super::super::TestAllTypes>>,
             unknown_fields: ::protrust::UnknownFieldSet,
@@ -16393,7 +17742,7 @@ pub mod test_parsing_merge {
             ///
             /// [`field1`]: #method.field1
             pub const FIELD1_FIELD_NUMBER: i32 = 21;
-            pub fn field1_option(&self) -> ::std::option::Option<&self::super::super::TestAllTypes> {
+            pub fn field1(&self) -> ::std::option::Option<&self::super::super::TestAllTypes> {
                 self.field1.as_ref().map(|b| &**b)
             }
             /// Returns a unique reference to the [`field1`] field
@@ -16428,7 +17777,7 @@ pub mod test_parsing_merge {
             }
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OptionalGroup {
         optional_group_all_types: ::std::option::Option<::std::boxed::Box<self::super::TestAllTypes>>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -16496,7 +17845,7 @@ pub mod test_parsing_merge {
         ///
         /// [`optional_group_all_types`]: #method.optional_group_all_types
         pub const OPTIONAL_GROUP_ALL_TYPES_FIELD_NUMBER: i32 = 11;
-        pub fn optional_group_all_types_option(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
+        pub fn optional_group_all_types(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
             self.optional_group_all_types.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`optional_group_all_types`] field
@@ -16530,7 +17879,7 @@ pub mod test_parsing_merge {
             self.optional_group_all_types = ::std::option::Option::None
         }
     }
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct RepeatedGroup {
         repeated_group_all_types: ::std::option::Option<::std::boxed::Box<self::super::TestAllTypes>>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -16598,7 +17947,7 @@ pub mod test_parsing_merge {
         ///
         /// [`repeated_group_all_types`]: #method.repeated_group_all_types
         pub const REPEATED_GROUP_ALL_TYPES_FIELD_NUMBER: i32 = 21;
-        pub fn repeated_group_all_types_option(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
+        pub fn repeated_group_all_types(&self) -> ::std::option::Option<&self::super::TestAllTypes> {
             self.repeated_group_all_types.as_ref().map(|b| &**b)
         }
         /// Returns a unique reference to the [`repeated_group_all_types`] field
@@ -16635,7 +17984,7 @@ pub mod test_parsing_merge {
     pub static OPTIONAL_EXT: ::protrust::Extension<self::super::TestParsingMerge, self::super::TestAllTypes, self::super::TestAllTypes> = ::protrust::Extension::message(8002);
     pub static REPEATED_EXT: ::protrust::RepeatedExtension<self::super::TestParsingMerge, self::super::TestAllTypes> = ::protrust::RepeatedExtension::message(8010);
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestCommentInjectionMessage {
     a: ::std::option::Option<::std::string::String>,
     unknown_fields: ::protrust::UnknownFieldSet,
@@ -16696,7 +18045,7 @@ impl self::TestCommentInjectionMessage {
     ///
     /// [`a`]: #method.a
     pub const A_DEFAULT_VALUE: &'static str = "*/ <- Neither should this.";
-    /// */ <- This should not close the generated doc comment
+    ///  */ <- This should not close the generated doc comment
     pub fn a(&self) -> &str {
         self.a.as_ref().map(|v| &**v).unwrap_or(Self::A_DEFAULT_VALUE)
     }
@@ -16738,8 +18087,8 @@ impl self::TestCommentInjectionMessage {
         self.a = ::std::option::Option::None
     }
 }
-/// Test that RPC services work.
-#[derive(Clone, Debug, PartialEq)]
+///  Test that RPC services work.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FooRequest {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16779,7 +18128,7 @@ impl ::protrust::Message for self::FooRequest {
 }
 impl self::FooRequest {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FooResponse {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16819,7 +18168,7 @@ impl ::protrust::Message for self::FooResponse {
 }
 impl self::FooResponse {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FooClientMessage {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16859,7 +18208,7 @@ impl ::protrust::Message for self::FooClientMessage {
 }
 impl self::FooClientMessage {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct FooServerMessage {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16899,7 +18248,7 @@ impl ::protrust::Message for self::FooServerMessage {
 }
 impl self::FooServerMessage {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct BarRequest {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16939,7 +18288,7 @@ impl ::protrust::Message for self::BarRequest {
 }
 impl self::BarRequest {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct BarResponse {
     unknown_fields: ::protrust::UnknownFieldSet,
 }
@@ -16979,7 +18328,7 @@ impl ::protrust::Message for self::BarResponse {
 }
 impl self::BarResponse {
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestJsonName {
     field_name1: ::std::option::Option<i32>,
     fieldName2: ::std::option::Option<i32>,
@@ -17319,7 +18668,7 @@ impl self::TestJsonName {
         self.field_name6 = ::std::option::Option::None
     }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestHugeFieldNumbers {
     optional_int32: ::std::option::Option<i32>,
     fixed_32: ::std::option::Option<i32>,
@@ -17563,10 +18912,13 @@ impl ::protrust::LiteMessage for self::TestHugeFieldNumbers {
 impl ::protrust::ExtensionMessage for self::TestHugeFieldNumbers {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestHugeFieldNumbers {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -17808,7 +19160,7 @@ impl self::TestHugeFieldNumbers {
     ///
     /// [`optional_message`]: #method.optional_message
     pub const OPTIONAL_MESSAGE_FIELD_NUMBER: i32 = 536870007;
-    pub fn optional_message_option(&self) -> ::std::option::Option<&self::ForeignMessage> {
+    pub fn optional_message(&self) -> ::std::option::Option<&self::ForeignMessage> {
         self.optional_message.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optional_message`] field
@@ -17845,7 +19197,7 @@ impl self::TestHugeFieldNumbers {
     ///
     /// [`optionalgroup`]: #method.optionalgroup
     pub const OPTIONALGROUP_FIELD_NUMBER: i32 = 536870008;
-    pub fn optionalgroup_option(&self) -> ::std::option::Option<&self::test_huge_field_numbers::OptionalGroup> {
+    pub fn optionalgroup(&self) -> ::std::option::Option<&self::test_huge_field_numbers::OptionalGroup> {
         self.optionalgroup.as_ref().map(|b| &**b)
     }
     /// Returns a unique reference to the [`optionalgroup`] field
@@ -17891,6 +19243,198 @@ impl self::TestHugeFieldNumbers {
     pub fn string_string_map_mut(&mut self) -> &mut ::protrust::collections::MapField<::std::string::String, ::std::string::String> {
         &mut self.string_string_map
     }
+    /// Gets the field number of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_FIELD_NUMBER: i32 = 536870011;
+    /// A constant value representing the default value of the [`oneof_uint32`] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub const ONEOF_UINT32_DEFAULT_VALUE: u32 = 0;
+    pub fn oneof_uint32(&self) -> ::std::option::Option<&u32> {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofUint32(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_uint32'] field
+    ///
+    /// [`oneof_uint32`]: #method.oneof_uint32
+    pub fn oneof_uint32_mut(&mut self) -> &mut u32 {
+        match self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofUint32(ref mut value) => value,
+            _ => {
+                self.set_oneof_uint32(::std::default::Default::default());
+                self.oneof_uint32_mut()
+            }
+        }
+    }
+    pub fn has_oneof_uint32(&self) -> bool {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofUint32(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_uint32(&mut self, value: u32) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::OneofUint32(value)
+    }
+    pub fn take_oneof_uint32(&mut self) -> ::std::option::Option<u32> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_huge_field_numbers::OneofField::None) {
+            self::test_huge_field_numbers::OneofField::OneofUint32(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_uint32(&mut self) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_test_all_types`] field
+    ///
+    /// [`oneof_test_all_types`]: #method.oneof_test_all_types
+    pub const ONEOF_TEST_ALL_TYPES_FIELD_NUMBER: i32 = 536870012;
+    pub fn oneof_test_all_types(&self) -> ::std::option::Option<&self::TestAllTypes> {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofTestAllTypes(ref oneof_field) => ::std::option::Option::Some(&**oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_test_all_types'] field
+    ///
+    /// [`oneof_test_all_types`]: #method.oneof_test_all_types
+    pub fn oneof_test_all_types_mut(&mut self) -> &mut self::TestAllTypes {
+        match self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofTestAllTypes(ref mut value) => value,
+            _ => {
+                self.set_oneof_test_all_types(::std::default::Default::default());
+                self.oneof_test_all_types_mut()
+            }
+        }
+    }
+    pub fn has_oneof_test_all_types(&self) -> bool {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofTestAllTypes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_test_all_types(&mut self, value: self::TestAllTypes) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::OneofTestAllTypes(::std::boxed::Box::new(value))
+    }
+    pub fn take_oneof_test_all_types(&mut self) -> ::std::option::Option<self::TestAllTypes> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_huge_field_numbers::OneofField::None) {
+            self::test_huge_field_numbers::OneofField::OneofTestAllTypes(value) => {
+                ::std::option::Option::Some(*value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_test_all_types(&mut self) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_FIELD_NUMBER: i32 = 536870013;
+    /// A constant value representing the default value of the [`oneof_string`] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub const ONEOF_STRING_DEFAULT_VALUE: &'static str = "";
+    pub fn oneof_string(&self) -> ::std::option::Option<&::std::string::String> {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofString(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_string'] field
+    ///
+    /// [`oneof_string`]: #method.oneof_string
+    pub fn oneof_string_mut(&mut self) -> &mut ::std::string::String {
+        match self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofString(ref mut value) => value,
+            _ => {
+                self.set_oneof_string(::std::default::Default::default());
+                self.oneof_string_mut()
+            }
+        }
+    }
+    pub fn has_oneof_string(&self) -> bool {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofString(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_string(&mut self, value: ::std::string::String) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::OneofString(value)
+    }
+    pub fn take_oneof_string(&mut self) -> ::std::option::Option<::std::string::String> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_huge_field_numbers::OneofField::None) {
+            self::test_huge_field_numbers::OneofField::OneofString(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_string(&mut self) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::None
+    }
+    /// Gets the field number of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_FIELD_NUMBER: i32 = 536870014;
+    /// A constant value representing the default value of the [`oneof_bytes`] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub const ONEOF_BYTES_DEFAULT_VALUE: &'static [u8] = &[];
+    pub fn oneof_bytes(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofBytes(ref oneof_field) => ::std::option::Option::Some(oneof_field),
+            _ => ::std::option::Option::None
+        }
+    }
+    /// Returns a unique reference to the ['oneof_bytes'] field
+    ///
+    /// [`oneof_bytes`]: #method.oneof_bytes
+    pub fn oneof_bytes_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
+        match self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofBytes(ref mut value) => value,
+            _ => {
+                self.set_oneof_bytes(::std::default::Default::default());
+                self.oneof_bytes_mut()
+            }
+        }
+    }
+    pub fn has_oneof_bytes(&self) -> bool {
+        match &self.oneof_field {
+            self::test_huge_field_numbers::OneofField::OneofBytes(_) => true,
+            _ => false
+        }
+    }
+    pub fn set_oneof_bytes(&mut self, value: ::std::vec::Vec<u8>) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::OneofBytes(value)
+    }
+    pub fn take_oneof_bytes(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
+        match ::std::mem::replace(&mut self.oneof_field, self::test_huge_field_numbers::OneofField::None) {
+            self::test_huge_field_numbers::OneofField::OneofBytes(value) => {
+                ::std::option::Option::Some(value)
+            }
+            value => {
+                self.oneof_field = value;
+                ::std::option::Option::None
+            }
+        }
+    }
+    pub fn clear_oneof_bytes(&mut self) {
+        self.oneof_field = self::test_huge_field_numbers::OneofField::None
+    }
     /// Gets a shared reference to the [`oneof_field`] oneof field
     ///
     /// [`oneof_field`]: enum.OneofField.html
@@ -17905,7 +19449,7 @@ impl self::TestHugeFieldNumbers {
     }
 }
 pub mod test_huge_field_numbers {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OptionalGroup {
         group_a: ::std::option::Option<i32>,
         unknown_fields: ::protrust::UnknownFieldSet,
@@ -18005,8 +19549,13 @@ pub mod test_huge_field_numbers {
         OneofString(::std::string::String),
         OneofBytes(::std::vec::Vec<u8>),
     }
+    impl ::std::default::Default for self::OneofField {
+        fn default() -> Self {
+            self::OneofField::None
+        }
+    }
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct TestExtensionInsideTable {
     field1: ::std::option::Option<i32>,
     field2: ::std::option::Option<i32>,
@@ -18172,10 +19721,13 @@ impl ::protrust::LiteMessage for self::TestExtensionInsideTable {
 impl ::protrust::ExtensionMessage for self::TestExtensionInsideTable {
     fn registry(&self) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.registry() }
     fn replace_registry(&mut self, extensions: ::std::option::Option<&'static ::protrust::ExtensionRegistry>) -> ::std::option::Option<&'static ::protrust::ExtensionRegistry> { self.extensions.replace_registry(extensions) }
-    fn field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&::protrust::ExtensionField<V, D>> { self.extensions.field(extension) }
-    fn field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::cmp::PartialEq<D> + ::std::fmt::Debug + ::std::marker::Sync, D: ::std::fmt::Debug + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<&mut ::protrust::ExtensionField<V, D>> { self.extensions.field_mut(extension) }
-    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field(extension) }
-    fn repeated_field_mut<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Sync + 'static>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<&mut ::protrust::collections::RepeatedField<V>> { self.extensions.repeated_field_mut(extension) }
+    fn has_extension<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn has_extension_unchecked<T: ::protrust::ExtensionIdentifier>(&self, extension: &'static T) -> bool { self.extensions.has_extension(extension) }
+    fn get_value<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&V> { self.extensions.get_value(extension) }
+    fn get_value_or_default<V: ::std::clone::Clone + std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync + ::std::ops::Deref<Target = L>, D: ::std::marker::Sync + ::std::ops::Deref<Target = L>, L>(&self, extension: &'static ::protrust::Extension<Self, V, D>) -> Option<&L> { self.extensions.get_value_or_default(extension) }
+    fn get_repeated_value<V: ::std::cmp::PartialEq + ::std::clone::Clone + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> Option<&::protrust::collections::RepeatedField<V>> { self.extensions.get_repeated_value(extension) }
+    fn field<V: ::std::default::Default + ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync, D: ::std::marker::Sync>(&mut self, extension: &'static ::protrust::Extension<Self, V, D>) -> ::std::option::Option<::protrust::ExtensionField<Self, V, D>> { self.extensions.field(extension) }
+    fn repeated_field<V: ::std::clone::Clone + ::std::cmp::PartialEq + ::std::fmt::Debug + ::std::marker::Send + ::std::marker::Sync>(&mut self, extension: &'static ::protrust::RepeatedExtension<Self, V>) -> ::std::option::Option<::protrust::RepeatedExtensionField<Self, V>> { self.extensions.repeated_field(extension) }
 }
 impl ::protrust::Message for self::TestExtensionInsideTable {
     fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
@@ -18540,7 +20092,7 @@ impl ::std::convert::From<self::ForeignEnum> for i32 {
         }
     }
 }
-/// Test an enum that has multiple values with the same number.
+///  Test an enum that has multiple values with the same number.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TestEnumWithDupValue {
     Foo1,
@@ -18579,7 +20131,7 @@ impl ::std::convert::From<self::TestEnumWithDupValue> for i32 {
         }
     }
 }
-/// Test an enum with large, unordered values.
+///  Test an enum with large, unordered values.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TestSparseEnum {
     SparseA,

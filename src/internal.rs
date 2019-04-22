@@ -8,7 +8,9 @@ impl Primitive for i32 {
         *self == 0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for u32 {
@@ -16,7 +18,9 @@ impl Primitive for u32 {
         *self == 0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for f32 {
@@ -24,7 +28,9 @@ impl Primitive for f32 {
         *self == 0.0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for f64 {
@@ -32,7 +38,9 @@ impl Primitive for f64 {
         *self == 0.0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for i64 {
@@ -40,7 +48,9 @@ impl Primitive for i64 {
         *self == 0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for u64 {
@@ -48,7 +58,9 @@ impl Primitive for u64 {
         *self == 0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for bool {
@@ -56,7 +68,9 @@ impl Primitive for bool {
         !self
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 impl Primitive for String {
@@ -64,7 +78,9 @@ impl Primitive for String {
         self.len() == 0
     }
 
-    fn is_packable() -> bool { false }
+    fn is_packable() -> bool {
+        false
+    }
 }
 
 impl Primitive for Vec<u8> {
@@ -72,7 +88,9 @@ impl Primitive for Vec<u8> {
         self.len() == 0
     }
 
-    fn is_packable() -> bool { false }
+    fn is_packable() -> bool {
+        false
+    }
 }
 
 impl<T: crate::CodedMessage> Primitive for T {
@@ -80,7 +98,9 @@ impl<T: crate::CodedMessage> Primitive for T {
         false
     }
 
-    fn is_packable() -> bool { false }
+    fn is_packable() -> bool {
+        false
+    }
 }
 
 impl<E: crate::Enum> Primitive for crate::EnumValue<E> {
@@ -88,7 +108,9 @@ impl<E: crate::Enum> Primitive for crate::EnumValue<E> {
         i32::from(self.clone()) == 0
     }
 
-    fn is_packable() -> bool { true }
+    fn is_packable() -> bool {
+        true
+    }
 }
 
 pub trait Sealed {}

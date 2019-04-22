@@ -8,8 +8,8 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     super::pool().find_file_by_name("addressbook.proto").unwrap()
 }
 
-/// [START messages]
-#[derive(Clone, Debug, PartialEq)]
+///  [START messages]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct Person {
     name: ::std::string::String,
     id: i32,
@@ -138,7 +138,7 @@ impl self::Person {
     ///
     /// [`id`]: #method.id
     pub const ID_DEFAULT_VALUE: i32 = 0;
-    /// Unique ID number for this person.
+    ///  Unique ID number for this person.
     pub fn id(&self) -> i32 {
         self.id
     }
@@ -192,9 +192,9 @@ impl self::Person {
         &mut self.last_updated
     }
 }
-/// [START messages]
+///  [START messages]
 pub mod person {
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Default)]
     pub struct PhoneNumber {
         number: ::std::string::String,
         r#type: ::protrust::EnumValue<self::PhoneType>,
@@ -304,7 +304,7 @@ pub mod person {
     }
     impl ::protrust::Enum for self::PhoneType {
         fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
-            &self::file().messages()[0].enums()[0]
+            &self::super::file().messages()[0].enums()[0]
         }
     }
     impl ::std::convert::TryFrom<i32> for self::PhoneType {
@@ -329,8 +329,8 @@ pub mod person {
         }
     }
 }
-/// Our address book file is just one of these.
-#[derive(Clone, Debug, PartialEq)]
+///  Our address book file is just one of these.
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct AddressBook {
     people: ::protrust::collections::RepeatedField<self::Person>,
     unknown_fields: ::protrust::UnknownFieldSet,

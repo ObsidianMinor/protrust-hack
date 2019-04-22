@@ -425,7 +425,7 @@ impl Error for InputError {
         match self {
             InputError::IoError(ref e) => Some(e),
             InputError::InvalidString(ref e) => Some(e),
-            _ => None
+            _ => None,
         }
     }
 }
@@ -448,7 +448,7 @@ impl<'a> CodedInput<'a> {
             inner,
             limit: None,
             last_tag: None,
-            registry: None
+            registry: None,
         }
     }
 
@@ -738,9 +738,7 @@ impl<'a> CodedInput<'a> {
         Err(InputError::MalformedVarint)
     }
     /// Reads an enum value from the input
-    pub fn read_enum_value<E: crate::Enum>(
-        &mut self,
-    ) -> InputResult<crate::EnumValue<E>> {
+    pub fn read_enum_value<E: crate::Enum>(&mut self) -> InputResult<crate::EnumValue<E>> {
         self.read_int32().map(crate::EnumValue::from)
     }
 }
@@ -774,7 +772,7 @@ impl Error for OutputError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             OutputError::IoError(ref e) => Some(e),
-            _ => None
+            _ => None,
         }
     }
 }
@@ -946,18 +944,15 @@ impl<'a> CodedOutput<'a> {
     }
 
     /// Writes an enum value to the output
-    pub fn write_enum_value<E: crate::Enum>(
-        &mut self,
-        value: crate::EnumValue<E>,
-    ) -> OutputResult {
+    pub fn write_enum_value<E: crate::Enum>(&mut self, value: crate::EnumValue<E>) -> OutputResult {
         self.write_int32(value.into())
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use super::{CodedInput, CodedOutput, FieldNumber, InputError, InputResult, OutputResult, Tag};
     use std::fmt::Debug;
-    use super::{FieldNumber, Tag, CodedInput, CodedOutput, InputError, InputResult, OutputResult};
 
     #[test]
     fn field_number_checks() {
@@ -1000,9 +995,10 @@ mod tests {
     type Result = std::result::Result<(), Box<std::error::Error>>;
 
     fn roundtrip<T: Debug + PartialEq, W, R>(values: &[T], write: W, read: R) -> Result
-        where 
-            W: Fn(&mut CodedOutput, &T) -> OutputResult,
-            R: Fn(&mut CodedInput) -> InputResult<T> {
+    where
+        W: Fn(&mut CodedOutput, &T) -> OutputResult,
+        R: Fn(&mut CodedInput) -> InputResult<T>,
+    {
         let mut coded_vec = Vec::new();
         let mut output = CodedOutput::new(&mut coded_vec);
 
@@ -1025,107 +1021,151 @@ mod tests {
 
     #[test]
     fn roundtrip_double() -> Result {
-        roundtrip(&[0.0, 1.0, 0.1, -1.0, std::f64::INFINITY, std::f64::MAX, std::f64::MIN, std::f64::NEG_INFINITY],
+        roundtrip(
+            &[
+                0.0,
+                1.0,
+                0.1,
+                -1.0,
+                std::f64::INFINITY,
+                std::f64::MAX,
+                std::f64::MIN,
+                std::f64::NEG_INFINITY,
+            ],
             |o, v| o.write_double(*v),
-            |i| i.read_double())
+            |i| i.read_double(),
+        )
     }
 
     #[test]
     fn roundtrip_float() -> Result {
-        roundtrip(&[0.0, 1.0, 0.1, -1.0, std::f32::INFINITY, std::f32::MAX, std::f32::MIN, std::f32::NEG_INFINITY],
+        roundtrip(
+            &[
+                0.0,
+                1.0,
+                0.1,
+                -1.0,
+                std::f32::INFINITY,
+                std::f32::MAX,
+                std::f32::MIN,
+                std::f32::NEG_INFINITY,
+            ],
             |o, v| o.write_float(*v),
-            |i| i.read_float())
+            |i| i.read_float(),
+        )
     }
 
     #[test]
     fn roundtrip_int32() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
             |o, v| o.write_int32(*v),
-            |i| i.read_int32())
+            |i| i.read_int32(),
+        )
     }
 
     #[test]
     fn roundtrip_int64() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
             |o, v| o.write_int64(*v),
-            |i| i.read_int64())
+            |i| i.read_int64(),
+        )
     }
 
     #[test]
     fn roundtrip_uint32() -> Result {
-        roundtrip(&[0, 1, 2, 3, std::u32::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, std::u32::MAX],
             |o, v| o.write_uint32(*v),
-            |i| i.read_uint32())
+            |i| i.read_uint32(),
+        )
     }
 
     #[test]
     fn roundtrip_uint64() -> Result {
-        roundtrip(&[0, 1, 2, 3, std::u64::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, std::u64::MAX],
             |o, v| o.write_uint64(*v),
-            |i| i.read_uint64())
+            |i| i.read_uint64(),
+        )
     }
 
     #[test]
     fn roundtrip_sint32() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
             |o, v| o.write_sint32(*v),
-            |i| i.read_sint32())
+            |i| i.read_sint32(),
+        )
     }
 
     #[test]
     fn roundtrip_sint64() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
             |o, v| o.write_sint64(*v),
-            |i| i.read_sint64())
+            |i| i.read_sint64(),
+        )
     }
 
     #[test]
     fn roundtrip_fixed32() -> Result {
-        roundtrip(&[0, 1, 2, 3, std::u32::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, std::u32::MAX],
             |o, v| o.write_fixed32(*v),
-            |i| i.read_fixed32())
+            |i| i.read_fixed32(),
+        )
     }
 
     #[test]
     fn roundtrip_fixed64() -> Result {
-        roundtrip(&[0, 1, 2, 3, std::u64::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, std::u64::MAX],
             |o, v| o.write_fixed64(*v),
-            |i| i.read_fixed64())
+            |i| i.read_fixed64(),
+        )
     }
 
     #[test]
     fn roundtrip_sfixed32() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i32::MIN, std::i32::MAX],
             |o, v| o.write_sfixed32(*v),
-            |i| i.read_sfixed32())
+            |i| i.read_sfixed32(),
+        )
     }
 
     #[test]
     fn roundtrip_sfixed64() -> Result {
-        roundtrip(&[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
+        roundtrip(
+            &[0, 1, 2, 3, -1, std::i64::MIN, std::i64::MAX],
             |o, v| o.write_sfixed64(*v),
-            |i| i.read_sfixed64())
+            |i| i.read_sfixed64(),
+        )
     }
 
     #[test]
     fn roundtrip_bool() -> Result {
-        roundtrip(&[true, false],
-            |o, v| o.write_bool(*v),
-            |i| i.read_bool())
+        roundtrip(&[true, false], |o, v| o.write_bool(*v), |i| i.read_bool())
     }
 
     #[test]
     fn roundtrip_string() -> Result {
-        roundtrip(&["Hello world".to_string(), "".to_string()],
+        roundtrip(
+            &["Hello world".to_string(), "".to_string()],
             |o, v| o.write_string(v),
-            |i| i.read_string())
+            |i| i.read_string(),
+        )
     }
 
     #[test]
     fn roundtrip_bytes() -> Result {
-        roundtrip(&[vec![1, 2, 3]],
+        roundtrip(
+            &[vec![1, 2, 3]],
             |o, v| o.write_bytes(v),
-            |i| i.read_bytes())
+            |i| i.read_bytes(),
+        )
     }
 
     #[test]
@@ -1135,8 +1175,8 @@ mod tests {
         let mut input = CodedInput::new(&mut slice);
 
         match input.read_int32() {
-            Err(InputError::MalformedVarint) => { },
-            _ => assert!(false)
+            Err(InputError::MalformedVarint) => {}
+            _ => assert!(false),
         }
     }
 
@@ -1151,8 +1191,11 @@ mod tests {
 
         match input.read_bytes() {
             Err(InputError::NegativeSize) => Ok(()),
-            Ok(_) => { assert!(false, "read_bytes returned true"); unreachable!() },
-            Err(e) => Err(Box::new(e))
+            Ok(_) => {
+                assert!(false, "read_bytes returned true");
+                unreachable!()
+            }
+            Err(e) => Err(Box::new(e)),
         }
     }
 
@@ -1163,8 +1206,8 @@ mod tests {
         let mut input = CodedInput::new(&mut slice);
 
         match input.read_tag() {
-            Err(InputError::InvalidTag(0)) => { },
-            _ => assert!(false, "read_tag didn't return an invalid tag error")
+            Err(InputError::InvalidTag(0)) => {}
+            _ => assert!(false, "read_tag didn't return an invalid tag error"),
         }
     }
 
@@ -1175,8 +1218,8 @@ mod tests {
         let mut input = CodedInput::new(&mut slice);
 
         match input.read_tag() {
-            Ok(None) => { },
-            _ => assert!(false, "read_tag didn't return none")
+            Ok(None) => {}
+            _ => assert!(false, "read_tag didn't return none"),
         }
     }
 
@@ -1187,8 +1230,8 @@ mod tests {
         let mut input = CodedInput::new(&mut slice);
 
         match input.read_tag() {
-            Err(InputError::IoError(_)) => { },
-            _ => assert!(false, "read_tag didn't error out")
+            Err(InputError::IoError(_)) => {}
+            _ => assert!(false, "read_tag didn't error out"),
         }
     }
 
@@ -1200,8 +1243,8 @@ mod tests {
         input.limit = Some(1);
 
         match input.read_uint64() {
-            Err(InputError::IoError(_)) => { },
-            _ => assert!(false, "read_uint64 didn't error out")
+            Err(InputError::IoError(_)) => {}
+            _ => assert!(false, "read_uint64 didn't error out"),
         }
     }
 }

@@ -2,7 +2,6 @@
 
 pub use crate::descriptor::field_descriptor_proto::Label as FieldLabel;
 
-use crate::{CodedMessage, LiteMessage, Message, ExtensionMessage, ExtensionRegistry};
 use crate::descriptor::{
     DescriptorProto, EnumDescriptorProto, EnumOptions, EnumValueDescriptorProto, EnumValueOptions,
     FieldDescriptorProto, FieldOptions, FileDescriptorProto, FileOptions, MessageOptions,
@@ -10,11 +9,283 @@ use crate::descriptor::{
     ServiceOptions,
 };
 use crate::io::{FieldNumber, WireType};
-use std::any::Any;
+use crate::{CodedMessage, Enum, EnumValue, ExtensionMessage, ExtensionRegistry, Message};
+use std::any::{Any, TypeId};
 use std::collections::HashMap;
 use std::fmt::{self, Debug, Formatter};
 use std::mem::zeroed; // zeroed, not uninitialized, since it makes it easier for us to assign values
 use std::ops::Deref;
+
+pub mod access;
+
+// macro the methods and impls from std::any::Any
+macro_rules! any_extensions {
+    ($nm:tt) => {
+        impl dyn $nm {
+            /// Returns `true` if the boxed type is the same as `T`.
+            #[inline]
+            pub fn is<T: $nm>(&self) -> bool {
+                let t = TypeId::of::<T>();
+                let boxed = self.type_id();
+                t == boxed
+            }
+
+            /// Returns some reference to the boxed value if it is of type `T`, or
+            /// `None` if it isn't.
+            #[inline]
+            pub fn downcast_ref<T: $nm>(&self) -> Option<&T> {
+                if self.is::<T>() {
+                    unsafe { Some(&*(self as *const dyn $nm as *const T)) }
+                } else {
+                    None
+                }
+            }
+
+            /// Returns some mutable reference to the boxed value if it is of type `T`, or
+            /// `None` if it isn't.
+            #[inline]
+            pub fn downcast_mut<T: $nm>(&mut self) -> Option<&mut T> {
+                if self.is::<T>() {
+                    unsafe { Some(&mut *(self as *mut dyn $nm as *mut T)) }
+                } else {
+                    None
+                }
+            }
+        }
+
+        impl PartialEq<dyn AnyValue> for dyn $nm {
+            fn eq(&self, other: &dyn AnyValue) -> bool {
+                <Self as AnyValue>::eq(self, other)
+            }
+        }
+    };
+}
+
+/// Represents a value of any type that can be cloned, compared for partial equvilance,
+/// and used in debug formatting.
+///
+/// It can also be upcasted to an enum value of any type or a message of any type
+pub trait AnyValue: Any + Debug + Send + Sync {
+    /// Clones the value, returning a new box containing it
+    fn clone(&self) -> Box<dyn AnyValue>;
+
+    /// Compares this value with another value of any type
+    fn eq(&self, other: &dyn AnyValue) -> bool;
+
+    /// Attempts to cast this value into an enum value of any type
+    fn as_enum(&self) -> Option<&dyn AnyEnum>;
+
+    /// Attempts to cast this value into an enum value of any type
+    fn as_enum_mut(&mut self) -> Option<&mut dyn AnyEnum>;
+
+    /// Attempts to cast this value into a message value of any type
+    fn as_message(&self) -> Option<&dyn AnyMessage>;
+
+    /// Attempts to cast this value into a message value of any type
+    fn as_message_mut(&mut self) -> Option<&mut dyn AnyMessage>;
+}
+
+any_extensions!(AnyValue);
+
+// any impl for primitive types
+macro_rules! any_impl {
+    ($($nm:ty),*) => {
+        $(impl AnyValue for $nm {
+            fn clone(&self) -> Box<dyn AnyValue> {
+                Box::new(Clone::clone(self))
+            }
+
+            fn eq(&self, other: &dyn AnyValue) -> bool {
+                other.downcast_ref::<Self>().map_or(false, |i| i == self)
+            }
+
+            fn as_enum(&self) -> Option<&dyn AnyEnum> { None }
+            fn as_enum_mut(&mut self) -> Option<&mut dyn AnyEnum> { None }
+            fn as_message(&self) -> Option<&dyn AnyMessage> { None }
+            fn as_message_mut(&mut self) -> Option<&mut dyn AnyMessage> { None }
+        }
+        )+
+    };
+}
+
+any_impl!(bool, i32, i64, u32, u64, f32, f64, String, Vec<u8>);
+
+impl dyn AnyValue {
+    pub fn downcast<T: AnyValue>(self: Box<Self>) -> Result<Box<T>, Box<dyn AnyValue>> {
+        if self.is::<T>() {
+            unsafe {
+                let raw: *mut dyn AnyValue = Box::into_raw(self);
+                Ok(Box::from_raw(raw as *mut T))
+            }
+        } else {
+            Err(self)
+        }
+    }
+}
+
+/// Represents an enum value of any type
+pub trait AnyEnum: AnyValue {
+    /// Gets the descriptor of this enum type
+    fn descriptor(&self) -> &EnumDescriptor;
+
+    /// Gets the enum value descriptor describing the set value of the enum,
+    /// or None if the value is undefined
+    fn get(&self) -> Option<&EnumValueDescriptor>;
+
+    /// Gets the value of this enum as an i32
+    fn get_i32(&self) -> i32;
+
+    /// Sets the value to the number described by the provided descriptor.
+    /// If the enum type of the descriptor value is not the same as this enum, this returns false.
+    ///
+    /// Consumers should not assume that setting a value to a specified
+    /// enum descriptor will return the same descriptor by calling `AnyEnum::get`, only that it
+    /// will return a descriptor with the same underlying value.
+    fn set(&mut self, value: &EnumValueDescriptor) -> bool;
+
+    /// Sets the value of the enum to the specified 32-bit value. This may be an undefined value
+    fn set_i32(&mut self, value: i32);
+}
+
+any_extensions!(AnyEnum);
+
+impl<E: Enum> AnyValue for EnumValue<E> {
+    fn clone(&self) -> Box<dyn AnyValue> {
+        Box::new(Clone::clone(self))
+    }
+
+    fn eq(&self, other: &dyn AnyValue) -> bool {
+        other.downcast_ref::<Self>().map_or(false, |i| i == self)
+    }
+
+    fn as_enum(&self) -> Option<&dyn AnyEnum> {
+        Some(self)
+    }
+    fn as_enum_mut(&mut self) -> Option<&mut dyn AnyEnum> {
+        Some(self)
+    }
+    fn as_message(&self) -> Option<&dyn AnyMessage> {
+        None
+    }
+    fn as_message_mut(&mut self) -> Option<&mut dyn AnyMessage> {
+        None
+    }
+}
+
+impl<E: Enum> AnyEnum for EnumValue<E> {
+    fn descriptor(&self) -> &EnumDescriptor {
+        E::descriptor()
+    }
+
+    fn get(&self) -> Option<&EnumValueDescriptor> {
+        E::descriptor()
+            .values_by_num
+            .get(&self.get_i32())
+            .map(|r| &**r)
+    }
+
+    fn get_i32(&self) -> i32 {
+        i32::from(*self)
+    }
+
+    fn set(&mut self, value: &EnumValueDescriptor) -> bool {
+        if value.enum_type() == E::descriptor() {
+            self.set_i32(value.number());
+            true
+        } else {
+            false
+        }
+    }
+
+    fn set_i32(&mut self, value: i32) {
+        *self = EnumValue::from(value)
+    }
+}
+
+/// A message type to emulate dynamic typing.
+/// This type is like Any and allows for downcasting the type to a concrete type.
+///
+/// It also has the methods of CodedMessage, allowing for reading, merging, and calculating the size of an unknown message
+pub trait AnyMessage: CodedMessage + AnyValue {
+    /// Attempts to merge the two messages together.
+    /// If the two messages are not of the same type, this does nothing.
+    fn merge(&mut self, other: &dyn AnyMessage);
+
+    /// Gets the descriptor for this message
+    fn descriptor(&self) -> &MessageDescriptor;
+
+    /// For extension messages, gets the registry in use by the message.
+    /// Dynamic messages don't contain extension registries
+    fn registry(&self) -> Option<&'static ExtensionRegistry>;
+
+    /// For extension messages, replaces the registry in use by the message
+    fn replace_registry(
+        &mut self,
+        extensions: Option<&'static ExtensionRegistry>,
+    ) -> Option<&'static ExtensionRegistry>;
+}
+
+any_extensions!(AnyMessage);
+
+impl<T: Message> AnyValue for T {
+    fn clone(&self) -> Box<dyn AnyValue> {
+        Box::new(Clone::clone(self))
+    }
+
+    fn eq(&self, other: &dyn AnyValue) -> bool {
+        other.downcast_ref::<Self>().map_or(false, |i| i == self)
+    }
+
+    fn as_enum(&self) -> Option<&dyn AnyEnum> {
+        None
+    }
+    fn as_enum_mut(&mut self) -> Option<&mut dyn AnyEnum> {
+        None
+    }
+    fn as_message(&self) -> Option<&dyn AnyMessage> {
+        Some(self)
+    }
+    fn as_message_mut(&mut self) -> Option<&mut dyn AnyMessage> {
+        Some(self)
+    }
+}
+
+impl<T: Message> AnyMessage for T {
+    fn merge(&mut self, other: &dyn AnyMessage) {
+        match other.downcast_ref::<T>() {
+            Some(t) => self.merge(t),
+            None => {}
+        }
+    }
+
+    fn descriptor(&self) -> &MessageDescriptor {
+        T::descriptor()
+    }
+
+    default fn registry(&self) -> Option<&'static ExtensionRegistry> {
+        None
+    }
+
+    default fn replace_registry(
+        &mut self,
+        _: Option<&'static ExtensionRegistry>,
+    ) -> Option<&'static ExtensionRegistry> {
+        None
+    }
+}
+
+impl<T: Message + ExtensionMessage> AnyMessage for T {
+    fn registry(&self) -> Option<&'static ExtensionRegistry> {
+        ExtensionMessage::registry(self)
+    }
+
+    fn replace_registry(
+        &mut self,
+        extensions: Option<&'static ExtensionRegistry>,
+    ) -> Option<&'static ExtensionRegistry> {
+        ExtensionMessage::replace_registry(self, extensions)
+    }
+}
 
 enum Symbol {
     File(*mut FileDescriptor),
@@ -143,7 +414,11 @@ impl DescriptorPool<'_> {
     }
 
     fn build(&mut self, code_info: Option<Box<[GeneratedCodeInfo]>>) {
-        let files: Vec<_> = self.protos.iter().map(|file| FileDescriptor::new(file as *const FileDescriptorProto, self)).collect();
+        let files: Vec<_> = self
+            .protos
+            .iter()
+            .map(|file| FileDescriptor::new(file as *const FileDescriptorProto, self))
+            .collect();
         // insert the symbol for each file
         if let Some(code_info) = code_info {
             for (file, code_info) in files.iter().zip(Vec::from(code_info).drain(..)) {
@@ -222,30 +497,40 @@ impl DescriptorPool<'_> {
         }
     }
 
-    pub fn find_extensions_for_message_by_name<'a>(&'a self, name: &str) -> Option<Box<(dyn Iterator<Item = &'a FieldDescriptor> + 'a)>> {
+    pub fn find_extensions_for_message_by_name<'a>(
+        &'a self,
+        name: &str,
+    ) -> Option<Box<(dyn Iterator<Item = &'a FieldDescriptor> + 'a)>> {
         let message = self.find_message_by_name(name)?;
 
-        fn deref_ref<T>(value: &Ref<T>) -> &T { &**value }
+        fn deref_ref<T>(value: &Ref<T>) -> &T {
+            &**value
+        }
 
-        Some(Box::new(self.files()
-                .flat_map(|f| f
-                    .extensions()
-                    .iter()
-                    .map(deref_ref)
-                    .chain(f
-                        .flatten_messages()
-                        .flat_map(|m| m.extensions().iter().map(deref_ref))))
-                .filter(move |e| e.message() as *const MessageDescriptor == message as *const MessageDescriptor)))
+        Some(Box::new(
+            self.files()
+                .flat_map(|f| {
+                    f.extensions().iter().map(deref_ref).chain(
+                        f.flatten_messages()
+                            .flat_map(|m| m.extensions().iter().map(deref_ref)),
+                    )
+                })
+                .filter(move |e| {
+                    e.message() as *const MessageDescriptor == message as *const MessageDescriptor
+                }),
+        ))
     }
 
     fn files<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a FileDescriptor> + 'a)> {
-        Box::new(self.symbols.values()
-            .filter_map(|s|
-                match s {
+        Box::new(
+            self.symbols
+                .values()
+                .filter_map(|s| match s {
                     Symbol::File(f) => unsafe { Some(&**f) },
-                    _ => None
+                    _ => None,
                 })
-            .chain(self.pools.iter().flat_map(|p| p.files())))
+                .chain(self.pools.iter().flat_map(|p| p.files())),
+        )
     }
 
     fn get_file_ref(&self, name: &str) -> Ref<FileDescriptor> {
@@ -343,6 +628,7 @@ pub struct GeneratedCodeInfo {
 pub struct GeneratedStructInfo {
     pub new: fn() -> Box<dyn AnyMessage>,
     pub structs: Option<Box<[GeneratedStructInfo]>>,
+    //pub fields: Option<Box<[&'static access::FieldAccessor<'static>]>>
 }
 
 /// Specifies the syntax of a proto file
@@ -422,11 +708,15 @@ impl FileDescriptor {
     }
 
     /// Flattens all the messages in this file as an iterator
-    pub fn flatten_messages<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
-        Box::new(self.messages
-            .iter()
-            .map(|r| &**r)
-            .chain(self.messages.iter().flat_map(|m| m.flatten_messages())))
+    pub fn flatten_messages<'a>(
+        &'a self,
+    ) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
+        Box::new(
+            self.messages
+                .iter()
+                .map(|r| &**r)
+                .chain(self.messages.iter().flat_map(|m| m.flatten_messages())),
+        )
     }
 
     pub fn enums(&self) -> &[Ref<EnumDescriptor>] {
@@ -442,7 +732,7 @@ impl FileDescriptor {
     }
 
     pub fn options(&self) -> Option<&FileOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn syntax(&self) -> Syntax {
@@ -587,7 +877,7 @@ impl FileDescriptor {
     }
 
     unsafe fn parse_source_code_info(&mut self) {
-        if let Some(source_code_info) = &(*self.proto).source_code_info_option() {
+        if let Some(source_code_info) = &(*self.proto).source_code_info() {
             for location in source_code_info.location().iter() {
                 if location.path().is_empty() || location.path().len() % 2 != 0 {
                     continue;
@@ -714,143 +1004,6 @@ impl CompositeScope {
     }
 }
 
-/// A message type to emulate dynamic typing.
-/// This type is like Any and allows for downcasting the type to a concrete type.
-///
-/// It also has the methods of CodedMessage, allowing for reading, merging, and calculating the size of an unknown message
-pub trait AnyMessage: CodedMessage + Any + Debug {
-    /// Clones the message, returning a new box containing it
-    fn clone(&self) -> Box<dyn AnyMessage>;
-
-    /// Compares two message instances of any type
-    fn eq(&self, other: &dyn AnyMessage) -> bool;
-
-    /// Attempts to merge the two messages together. 
-    /// If the two messages are not of the same type, this does nothing.
-    fn merge(&mut self, other: &dyn AnyMessage);
-
-    /// Gets the descriptor for this message
-    fn descriptor(&self) -> &MessageDescriptor;
-
-    /// For extension messages, gets the registry in use by the message
-    fn registry(&self) -> Option<&'static ExtensionRegistry>;
-
-    /// For extension messages, replaces the registry in use by the message
-    fn replace_registry(&mut self, extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry>;
-}
-
-impl<T: Message + Any> AnyMessage for T {
-    fn clone(&self) -> Box<dyn AnyMessage> {
-        Box::new(Clone::clone(self))
-    }
-
-    fn eq(&self, other: &dyn AnyMessage) -> bool {
-        match (Any::downcast_ref::<T>(self), AnyMessage::downcast_ref::<T>(other)) {
-            (Some(f), Some(s)) => PartialEq::eq(f, s),
-            _ => false
-        }
-    }
-
-    fn merge(&mut self, other: &dyn AnyMessage) {
-        match (Any::downcast_mut::<T>(self), AnyMessage::downcast_ref::<T>(other)) {
-            (Some(f), Some(s)) => LiteMessage::merge(f, s),
-            _ => { }
-        }
-    }
-
-    fn descriptor(&self) -> &MessageDescriptor {
-        <T as Message>::descriptor()
-    }
-
-    default fn registry(&self) -> Option<&'static ExtensionRegistry> {
-        None
-    }
-
-    default fn replace_registry(&mut self, _extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry> {
-        None
-    }
-}
-
-impl<T: Message + ExtensionMessage + Any> AnyMessage for T {
-    fn registry(&self) -> Option<&'static ExtensionRegistry> {
-        self.registry()
-    }
-
-    fn replace_registry(&mut self, extensions: Option<&'static ExtensionRegistry>) -> Option<&'static ExtensionRegistry> {
-        self.replace_registry(extensions)
-    }
-}
-
-impl PartialEq for dyn AnyMessage {
-    fn eq(&self, other: &dyn AnyMessage) -> bool {
-        self.eq(other)
-    }
-}
-
-impl Clone for Box<dyn AnyMessage> {
-    fn clone(&self) -> Box<dyn AnyMessage> {
-        AnyMessage::clone(&**self)
-    }
-}
-
-impl dyn AnyMessage {
-    #[inline]
-    pub fn is<T: AnyMessage>(&self) -> bool {
-        let t = std::any::TypeId::of::<T>();
-        let boxed = self.type_id();
-        t == boxed
-    }
-
-    #[inline]
-    pub fn downcast_ref<T: AnyMessage>(&self) -> Option<&T> {
-        if self.is::<T>() {
-            unsafe { Some(&*(self as *const dyn AnyMessage as *const T)) }
-        } else {
-            None
-        }
-    }
-
-    #[inline]
-    pub fn downcast_mut<T: AnyMessage>(&mut self) -> Option<&mut T> {
-        if self.is::<T>() {
-            unsafe { Some(&mut *(self as *mut dyn AnyMessage as *mut T)) }
-        } else {
-            None
-        }
-    }
-}
-
-/// Provides the [`downcast`](#method.downcast) extension method for `Box`
-pub trait AnyBoxExt: Sized + crate::internal::Sealed {
-    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Self>;
-}
-
-impl crate::internal::Sealed for Box<dyn AnyMessage + 'static> { }
-
-impl AnyBoxExt for Box<dyn AnyMessage + 'static> {
-    #[inline]
-    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Box<dyn AnyMessage>> {
-        if self.is::<T>() {
-            unsafe {
-                let raw: *mut dyn AnyMessage = Box::into_raw(self);
-                Ok(Box::from_raw(raw as *mut T))
-            }
-        } else {
-            Err(self)
-        }
-    }
-}
-
-impl crate::internal::Sealed for Box<dyn AnyMessage + 'static + Send> {}
-
-impl AnyBoxExt for Box<dyn AnyMessage + 'static + Send> {
-    #[inline]
-    fn downcast<T: AnyMessage>(self) -> Result<Box<T>, Box<dyn AnyMessage + Send>> {
-        <Box<dyn AnyMessage>>::downcast(self)
-            .map_err(|s| unsafe { Box::from_raw(Box::into_raw(s) as *mut (dyn AnyMessage + Send)) })
-    }
-}
-
 /// A message descriptor
 pub struct MessageDescriptor {
     proto: *const DescriptorProto,
@@ -910,8 +1063,15 @@ impl MessageDescriptor {
     }
 
     /// Flattens the submessages declared in this message
-    pub fn flatten_messages<'a>(&'a self) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
-        Box::new(self.messages.iter().map(|r| &**r).chain(self.messages.iter().flat_map(|m| m.flatten_messages())))
+    pub fn flatten_messages<'a>(
+        &'a self,
+    ) -> Box<(dyn Iterator<Item = &'a MessageDescriptor> + 'a)> {
+        Box::new(
+            self.messages
+                .iter()
+                .map(|r| &**r)
+                .chain(self.messages.iter().flat_map(|m| m.flatten_messages())),
+        )
     }
 
     pub fn enums(&self) -> &[Ref<EnumDescriptor>] {
@@ -923,7 +1083,7 @@ impl MessageDescriptor {
     }
 
     pub fn options(&self) -> Option<&MessageOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     /// Creates a new string with the full name of this descriptor
@@ -1165,7 +1325,7 @@ impl Descriptor for MessageDescriptor {
         loop {
             match scope {
                 CompositeScope::Message(m) => scope = m.scope(),
-                CompositeScope::File(f) => return f
+                CompositeScope::File(f) => return f,
             }
         }
     }
@@ -1190,6 +1350,8 @@ pub struct EnumDescriptor {
     scope_index: usize,
     full_name: String,
     values: Box<[Ref<EnumValueDescriptor>]>,
+    values_by_num: fnv::FnvHashMap<i32, Ref<EnumValueDescriptor>>,
+    values_by_name: HashMap<String, Ref<EnumValueDescriptor>>,
     info: Option<SourceCodeInfo>,
 }
 
@@ -1218,8 +1380,16 @@ impl EnumDescriptor {
         &self.values
     }
 
+    pub fn by_num(&self, num: i32) -> Option<&EnumValueDescriptor> {
+        self.values_by_num.get(&num).map(|r| &**r)
+    }
+
+    pub fn by_name(&self, name: &str) -> Option<&EnumValueDescriptor> {
+        self.values_by_name.get(name).map(|r| &**r)
+    }
+
     pub fn options(&self) -> Option<&EnumOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1369,7 +1539,7 @@ impl EnumValueDescriptor {
     }
 
     pub fn options(&self) -> Option<&EnumValueOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1503,7 +1673,7 @@ impl ServiceDescriptor {
     }
 
     pub fn options(&self) -> Option<&ServiceOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1673,7 +1843,7 @@ impl MethodDescriptor {
     }
 
     pub fn options(&self) -> Option<&MethodOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {
@@ -1909,6 +2079,7 @@ pub struct FieldDescriptor {
     default: DefaultValue,
     message: Ref<MessageDescriptor>,
     info: Option<SourceCodeInfo>,
+    accessor: Option<access::FieldAccessor<'static>>,
 }
 
 impl FieldDescriptor {
@@ -1953,8 +2124,12 @@ impl FieldDescriptor {
         self.scope_index
     }
 
+    pub fn accessor(&self) -> Option<&access::FieldAccessor> {
+        self.accessor.as_ref()
+    }
+
     pub fn options(&self) -> Option<&FieldOptions> {
-        self.proto().options_option()
+        self.proto().options()
     }
 
     pub fn source_code_info(&self) -> Option<&SourceCodeInfo> {

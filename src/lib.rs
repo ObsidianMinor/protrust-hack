@@ -29,8 +29,8 @@
 #![feature(const_fn)]
 #![feature(specialization)]
 
-mod internal;
 mod extend;
+mod internal;
 
 #[cfg_attr(checked_size, path = "generated/checked/mod.rs")]
 #[cfg_attr(not(checked_size), path = "generated/unchecked/mod.rs")]
@@ -44,11 +44,13 @@ pub mod generated;
 /// by adding a glob import to the top of protobuf heavy modules
 pub mod prelude {
     pub use crate::CodedMessage;
+    pub use crate::Enum;
     pub use crate::EnumValue;
-    pub use crate::LiteMessage;
     pub use crate::ExtensionMessage;
+    pub use crate::LiteMessage;
     #[cfg(feature = "reflection")]
     pub use crate::Message;
+    pub use crate::Oneof;
 }
 pub mod collections;
 pub mod io;
@@ -61,11 +63,15 @@ pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
 #[cfg(feature = "reflection")]
 pub mod reflect;
 
-pub use extend::{ExtensionMessage, Extension, ExtensionField, ExtensionRegistry, ExtensionSet, RepeatedExtension};
+pub use extend::{
+    Extension, ExtensionField, ExtensionIdentifier, ExtensionMessage, ExtensionRegistry,
+    ExtensionSet, RepeatedExtension, RepeatedExtensionField
+};
 
 use crate::io::{Tag, WireType};
 use std::collections::HashMap;
 use std::convert::TryFrom;
+use std::fmt::Debug;
 
 /// A Protocol Buffers message capable of writing itself to a coded output or reading itself from a coded input
 pub trait CodedMessage {
@@ -127,7 +133,7 @@ pub trait CodedMessage {
 }
 
 /// A LITE Protocol Buffers message
-pub trait LiteMessage: CodedMessage + Clone + PartialEq + std::fmt::Debug {
+pub trait LiteMessage: CodedMessage + Default + Clone + PartialEq + Debug + Send + Sync + 'static {
     /// Creates a new instance of the message
     fn new() -> Self;
 
@@ -159,11 +165,22 @@ pub trait Message: LiteMessage {
 pub struct VariantUndefinedError;
 
 /// The common trait for enum types
-pub 
-unsafe 
-trait Enum: Into<i32> + TryFrom<i32, Error = VariantUndefinedError> + PartialEq + Eq + Copy + Clone {
+pub trait Enum:
+    'static
+    + TryFrom<i32, Error = VariantUndefinedError>
+    + Into<i32>
+    + PartialEq
+    + Eq
+    + Clone
+    + Copy
+    + std::hash::Hash
+    + Debug
+    + Send
+    + Sync
+{
+    /// Gets a static reference to the descriptor for this enum
     #[cfg(feature = "reflection")]
-    fn descriptor() -> &'static reflect::EnumDescriptor { unimplemented!() }
+    fn descriptor() -> &'static reflect::EnumDescriptor;
 }
 
 /// Represents a Protocol Buffer enum value that can be a defined enum value or an undefined integer
@@ -177,6 +194,12 @@ pub enum EnumValue<E> {
     Defined(E),
     /// An undefined enum value
     Undefined(i32),
+}
+
+impl<E: Enum> Default for EnumValue<E> {
+    fn default() -> EnumValue<E> {
+        EnumValue::from(0)
+    }
 }
 
 impl<E> EnumValue<E> {
@@ -230,16 +253,29 @@ impl<E: Clone + Into<i32>> From<EnumValue<E>> for i32 {
     }
 }
 
+/// A common trait for oneof enums
+pub trait Oneof : Default + Clone + PartialEq + Debug {
+    /// Gets a static reference to the descriptor for this oneof type
+    #[cfg(feature = "reflection")]
+    fn descriptor() -> &'static reflect::OneofDescriptor;
+
+    /// Gets if the oneof has no field set
+    fn is_none(&self) -> bool;
+
+    /// Clears the oneof, making it so none of the fields are set and `Oneof::is_none` returns true
+    fn clear(&mut self);
+}
+
 #[doc(hidden)]
 pub struct Codec<T> {
     start: Tag,
     end: Option<Tag>,
     size: ValueSize<T>,
     merge: fn(&mut io::CodedInput, &mut Option<T>) -> io::InputResult<()>,
-    value_merge: fn(&mut Option<T>, &Option<T>),
+    value_merge: fn(&mut T, &T),
     write: fn(&mut io::CodedOutput, &T) -> io::OutputResult,
     packed: bool,
-    packable: bool
+    packable: bool,
 }
 
 enum ValueSize<T> {
@@ -314,7 +350,7 @@ impl<T> Codec<T> {
     }
 
     #[inline]
-    fn merge_values(&self, first: &mut Option<T>, second: &Option<T>) {
+    fn merge_values(&self, first: &mut T, second: &T) {
         (self.value_merge)(first, second)
     }
 }
@@ -334,13 +370,10 @@ impl Codec<f32> {
                     *v = Some(i.read_float()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_float(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -361,13 +394,10 @@ impl Codec<f64> {
                     *v = Some(i.read_double()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_double(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -388,13 +418,10 @@ impl Codec<i32> {
                     *v = Some(i.read_int32()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_int32(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -412,13 +439,10 @@ impl Codec<i32> {
                     *v = Some(i.read_sint32()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_sint32(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -433,13 +457,10 @@ impl Codec<i32> {
                     *v = Some(i.read_sfixed32()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_sfixed32(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -460,13 +481,10 @@ impl Codec<u32> {
                     *v = Some(i.read_uint32()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_uint32(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -481,13 +499,10 @@ impl Codec<u32> {
                     *v = Some(i.read_fixed32()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_fixed32(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -508,13 +523,10 @@ impl Codec<i64> {
                     *v = Some(i.read_int64()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_int64(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -532,13 +544,10 @@ impl Codec<i64> {
                     *v = Some(i.read_sint64()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_sint64(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -553,13 +562,10 @@ impl Codec<i64> {
                     *v = Some(i.read_sfixed64()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_sfixed64(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -580,13 +586,10 @@ impl Codec<u64> {
                     *v = Some(i.read_uint64()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_uint64(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -601,13 +604,10 @@ impl Codec<u64> {
                     *v = Some(i.read_fixed64()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_fixed64(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -625,13 +625,10 @@ impl Codec<bool> {
                     *v = Some(i.read_bool()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_bool(*v),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
@@ -649,13 +646,10 @@ impl Codec<String> {
                     *v = Some(i.read_string()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_string(v),
                 packed: false,
-                packable: false
+                packable: false,
             }
         }
     }
@@ -673,13 +667,10 @@ impl Codec<Vec<u8>> {
                     *v = Some(i.read_bytes()?);
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_bytes(v),
                 packed: false,
-                packable: false
+                packable: false,
             }
         }
     }
@@ -703,14 +694,10 @@ impl<M: LiteMessage> Codec<M> {
                     }
                     Ok(())
                 },
-                value_merge: |s, o| match (s.as_mut(), o.as_ref()) {
-                    (Some(s), Some(o)) => s.merge(o),
-                    (None, Some(o)) => *s = Some(o.clone()),
-                    _ => {}
-                },
+                value_merge: |s, o| s.merge(o),
                 write: |o, v| o.write_message(v),
                 packed: false,
-                packable: false
+                packable: false,
             }
         }
     }
@@ -731,14 +718,10 @@ impl<M: LiteMessage> Codec<M> {
                     }
                     Ok(())
                 },
-                value_merge: |s, o| match (s.as_mut(), o.as_ref()) {
-                    (Some(s), Some(o)) => s.merge(o),
-                    (None, Some(o)) => *s = Some(o.clone()),
-                    _ => {}
-                },
+                value_merge: |s, o| s.merge(o),
                 write: |o, v| o.write_group(v),
                 packed: false,
-                packable: false
+                packable: false,
             }
         }
     }
@@ -762,14 +745,10 @@ impl<M: ExtensionMessage> Codec<M> {
                     }
                     Ok(())
                 },
-                value_merge: |s, o| match (s.as_mut(), o.as_ref()) {
-                    (Some(s), Some(o)) => s.merge(o),
-                    (None, Some(o)) => *s = Some(o.clone()),
-                    _ => {}
-                },
+                value_merge: |s, o| s.merge(o),
                 write: |o, v| o.write_message(v),
                 packed: false,
-                packable: false
+                packable: false,
             }
         }
     }
@@ -790,20 +769,17 @@ impl<E: Enum> Codec<EnumValue<E>> {
                     *v = Some(EnumValue::from(i.read_int32()?));
                     Ok(())
                 },
-                value_merge: |s, o| match o {
-                    None => {}
-                    o => *s = o.clone(),
-                },
+                value_merge: |s, o| *s = o.clone(),
                 write: |o, v| o.write_int32(Into::<i32>::into(v.clone())),
                 packed: is_packed(tag),
-                packable: true
+                packable: true,
             }
         }
     }
 }
 
 /// Contains a collection of unknown fields encountered when reading a protobuf message
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct UnknownFieldSet(HashMap<Tag, UnknownField>);
 
 #[derive(Clone, Debug, PartialEq)]

@@ -8,7 +8,7 @@ pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
     super::pool().find_file_by_name("unittest_import_public.proto").unwrap()
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Default)]
 pub struct PublicImportMessage {
     e: ::std::option::Option<i32>,
     unknown_fields: ::protrust::UnknownFieldSet,

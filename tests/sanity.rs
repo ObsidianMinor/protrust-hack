@@ -36,7 +36,8 @@ fn empty_test_all_output_is_none() -> shared::Result {
 #[test]
 fn empty_test_all_roundtrip_is_equal() -> shared::Result {
     let m = shared::gen::unittest_proto::TestAllTypes::new();
-    let m2 = shared::gen::unittest_proto::TestAllTypes::read_new(&mut m.write_to_vec()?.as_slice())?;
+    let m2 =
+        shared::gen::unittest_proto::TestAllTypes::read_new(&mut m.write_to_vec()?.as_slice())?;
     assert_eq!(m, m2);
 
     Ok(())

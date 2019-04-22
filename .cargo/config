@@ -1,0 +1,2 @@
+[alias]
+si = "install --path . --force"

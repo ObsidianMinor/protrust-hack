@@ -40,27 +40,28 @@ pub fn get_message_type_module_name(message: &MessageDescriptor) -> String {
 
 /// Resolves a fully qualified struct name for a message type from a relative scope.
 /// If no scope is given, it's resolved from the generated module scope.
-pub fn get_full_message_type_name(
-    message: &MessageDescriptor,
-    scope: Option<Scope>,
-) -> String {
+pub fn get_full_message_type_name(message: &MessageDescriptor, scope: Option<Scope>) -> String {
     get_full_type_name(message.name(), message.scope(), scope)
 }
 
 /// Resolves a fully qualified module name for a message type from a relative scope.
 /// If no scope is given, it's resolved from the generated module scope.
-pub fn get_full_message_type_module_name(message: &MessageDescriptor, scope: Option<Scope>) -> String {
-    get_full_type_name(&get_message_type_module_name(message), message.scope(), scope)
+pub fn get_full_message_type_module_name(
+    message: &MessageDescriptor,
+    scope: Option<Scope>,
+) -> String {
+    get_full_type_name(
+        &get_message_type_module_name(message),
+        message.scope(),
+        scope,
+    )
 }
 
 pub fn get_enum_type_name(enum_type: &EnumDescriptor) -> String {
     get_type_name(enum_type.name())
 }
 
-pub fn get_full_enum_type_name(
-    enum_type: &EnumDescriptor,
-    scope: Option<Scope>,
-) -> String {
+pub fn get_full_enum_type_name(enum_type: &EnumDescriptor, scope: Option<Scope>) -> String {
     get_full_type_name(enum_type.name(), enum_type.scope(), scope)
 }
 
@@ -72,10 +73,7 @@ pub fn get_enum_variant_name(value: &EnumValueDescriptor) -> String {
     result
 }
 
-pub fn get_full_enum_variant_name(
-    value: &EnumValueDescriptor,
-    scope: Option<Scope>,
-) -> String {
+pub fn get_full_enum_variant_name(value: &EnumValueDescriptor, scope: Option<Scope>) -> String {
     format!(
         "{}::{}",
         get_full_enum_type_name(value.enum_type(), scope),
@@ -87,9 +85,12 @@ pub fn get_field_name(field: &FieldDescriptor) -> String {
     match field.scope() {
         FieldScope::Message(_) if field.proto().has_extendee() => field.name().to_uppercase(),
         FieldScope::File(_) => field.name().to_uppercase(),
-        FieldScope::Message(_) => field.name().to_string(),
-        FieldScope::Oneof(_) => underscores_to_pascal_case(field.name(), false),
+        _ => field.name().to_string(),
     }
+}
+
+pub fn get_oneof_case_name(field: &FieldDescriptor) -> String {
+    underscores_to_pascal_case(field.name(), false)
 }
 
 pub fn get_struct_field_name(field: &FieldDescriptor) -> String {
@@ -148,23 +149,25 @@ pub enum TypeScope {
     /// For oneof fields, the message that contains the oneof. For map fields, the message that contains the map
     Message,
     /// The full scope
-    Full
+    Full,
 }
 
 /// Gets the rust type for a field
-pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, scope: TypeScope, crate_name: &str) -> String {
+pub fn get_rust_type(
+    res: TypeResolution,
+    field: &FieldDescriptor,
+    scope: TypeScope,
+    crate_name: &str,
+) -> String {
     use protrust::reflect::FieldType::*;
-    let field_scope = 
-        match (scope, field.scope()) {
-            (TypeScope::Message, FieldScope::Oneof(o)) => Scope::Composite(o.message().scope()),
-            (TypeScope::Message, FieldScope::Message(m)) if m.map_entry() => {
-                match m.scope() {
-                    CompositeScope::Message(m) => Scope::Composite(m.scope()),
-                    _ => unreachable!()
-                }
-            },
-            (_, _) => Scope::Field(field)
-        };
+    let field_scope = match (scope, field.scope()) {
+        (TypeScope::Message, FieldScope::Oneof(o)) => Scope::Composite(o.message().scope()),
+        (TypeScope::Message, FieldScope::Message(m)) if m.map_entry() => match m.scope() {
+            CompositeScope::Message(m) => Scope::Composite(m.scope()),
+            _ => unreachable!(),
+        },
+        (_, _) => Scope::Field(field),
+    };
     match res {
         TypeResolution::Base => match field.field_type() {
             Message(m) | Group(m) => get_full_message_type_name(m, Some(field_scope)),
@@ -214,8 +217,18 @@ pub fn get_rust_type(res: TypeResolution, field: &FieldDescriptor, scope: TypeSc
                         return format!(
                             "{}::collections::MapField<{}, {}>",
                             crate_name,
-                            get_rust_type(TypeResolution::Base, &m.fields()[0], TypeScope::Message, crate_name),
-                            get_rust_type(TypeResolution::Base, &m.fields()[1], TypeScope::Message, crate_name)
+                            get_rust_type(
+                                TypeResolution::Base,
+                                &m.fields()[0],
+                                TypeScope::Message,
+                                crate_name
+                            ),
+                            get_rust_type(
+                                TypeResolution::Base,
+                                &m.fields()[1],
+                                TypeScope::Message,
+                                crate_name
+                            )
                         );
                     }
                 }
@@ -284,24 +297,25 @@ pub enum Scope<'a> {
     Composite(&'a CompositeScope),
 }
 
-fn get_full_type_name(
-    name: &str,
-    scope: &CompositeScope,
-    current_scope: Option<Scope>,
-) -> String {
+fn get_full_type_name(name: &str, scope: &CompositeScope, current_scope: Option<Scope>) -> String {
     fn push_scope(path: &mut String, scope: &CompositeScope) {
         match scope {
             CompositeScope::File(f) => {
                 path.push_str(&get_rust_file_mod_name(f));
-            },
+            }
             CompositeScope::Message(m) => {
                 path.push_str(&get_message_type_module_name(m));
-            },
+            }
         }
         path.push_str("::");
     }
 
-    fn build_from_composite_scope(path: &mut String, name: &str, scopes: &[&CompositeScope], mut current_scope: &CompositeScope) {
+    fn build_from_composite_scope(
+        path: &mut String,
+        name: &str,
+        scopes: &[&CompositeScope],
+        mut current_scope: &CompositeScope,
+    ) {
         loop {
             // if any of the scopes in our vector match the current scope, we can build a path from that point
             if let Some(index) = scopes.iter().position(|s| *s == current_scope) {
@@ -318,7 +332,7 @@ fn get_full_type_name(
                         scopes.iter().rev().for_each(|s| push_scope(path, s));
                         path.push_str(name);
                         return;
-                    },
+                    }
                     // if we're in a message scope, just reassign the current scope and loop
                     CompositeScope::Message(m) => {
                         current_scope = m.scope();
@@ -328,7 +342,8 @@ fn get_full_type_name(
         }
     }
 
-    let scopes = { // build a vector of every level of our type's scope
+    let scopes = {
+        // build a vector of every level of our type's scope
         let mut traversed_scope = scope;
         let mut scopes = Vec::new();
         while let CompositeScope::Message(m) = traversed_scope {
@@ -341,41 +356,39 @@ fn get_full_type_name(
     let mut full = "self::".to_string(); // start with self
     match current_scope {
         // with an existing scope, we have to move up until we've found a scope we can decend into to get the target type
-        Some(current_scope) => {
-            match current_scope {
-                Scope::Field(f) => {
-                    match f.scope() {
-                        FieldScope::File(f) => {
-                            if &**f != scope.file() {
-                                full.push_str("super::");
-                                full.push_str(&get_rust_file_mod_name(scope.file()));
-                                full.push_str("::");
-                            }
-
-                            if let Some((_, levels)) = scopes.split_last() {
-                                levels.iter().rev().for_each(|s| push_scope(&mut full, s));
-                            }
-
-                            full.push_str(name);
-                        },
-                        FieldScope::Oneof(_) => {
+        Some(current_scope) => match current_scope {
+            Scope::Field(f) => {
+                match f.scope() {
+                    FieldScope::File(f) => {
+                        if &**f != scope.file() {
                             full.push_str("super::");
-                            build_from_composite_scope(&mut full, name, &scopes, f.message().scope());
-                        },
-                        FieldScope::Message(m) if f.proto().has_extendee() => {
-                            full.push_str("super::");
-                            build_from_composite_scope(&mut full, name, &scopes, m.scope());
-                        },
-                        FieldScope::Message(m) => {
-                            build_from_composite_scope(&mut full, name, &scopes, m.scope());
+                            full.push_str(&get_rust_file_mod_name(scope.file()));
+                            full.push_str("::");
                         }
+
+                        if let Some((_, levels)) = scopes.split_last() {
+                            levels.iter().rev().for_each(|s| push_scope(&mut full, s));
+                        }
+
+                        full.push_str(name);
                     }
-                    full
-                },
-                Scope::Composite(c) => {
-                    build_from_composite_scope(&mut full, name, &scopes, c);
-                    full
+                    FieldScope::Oneof(_) => {
+                        full.push_str("super::");
+                        build_from_composite_scope(&mut full, name, &scopes, f.message().scope());
+                    }
+                    FieldScope::Message(m) if f.proto().has_extendee() => {
+                        full.push_str("super::");
+                        build_from_composite_scope(&mut full, name, &scopes, m.scope());
+                    }
+                    FieldScope::Message(m) => {
+                        build_from_composite_scope(&mut full, name, &scopes, m.scope());
+                    }
                 }
+                full
+            }
+            Scope::Composite(c) => {
+                build_from_composite_scope(&mut full, name, &scopes, c);
+                full
             }
         },
         // with no scope, we can decend from the mod file
