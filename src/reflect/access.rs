@@ -1,3 +1,4 @@
+use crate::ExtensionMessage;
 use crate::reflect::{AnyMessage, AnyValue};
 use std::fmt::Debug;
 
@@ -83,11 +84,16 @@ impl<
     }
 }
 
-impl<T: crate::ExtensionMessage + AnyMessage, V: Clone + PartialEq + Debug> RepeatedFieldAccessor
+impl<T: ExtensionMessage + AnyMessage, V: AnyValue + Clone + PartialEq + Debug + Send + Sync> RepeatedFieldAccessor
     for &'static crate::RepeatedExtension<T, V>
 {
     fn len(&self, instance: &dyn AnyMessage) -> Result<usize> {
-        unimplemented!()
+        let instance = instance.downcast_ref::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            Ok(instance.get_repeated_value(self).map_or(0, |f| f.len()))
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn get<'a>(
@@ -95,7 +101,12 @@ impl<T: crate::ExtensionMessage + AnyMessage, V: Clone + PartialEq + Debug> Repe
         instance: &'a dyn AnyMessage,
         index: usize,
     ) -> Result<Option<&'a dyn AnyValue>> {
-        unimplemented!()
+        let instance = instance.downcast_ref::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            Ok(instance.get_repeated_value(*self).map::<&'a dyn AnyValue, _>(move |f| &f[index]))
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn get_mut<'a>(
@@ -103,11 +114,27 @@ impl<T: crate::ExtensionMessage + AnyMessage, V: Clone + PartialEq + Debug> Repe
         instance: &'a mut dyn AnyMessage,
         index: usize,
     ) -> Result<Option<&'a mut dyn AnyValue>> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            let field = instance.repeated_field(*self).unwrap();
+            if field.has_entry() {
+                Ok(field.get_mut().get_mut(index).map::<&'a mut dyn AnyValue, _>(|v| v))
+            } else {
+                Ok(None)
+            }
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn push(&self, instance: &mut dyn AnyMessage, value: Box<dyn AnyValue>) -> Result<()> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            let value = *value.downcast::<V>().map_err(|e| FieldAccessError::InvalidValue(e))?;
+            Ok(instance.repeated_field(*self).unwrap().get_mut().push(value))
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn insert(
@@ -116,19 +143,50 @@ impl<T: crate::ExtensionMessage + AnyMessage, V: Clone + PartialEq + Debug> Repe
         index: usize,
         value: Box<dyn AnyValue>,
     ) -> Result<()> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            let value = *value.downcast::<V>().map_err(|e| FieldAccessError::InvalidValue(e))?;
+            Ok(instance.repeated_field(*self).unwrap().get_mut().insert(index, value))
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn pop(&self, instance: &mut dyn AnyMessage) -> Result<Option<Box<dyn AnyValue>>> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            let value = instance.repeated_field(*self).unwrap();
+            if value.has_entry() {
+                Ok(value.get_mut().pop().map::<Box<dyn AnyValue>, _>(|v| Box::new(v)))
+            } else {
+                Ok(None)
+            }
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn remove(&self, instance: &mut dyn AnyMessage, index: usize) -> Result<Box<dyn AnyValue>> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            let value = instance.repeated_field(*self).unwrap();
+            if value.has_entry() {
+                Ok(Box::new(value.get_mut().remove(index)))
+            } else {
+                panic!("Index is out of bounds")
+            }
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 
     fn clear(&self, instance: &mut dyn AnyMessage) -> Result<()> {
-        unimplemented!()
+        let instance = instance.downcast_mut::<T>().ok_or(FieldAccessError::InvalidMessage)?;
+        if ExtensionMessage::registry(instance).map_or(false, |r| r.has_extension(*self)) {
+            Ok(instance.repeated_field(*self).unwrap().clear())
+        } else {
+            Err(FieldAccessError::ExtensionNotFound)
+        }
     }
 }
 
@@ -398,6 +456,9 @@ pub trait MapFieldAccessor {
     ) -> Result<Option<Box<dyn AnyValue>>>;
 
     fn clear(&self, instance: &mut dyn AnyMessage) -> Result<()>;
+
+    fn iter<'a>(&self, instance: &'a dyn AnyMessage) -> Result<Box<(dyn Iterator<Item = (&'a AnyValue, &'a AnyValue)> + 'a)>>;
+    fn iter_mut<'a>(&self, instance: &'a mut dyn AnyMessage) -> Result<Box<(dyn Iterator<Item = (&'a AnyValue, &'a mut AnyValue)> + 'a)>>;
 }
 
 impl<T: AnyMessage, K: AnyValue + Eq + std::hash::Hash, V: AnyValue> MapFieldAccessor
@@ -494,5 +555,23 @@ impl<T: AnyMessage, K: AnyValue + Eq + std::hash::Hash, V: AnyValue> MapFieldAcc
         );
         field.clear();
         Ok(())
+    }
+
+    fn iter<'a>(&self, instance: &'a dyn AnyMessage) -> Result<Box<(dyn Iterator<Item = (&'a AnyValue, &'a AnyValue)> + 'a)>> {
+        Ok(
+            Box::new((self.get)(
+                instance.downcast_ref::<T>()
+                    .ok_or(FieldAccessError::InvalidMessage)?)
+                    .iter()
+                    .map::<(&'a dyn AnyValue, &'a dyn AnyValue), _>(|(k, v)| (k, v))))
+    }
+
+    fn iter_mut<'a>(&self, instance: &'a mut dyn AnyMessage) -> Result<Box<(dyn Iterator<Item = (&'a AnyValue, &'a mut AnyValue)> + 'a)>> {
+        Ok(
+            Box::new((self.get_mut)(
+                instance.downcast_mut::<T>()
+                .ok_or(FieldAccessError::InvalidMessage)?)
+                .iter_mut()
+                .map::<(&'a dyn AnyValue, &'a mut dyn AnyValue), _>(|(k, v)| (k, v))))
     }
 }

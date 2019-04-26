@@ -807,6 +807,7 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
 
                 generator.generate_field_number_constant()?;
                 generator.generate_default_value()?;
+                generator.generate_field_reflector()?;
                 generator.generate_accessors()?;
             }
 
@@ -931,6 +932,7 @@ generator_new!(FieldDescriptor, proto, options;
         } else {
             String::new()
         }
+        
     },
     "tag_bytes", {
         let tag = io::Tag::new(proto.number(), proto.wire_type()).get().to_le();
@@ -977,18 +979,39 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
     }
 
     pub fn generate_field_reflector(&mut self) -> Result {
-        if let FieldScope::Oneof(o) = self.input.scope() {
-
-        } else if self.input.proto().has_extendee() {
-
-        } else if self.input.file().syntax() == Syntax::Proto2 {
-
+        if let FieldScope::Oneof(_) = self.input.scope() {
+            self.generate_verbose_field_reflector()?;
+        } else
+        if self.input.label() == FieldLabel::Repeated {
+            self.generate_simple_field_reflector()?;
+        } else
+        if self.input.file().syntax() == Syntax::Proto2 {
+            self.generate_verbose_field_reflector()?;
+        } else
+        if self.input.proto().has_extendee() {
+            // do nothing, we use the extension as the accessor itself
         } else {
-            genln!(self.output; 
-                concat!("static {crate_name}::reflect::access::SimpleFieldAccessor<{message_type}, {indirected_type}>",
-                        " = {crate_name}::reflect::access::SimpleFieldAccessor {{ get: {message_type}::{field_name},",
-                        " get_mut: {message_type}::{field_name}_mut }};") => self.vars, crate_name, message_type, indirected_type, field_name);
+            self.generate_simple_field_reflector()?;
         }
+
+        Ok(())
+    }
+
+    fn generate_verbose_field_reflector(&mut self) -> Result {
+        genln!(self.output;
+            concat!("pub(super) static {crate_name}::reflect::access::VerboseFieldAccessor<{message_type}, {indirected_type}> {name}_reflector",
+                    " = {crate_name}::reflect::access::VerboseFieldAccessor {{ get: {message_type}::{name},",
+                    " get_mut: {message_type}::{name}_mut, set: {message_type}::set_{name}, take: {message_type}::take_{name}",
+                    " clear: {message_type}::clear_{name} }};") => self.vars, crate_name, message_type, indirected_type, name);
+
+        Ok(())
+    }
+
+    fn generate_simple_field_reflector(&mut self) -> Result {
+        genln!(self.output; 
+            concat!("pub(super) static {crate_name}::reflect::access::SimpleFieldAccessor<{message_type}, {indirected_type}> {name}_reflector",
+                    " = {crate_name}::reflect::access::SimpleFieldAccessor {{ get: {message_type}::{name},",
+                    " get_mut: {message_type}::{name}_mut }};") => self.vars, crate_name, message_type, indirected_type, name);
 
         Ok(())
     }
