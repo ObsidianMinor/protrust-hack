@@ -89,6 +89,10 @@ pub fn get_field_name(field: &FieldDescriptor) -> String {
     }
 }
 
+pub fn get_reflector_name(field: &FieldDescriptor) -> String {
+    field.name().to_ascii_uppercase() + "_REFLECTOR"
+}
+
 pub fn get_oneof_case_name(field: &FieldDescriptor) -> String {
     underscores_to_pascal_case(field.name(), false)
 }
@@ -294,6 +298,7 @@ fn get_type_name(name: &str) -> String {
 
 pub enum Scope<'a> {
     Field(&'a FieldDescriptor),
+    Module,
     Composite(&'a CompositeScope),
 }
 
@@ -384,6 +389,11 @@ fn get_full_type_name(name: &str, scope: &CompositeScope, current_scope: Option<
                         build_from_composite_scope(&mut full, name, &scopes, m.scope());
                     }
                 }
+                full
+            }
+            Scope::Module => {
+                full.push_str("super::");
+                full.push_str(name);
                 full
             }
             Scope::Composite(c) => {

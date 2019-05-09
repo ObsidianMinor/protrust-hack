@@ -552,19 +552,26 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
 
         self.generate_struct_impl()?;
 
-        if self
-            .input
-            .messages()
-            .iter()
-            .filter(|m| !m.map_entry())
-            .any(|_| true)
-            || self.input.enums().len() != 0
-            || self.input.extensions().len() != 0
-            || self.input.oneofs().len() != 0
-        {
+        let has_fields = self.input.fields().len() != 0;
+        let has_public_items = 
+            self.input.enums().len() != 0 || 
+            self.input.oneofs().len() != 0 ||
+            self.input.extensions().len() != 0 ||
+            self.input
+                .messages()
+                .iter()
+                .filter(|m| !m.map_entry())
+                .any(|_| true);
+
+        if has_fields || has_public_items {
             self.generate_rustdoc_comments()?;
-            genln!(self.output; "pub mod {} {{" => self.vars, mod_name);
+            genln!(self.output, "{}", if has_fields && !(has_public_items) { "pub(super) " } else { "pub " });
+            gen!(self.output; "mod {} {{" => self.vars, mod_name);
             indent!(self.output, {
+                for field in self.input.fields() {
+                    Generator::<FieldDescriptor, _>::from_other(self, field).generate_field_reflector()?;
+                }
+
                 for nested in self.input.messages().iter().filter(|m| !m.map_entry()) {
                     Generator::<MessageDescriptor, _>::from_other(self, nested).generate()?;
                 }
@@ -807,7 +814,6 @@ impl<W: Write> Generator<'_, MessageDescriptor, Printer<W>> {
 
                 generator.generate_field_number_constant()?;
                 generator.generate_default_value()?;
-                generator.generate_field_reflector()?;
                 generator.generate_accessors()?;
             }
 
@@ -840,12 +846,13 @@ generator_new!(FieldDescriptor, proto, options;
     "proto_type", names::get_proto_type(proto),
     "name", names::get_field_name(proto),
     "field_name", names::get_struct_field_name(proto),
+    "reflector_field_name", names::get_reflector_name(proto),
     "oneof_case_name", names::get_oneof_case_name(proto),
     "base_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Full, &options.crate_name),
     "base_message_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Message, &options.crate_name),
     "indirected_type", names::get_rust_type(names::TypeResolution::Indirection, proto, names::TypeScope::Full, &options.crate_name),
     "field_type", names::get_rust_type(names::TypeResolution::Full, proto, names::TypeScope::Full, &options.crate_name),
-    "oneof_field_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Message, &options.crate_name),
+    "mod_field_type", names::get_rust_type(names::TypeResolution::Base, proto, names::TypeScope::Message, &options.crate_name),
     "crate_name", options.crate_name.clone(),
     "new_value", default_field_value(proto, &options.crate_name),
     "module", names::get_message_type_module_name(proto.message()),
@@ -916,6 +923,7 @@ generator_new!(FieldDescriptor, proto, options;
         }
     },
     "message_type", names::get_full_message_type_name(proto.message(), Some(Scope::Field(proto))),
+    "mod_message_type", names::get_full_message_type_name(proto.message(), Some(Scope::Module)),
     "tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), proto.wire_type()).get()).to_string(),
     "end_tag_size", protrust::io::sizes::uint32(io::Tag::new(proto.number(), WireType::EndGroup).get()).to_string(),
     "tag", io::Tag::new(proto.number(), proto.wire_type()).get().to_string(),
@@ -999,19 +1007,19 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
 
     fn generate_verbose_field_reflector(&mut self) -> Result {
         genln!(self.output;
-            concat!("pub(super) static {crate_name}::reflect::access::VerboseFieldAccessor<{message_type}, {indirected_type}> {name}_reflector",
-                    " = {crate_name}::reflect::access::VerboseFieldAccessor {{ get: {message_type}::{name},",
-                    " get_mut: {message_type}::{name}_mut, set: {message_type}::set_{name}, take: {message_type}::take_{name}",
-                    " clear: {message_type}::clear_{name} }};") => self.vars, crate_name, message_type, indirected_type, name);
+            concat!("pub(super) static {reflector_field_name}: {crate_name}::reflect::access::VerboseFieldAccessor<{mod_message_type}, {mod_field_type}> ",
+                    " = {crate_name}::reflect::access::VerboseFieldAccessor {{ get_option: {mod_message_type}::{name},",
+                    " get_mut: {mod_message_type}::{name}_mut, set: {mod_message_type}::set_{name}, take: {mod_message_type}::take_{name}",
+                    " clear: {mod_message_type}::clear_{name} }};") => self.vars, crate_name, reflector_field_name, mod_message_type, mod_field_type, name);
 
         Ok(())
     }
 
     fn generate_simple_field_reflector(&mut self) -> Result {
         genln!(self.output; 
-            concat!("pub(super) static {crate_name}::reflect::access::SimpleFieldAccessor<{message_type}, {indirected_type}> {name}_reflector",
-                    " = {crate_name}::reflect::access::SimpleFieldAccessor {{ get: {message_type}::{name},",
-                    " get_mut: {message_type}::{name}_mut }};") => self.vars, crate_name, message_type, indirected_type, name);
+            concat!("pub(super) static {reflector_field_name}: {crate_name}::reflect::access::SimpleFieldAccessor<{mod_message_type}, {mod_field_type}>",
+                    " = {crate_name}::reflect::access::SimpleFieldAccessor {{ get: {mod_message_type}::{name},",
+                    " get_mut: {mod_message_type}::{name}_mut }};") => self.vars, crate_name, reflector_field_name, mod_message_type, mod_field_type, name);
 
         Ok(())
     }
@@ -1112,7 +1120,7 @@ impl<W: Write> Generator<'_, FieldDescriptor, Printer<W>> {
                             });
                             genln!(self.output, "}} else {{");
                             indent!(self.output, {
-                                genln!(self.output; "let mut {field_name} = ::std::boxed::Box::new(<{oneof_field_type} as {crate_name}::LiteMessage>::new());" => self.vars, field_name, oneof_field_type, crate_name);
+                                genln!(self.output; "let mut {field_name} = ::std::boxed::Box::new(<{mod_field_type} as {crate_name}::LiteMessage>::new());" => self.vars, field_name, mod_field_type, crate_name);
                                 genln!(self.output; "input.read_{proto_type}(&mut *{field_name})?;" => self.vars, proto_type, field_name);
                                 genln!(self.output; "self.{field_name} = self::{module}::{oneof}::{oneof_case_name}({field_name})" => self.vars, field_name, oneof, module, oneof_case_name);
                             });

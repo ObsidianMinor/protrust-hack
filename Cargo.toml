@@ -23,7 +23,7 @@ json = ["base64", "reflection"]
 checked_size = []
 
 # Includes utility modules for writing protoc plugins
-plugin = ["reflection", "pulldown-cmark"]
+plugin = ["reflection", "pulldown-cmark", "quote", "syn", "proc-macro2", "itertools", "heck"]
 
 # Methods for converting to and from chrono structures in google.protobuf.Timestamp and google.protobuf.Duration
 chrono-time = ["chrono", "reflection"]
@@ -32,4 +32,9 @@ chrono-time = ["chrono", "reflection"]
 fnv = { version = "1.0.6", optional = true }
 chrono = { version = "0.4", optional = true }
 base64 = { version = "0.10.*", optional = true }
-pulldown-cmark = { version = "0.4.0", optional = true }
+pulldown-cmark = { version = "0.5.*", optional = true }
+proc-macro2 = { version = "*", optional = true }
+quote = { version = "0.6", optional = true }
+syn = { version = "0.15.*", optional = true, features = ["full"] }
+itertools = { version = "0.8.*", optional = true }
+heck = { version = "0.3.*", optional = true }

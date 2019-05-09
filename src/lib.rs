@@ -99,11 +99,11 @@ pub mod io;
 #[cfg(all(feature = "reflection"))]
 pub mod wkt;
 #[cfg(feature = "reflection")]
-pub use crate::generated::google_protobuf_compiler_plugin_proto as plugin;
-#[cfg(feature = "reflection")]
 pub use crate::generated::google_protobuf_descriptor_proto as descriptor;
 #[cfg(feature = "reflection")]
 pub mod reflect;
+#[cfg(feature = "plugin")]
+pub mod plugin;
 
 pub use extend::{
     Extension, ExtensionField, ExtensionIdentifier, ExtensionMessage, ExtensionRegistry,
