@@ -38,8 +38,22 @@ pub struct Options {
     pub external_modules: Vec<Path>,
 }
 
+#[derive(Debug)]
+pub enum OptionError {
+    UnknownOption(String, Option<String>),
+    ParseError(String, Box<dyn Error>)
+}
+
+impl std::fmt::Display for OptionError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        unimplemented!()
+    }
+}
+
+impl Error for OptionError { }
+
 impl Options {
-    pub fn parse_from<'a>(params: impl Iterator<Item = (&'a str, Option<&'a str>)>) -> std::result::Result<Options, (&'a str, Option<&'a str>)> {
+    pub fn parse_from<'a>(params: impl Iterator<Item = (&'a str, Option<&'a str>)>) -> std::result::Result<Options, OptionError> {
         let mut options = Options {
             crate_name: syn::parse_str("::protrust").unwrap(),
             no_json: false,
@@ -49,12 +63,17 @@ impl Options {
         };
         for param in params {
             match param {
-                ("crate_name", Some(c)) => unimplemented!(),
+                ("crate_name", Some(c)) => options.crate_name = syn::parse_str(c).map_err(|e| OptionError::ParseError(c.to_string(), Box::new(e)))?,
                 ("no_json", None) => options.no_json = true,
                 ("size_checks", None) => options.size_checks = true,
                 ("no_reflection", None) => options.no_reflection = true,
-                ("external_modules", Some(e)) => unimplemented!(),
-                unknown => unimplemented!()
+                ("external_modules", Some(e)) => 
+                    options.external_modules = 
+                        e.split('+')
+                            .map(syn::parse_str)
+                            .collect::<syn::Result<Vec<Path>>>()
+                            .map_err(|e| OptionError::ParseError(e.to_string(), Box::new(e)))?,
+                (key, value) => return Err(OptionError::UnknownOption(key.to_string(), value.map(|v| v.to_string())))
             }
         }
         Ok(options)
@@ -171,7 +190,7 @@ fn flatten_deps<'a, T>(files: T) -> Box<(dyn Iterator<Item = &'a FileDescriptor>
             .iter()
             .map(|r| &**r)
             .chain(flatten_deps(f.public_dependencies().iter().map(|r| &**r))))
-        .unique()
+        .unique())
 }
 
 pub struct SourceGenerator<'a, T> {
@@ -303,11 +322,68 @@ impl SourceGenerator<'_, MessageDescriptor> {
         })
     }
 
+    fn get_end_group_tag(&self) -> Option<Tag> {
+        match self.descriptor.scope() {
+            CompositeScope::Message(m) => {
+                for field in m.fields() {
+                    match field.field_type() {
+                        FieldType::Group(m) if **m == *self.descriptor => {
+                            return Some(Tag::new(field.number(), WireType::EndGroup))
+                        },
+                        _ => { }
+                    }
+                }
+                for extension in m.extensions() {
+                    match extension.field_type() {
+                        FieldType::Group(m) if **m == *self.descriptor => {
+                            return Some(Tag::new(extension.number(), WireType::EndGroup))
+                        },
+                        _ => { }
+                    }
+                }
+                None
+            },
+            CompositeScope::File(f) => {
+                for extension in f.extensions() {
+                    match extension.field_type() {
+                        FieldType::Group(m) if **m == *self.descriptor => {
+                            return Some(Tag::new(extension.number(), WireType::EndGroup))
+                        },
+                        _ => { }
+                    }
+                }
+                None
+            }
+        }
+    }
+
     fn generate_merge_from(&self) -> Result {
         let c = &self.options.crate_name;
-        let field_mergers = unimplemented!();
-        let end_group_break = unimplemented!();
-        let unknown_field_merge = unimplemented!();
+        let field_mergers = 
+            self.descriptor
+                .fields()
+                .iter()
+                .map(|f| 
+                    self.with::<FieldDescriptor>(f).generate_merge_arm())
+                .collect::<Result<Vec<_>>>()?;
+        let end_group_break: Option<TokenStream> = {
+            self.get_end_group_tag()
+                .map(|t| syn::parse_str::<Ident>(&t.to_string()))
+                .transpose()?
+                .map(|id| quote!(#id => break,))
+        };
+        let unknown_field_merge = 
+            if self.descriptor.proto().extension_range().len() != 0 {
+                quote! {
+                    if !self.extensions.merge_from(tag, input)? {
+                        self.unknown_fields.merge_from(tag, input)?
+                    }
+                }
+            } else {
+                quote! {
+                    self.unknown_fields.merge_from(tag, input)?
+                }
+            };
         Ok(quote! {
             fn merge_from(&mut self, input: &mut #c::io::CodedInput) -> #c::io::InputResult<()> {
                 while let ::std::option::Option::Some(tag) = input.read_tag()? {
@@ -324,10 +400,24 @@ impl SourceGenerator<'_, MessageDescriptor> {
             }
         })
     }
-
     fn generate_calculate_size(&self) -> Result {
-        let size_calculators = unimplemented!();
-        let extensions = unimplemented!();
+        let size_calculators = 
+            self.descriptor
+                .fields()
+                .iter()
+                .map(|f| 
+                    self.with::<FieldDescriptor>(f).generate_size_calculator())
+                .collect::<Result<Vec<_>>>()?;
+        let extensions = 
+            if self.descriptor.proto().extension_range().len() != 0 {
+                if self.options.size_checks {
+                    Some(quote!(size = size.checked_add(self.extensions.calculate_size()?)?;))
+                } else {
+                    Some(quote!(size += self.extensions.calculate_size();))
+                }
+            } else {
+                None
+            };
         if self.options.size_checks {
             Ok(quote! {
                 fn calculate_size(&self) -> ::std::option::Option<i32> {
@@ -355,8 +445,19 @@ impl SourceGenerator<'_, MessageDescriptor> {
 
     fn generate_write_to(&self) -> Result {
         let c = &self.options.crate_name;
-        let field_writers = unimplemented!();
-        let extensions = unimplemented!();
+        let field_writers = 
+            self.descriptor
+                .fields()
+                .iter()
+                .map(|f| 
+                    self.with::<FieldDescriptor>(f).generate_value_writer())
+                .collect::<Result<Vec<_>>>()?;
+        let extensions = 
+            if self.descriptor.proto().extension_range().len() != 0 {
+                Some(quote!(self.extensions.write_to(output)?;))
+            } else {
+                None
+            };
         Ok(quote! {
             fn write_to(&self, output: &mut #c::io::CodedOutput) -> #c::io::OutputResult {
                 #(#field_writers
@@ -369,7 +470,13 @@ impl SourceGenerator<'_, MessageDescriptor> {
     }
 
     fn generate_is_initialized(&self) -> Result {
-        let checks = unimplemented!();
+        let checks = 
+            self.descriptor
+                .fields()
+                .iter()
+                .map(|f| 
+                    self.with::<FieldDescriptor>(f).generate_initialized_check())
+                .collect::<Result<Vec<_>>>()?;
         Ok(quote! {
             fn is_initialized(&self) -> bool {
                 #(#checks
@@ -542,7 +649,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
         }
     }
 
-    pub fn generate_rustdoc_comments(&self) -> Result {
+    pub fn generate_rustdoc_comments(&self) -> Result<Option<TokenStream>> {
         generate_rustdoc_comments(self.descriptor.source_code_info())
     }
 }
@@ -645,7 +752,7 @@ impl SourceGenerator<'_, EnumDescriptor> {
         })
     }
 
-    pub fn generate_rustdoc_comments(&self) -> Result {
+    pub fn generate_rustdoc_comments(&self) -> Result<Option<TokenStream>> {
         generate_rustdoc_comments(self.descriptor.source_code_info())
     }
 }
@@ -712,7 +819,7 @@ impl SourceGenerator<'_, OneofDescriptor> {
         })
     }
 
-    pub fn generate_rustdoc_comments(&self) -> Result {
+    pub fn generate_rustdoc_comments(&self) -> Result<Option<TokenStream>> {
         generate_rustdoc_comments(self.descriptor.source_code_info())
     }
 }
@@ -743,34 +850,60 @@ impl SourceGenerator<'_, FieldDescriptor> {
             _ => {
                 match self.descriptor.field_type() {
                     FieldType::Message(_) | FieldType::Group(_) => {
-                        match self.descriptor.scope() {
-                            FieldScope::Oneof(_) => {
-                                unimplemented!()
-                            },
-                            FieldScope::Message(_) => {
-                                unimplemented!()
-                            },
-                            _ => unreachable!()
-                        }
+                        let c = &self.options.crate_name;
+                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                        Ok(quote! {
+                            if let ::std::option::Option::Some(#n) = &other.#get {
+                                #c::LiteMessage::merge(self.#get_mut, #n);
+                            }
+                        })
                     },
                     FieldType::Bytes | FieldType::String => {
-                        match self.descriptor.scope() {
-                            FieldScope::Oneof(_) => {
-                                unimplemented!()
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto3 => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                Ok(quote! {
+                                    if other.#get.len() != 0 {
+                                        *self.#get_mut() = ::std::clone::Clone::clone(other.#get);
+                                    }
+                                })
                             },
-                            FieldScope::Message(_) => {
-                                unimplemented!()
+                            Syntax::Proto2 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = other.#get_option {
+                                        self.#set(::std::clone::Clone::clone(#n));
+                                    }
+                                })
                             },
                             _ => unreachable!()
                         }
                     },
                     _ => {
-                        match self.descriptor.scope() {
-                            FieldScope::Oneof(_) => {
-                                unimplemented!()
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto3 => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                Ok(quote! {
+                                    if other.#get.len() != 0 {
+                                        *self.#get_mut() = other.#get;
+                                    }
+                                })
                             },
-                            FieldScope::Message(_) => {
-                                unimplemented!()
+                            Syntax::Proto2 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = other.#get_option {
+                                        self.#set(#n);
+                                    }
+                                })
                             },
                             _ => unreachable!()
                         }
@@ -778,6 +911,41 @@ impl SourceGenerator<'_, FieldDescriptor> {
                 }
             }
         }
+    }
+
+    pub fn generate_merge_arm(&self) -> Result {
+        let tags: TokenStream = {
+            let real_tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type()).to_string();
+            if self.descriptor.field_type().wire_type().is_packable() {
+                let length_tag = Tag::new(self.descriptor.number(), WireType::LengthDelimited).to_string();
+                quote!(#real_tag | #length_tag)
+            } else {
+                quote!(#real_tag)
+            }
+        };
+        match self.descriptor.label() {
+            FieldLabel::Repeated => {
+                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                let codec = names::get_field_name(self.descriptor, FieldName::Codec)?;
+                Ok(quote!(#tags => self.#n.add_entries(input, &#codec)?))
+            },
+            _ => {
+                unimplemented!()
+            }
+
+        }
+    }
+
+    pub fn generate_size_calculator(&self) -> Result {
+        unimplemented!()
+    }
+
+    pub fn generate_value_writer(&self) -> Result {
+        unimplemented!()
+    }
+
+    pub fn generate_initialized_check(&self) -> Result {
+        unimplemented!()
     }
 
     pub fn generate_extension(&self) -> Result {
@@ -991,7 +1159,8 @@ impl SourceGenerator<'_, FieldDescriptor> {
                             },
                             _ => panic!("unknown syntax")
                         }
-                    }
+                    },
+                    _ => unreachable!()
                 }
             }
         }
@@ -1066,7 +1235,7 @@ impl SourceGenerator<'_, FieldDescriptor> {
         }
     }
 
-    pub fn generate_rustdoc_comments(&self) -> Result {
+    pub fn generate_rustdoc_comments(&self) -> Result<Option<TokenStream>> {
         generate_rustdoc_comments(self.descriptor.source_code_info())
     }
 
@@ -1214,6 +1383,15 @@ impl SourceGenerator<'_, FieldDescriptor> {
     }
 }
 
-fn generate_rustdoc_comments(info: Option<&SourceCodeInfo>) -> Result {
-    unimplemented!()
+fn generate_rustdoc_comments(info: Option<&SourceCodeInfo>) -> Result<Option<TokenStream>> {
+    if let Some(info) = info {
+        if let Some(comments) = info.leading_comments().or(info.trailing_comments()) {
+            let lines = comments.lines().map(|l| format!("/// {}", l));
+            return Ok(Some(quote! {
+                #(#lines
+                )*
+            }))
+        }
+    }
+    Ok(None)
 }
