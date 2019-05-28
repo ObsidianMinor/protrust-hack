@@ -6,7 +6,6 @@ pub mod names;
 
 use crate::{CodedMessage, LiteMessage};
 use crate::reflect::{DescriptorPool, FileDescriptor};
-use proc_macro2::TokenStream;
 use proto::code_generator_response::File;
 use std::error::Error;
 
@@ -16,7 +15,7 @@ pub type Result<T = ()> = std::result::Result<T, Box<Error>>;
 pub struct Context<'a> {
     request: &'a proto::CodeGeneratorRequest,
     pool: DescriptorPool<'a>,
-    files: Vec<(Box<str>, TokenStream)>
+    files: Vec<(String, String)>
 }
 
 impl Context<'_> {
@@ -29,11 +28,15 @@ impl Context<'_> {
         self.request.parameter()
     }
 
-    pub fn parse_parameter(&self) -> impl Iterator<Item = (&str, Option<&str>)> {
-        self.parameter().split(',').map(|s| {
-            let mut iter = s.splitn(2, '=');
-            (iter.next().expect("splitn returns at least one item"), iter.next())
-        })
+    pub fn parse_parameter(&self) -> Option<impl Iterator<Item = (&str, Option<&str>)>> {
+        if self.request.has_parameter() {
+            Some(self.request.parameter().split(',').map(|s| {
+                let mut iter = s.splitn(2, '=');
+                (iter.next().expect("splitn returns at least one item"), iter.next())
+            }))
+        } else {
+            None
+        }
     }
 
     pub fn input_files(&self) -> impl Iterator<Item = &FileDescriptor> {
@@ -44,8 +47,8 @@ impl Context<'_> {
                 .expect("file_to_generate was not found in context pool"))
     }
 
-    pub fn add_output_file(&mut self, path: &str, stream: TokenStream) {
-        self.files.push((Box::from(path), stream))
+    pub fn add_output_file(&mut self, path: String, stream: String) {
+        self.files.push((path, stream))
     }
 }
 
@@ -65,7 +68,7 @@ impl From<Context<'_>> for proto::CodeGeneratorResponse {
         for (path, stream) in context.files {
             let mut file = File::new();
             file.set_name(String::from(path));
-            file.set_content(stream.to_string());
+            file.set_content(stream);
             response.file_mut().push(file);
         }
         response

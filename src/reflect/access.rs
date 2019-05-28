@@ -3,6 +3,7 @@ use crate::reflect::{AnyMessage, AnyValue};
 use std::fmt::Debug;
 
 /// Represents a field accessor for a single, repeated, or map value
+#[derive(Clone, Copy)]
 pub enum FieldAccessor<'a> {
     Single(&'a SingleFieldAccessor),
     Repeated(&'a RepeatedFieldAccessor),
@@ -203,6 +204,64 @@ impl<T: AnyMessage, V: AnyValue + Default> SingleFieldAccessor for SimpleFieldAc
                 .downcast_ref::<T>()
                 .ok_or(FieldAccessError::InvalidMessage)?,
         )))
+    }
+
+    fn get_mut<'a>(&self, instance: &'a mut dyn AnyMessage) -> Result<&'a mut dyn AnyValue> {
+        Ok((self.get_mut)(
+            instance
+                .downcast_mut::<T>()
+                .ok_or(FieldAccessError::InvalidMessage)?,
+        ))
+    }
+
+    fn set(&self, instance: &mut dyn AnyMessage, value: Box<dyn AnyValue>) -> Result<()> {
+        let instance: &mut T = instance
+            .downcast_mut::<T>()
+            .ok_or(FieldAccessError::InvalidMessage)?;
+        let value: Box<V> = value
+            .downcast::<V>()
+            .map_err(|v| FieldAccessError::InvalidValue(v))?;
+
+        *(self.get_mut)(instance) = *value;
+
+        Ok(())
+    }
+
+    fn take(&self, instance: &mut dyn AnyMessage) -> Result<Option<Box<dyn AnyValue>>> {
+        let instance = instance
+            .downcast_mut::<T>()
+            .ok_or(FieldAccessError::InvalidMessage)?;
+        let value = std::mem::replace((self.get_mut)(instance), Default::default());
+        Ok(Some(Box::new(value)))
+    }
+
+    fn clear(&self, instance: &mut dyn AnyMessage) -> Result<()> {
+        *(self.get_mut)(
+            instance
+                .downcast_mut::<T>()
+                .ok_or(FieldAccessError::InvalidMessage)?,
+        ) = Default::default();
+        Ok(())
+    }
+}
+
+/// An accessor for accessing fields with a getter that returns an optional shared reference and unique reference getter
+pub struct SimpleOptionFieldAccessor<T, V> {
+    pub get: fn(&T) -> Option<&V>,
+    pub get_mut: fn(&mut T) -> &mut V
+}
+
+impl<T, V> SingleFieldAccessor for SimpleOptionFieldAccessor<T, V> 
+    where 
+        T: AnyMessage,
+        V: AnyValue + Default
+{
+    fn get<'a>(&self, instance: &'a dyn AnyMessage) -> Result<Option<&'a dyn AnyValue>> {
+        Ok((self.get)(
+            instance
+                .downcast_ref::<T>()
+                .ok_or(FieldAccessError::InvalidMessage)?,
+        ).map::<&'a dyn AnyValue, _>(|v| v))
     }
 
     fn get_mut<'a>(&self, instance: &'a mut dyn AnyMessage) -> Result<&'a mut dyn AnyValue> {

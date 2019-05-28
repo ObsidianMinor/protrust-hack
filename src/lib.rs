@@ -177,7 +177,7 @@ pub trait CodedMessage {
 /// A LITE Protocol Buffers message
 pub trait LiteMessage: CodedMessage + Default + Clone + PartialEq + Debug + Send + Sync + 'static {
     /// Creates a new instance of the message
-    fn new() -> Self;
+    fn new() -> Self { Default::default() }
 
     /// Merges the fields from another message into this one via copy assignment
     fn merge(&mut self, other: &Self);

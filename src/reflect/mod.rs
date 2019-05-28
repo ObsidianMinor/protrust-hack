@@ -622,13 +622,14 @@ impl SourceCodeInfo {
 #[doc(hidden)]
 pub struct GeneratedCodeInfo {
     pub structs: Option<Box<[GeneratedStructInfo]>>,
+    pub fields: Option<Box<[access::FieldAccessor<'static>]>>
 }
 
 #[doc(hidden)]
 pub struct GeneratedStructInfo {
     pub new: fn() -> Box<dyn AnyMessage>,
     pub structs: Option<Box<[GeneratedStructInfo]>>,
-    //pub fields: Option<Box<[&'static access::FieldAccessor<'static>]>>
+    pub fields: Option<Box<[access::FieldAccessor<'static>]>>
 }
 
 /// Specifies the syntax of a proto file
@@ -859,18 +860,22 @@ impl FileDescriptor {
                     Ref::get_mut(message).cross_ref(pool, Some(message_info));
                 }
             }
+            if let Some(fields) = code_info.fields {
+                for (field, accessor) in self.extensions.iter_mut().zip(fields.iter()) {
+                    Ref::get_mut(field).cross_ref(pool, Some(*accessor));
+                }
+            }
         } else {
             for message in self.messages.iter_mut() {
                 Ref::get_mut(message).cross_ref(pool, None);
+            }
+            for mut extension in self.extensions.iter_mut() {
+                Ref::get_mut(&mut extension).cross_ref(pool, None);
             }
         }
 
         for mut service in self.services.iter_mut() {
             Ref::get_mut(&mut service).cross_ref(pool);
-        }
-
-        for mut extension in self.extensions.iter_mut() {
-            Ref::get_mut(&mut extension).cross_ref(pool);
         }
 
         self.parse_source_code_info();
@@ -1233,29 +1238,29 @@ impl MessageDescriptor {
                     }
                 }
             }
+            if let Some(fields) = &struct_info.fields {
+                for (field, accessor) in self.fields.iter_mut().chain(self.extensions.iter_mut()).zip(fields.iter()) {
+                    unsafe {
+                        Ref::get_mut(field).cross_ref(pool, Some(*accessor));
+                    }
+                }
+            }
         } else {
             for message in self.messages.iter_mut() {
                 unsafe {
                     Ref::get_mut(message).cross_ref(pool, None);
                 }
             }
-        }
-
-        for field in self.fields.iter_mut() {
-            unsafe {
-                Ref::get_mut(field).cross_ref(pool);
+            for field in self.fields.iter_mut() {
+                unsafe {
+                    Ref::get_mut(field).cross_ref(pool, None);
+                }
             }
         }
 
         for oneof in self.oneofs.iter_mut() {
             unsafe {
                 Ref::get_mut(oneof).cross_ref();
-            }
-        }
-
-        for extension in self.extensions.iter_mut() {
-            unsafe {
-                Ref::get_mut(extension).cross_ref(pool);
             }
         }
     }
@@ -2200,7 +2205,7 @@ impl FieldDescriptor {
         Ref::new(descriptor_raw)
     }
 
-    fn cross_ref(&mut self, pool: &mut DescriptorPool) {
+    fn cross_ref(&mut self, pool: &mut DescriptorPool, accessor: Option<access::FieldAccessor<'static>>) {
         use crate::descriptor::field_descriptor_proto::Type::*;
         self.value_type = match self.proto().r#type().expect("Undefined enum value") {
             Message => FieldType::Message(pool.get_message_ref(self.proto().type_name())),
@@ -2222,6 +2227,7 @@ impl FieldDescriptor {
             Sint32 => FieldType::Sint32,
             Sint64 => FieldType::Sint64,
         };
+        self.accessor = accessor;
 
         if self.proto().has_default_value() {
             self.default = match self.field_type() {

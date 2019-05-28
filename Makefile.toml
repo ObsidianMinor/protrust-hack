@@ -11,7 +11,7 @@ args = ["test"]
 command = "protoc"
 args = [
     "--rust_out=src/generated/checked",
-    "--rust_opt=crate_name=crate,checked_size",
+    "--rust_opt=crate_name=crate,size_checks",
     "google/protobuf/any.proto",
     "google/protobuf/api.proto",
     "google/protobuf/descriptor.proto",

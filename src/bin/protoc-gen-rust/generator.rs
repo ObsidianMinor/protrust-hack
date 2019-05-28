@@ -14,14 +14,17 @@
 //! however it makes it easier to check syntax ahead of time. It also makes it easier to read and write code templates.
 
 use itertools::Itertools;
+use protrust::CodedMessage;
 use protrust::io::{Tag, WireType};
 use protrust::plugin::{names::{self, Scope, TypeKind, FieldName}, Context};
 use protrust::reflect::{Descriptor, Syntax, FileDescriptor, MessageDescriptor, CompositeScope, EnumDescriptor, OneofDescriptor, FieldDescriptor, DefaultValue, FieldType, FieldLabel, FieldScope, SourceCodeInfo};
-use proc_macro2::TokenStream;
+use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use std::collections::HashSet;
 use std::error::Error;
-use syn::{Ident, Expr, ExprLit, Path};
+use std::io::{self, Write};
+use std::process::{Stdio, Command};
+use syn::{Token, Ident, Lit, Expr, ExprLit, Path};
 
 pub struct Options {
     /// Allows users to change the name of the crate for referencing the codegen modules.
@@ -46,14 +49,17 @@ pub enum OptionError {
 
 impl std::fmt::Display for OptionError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        unimplemented!()
+        match self {
+            OptionError::UnknownOption(k, v) => write!(f, "unknown option: ({}, {:#?})", k, v),
+            OptionError::ParseError(v, err) => write!(f, "error parsing value \"{}\": {}", v, err)
+        }
     }
 }
 
 impl Error for OptionError { }
 
 impl Options {
-    pub fn parse_from<'a>(params: impl Iterator<Item = (&'a str, Option<&'a str>)>) -> std::result::Result<Options, OptionError> {
+    pub fn parse_from<'a>(params: Option<impl Iterator<Item = (&'a str, Option<&'a str>)>>) -> std::result::Result<Options, OptionError> {
         let mut options = Options {
             crate_name: syn::parse_str("::protrust").unwrap(),
             no_json: false,
@@ -61,19 +67,21 @@ impl Options {
             no_reflection: false,
             external_modules: Vec::new()
         };
-        for param in params {
-            match param {
-                ("crate_name", Some(c)) => options.crate_name = syn::parse_str(c).map_err(|e| OptionError::ParseError(c.to_string(), Box::new(e)))?,
-                ("no_json", None) => options.no_json = true,
-                ("size_checks", None) => options.size_checks = true,
-                ("no_reflection", None) => options.no_reflection = true,
-                ("external_modules", Some(e)) => 
-                    options.external_modules = 
-                        e.split('+')
-                            .map(syn::parse_str)
-                            .collect::<syn::Result<Vec<Path>>>()
-                            .map_err(|e| OptionError::ParseError(e.to_string(), Box::new(e)))?,
-                (key, value) => return Err(OptionError::UnknownOption(key.to_string(), value.map(|v| v.to_string())))
+        if let Some(params) = params {
+            for param in params {
+                match param {
+                    ("crate_name", Some(c)) => options.crate_name = syn::parse_str(c).map_err(|e| OptionError::ParseError(c.to_string(), Box::new(e)))?,
+                    ("no_json", None) => options.no_json = true,
+                    ("size_checks", None) => options.size_checks = true,
+                    ("no_reflection", None) => options.no_reflection = true,
+                    ("external_modules", Some(e)) => 
+                        options.external_modules = 
+                            e.split('+')
+                                .map(syn::parse_str)
+                                .collect::<syn::Result<Vec<Path>>>()
+                                .map_err(|e| OptionError::ParseError(e.to_string(), Box::new(e)))?,
+                    (key, value) => return Err(OptionError::UnknownOption(key.to_string(), value.map(|v| v.to_string())))
+                }
             }
         }
         Ok(options)
@@ -97,12 +105,18 @@ impl<'a, 'b> Generator<'a, 'b> {
 
     pub fn generate(&mut self) -> Result<()> {
         let externals = self.generate_externals_mod()?;
+        let registry = self.generate_extension_registry()?;
+        let pool = self.generate_descriptor_pool()?;
         let mods = self.generate_mods()?;
 
-        self.context.add_output_file("mod.rs", quote! {
+        let stream = quote! {
             #externals
+            #registry
+            #pool
             #mods
-        });
+        };
+
+        self.context.add_output_file("mod.rs".to_string(), self.format_stream(&stream)?);
 
         Ok(())
     }
@@ -111,11 +125,8 @@ impl<'a, 'b> Generator<'a, 'b> {
         let collected_input: Box<[&FileDescriptor]> = self.context.input_files().collect();
         let input_files_set: HashSet<_> = collected_input.iter().map(|r| *r).collect();
         let all_deps: HashSet<_> = flatten_deps(collected_input.iter().map(|r| *r)).collect();
-        let external_deps = input_files_set.difference(&all_deps).map(|r| *r).collect::<Vec<&FileDescriptor>>();
-        let mut external_files_to_rust_names: Vec<Ident> = Vec::new();
-        for file in &external_deps {
-            external_files_to_rust_names.push(names::get_rust_file_mod_name(file)?);
-        }
+        let external_deps = all_deps.difference(&input_files_set).map(|r| *r).collect::<Vec<&FileDescriptor>>();
+        let external_files_to_rust_names = external_deps.iter().map(|f| names::get_rust_file_mod_name(f)).collect::<syn::Result<Vec<_>>>()?;
         let crate_file = 
             if external_deps.iter().any(|f| match f.name() {
                 "google/protobuf/descriptor.proto"
@@ -163,11 +174,122 @@ impl<'a, 'b> Generator<'a, 'b> {
         Ok(stream)
     }
 
+    fn generate_extension_registry(&self) -> Result {
+        let c = &self.options.crate_name;
+        let external_mods = &self.options.external_modules;
+        let external_count = syn::parse_str::<Lit>(&self.options.external_modules.len().to_string())?;
+        let extensions = {
+            let mut extensions: fnv::FnvHashMap<_, _> = Default::default();
+            for (msg, field) in self.context
+                .input_files()
+                .flat_map(|f| f.extensions())
+                .chain(self.context.input_files().flat_map(|f| f.flatten_messages().flat_map(|m| m.extensions())))
+                .map(|e| (e.message(), &**e)) {
+                    extensions.entry(msg).or_insert_with(Vec::new).push(field);
+            }
+            extensions
+        };
+        let extension_pairs = 
+            extensions
+                .iter()
+                .map(|(k, v)| {
+                    let t = names::get_message_type_path(k, None)?;
+                    let extension_paths = v.iter().map(|e| {
+                        let n = names::get_field_name(e, FieldName::Extension)?;
+                        match e.scope() {
+                            FieldScope::Message(m) => {
+                                let m = names::get_message_mod_path(m, None)?;
+                                syn::parse2(quote!(#m::#n))
+                            },
+                            FieldScope::File(f) => {
+                                let m = names::get_rust_file_mod_name(f)?;
+                                syn::parse2(quote!(self::#m::#n))
+                            },
+                            _ => unreachable!()
+                        }
+                    }).collect::<syn::Result<Vec<Path>>>()?;
+                    Ok(quote! {
+                        (::std::any::TypeId::of::<#t>(), &[ #(&#extension_paths, )*])
+                    })
+                })
+                .collect::<Result<Vec<_>>>()?;
+        Ok(quote! {
+            static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static #c::ExtensionRegistry; #external_count]> = ::std::option::Option::None;
+            static mut EXTENSIONS_REGISTRY: ::std::option::Option<#c::ExtensionRegistry> = ::std::option::Option::None;
+            static EXTENSIONS_INIT: ::std::sync::Once = ::std::sync::Once::new();
+            fn extensions_init() {
+                unsafe {
+                    self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([
+                        #(#external_mods::extensions(), )*
+                    ]);
+                    self::EXTENSIONS_REGISTRY = ::std::option::Option::Some(#c::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[
+                        #(#extension_pairs,
+                        )*
+                    ]));
+                }
+            }
+            /// Gets the extension registry containing all the extensions contained in this generated code module
+            pub fn extensions() -> &'static #c::ExtensionRegistry {
+                unsafe {
+                    self::EXTENSIONS_INIT.call_once(extensions_init);
+                    self::EXTENSIONS_REGISTRY.as_ref().unwrap()
+                }
+            }
+        })
+    }
+
+    fn generate_descriptor_pool(&self) -> Result {
+        let c = &self.options.crate_name;
+        let rc = std::iter::repeat(c); // c iterators for use in generating FILES
+        let rcc = std::iter::repeat(c); // another c iterator
+        let external_mods = &self.options.external_modules;
+        let ec = syn::parse_str::<Lit>(&external_mods.len().to_string())?;
+        let files = self.context.input_files().collect::<Vec<_>>();
+        let fc = syn::parse_str::<Lit>(&files.len().to_string())?;
+        let blobs = files
+            .iter()
+            .map(|f| get_blob_name(f))
+            .collect::<syn::Result<Vec<_>>>()?;
+        let info = files.iter().map(|f| SourceGenerator::new(*f, &self.options).generate_code_info()).collect::<Result<Vec<_>>>()?;
+        Ok(quote! {
+            static mut EXTERNAL_DEPS: ::std::option::Option<[&'static #c::reflect::DescriptorPool<'static>; #ec]> = ::std::option::Option::None;
+            static mut FILES: ::std::option::Option<[#c::descriptor::FileDescriptorProto; #fc]> = ::std::option::Option::None;
+            static mut POOL: ::std::option::Option<#c::reflect::DescriptorPool<'static>> = ::std::option::Option::None;
+            static POOL_INIT: ::std::sync::Once = ::std::sync::Once::new();
+            fn pool_init() {
+                unsafe {
+                    self::EXTERNAL_DEPS = ::std::option::Option::Some([
+                        #(#external_mods::pool(), 
+                        )*
+                    ]);
+                    self::FILES = ::std::option::Option::Some([
+                        #(#rc::LiteMessage::read_new_from_input(&mut #rcc::io::CodedInput::new(&mut #blobs.as_ref()).with_registry(::std::option::Option::Some(self::extensions()))).expect("couldn't read file descriptor"),
+                        )*
+                    ]);
+                    self::POOL = ::std::option::Option::Some(#c::reflect::DescriptorPool::build_from_generated_code(self::FILES.as_ref().unwrap().as_ref(), self::EXTERNAL_DEPS.as_ref().unwrap(), ::std::boxed::Box::new([
+                        #(#info,
+                        )*
+                    ])));
+                }
+            }
+            /// Gets the descriptor pool containing all the reflection information contained in this generated code module
+            pub fn pool() -> &'static #c::reflect::DescriptorPool<'static> {
+                unsafe {
+                    self::POOL_INIT.call_once(pool_init);
+                    self::POOL.as_ref().unwrap()
+                }
+            }
+        })
+    }
+
     fn generate_mods(&self) -> Result {
         let mods = self.context.input_files().map(|file| {
             let mod_name = names::get_rust_file_mod_name(file)?;
-            let file_stream = SourceGenerator::new(file, &self.options).generate()?;
+            let generator = SourceGenerator::new(file, &self.options);
+            let blob = generator.generate_file_blob()?;
+            let file_stream = generator.generate()?;
             Ok(quote! {
+                #blob
                 pub mod #mod_name {
                     #file_stream
                 }
@@ -180,6 +302,66 @@ impl<'a, 'b> Generator<'a, 'b> {
         };
         Ok(stream)
     }
+
+    fn format_stream(&self, code: &TokenStream) -> Result<String> {
+        let mut result = "/* generated by protoc-gen-rust */\n\n".to_string();
+
+        let stream = code.to_string();
+
+        match self.rustfmt_generated_string(&stream) {
+            Ok(fmted) => {
+                result += &fmted;
+            },
+            Err(err) => {
+                eprintln!("Failed to run rustfmt: {} (non-fatal, continuing)", err);
+                result += &stream;
+            }
+        }
+
+        Ok(result)
+    }
+
+    fn rustfmt_generated_string(&self, source: &str) -> io::Result<String> {
+        let rustfmt = 
+            which::which("rustfmt")
+                .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("{}", e)))?;
+        let mut cmd = Command::new(rustfmt);
+        cmd
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped());
+
+        let mut child = cmd.spawn()?;
+        let mut cstdin = child.stdin.take().unwrap();
+        let mut cstdout = child.stdout.take().unwrap();
+
+        let source = source.to_owned();
+
+        let write_thread = std::thread::spawn(move || {
+            let _ = cstdin.write_all(source.as_bytes());
+            source
+        });
+
+        let mut output = Vec::new();
+        std::io::copy(&mut cstdout, &mut output)?;
+
+        let status = child.wait()?;
+        let source = write_thread.join().unwrap();
+
+        match String::from_utf8(output) {
+            Ok(bindings) => {
+                match status.code() {
+                    Some(0) => Ok(bindings),
+                    Some(2) => Err(io::Error::new(io::ErrorKind::Other, "rustfmt parsing errors".to_owned())),
+                    Some(3) => {
+                        eprintln!("Rustfmt could not format some lines.");
+                        Ok(bindings)
+                    },
+                    _ => Err(io::Error::new(io::ErrorKind::Other, "Internal rustfmt error".to_owned()))
+                }
+            },
+            _ => Ok(source)
+        }
+    }
 }
 
 fn flatten_deps<'a, T>(files: T) -> Box<(dyn Iterator<Item = &'a FileDescriptor> + 'a)> 
@@ -189,8 +371,12 @@ fn flatten_deps<'a, T>(files: T) -> Box<(dyn Iterator<Item = &'a FileDescriptor>
         .flat_map(|f| f.dependencies()
             .iter()
             .map(|r| &**r)
-            .chain(flatten_deps(f.public_dependencies().iter().map(|r| &**r))))
+            .chain(flatten_public_deps(f)))
         .unique())
+}
+
+fn flatten_public_deps<'a>(f: &'a FileDescriptor) -> Box<(dyn Iterator<Item = &'a FileDescriptor> + 'a)> {
+    flatten_deps(f.public_dependencies().iter().map(|r| &**r))
 }
 
 pub struct SourceGenerator<'a, T> {
@@ -214,7 +400,7 @@ impl<'a, T> SourceGenerator<'a, T> {
 impl SourceGenerator<'_, FileDescriptor> {
     pub fn generate(&self) -> Result {
         let crt = &self.options.crate_name;
-        let file_str: syn::ExprLit = syn::parse_str(&format!("\"{}\"", self.descriptor.name()))?;
+        let file_str = self.descriptor.name();
 
         let substreams: Vec<TokenStream> = {
             self.descriptor
@@ -242,7 +428,7 @@ impl SourceGenerator<'_, FileDescriptor> {
 
         let stream = quote! {
             /// Gets the descriptor for the file this module was generated for
-            pub fn file() -> &'static #crt::reflect::FieldDescriptor {
+            pub fn file() -> &'static #crt::reflect::FileDescriptor {
                 super::pool().find_file_by_name(#file_str).unwrap()
             }
 
@@ -251,6 +437,65 @@ impl SourceGenerator<'_, FileDescriptor> {
         };
         Ok(stream)
     }
+
+    pub fn generate_file_blob(&self) -> Result {
+        let name = get_blob_name(self.descriptor)?;
+        let mut proto = self.descriptor.proto().clone();
+        proto.clear_source_code_info();
+        let vec = proto.write_to_vec().unwrap();
+        let bytes = vec.iter().map(|b| syn::parse_str::<syn::Lit>(&b.to_string()).unwrap());
+        Ok(quote! {
+            static #name: &'static [u8] = &[ #(#bytes,)* ];
+        })
+    }
+
+    pub fn generate_code_info(&self) -> Result {
+        let c = &self.options.crate_name;
+        let structs = 
+            if self.descriptor.messages().len() != 0 {
+                let info = self.descriptor
+                    .messages()
+                    .iter()
+                    .filter(|m| !m.map_entry())
+                    .map(|m| self.with::<MessageDescriptor>(m).generate_struct_info())
+                    .collect::<Result<Vec<_>>>()?;
+                quote! {
+                    ::std::option::Option::Some(::std::boxed::Box::new([
+                        #(#info,
+                        )*
+                    ]))
+                }
+            } else {
+                quote!(::std::option::Option::None)
+            };
+        let fields =
+            if self.descriptor.extensions().len() != 0 {
+                let info = self.descriptor
+                    .extensions()
+                    .iter()
+                    .map(|f| self.with::<FieldDescriptor>(f).generate_accessor_ref())
+                    .collect::<Result<Vec<_>>>()?;
+                quote! {
+                    ::std::option::Option::Some(::std::boxed::Box::new([
+                        #(#info,
+                        )*
+                    ]))
+                }
+            } else {
+                quote!(::std::option::Option::None)
+            };
+        
+        Ok(quote! {
+            #c::reflect::GeneratedCodeInfo {
+                structs: #structs,
+                fields: #fields,
+            }
+        })
+    }
+}
+
+fn get_blob_name(f: &FileDescriptor) -> syn::Result<Ident> {
+    syn::parse_str::<Ident>(&(names::get_rust_file_mod_name(f)?.to_string().to_uppercase() + "_BINARY"))
 }
 
 impl SourceGenerator<'_, MessageDescriptor> {
@@ -272,7 +517,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
         let c = &self.options.crate_name;
         let extensions = 
             if self.descriptor.proto().extension_range().len() != 0 {
-                Some(quote!(extensions: #c::ExtensionSet<Self>))
+                Some(quote!(extensions: #c::ExtensionSet<Self>,))
             } else {
                 None
             };
@@ -291,7 +536,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
                 #(#fields,
                 )*
                 unknown_fields: #c::UnknownFieldSet,
-                #extensions,
+                #extensions
             }
 
             #coded
@@ -318,6 +563,52 @@ impl SourceGenerator<'_, MessageDescriptor> {
                 #calculator
                 #writer
                 #initialized
+            }
+        })
+    }
+
+    pub fn generate_struct_info(&self) -> Result {
+        let c = &self.options.crate_name;
+        let t = names::get_message_type_path(self.descriptor, None)?;
+        let structs = 
+            if self.descriptor.messages().len() != 0 {
+                let info = self.descriptor
+                    .messages()
+                    .iter()
+                    .filter(|m| !m.map_entry())
+                    .map(|m| self.with::<MessageDescriptor>(m).generate_struct_info())
+                    .collect::<Result<Vec<_>>>()?;
+                quote! {
+                    ::std::option::Option::Some(::std::boxed::Box::new([
+                        #(#info,
+                        )*
+                    ]))
+                }
+            } else {
+                quote!(::std::option::Option::None)
+            };
+        let fields =
+            if self.descriptor.fields().len() != 0 || self.descriptor.extensions().len() != 0 {
+                let info = self.descriptor
+                    .fields()
+                    .iter()
+                    .chain(self.descriptor.extensions().iter())
+                    .map(|f| self.with::<FieldDescriptor>(f).generate_accessor_ref())
+                    .collect::<Result<Vec<_>>>()?;
+                quote! {
+                    ::std::option::Option::Some(::std::boxed::Box::new([
+                        #(#info,
+                        )*
+                    ]))
+                }
+            } else {
+                quote!(::std::option::Option::None)
+            };
+        Ok(quote! {
+            #c::reflect::GeneratedStructInfo {
+                new: || ::std::boxed::Box::new(<#t as #c::LiteMessage>::new()),
+                structs: #structs,
+                fields: #fields,
             }
         })
     }
@@ -368,14 +659,14 @@ impl SourceGenerator<'_, MessageDescriptor> {
                 .collect::<Result<Vec<_>>>()?;
         let end_group_break: Option<TokenStream> = {
             self.get_end_group_tag()
-                .map(|t| syn::parse_str::<Ident>(&t.to_string()))
+                .map(|t| syn::parse_str::<Lit>(&t.to_string()))
                 .transpose()?
                 .map(|id| quote!(#id => break,))
         };
         let unknown_field_merge = 
             if self.descriptor.proto().extension_range().len() != 0 {
                 quote! {
-                    if !self.extensions.merge_from(tag, input)? {
+                    if !self.extensions.merge_from(input)? {
                         self.unknown_fields.merge_from(tag, input)?
                     }
                 }
@@ -400,6 +691,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
             }
         })
     }
+
     fn generate_calculate_size(&self) -> Result {
         let size_calculators = 
             self.descriptor
@@ -506,7 +798,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
                 .collect::<Result<Vec<_>>>()?;
         let extensions_merge = 
             if self.descriptor.proto().extension_range().len() != 0 {
-                Some(quote!(self.extensions.merge(other.extensions)))
+                Some(quote!(self.extensions.merge(&other.extensions);))
             } else {
                 None
             };
@@ -515,7 +807,7 @@ impl SourceGenerator<'_, MessageDescriptor> {
                 #(#field_merge
                 )*
                 #extensions_merge
-                self.unknown_fields.merge(other.unknown_fields);
+                self.unknown_fields.merge(&other.unknown_fields);
             }
         })
     }
@@ -706,7 +998,7 @@ impl SourceGenerator<'_, EnumDescriptor> {
                 .values()
                 .iter()
                 .map(|f| {
-                    let num = syn::parse_str::<ExprLit>(&f.number().to_string())?;
+                    let num = syn::parse_str::<Expr>(&f.number().to_string())?;
                     let variant = names::get_enum_variant_path(f, Some(Scope::from(self.descriptor.scope())))?;
                     Ok(quote!(#num => ::std::result::Result::Ok(#variant)))
                 })
@@ -734,7 +1026,7 @@ impl SourceGenerator<'_, EnumDescriptor> {
                 .values()
                 .iter()
                 .map(|f| {
-                    let num = syn::parse_str::<ExprLit>(&f.number().to_string())?;
+                    let num = syn::parse_str::<Expr>(&f.number().to_string())?;
                     let variant = names::get_enum_variant_path(f, Some(Scope::from(self.descriptor.scope())))?;
                     Ok(quote!(#variant => #num))
                 })
@@ -792,17 +1084,17 @@ impl SourceGenerator<'_, OneofDescriptor> {
     }
 
     pub fn generate_accessor(&self) -> Result {
-        let t = names::get_message_type(self.descriptor.message())?;
-        let ref_doc_comment = format!(concat!(
-            "/// Gets a shared reference to the [`{0}`] oneof field\n",
-            "/// \n",
-            "/// [`{0}`]: enum.{1}.html"
-            ), self.descriptor.name(), t);
-        let mut_doc_comment = format!(concat!(
-            "/// Gets a unique reference to the [`{0}`] oneof field\n",
-            "/// \n",
-            "/// [`{0}`]: enum.{1}.html"
-            ), self.descriptor.name(), t);
+        let t = names::get_oneof_type(self.descriptor)?;
+        let ref_doc_comment = create_rustdoc_comment(&format!(concat!(
+            " Gets a shared reference to the [`{0}`] oneof field\n",
+            " \n",
+            " [`{0}`]: enum.{1}.html"
+            ), self.descriptor.name(), t))?;
+        let mut_doc_comment = create_rustdoc_comment(&format!(concat!(
+            " Gets a unique reference to the [`{0}`] oneof field\n",
+            " \n",
+            " [`{0}`]: enum.{1}.html"
+            ), self.descriptor.name(), t))?;
         let f: Ident = syn::parse_str(self.descriptor.name())?;
         let nm: Ident = syn::parse_str(&format!("{}_mut", self.descriptor.name()))?;
         let m = names::get_message_mod(self.descriptor.message())?;
@@ -813,7 +1105,7 @@ impl SourceGenerator<'_, OneofDescriptor> {
                 &self.#f
             }
             #mut_doc_comment
-            pub fn #nm(&mut self) -> &mut self::#m::&t {
+            pub fn #nm(&mut self) -> &mut self::#m::#t {
                 &mut self.#f
             }
         })
@@ -828,7 +1120,7 @@ impl SourceGenerator<'_, FieldDescriptor> {
     pub fn generate_struct_field(&self) -> Result {
         let name = names::get_field_name(self.descriptor, FieldName::Field)?;
         let t = names::get_rust_type(self.descriptor, TypeKind::Indirected, Some(Scope::from(self.descriptor.message().scope())), &self.options.crate_name, false)?;
-        if self.descriptor.file().syntax() == Syntax::Proto2 && self.descriptor.label() != FieldLabel::Repeated {
+        if (self.descriptor.file().syntax() == Syntax::Proto2 || self.descriptor.field_type().is_message()) && self.descriptor.label() != FieldLabel::Repeated {
             Ok(quote!(#name: ::std::option::Option<#t>))
         } else {
             Ok(quote!(#name: #t))
@@ -848,66 +1140,117 @@ impl SourceGenerator<'_, FieldDescriptor> {
                 Ok(quote!(self.#n.merge(&other.#n);))
             },
             _ => {
-                match self.descriptor.field_type() {
-                    FieldType::Message(_) | FieldType::Group(_) => {
-                        let c = &self.options.crate_name;
-                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
-                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
-                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
-                        Ok(quote! {
-                            if let ::std::option::Option::Some(#n) = &other.#get {
-                                #c::LiteMessage::merge(self.#get_mut, #n);
-                            }
-                        })
-                    },
-                    FieldType::Bytes | FieldType::String => {
-                        match self.descriptor.file().syntax() {
-                            Syntax::Proto3 => {
+                match self.descriptor.scope() {
+                    FieldScope::Oneof(_) => {
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) | FieldType::Group(_) => {
+                                let c = &self.options.crate_name;
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
                                 let get = names::get_field_name(self.descriptor, FieldName::Get)?;
                                 let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
                                 Ok(quote! {
-                                    if other.#get.len() != 0 {
-                                        *self.#get_mut() = ::std::clone::Clone::clone(other.#get);
+                                    if let ::std::option::Option::Some(#n) = &other.#get() {
+                                        #c::LiteMessage::merge(self.#get_mut(), #n);
                                     }
                                 })
-                            },
-                            Syntax::Proto2 => {
+                            }
+                            FieldType::Bytes | FieldType::String => {
                                 let n = names::get_field_name(self.descriptor, FieldName::Field)?;
-                                let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
                                 let set = names::get_field_name(self.descriptor, FieldName::Set)?;
                                 Ok(quote! {
-                                    if let ::std::option::Option::Some(#n) = other.#get_option {
+                                    if let ::std::option::Option::Some(#n) = other.#get() {
                                         self.#set(::std::clone::Clone::clone(#n));
                                     }
                                 })
-                            },
-                            _ => unreachable!()
-                        }
-                    },
-                    _ => {
-                        match self.descriptor.file().syntax() {
-                            Syntax::Proto3 => {
-                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
-                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
-                                Ok(quote! {
-                                    if other.#get.len() != 0 {
-                                        *self.#get_mut() = other.#get;
-                                    }
-                                })
-                            },
-                            Syntax::Proto2 => {
+                            }
+                            _ => {
                                 let n = names::get_field_name(self.descriptor, FieldName::Field)?;
-                                let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
                                 let set = names::get_field_name(self.descriptor, FieldName::Set)?;
                                 Ok(quote! {
-                                    if let ::std::option::Option::Some(#n) = other.#get_option {
-                                        self.#set(#n);
+                                    if let ::std::option::Option::Some(#n) = other.#get() {
+                                        self.#set(*#n);
                                     }
                                 })
-                            },
+                            }
+                        }
+                    }
+                    FieldScope::Message(_) => {
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto3 => {
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) => {
+                                        let c = &self.options.crate_name;
+                                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = &other.#get() {
+                                                #c::LiteMessage::merge(self.#get_mut(), #n);
+                                            }
+                                        })
+                                    }
+                                    FieldType::Bytes | FieldType::String => {
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                        Ok(quote! {
+                                            if other.#get.len() != 0 {
+                                                *self.#get_mut() = ::std::clone::Clone::clone(other.#get());
+                                            }
+                                        })
+                                    }
+                                    _ => {
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                        let default_value = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                        Ok(quote! {
+                                            if *other.#get() != Self::#default_value {
+                                                *self.#get_mut() = *other.#get();
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                            Syntax::Proto2 => {
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) | FieldType::Group(_) => {
+                                        let c = &self.options.crate_name;
+                                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = &other.#get() {
+                                                #c::LiteMessage::merge(self.#get_mut(), #n);
+                                            }
+                                        })
+                                    }
+                                    FieldType::Bytes | FieldType::String => {
+                                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                        let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                        let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = other.#get_option() {
+                                                self.#set(::std::clone::Clone::clone(#n));
+                                            }
+                                        })
+                                    }
+                                    _ => {
+                                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                        let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                        let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = other.#get_option() {
+                                                self.#set(*#n);
+                                            }
+                                        })
+                                    }
+                                }
+                            }
                             _ => unreachable!()
                         }
                     }
+                    _ => unreachable!()
                 }
             }
         }
@@ -915,9 +1258,9 @@ impl SourceGenerator<'_, FieldDescriptor> {
 
     pub fn generate_merge_arm(&self) -> Result {
         let tags: TokenStream = {
-            let real_tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type()).to_string();
-            if self.descriptor.field_type().wire_type().is_packable() {
-                let length_tag = Tag::new(self.descriptor.number(), WireType::LengthDelimited).to_string();
+            let real_tag = syn::parse_str::<ExprLit>(&Tag::new(self.descriptor.number(), self.descriptor.wire_type()).to_string())?;
+            if self.descriptor.field_type().wire_type().is_packable() && self.descriptor.wire_type() != WireType::LengthDelimited {
+                let length_tag = syn::parse_str::<ExprLit>(&Tag::new(self.descriptor.number(), WireType::LengthDelimited).to_string())?;
                 quote!(#real_tag | #length_tag)
             } else {
                 quote!(#real_tag)
@@ -927,25 +1270,552 @@ impl SourceGenerator<'_, FieldDescriptor> {
             FieldLabel::Repeated => {
                 let n = names::get_field_name(self.descriptor, FieldName::Field)?;
                 let codec = names::get_field_name(self.descriptor, FieldName::Codec)?;
-                Ok(quote!(#tags => self.#n.add_entries(input, &#codec)?))
+                let m = names::get_message_mod(self.descriptor.message())?;
+                Ok(quote!(#tags => self.#n.add_entries(input, &self::#m::#codec)?))
             },
             _ => {
-                unimplemented!()
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto3 => {
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) => {
+                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                let t = self.get_proto_type(Some("read"))?;
+                                Ok(quote!(#tags => input.#t(self.#get_mut())?))
+                            },
+                            _ => {
+                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                let t = self.get_proto_type(Some("read"))?;
+                                Ok(quote!(#tags => *self.#get_mut() = input.#t()?))
+                            }
+                        }
+                    },
+                    Syntax::Proto2 => {
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) | FieldType::Group(_) => {
+                                let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                                let t = self.get_proto_type(Some("read"))?;
+                                Ok(quote!(#tags => input.#t(self.#get_mut())?))
+                            },
+                            _ => {
+                                let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                                let t = self.get_proto_type(Some("read"))?;
+                                Ok(quote!(#tags => self.#set(input.#t()?)))
+                            }
+                        }
+                    },
+                    _ => unreachable!()
+                }
             }
-
         }
     }
 
     pub fn generate_size_calculator(&self) -> Result {
-        unimplemented!()
+        let tag_size: ExprLit = {
+            let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type()).get();
+            syn::parse_str(&protrust::io::sizes::uint32(tag).to_string())?
+        };
+        match self.descriptor.label() {
+            FieldLabel::Repeated => {
+                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                let codec = names::get_field_name(self.descriptor, FieldName::Codec)?;
+                let m = names::get_message_mod(self.descriptor.message())?;
+                if self.options.size_checks {
+                    Ok(quote!(size = size.checked_add(self.#get().calculate_size(&self::#m::#codec)?)?;))
+                } else {
+                    Ok(quote!(size += self.#get().calculate_size(&self::#m::#codec);))
+                }
+            },
+            _ => {
+                match self.descriptor.scope() {
+                    FieldScope::Oneof(_) => {
+                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let t = self.get_proto_type(None)?;
+                        let c = &self.options.crate_name;
+                        if self.options.size_checks {
+                            match self.descriptor.field_type() {
+                                FieldType::Message(_) => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size = size.checked_add(#tag_size)?;
+                                            size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                        }
+                                    })
+                                },
+                                FieldType::Group(_) => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    let end_tag_size: ExprLit = {
+                                        let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get();
+                                        syn::parse_str(&protrust::io::sizes::uint32(tag).to_string())?
+                                    };
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size = size.checked_add(#tag_size)?;
+                                            size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                            size = size.checked_add(#end_tag_size)?;
+                                        }
+                                    })
+                                },
+                                FieldType::String | FieldType::Bytes => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size = size.checked_add(#tag_size)?;
+                                            size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                        }
+                                    })
+                                },
+                                _ => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size = size.checked_add(#tag_size)?;
+                                            size = size.checked_add(#c::io::sizes::#t(*#n))?;
+                                        }
+                                    })
+                                }
+                            }
+                        } else {
+                            match self.descriptor.field_type() {
+                                FieldType::Message(_) => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size += #tag_size;
+                                            size += #c::io::sizes::#t(#n);
+                                        }
+                                    })
+                                },
+                                FieldType::Group(_) => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    let end_tag_size: ExprLit = {
+                                        let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get();
+                                        syn::parse_str(&protrust::io::sizes::uint32(tag).to_string())?
+                                    };
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size += #tag_size;
+                                            size += #c::io::sizes::#t(#n);
+                                            size += #end_tag_size;
+                                        }
+                                    })
+                                },
+                                FieldType::String | FieldType::Bytes => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size += #tag_size;
+                                            size += #c::io::sizes::#t(#n);
+                                        }
+                                    })
+                                },
+                                _ => {
+                                    let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                    Ok(quote! {
+                                        if let ::std::option::Option::Some(#n) = self.#get() {
+                                            size += #tag_size;
+                                            size += #c::io::sizes::#t(*#n);
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                    FieldScope::Message(_) => {
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto3 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                let t = self.get_proto_type(None)?;
+                                let c = &self.options.crate_name;
+                                if self.options.size_checks {
+                                    match self.descriptor.field_type() {
+                                        FieldType::Message(_) => {
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                                }
+                                            })
+                                        },
+                                        FieldType::String | FieldType::Bytes => {
+                                            let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                            Ok(quote! {
+                                                if **self.#get() != *Self::#default_field {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(self.#get())?)?;
+                                                }
+                                            })
+                                        },
+                                        _ => {
+                                            let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                            Ok(quote! {
+                                                if *self.#get() != Self::#default_field {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(*self.#get()))?;
+                                                }
+                                            })
+                                        }
+                                    }
+                                } else {
+                                    match self.descriptor.field_type() {
+                                        FieldType::Message(_) => {
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(#n);
+                                                }
+                                            })
+                                        },
+                                        FieldType::String | FieldType::Bytes => {
+                                            let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                            Ok(quote! {
+                                                if **self.#get() != *Self::#default_field {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(self.#get());
+                                                }
+                                            })
+                                        }
+                                        _ => {
+                                            let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                            Ok(quote! {
+                                                if *self.#get() != Self::#default_field {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(*self.#get());
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            },
+                            Syntax::Proto2 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let t = self.get_proto_type(None)?;
+                                let c = &self.options.crate_name;
+                                if self.options.size_checks {
+                                    match self.descriptor.field_type() {
+                                        FieldType::Message(_) => {
+                                            let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                                }
+                                            })
+                                        },
+                                        FieldType::Group(_) => {
+                                            let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                            let end_tag_size: ExprLit = {
+                                                let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get();
+                                                syn::parse_str(&protrust::io::sizes::uint32(tag).to_string())?
+                                            };
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                                    size = size.checked_add(#end_tag_size)?;
+                                                }
+                                            })
+                                        },
+                                        FieldType::String | FieldType::Bytes => {
+                                            let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(#n)?)?;
+                                                }
+                                            })
+                                        },
+                                        _ => {
+                                            let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                    size = size.checked_add(#tag_size)?;
+                                                    size = size.checked_add(#c::io::sizes::#t(*#n))?;
+                                                }
+                                            })
+                                        }
+                                    }
+                                } else {
+                                    match self.descriptor.field_type() {
+                                        FieldType::Message(_) => {
+                                            let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(#n);
+                                                }
+                                            })
+                                        },
+                                        FieldType::Group(_) => {
+                                            let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                            let end_tag_size: ExprLit = {
+                                                let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get();
+                                                syn::parse_str(&protrust::io::sizes::uint32(tag).to_string())?
+                                            };
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get() {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(#n);
+                                                    size += #end_tag_size;
+                                                }
+                                            })
+                                        },
+                                        FieldType::String | FieldType::Bytes => {
+                                            let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(#n);
+                                                }
+                                            })
+                                        },
+                                        _ => {
+                                            let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                            Ok(quote! {
+                                                if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                    size += #tag_size;
+                                                    size += #c::io::sizes::#t(*#n);
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            },
+                            _ => unreachable!()
+                        }
+                    }
+                    _ => unreachable!()
+                }
+                
+            }
+        }
     }
 
     pub fn generate_value_writer(&self) -> Result {
-        unimplemented!()
+        let tag_bytes: syn::Expr = {
+            let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type()).get().to_le();
+            let mut bytes = Vec::with_capacity(protrust::io::sizes::uint32(tag) as usize);
+            let mut output = protrust::io::CodedOutput::new(&mut bytes);
+            output.write_raw_tag(tag).unwrap();
+            syn::parse_str(&format!("{:?}", bytes))?
+        };
+        match self.descriptor.label() {
+            FieldLabel::Repeated => {
+                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                let codec = names::get_field_name(self.descriptor, FieldName::Codec)?;
+                let m = names::get_message_mod(self.descriptor.message())?;
+                Ok(quote!(self.#get().write_to(output, &self::#m::#codec)?;))
+            },
+            _ => {
+                match self.descriptor.scope() {
+                    FieldScope::Oneof(_) => {
+                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let t = self.get_proto_type(Some("write"))?;
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = self.#get() {
+                                        output.write_raw_tag_bytes(&#tag_bytes)?;
+                                        output.#t(#n)?;
+                                    }
+                                })
+                            }
+                            FieldType::Group(_) => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                let end_tag_size: syn::Expr = {
+                                    let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get().to_le();
+                                    let mut bytes = Vec::with_capacity(protrust::io::sizes::uint32(tag) as usize);
+                                    let mut output = protrust::io::CodedOutput::new(&mut bytes);
+                                    output.write_raw_tag(tag).unwrap();
+                                    syn::parse_str(&format!("{:?}", bytes))?
+                                };
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = self.#get() {
+                                        output.write_raw_tag_bytes(&#tag_bytes)?;
+                                        output.#t(#n)?;
+                                        output.write_raw_tag_bytes(&#end_tag_size)?;
+                                    }
+                                })
+                            }
+                            FieldType::String | FieldType::Bytes => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = self.#get() {
+                                        output.write_raw_tag_bytes(&#tag_bytes)?;
+                                        output.#t(#n)?;
+                                    }
+                                })
+                            }
+                            _ => {
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                Ok(quote! {
+                                    if let ::std::option::Option::Some(#n) = self.#get() {
+                                        output.write_raw_tag_bytes(&#tag_bytes)?;
+                                        output.#t(*#n)?;
+                                    }
+                                })
+                            }
+                        }
+                    }
+                    FieldScope::Message(_) => {
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto3 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                let t = self.get_proto_type(Some("write"))?;
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) => {
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = self.#get() {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(#n)?;
+                                            }
+                                        })
+                                    },
+                                    FieldType::String | FieldType::Bytes => {
+                                        let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                        Ok(quote! {
+                                            if **self.#get() != *Self::#default_field {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(self.#get())?;
+                                            }
+                                        })
+                                    }
+                                    _ => {
+                                        let default_field = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                        Ok(quote! {
+                                            if *self.#get() != Self::#default_field {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(*self.#get())?;
+                                            }
+                                        })
+                                    }
+                                }
+                            },
+                            Syntax::Proto2 => {
+                                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                let t = self.get_proto_type(Some("write"))?;
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) => {
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = self.#get() {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(#n)?;
+                                            }
+                                        })
+                                    }
+                                    FieldType::Group(_) => {
+                                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                                        let end_tag_size: syn::Expr = {
+                                            let tag = Tag::new(self.descriptor.number(), WireType::EndGroup).get().to_le();
+                                            let mut bytes = Vec::with_capacity(protrust::io::sizes::uint32(tag) as usize);
+                                            let mut output = protrust::io::CodedOutput::new(&mut bytes);
+                                            output.write_raw_tag(tag).unwrap();
+                                            syn::parse_str(&format!("{:?}", bytes))?
+                                        };
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = self.#get() {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(#n)?;
+                                                output.write_raw_tag_bytes(&#end_tag_size)?;
+                                            }
+                                        })
+                                    }
+                                    FieldType::String | FieldType::Bytes => {
+                                        let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(#n)?;
+                                            }
+                                        })
+                                    }
+                                    _ => {
+                                        let get_option = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                        Ok(quote! {
+                                            if let ::std::option::Option::Some(#n) = self.#get_option() {
+                                                output.write_raw_tag_bytes(&#tag_bytes)?;
+                                                output.#t(*#n)?;
+                                            }
+                                        })
+                                    }
+                                }
+                            },
+                            _ => unreachable!()
+                        }
+                    }
+                    _ => unreachable!()
+                }
+                
+            }
+        }
     }
 
-    pub fn generate_initialized_check(&self) -> Result {
-        unimplemented!()
+    pub fn generate_initialized_check(&self) -> Result<Option<TokenStream>> {
+        match self.descriptor.label() {
+            FieldLabel::Repeated => {
+                if let FieldType::Message(m) = self.descriptor.field_type() {
+                    if !m.map_entry() || m.fields()[1].field_type().is_message() {
+                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                        Ok(Some(quote! {
+                            if !self.#get.is_initialized() {
+                                return false;
+                            }
+                        }))
+                    } else {
+                        Ok(None)
+                    }
+                } else {
+                    Ok(None)
+                }
+            },
+            FieldLabel::Required => {
+                match self.descriptor.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        let c = &self.options.crate_name;
+                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                        Ok(Some(quote! {
+                            if let ::std::option::Option::Some(#n) = self.#get() {
+                                if !#c::CodedMessage::is_initialized(#n) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }))
+                    },
+                    _ => {
+                        let has = names::get_field_name(self.descriptor, FieldName::HasValue)?;
+                        Ok(Some(quote! {
+                            if !self.#has() {
+                                return false;
+                            }
+                        }))
+                    }
+                }
+            },
+            FieldLabel::Optional => {
+                match self.descriptor.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        let c = &self.options.crate_name;
+                        let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
+                        Ok(Some(quote! {
+                            if let ::std::option::Option::Some(#n) = self.#get() {
+                                if !#c::CodedMessage::is_initialized(#n) {
+                                    return false;
+                                }
+                            }
+                        }))
+                    },
+                    _ => Ok(None)
+                }
+            }
+        }
     }
 
     pub fn generate_extension(&self) -> Result {
@@ -961,28 +1831,43 @@ impl SourceGenerator<'_, FieldDescriptor> {
         let crt = &self.options.crate_name;
         let msg_type = names::get_message_type_path(self.descriptor.message(), scope)?;
         let params = 
-            match self.descriptor.field_type() {
-                FieldType::Group(_) => {
+            if self.descriptor.label() == FieldLabel::Repeated {
+                if self.descriptor.field_type().is_group() {
                     let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
                     let lit: ExprLit = syn::parse_str(&tag.to_string())?;
 
                     let end_tag = Tag::new(self.descriptor.number(), WireType::EndGroup);
                     let end_lit: ExprLit = syn::parse_str(&end_tag.to_string())?;
                     quote!(#lit, #end_lit)
-                },
-                FieldType::Message(_) => {
+                } else {
                     let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
                     let lit: ExprLit = syn::parse_str(&tag.to_string())?;
                     quote!(#lit)
-                },
-                _ => {
-                    let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
-                    let lit: ExprLit = syn::parse_str(&tag.to_string())?;
-                    let dflt = self.get_default_value(scope)?;
-                    quote!(#lit, #dflt)
+                }
+            } else {
+                match self.descriptor.field_type() {
+                    FieldType::Group(_) => {
+                        let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
+                        let lit: ExprLit = syn::parse_str(&tag.to_string())?;
+
+                        let end_tag = Tag::new(self.descriptor.number(), WireType::EndGroup);
+                        let end_lit: ExprLit = syn::parse_str(&end_tag.to_string())?;
+                        quote!(#lit, #end_lit)
+                    },
+                    FieldType::Message(_) => {
+                        let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
+                        let lit: ExprLit = syn::parse_str(&tag.to_string())?;
+                        quote!(#lit)
+                    },
+                    _ => {
+                        let tag = Tag::new(self.descriptor.number(), self.descriptor.wire_type());
+                        let lit: ExprLit = syn::parse_str(&tag.to_string())?;
+                        let dflt = self.get_default_value(scope)?;
+                        quote!(#lit, #dflt)
+                    }
                 }
             };
-        let proto_type = self.get_proto_type()?;
+        let proto_type = self.get_proto_type(None)?;
         let name = names::get_field_name(self.descriptor, FieldName::Extension)?;
         let base = names::get_rust_type(self.descriptor, TypeKind::Base, scope, crt, false)?;
         let dflt = names::get_rust_type(self.descriptor, TypeKind::Default, scope, crt, false)?;
@@ -1018,11 +1903,11 @@ impl SourceGenerator<'_, FieldDescriptor> {
         let name = self.descriptor.name();
         let const_name = names::get_field_name(self.descriptor, FieldName::FieldNumber)?;
         let num: ExprLit = syn::parse_str(&self.descriptor.number().to_string())?;
-        let doc_comment = format!(concat!(
-            "/// The field number for the [`{0}`] field\n",
-            "/// \n",
-            "/// [`{0}`]: #method.{1}"
-            ), name, names::get_field_name(self.descriptor, FieldName::Get)?);
+        let doc_comment = create_rustdoc_comment(&format!(concat!(
+            "The field number for the [`{0}`] field\n",
+            "\n",
+            "[`{0}`]: #method.{1}"
+            ), name, names::get_field_name(self.descriptor, FieldName::Get)?))?;
 
         Ok(quote! {
             #doc_comment
@@ -1035,11 +1920,11 @@ impl SourceGenerator<'_, FieldDescriptor> {
         && !self.descriptor.field_type().is_message()
         && !self.descriptor.field_type().is_group() {
             let name = self.descriptor.name();
-            let doc_comment = format!(concat!(
-                "/// The default value for the [`{0}`] field\n",
-                "/// \n",
-                "/// [`{0}`]: #method.{1}"
-                ), name, names::get_field_name(self.descriptor, FieldName::Get)?);
+            let doc_comment = create_rustdoc_comment(&format!(concat!(
+                "The default value for the [`{0}`] field\n",
+                "\n",
+                "[`{0}`]: #method.{1}"
+                ), name, names::get_field_name(self.descriptor, FieldName::Get)?))?;
             let dn = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
             let scope = Some(Scope::from(self.descriptor.message().scope()));
             let dt = names::get_rust_type(self.descriptor, TypeKind::Default, scope, &self.options.crate_name, false)?;
@@ -1050,6 +1935,37 @@ impl SourceGenerator<'_, FieldDescriptor> {
             }))
         } else {
             Ok(None)
+        }
+    }
+
+    fn generate_accessor_ref(&self) -> Result {
+        let c = &self.options.crate_name;
+        let f = 
+            if self.descriptor.proto().has_extendee() {
+                names::get_field_name(self.descriptor, FieldName::Extension)?
+            } else {
+                names::get_field_name(self.descriptor, FieldName::Reflector)?
+            };
+        let p =
+            match self.descriptor.scope() {
+                FieldScope::Message(m) => names::get_message_mod_path(m, None)?,
+                FieldScope::Oneof(o) => names::get_message_mod_path(o.message(), None)?,
+                FieldScope::File(f) => {
+                    let f = names::get_rust_file_mod_name(f)?;
+                    syn::parse2(quote!(self::#f))?
+                }
+            };
+        if self.descriptor.label() == FieldLabel::Repeated {
+            match self.descriptor.field_type() {
+                FieldType::Message(m) if m.map_entry() => {
+                    Ok(quote!(#c::reflect::access::FieldAccessor::Map(&#p::#f)))
+                }
+                _ => {
+                    Ok(quote!(#c::reflect::access::FieldAccessor::Repeated(&#p::#f)))
+                }
+            }
+        } else {
+            Ok(quote!(#c::reflect::access::FieldAccessor::Single(&#p::#f)))
         }
     }
 
@@ -1086,16 +2002,35 @@ impl SourceGenerator<'_, FieldDescriptor> {
                     FieldScope::Message(_) => {
                         match self.descriptor.file().syntax() {
                             Syntax::Proto3 => {
-                                let get = self.generate_get_accessor()?;
-                                let get_mut = self.generate_get_mut_accessor()?;
+                                if self.descriptor.field_type().is_message() {
+                                    let get = self.generate_get_accessor()?;
+                                    let get_mut = self.generate_get_mut_accessor()?;
+                                    let has_value = self.generate_has_value_accessor()?;
+                                    let set = self.generate_set_accessor()?;
+                                    let take = self.generate_take_accessor()?;
+                                    let clear = self.generate_clear_accessor()?;
 
-                                Ok(quote! {
-                                    #get
-                                    #get_mut
-                                })
+                                    Ok(quote! {
+                                        #get
+                                        #get_mut
+                                        #has_value
+                                        #set
+                                        #take
+                                        #clear
+                                    })
+                                } else {
+                                    let get = self.generate_get_accessor()?;
+                                    let get_mut = self.generate_get_mut_accessor()?;
+
+                                    Ok(quote! {
+                                        #get
+                                        #get_mut
+                                    })
+                                }
                             },
                             Syntax::Proto2 => {
                                 let get = self.generate_get_accessor()?;
+                                let get_option = self.generate_get_option_accessor()?;
                                 let get_mut = self.generate_get_mut_accessor()?;
                                 let has_value = self.generate_has_value_accessor()?;
                                 let set = self.generate_set_accessor()?;
@@ -1104,6 +2039,7 @@ impl SourceGenerator<'_, FieldDescriptor> {
 
                                 Ok(quote! {
                                     #get
+                                    #get_option
                                     #get_mut
                                     #has_value
                                     #set
@@ -1111,7 +2047,7 @@ impl SourceGenerator<'_, FieldDescriptor> {
                                     #clear
                                 })
                             },
-                            _ => panic!("unknown syntax")
+                            _ => unreachable!()
                         }
                     },
                     _ => unreachable!()
@@ -1121,14 +2057,15 @@ impl SourceGenerator<'_, FieldDescriptor> {
     }
 
     fn generate_get_accessor(&self) -> Result {
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        let docs = self.generate_rustdoc_comments()?;
         match self.descriptor.label() {
             FieldLabel::Repeated => {
-                let ref_doc_comment = self.generate_rustdoc_comments()?;
                 let n = names::get_field_name(self.descriptor, FieldName::Field)?;
                 let ng = names::get_field_name(self.descriptor, FieldName::Get)?;
-                let t = names::get_rust_type(self.descriptor, TypeKind::CollectionWrapped, Some(Scope::from(self.descriptor.message().scope())), &self.options.crate_name, false)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::CollectionWrapped, scope, &self.options.crate_name, false)?;
                 Ok(quote! {
-                    #ref_doc_comment
+                    #docs
                     pub fn #ng(&self) -> &#t {
                         &self.#n
                     }
@@ -1136,28 +2073,93 @@ impl SourceGenerator<'_, FieldDescriptor> {
             },
             _ => {
                 match self.descriptor.scope() {
-                    FieldScope::Oneof(_) => {
-                        unimplemented!()
+                    FieldScope::Oneof(o) => {
+                        let ot = names::get_oneof_type_path(o, scope)?;
+                        let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                        let f = names::get_oneof_field(o)?;
+                        let n = names::get_field_name(self.descriptor, FieldName::Get)?;
+                        let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                        if self.descriptor.field_type().is_message() {
+                            Ok(quote! {
+                                #docs
+                                pub fn #n(&self) -> ::std::option::Option<&#t> {
+                                    match &self.#f {
+                                        #ot::#c(#f) => ::std::option::Option::Some(&**#f),
+                                        _ => ::std::option::Option::None
+                                    }
+                                }
+                            })
+                        } else {
+                            Ok(quote! {
+                                #docs
+                                pub fn #n(&self) -> ::std::option::Option<&#t> {
+                                    match &self.#f {
+                                        #ot::#c(#f) => ::std::option::Option::Some(#f),
+                                        _ => ::std::option::Option::None
+                                    }
+                                }
+                            })
+                        }
                     },
                     FieldScope::Message(_) => {
+                        let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let get = names::get_field_name(self.descriptor, FieldName::Get)?;
                         match self.descriptor.file().syntax() {
                             Syntax::Proto2 => {
                                 match self.descriptor.field_type() {
                                     FieldType::Message(_) | FieldType::Group(_) => {
-                                        unimplemented!()
+                                        let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get(&self) -> ::std::option::Option<&#t> {
+                                                self.#f.as_ref().map(|v| &**v)
+                                            }
+                                        })
                                     },
                                     FieldType::String | FieldType::Bytes => {
-                                        unimplemented!()
+                                        let default = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                        let t = names::get_rust_type(self.descriptor, TypeKind::DefaultNoRef, scope, &self.options.crate_name, false)?;
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get(&self) -> &#t {
+                                                self.#f.as_ref().map(|v| &**v).unwrap_or(Self::#default)
+                                            }
+                                        })
                                     },
                                     _ => {
-                                        unimplemented!()
+                                        let default = names::get_field_name(self.descriptor, FieldName::DefaultValue)?;
+                                        let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get(&self) -> #t {
+                                                self.#f.unwrap_or(Self::#default)
+                                            }
+                                        })
                                     }
                                 }
                             },
                             Syntax::Proto3 => {
-                                unimplemented!()
+                                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) => {
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get(&self) -> ::std::option::Option<&#t> {
+                                                self.#f.as_ref().map(|v| &**v)
+                                            }
+                                        })
+                                    },
+                                    _ => {
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get(&self) -> &#t {
+                                                &self.#f
+                                            }
+                                        })
+                                    },
+                                }
                             },
-                            _ => panic!("unknown syntax")
+                            _ => unreachable!()
                         }
                     },
                     _ => unreachable!()
@@ -1167,23 +2169,398 @@ impl SourceGenerator<'_, FieldDescriptor> {
     }
 
     fn generate_get_mut_accessor(&self) -> Result {
-        unimplemented!()
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        let docs = create_rustdoc_comment(&format!(concat!(
+            "Gets a unique reference to the [`{0}`] field\n",
+            "\n",
+            "[`{0}`]: #method.{1}"
+            ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+        match self.descriptor.label() {
+            FieldLabel::Repeated => {
+                let n = names::get_field_name(self.descriptor, FieldName::Field)?;
+                let ng = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::CollectionWrapped, scope, &self.options.crate_name, false)?;
+                Ok(quote! {
+                    #docs
+                    pub fn #ng(&mut self) -> &mut #t {
+                        &mut self.#n
+                    }
+                })
+            },
+            _ => {
+                match self.descriptor.scope() {
+                    FieldScope::Oneof(o) => {
+                        let ot = names::get_oneof_type_path(o, scope)?;
+                        let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                        let f = names::get_oneof_field(o)?;
+                        let n = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                        let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                        if self.descriptor.field_type().is_message() {
+                            Ok(quote! {
+                                #docs
+                                pub fn #n(&mut self) -> &mut #t {
+                                    match self.#f {
+                                        #ot::#c(_) => (),
+                                        _ => self.#f = #ot::#c(::std::default::Default::default()),
+                                    }
+
+                                    match self.#f {
+                                        #ot::#c(ref mut #f) => &mut **#f,
+                                        _ => unsafe { std::hint::unreachable_unchecked() },
+                                    }
+                                }
+                            })
+                        } else {
+                            Ok(quote! {
+                                #docs
+                                pub fn #n(&mut self) -> &mut #t {
+                                    match self.#f {
+                                        #ot::#c(_) => (),
+                                        _ => self.#f = #ot::#c(::std::default::Default::default()),
+                                    }
+
+                                    match self.#f {
+                                        #ot::#c(ref mut #f) => #f,
+                                        _ => unsafe { std::hint::unreachable_unchecked() },
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    FieldScope::Message(_) => {
+                        let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                        let get_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+                        let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                        match self.descriptor.file().syntax() {
+                            Syntax::Proto2 => {
+                                Ok(quote! {
+                                    #docs
+                                    pub fn #get_mut(&mut self) -> &mut #t {
+                                        self.#f.get_or_insert_with(::std::default::Default::default)
+                                    }
+                                })
+                            },
+                            Syntax::Proto3 => {
+                                match self.descriptor.field_type() {
+                                    FieldType::Message(_) => {
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get_mut(&mut self) -> &mut #t {
+                                                self.#f.get_or_insert_with(::std::default::Default::default)
+                                            }
+                                        })
+                                    },
+                                    _ => {
+                                        Ok(quote! {
+                                            #docs
+                                            pub fn #get_mut(&mut self) -> &mut #t {
+                                                &mut self.#f
+                                            }
+                                        })
+                                    }
+                                }
+                            },
+                            _ => unreachable!()
+                        }
+                    },
+                    _ => unreachable!()
+                }
+            }
+        }
+    }
+
+    fn generate_get_option_accessor(&self) -> Result<Option<TokenStream>> {
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        match self.descriptor.scope() {
+            FieldScope::Message(_) => {
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto2 => {
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) | FieldType::Group(_) => { Ok(None) },
+                            _ => {
+                                let docs = create_rustdoc_comment(&format!(concat!(
+                                    "Gets an option indicating the presence of the [`{0}`] field\n",
+                                    "\n",
+                                    "[`{0}`]: #method.{1}"
+                                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                                let op = names::get_field_name(self.descriptor, FieldName::GetOption)?;
+                                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                                let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                                Ok(Some(quote! {
+                                    #docs
+                                    pub fn #op(&self) -> ::std::option::Option<&#t> {
+                                        self.#f.as_ref()
+                                    }
+                                }))
+                            }
+                        }
+                    },
+                    _ => unreachable!()
+                }
+            },
+            _ => unreachable!()
+        }
     }
 
     fn generate_has_value_accessor(&self) -> Result {
-        unimplemented!()
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        match self.descriptor.scope() {
+            FieldScope::Oneof(o) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Gets a bool indicating the presence of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let h = names::get_field_name(self.descriptor, FieldName::HasValue)?;
+                let f = names::get_oneof_field(o)?;
+                let o = names::get_oneof_type_path(o, scope)?;
+                let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                Ok(quote! {
+                    #docs
+                    pub fn #h(&self) -> bool {
+                        match self.#f {
+                            #o::#c(_) => true,
+                            _ => false
+                        }
+                    }
+                })
+            },
+            FieldScope::Message(_) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Gets a bool indicating the presence of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let h = names::get_field_name(self.descriptor, FieldName::HasValue)?;
+                let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto2 => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #h(&self) -> bool {
+                                self.#f.is_some()
+                            }
+                        })
+                    },
+                    Syntax::Proto3 => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #h(&self) -> bool {
+                                self.#f.is_some()
+                            }
+                        })
+                    },
+                    _ => unreachable!()
+                }
+            },
+            _ => unreachable!()
+        }
     }
 
     fn generate_set_accessor(&self) -> Result {
-        unimplemented!()
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        match self.descriptor.scope() {
+            FieldScope::Oneof(o) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Sets the value of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                let f = names::get_oneof_field(o)?;
+                let o = names::get_oneof_type_path(o, scope)?;
+                let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                Ok(quote! {
+                    #docs
+                    pub fn #set(&mut self, value: #t) {
+                        self.#f = #o::#c(::std::convert::From::from(value))
+                    }
+                })
+            },
+            FieldScope::Message(_) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Sets the value of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let set = names::get_field_name(self.descriptor, FieldName::Set)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto2 => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #set(&mut self, value: #t) {
+                                self.#f = ::std::option::Option::Some(::std::convert::From::from(value))
+                            }
+                        })
+                    },
+                    Syntax::Proto3 if self.descriptor.field_type().is_message() => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #set(&mut self, value: #t) {
+                                self.#f = ::std::option::Option::Some(::std::convert::From::from(value))
+                            }
+                        })
+                    }
+                    _ => unreachable!()
+                }
+            },
+            _ => unreachable!()
+        }
     }
 
     fn generate_take_accessor(&self) -> Result {
-        unimplemented!()
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        match self.descriptor.scope() {
+            FieldScope::Oneof(o) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Takes the value out of the [`{0}`] field, leaving an empty field in its place\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let take = names::get_field_name(self.descriptor, FieldName::Take)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                let f = names::get_oneof_field(o)?;
+                let o = names::get_oneof_type_path(o, scope)?;
+                let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                match self.descriptor.field_type() {
+                    FieldType::Message(_) | FieldType::Group(_) => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #take(&mut self) -> ::std::option::Option<#t> {
+                                let #f = ::std::mem::replace(&mut self.#f, #o::None);
+                                match #f {
+                                    #o::#c(#f) => {
+                                        ::std::option::Option::Some(*#f)
+                                    },
+                                    mut #f => {
+                                        ::std::mem::swap(&mut self.#f, &mut #f);
+                                        ::std::option::Option::None
+                                    }
+                                }
+                            }
+                        })
+                    },
+                    _ => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #take(&mut self) -> ::std::option::Option<#t> {
+                                let #f = ::std::mem::replace(&mut self.#f, #o::None);
+                                match #f {
+                                    #o::#c(#f) => {
+                                        ::std::option::Option::Some(#f)
+                                    },
+                                    mut #f => {
+                                        ::std::mem::swap(&mut self.#f, &mut #f);
+                                        ::std::option::Option::None
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            },
+            FieldScope::Message(_) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Takes the value out of the [`{0}`] field, leaving an empty field in its place\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let take = names::get_field_name(self.descriptor, FieldName::Take)?;
+                let t = names::get_rust_type(self.descriptor, TypeKind::Base, scope, &self.options.crate_name, false)?;
+                let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto2 => {
+                        match self.descriptor.field_type() {
+                            FieldType::Message(_) | FieldType::Group(_) => {
+                                Ok(quote! {
+                                    #docs
+                                    pub fn #take(&mut self) -> ::std::option::Option<#t> {
+                                        self.#f.take().map(|v| *v)
+                                    }
+                                })
+                            },
+                            _ => {
+                                Ok(quote! {
+                                    #docs
+                                    pub fn #take(&mut self) -> ::std::option::Option<#t> {
+                                        self.#f.take()
+                                    }
+                                })
+                            }
+                        }
+                    },
+                    Syntax::Proto3 if self.descriptor.field_type().is_message() => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #take(&mut self) -> ::std::option::Option<#t> {
+                                self.#f.take().map(|v| *v)
+                            }
+                        })
+                    },
+                    _ => unreachable!()
+                }
+            },
+            _ => unreachable!()
+        }
     }
 
     fn generate_clear_accessor(&self) -> Result {
-        unimplemented!()
+        let scope = Some(Scope::from(self.descriptor.message().scope()));
+        match self.descriptor.scope() {
+            FieldScope::Oneof(o) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Clears the value of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let clear = names::get_field_name(self.descriptor, FieldName::Clear)?;
+                let f = names::get_oneof_field(o)?;
+                let o = names::get_oneof_type_path(o, scope)?;
+                let c = names::get_field_name(self.descriptor, FieldName::OneofCase)?;
+                Ok(quote! {
+                    #docs
+                    pub fn #clear(&mut self) {
+                        let #f = ::std::mem::replace(&mut self.#f, #o::None);
+                        match #f {
+                            #o::#c(_) => { },
+                            mut #f => ::std::mem::swap(&mut self.#f, &mut #f),
+                        }
+                    }
+                })
+            },
+            FieldScope::Message(_) => {
+                let docs = create_rustdoc_comment(&format!(concat!(
+                    "Clears the value of the [`{0}`] field\n",
+                    "\n",
+                    "[`{0}`]: #method.{1}"
+                    ), self.descriptor.name(), names::get_field_name(self.descriptor, FieldName::Get)?))?;
+                let clear = names::get_field_name(self.descriptor, FieldName::Clear)?;
+                let f = names::get_field_name(self.descriptor, FieldName::Field)?;
+                match self.descriptor.file().syntax() {
+                    Syntax::Proto2 => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #clear(&mut self) {
+                                self.#f = ::std::option::Option::None;
+                            }
+                        })
+                    },
+                    Syntax::Proto3 if self.descriptor.field_type().is_message() => {
+                        Ok(quote! {
+                            #docs
+                            pub fn #clear(&mut self) {
+                                self.#f = ::std::option::Option::None;
+                            }
+                        })
+                    }
+                    _ => unreachable!()
+                }
+            },
+            _ => unreachable!()
+        }
     }
 
     pub fn generate_codec(&self) -> Result<Option<TokenStream>> {
@@ -1203,14 +2580,14 @@ impl SourceGenerator<'_, FieldDescriptor> {
                     let ve = self.with::<FieldDescriptor>(value_field).get_codec_new_expr()?;
                     let tg = syn::parse_str::<ExprLit>(&Tag::new(self.descriptor.number(), self.descriptor.wire_type()).to_string())?;
 
-                    Ok(Some(quote!(static #n: #c::collections::MapCodec<#kt, #vt> = #c::collections::MapCodec::new(#ke, #ve, #tg))))
+                    Ok(Some(quote!(pub(super) static #n: #c::collections::MapCodec<#kt, #vt> = #c::collections::MapCodec::new(#ke, #ve, #tg);)))
                 }
                 _ => {
                     let n = names::get_field_name(self.descriptor, FieldName::Codec)?;
                     let c = &self.options.crate_name;
-                    let t = names::get_rust_type(self.descriptor, TypeKind::Base, Some(Scope::from(self.descriptor.message().scope())), c, false)?;
+                    let t = names::get_rust_type(self.descriptor, TypeKind::Base, Some(Scope::Message(self.descriptor.message())), c, false)?;
                     let e = self.get_codec_new_expr()?;
-                    Ok(Some(quote!(static #n: #c::Codec<#t> = #e;)))
+                    Ok(Some(quote!(pub(super) static #n: #c::Codec<#t> = #e;)))
                 }
             }
         } else {
@@ -1221,15 +2598,14 @@ impl SourceGenerator<'_, FieldDescriptor> {
     pub fn generate_reflector(&self) -> Result<Option<TokenStream>> {
         if let FieldScope::Oneof(_) = self.descriptor.scope() {
             Ok(Some(self.generate_verbose_field_reflector()?))
-        } else
-        if self.descriptor.label() == FieldLabel::Repeated {
+        } else if self.descriptor.label() == FieldLabel::Repeated {
             Ok(Some(self.generate_simple_field_reflector()?))
-        } else
-        if self.descriptor.file().syntax() == Syntax::Proto2 {
+        } else if self.descriptor.file().syntax() == Syntax::Proto2 {
             Ok(Some(self.generate_verbose_field_reflector()?))
-        } else
-        if self.descriptor.proto().has_extendee() {
+        } else if self.descriptor.proto().has_extendee() {
             Ok(None)
+        } else if self.descriptor.field_type().is_message() {
+            Ok(Some(self.generate_simple_option_field_reflector()?))
         } else {
             Ok(Some(self.generate_simple_field_reflector()?))
         }
@@ -1239,29 +2615,35 @@ impl SourceGenerator<'_, FieldDescriptor> {
         generate_rustdoc_comments(self.descriptor.source_code_info())
     }
 
-    fn get_proto_type(&self) -> syn::Result<Ident> {
+    fn get_proto_type(&self, op: Option<&str>) -> syn::Result<Ident> {
+        let result =
+            match op {
+                Some(op) => op.to_string() + "_",
+                None => String::new()
+            };
         syn::parse_str(
-            match self.descriptor.field_type() {
-                FieldType::Double => "double",
-                FieldType::Float => "float",
-                FieldType::Int64 => "int64",
-                FieldType::Uint64 => "uint64",
-                FieldType::Sint64 => "sint64",
-                FieldType::Fixed64 => "fixed64",
-                FieldType::Sfixed64 => "sfixed64",
-                FieldType::Int32 => "int32",
-                FieldType::Uint32 => "uint32",
-                FieldType::Sint32 => "sint32",
-                FieldType::Fixed32 => "fixed32",
-                FieldType::Sfixed32 => "sfixed32",
-                FieldType::Bool => "bool",
-                FieldType::String => "string",
-                FieldType::Bytes => "bytes",
-                FieldType::Enum(_) => "enum_value",
-                FieldType::Message(m) if m.proto().extension_range().len() != 0 => "extension_message",
-                FieldType::Message(_) => "message",
-                FieldType::Group(_) => "group",
-            })
+            &(result + 
+                match self.descriptor.field_type() {
+                    FieldType::Double => "double",
+                    FieldType::Float => "float",
+                    FieldType::Int64 => "int64",
+                    FieldType::Uint64 => "uint64",
+                    FieldType::Sint64 => "sint64",
+                    FieldType::Fixed64 => "fixed64",
+                    FieldType::Sfixed64 => "sfixed64",
+                    FieldType::Int32 => "int32",
+                    FieldType::Uint32 => "uint32",
+                    FieldType::Sint32 => "sint32",
+                    FieldType::Fixed32 => "fixed32",
+                    FieldType::Sfixed32 => "sfixed32",
+                    FieldType::Bool => "bool",
+                    FieldType::String => "string",
+                    FieldType::Bytes => "bytes",
+                    FieldType::Enum(_) => "enum_value",
+                    FieldType::Message(m) if m.proto().extension_range().len() != 0 => "extension_message",
+                    FieldType::Message(_) => "message",
+                    FieldType::Group(_) => "group",
+                }))
     }
 
     fn get_default_value(&self, scope: Option<Scope>) -> syn::Result<Expr> {
@@ -1281,7 +2663,7 @@ impl SourceGenerator<'_, FieldDescriptor> {
                             }
                         }
                     },
-                    FieldType::String => syn::parse_str(""),
+                    FieldType::String => syn::parse_str("\"\""),
                     FieldType::Bytes => syn::parse_str("&[]"),
                     FieldType::Bool => syn::parse_str("false"),
                     FieldType::Float | FieldType::Double => syn::parse_str("0.0"),
@@ -1321,8 +2703,33 @@ impl SourceGenerator<'_, FieldDescriptor> {
         }
     }
 
-    fn get_codec_new_expr(&self) -> syn::Result<Expr> {
-        unimplemented!()
+    fn get_codec_new_expr(&self) -> Result {
+        let c = &self.options.crate_name;
+        let tag = syn::parse_str::<ExprLit>(&Tag::new(self.descriptor.number(), self.descriptor.wire_type()).to_string())?;
+        match self.descriptor.field_type() {
+            FieldType::Group(_) => {
+                let end_tag = syn::parse_str::<ExprLit>(&Tag::new(self.descriptor.number(), WireType::EndGroup).to_string())?;
+                Ok(quote!(#c::Codec::group(#tag, #end_tag)))
+            },
+            _ => {
+                let t = self.get_proto_type(None)?;
+                Ok(quote!(#c::Codec::#t(#tag)))
+            }
+        }
+    }
+
+    fn get_reflector_depth(&self) -> usize {
+        match self.descriptor.scope() {
+            FieldScope::File(_) => 1,
+            s => {
+                let s = s.message().unwrap_or_else(|| unsafe { std::hint::unreachable_unchecked() }).scope();
+                std::iter::successors(Some(s), |s|
+                    match s {
+                        CompositeScope::Message(m) => Some(m.scope()),
+                        CompositeScope::File(_) => None,
+                    }).count()
+            }
+        }
     }
 
     fn generate_verbose_field_reflector(&self) -> Result {
@@ -1330,14 +2737,25 @@ impl SourceGenerator<'_, FieldDescriptor> {
             match self.descriptor.scope() {
                 FieldScope::Message(m) => Scope::Message(m),
                 FieldScope::File(f) => Scope::File(f),
-                _ => unreachable!(),
+                FieldScope::Oneof(o) => Scope::Message(o.message()),
             };
         let rn = names::get_field_name(self.descriptor, FieldName::Reflector)?;
         let c = &self.options.crate_name;
         let t = names::get_message_type_path(self.descriptor.message(), Some(scope))?;
-        let ft = names::get_rust_type(self.descriptor, TypeKind::Base, Some(scope), c, false)?;
+        let kind = 
+            if self.descriptor.label() == FieldLabel::Repeated { 
+                TypeKind::CollectionWrapped 
+            } else { 
+                TypeKind::Base 
+            };
+        let ft = names::get_rust_type(self.descriptor, kind, Some(scope), c, false)?;
+        let is_oneof = 
+            match self.descriptor.scope() {
+                FieldScope::Oneof(_) => true,
+                _ => false
+            };
         let n = 
-            if self.descriptor.field_type().is_message() || self.descriptor.field_type().is_group() {
+            if is_oneof || self.descriptor.field_type().is_message() || self.descriptor.field_type().is_group() {
                 names::get_field_name(self.descriptor, FieldName::Get)?
             } else {
                 names::get_field_name(self.descriptor, FieldName::GetOption)?
@@ -1346,9 +2764,10 @@ impl SourceGenerator<'_, FieldDescriptor> {
         let set_n = names::get_field_name(self.descriptor, FieldName::Set)?;
         let take_n = names::get_field_name(self.descriptor, FieldName::Take)?;
         let clear_n = names::get_field_name(self.descriptor, FieldName::Clear)?;
+        let pub_scope = std::iter::repeat(Token!(super)(Span::call_site())).take(self.get_reflector_depth());
 
         Ok(quote! {
-            pub(super) static #rn: #c::reflect::access::VerboseFieldAccessor<#t, #ft> =
+            pub(in #(#pub_scope::)*super) static #rn: #c::reflect::access::VerboseFieldAccessor<#t, #ft> =
                 #c::reflect::access::VerboseFieldAccessor {
                     get_option: #t::#n,
                     get_mut: #t::#n_mut,
@@ -1369,13 +2788,50 @@ impl SourceGenerator<'_, FieldDescriptor> {
         let rn = names::get_field_name(self.descriptor, FieldName::Reflector)?;
         let c = &self.options.crate_name;
         let t = names::get_message_type_path(self.descriptor.message(), Some(scope))?;
-        let ft = names::get_rust_type(self.descriptor, TypeKind::Base, Some(scope), c, false)?;
+        let kind = 
+            if self.descriptor.label() == FieldLabel::Repeated { 
+                TypeKind::CollectionWrapped 
+            } else { 
+                TypeKind::Base 
+            };
+        let ft = names::get_rust_type(self.descriptor, kind, Some(scope), c, false)?;
         let n = names::get_field_name(self.descriptor, FieldName::Get)?;
         let n_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+        let pub_scope = std::iter::repeat(Token!(super)(Span::call_site())).take(self.get_reflector_depth());
 
         Ok(quote! {
-            pub(super) static #rn: #c::reflect::access::SimpleFieldAccessor<#t, #ft> = 
+            pub(in #(#pub_scope::)*super) static #rn: #c::reflect::access::SimpleFieldAccessor<#t, #ft> = 
                 #c::reflect::access::SimpleFieldAccessor {
+                    get: #t::#n,
+                    get_mut: #t::#n_mut,
+                };
+        })
+    }
+
+    fn generate_simple_option_field_reflector(&self) -> Result {
+        let scope = 
+            match self.descriptor.scope() {
+                FieldScope::Message(m) => Scope::Message(m),
+                FieldScope::File(f) => Scope::File(f),
+                _ => unreachable!(),
+            };
+        let rn = names::get_field_name(self.descriptor, FieldName::Reflector)?;
+        let c = &self.options.crate_name;
+        let t = names::get_message_type_path(self.descriptor.message(), Some(scope))?;
+        let kind = 
+            if self.descriptor.label() == FieldLabel::Repeated { 
+                TypeKind::CollectionWrapped 
+            } else { 
+                TypeKind::Base 
+            };
+        let ft = names::get_rust_type(self.descriptor, kind, Some(scope), c, false)?;
+        let n = names::get_field_name(self.descriptor, FieldName::Get)?;
+        let n_mut = names::get_field_name(self.descriptor, FieldName::GetMut)?;
+        let pub_scope = std::iter::repeat(Token!(super)(Span::call_site())).take(self.get_reflector_depth());
+
+        Ok(quote! {
+            pub(in #(#pub_scope::)*super) static #rn: #c::reflect::access::SimpleOptionFieldAccessor<#t, #ft> = 
+                #c::reflect::access::SimpleOptionFieldAccessor {
                     get: #t::#n,
                     get_mut: #t::#n_mut,
                 };
@@ -1386,12 +2842,20 @@ impl SourceGenerator<'_, FieldDescriptor> {
 fn generate_rustdoc_comments(info: Option<&SourceCodeInfo>) -> Result<Option<TokenStream>> {
     if let Some(info) = info {
         if let Some(comments) = info.leading_comments().or(info.trailing_comments()) {
-            let lines = comments.lines().map(|l| format!("/// {}", l));
-            return Ok(Some(quote! {
-                #(#lines
-                )*
-            }))
+            return Ok(Some(create_rustdoc_comment(comments)?))
         }
     }
     Ok(None)
+}
+
+fn create_rustdoc_comment(value: &str) -> Result<TokenStream> {
+    let lines = 
+        value
+            .lines()
+            .map(|l| syn::parse_str(&format!("///{}", l)))
+            .collect::<syn::Result<Vec<TokenStream>>>()?;
+    Ok(quote! {
+        #(#lines
+        )*
+    })
 }
