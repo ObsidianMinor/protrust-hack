@@ -2,7 +2,9 @@
 
 mod shared;
 
+use pretty_assertions::{assert_eq, assert_ne};
 use protrust::prelude::*;
+use protrust::reflect::Descriptor;
 
 #[test]
 #[cfg(not(checked_size))]
@@ -39,6 +41,17 @@ fn empty_test_all_roundtrip_is_equal() -> shared::Result {
     let m2 =
         shared::gen::unittest_proto::TestAllTypes::read_new(&mut m.write_to_vec()?.as_slice())?;
     assert_eq!(m, m2);
+
+    Ok(())
+}
+
+
+#[test]
+fn merged_new_is_same_merged_from() -> shared::Result {
+    let file = protrust::descriptor::FileDescriptorProto::descriptor().file().proto();
+    let mut proto = protrust::descriptor::FileDescriptorProto::new();
+    proto.merge(file);
+    assert_eq!(&proto, file);
 
     Ok(())
 }

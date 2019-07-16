@@ -31,6 +31,7 @@ pub enum WireType {
     Bit32 = 5,
 }
 
+/// The error struct used when trying to convert from an byte to a wire type
 #[derive(Debug)]
 pub struct InvalidWireType;
 
@@ -284,7 +285,7 @@ pub mod sizes {
 
     #[inline]
     #[cfg(checked_size)]
-    pub fn message(value: &CodedMessage) -> Option<i32> {
+    pub fn message(value: &dyn CodedMessage) -> Option<i32> {
         let length = value.calculate_size();
         if let Some(length) = length {
             length.checked_add(int32(length))
@@ -295,7 +296,7 @@ pub mod sizes {
 
     #[inline]
     #[cfg(not(checked_size))]
-    pub fn message(value: &CodedMessage) -> i32 {
+    pub fn message(value: &dyn CodedMessage) -> i32 {
         let length = value.calculate_size();
         length + int32(length)
     }
@@ -304,13 +305,13 @@ pub mod sizes {
 
     #[inline]
     #[cfg(checked_size)]
-    pub fn group(value: &CodedMessage) -> Option<i32> {
+    pub fn group(value: &dyn CodedMessage) -> Option<i32> {
         value.calculate_size()
     }
 
     #[inline]
     #[cfg(not(checked_size))]
-    pub fn group(value: &CodedMessage) -> i32 {
+    pub fn group(value: &dyn CodedMessage) -> i32 {
         value.calculate_size()
     }
 
@@ -435,7 +436,7 @@ pub type InputResult<T> = Result<T, InputError>;
 
 /// A protocol buffers input stream
 pub struct CodedInput<'a> {
-    inner: &'a mut Read,
+    inner: &'a mut dyn Read,
     limit: Option<i32>,
     last_tag: Option<Tag>,
     registry: Option<&'static crate::ExtensionRegistry>,
@@ -443,7 +444,7 @@ pub struct CodedInput<'a> {
 
 impl<'a> CodedInput<'a> {
     /// Creates a new CodedInput from the specified Read instance
-    pub fn new(inner: &'a mut Read) -> Self {
+    pub fn new(inner: &'a mut dyn Read) -> Self {
         CodedInput {
             inner,
             limit: None,
@@ -782,12 +783,12 @@ pub type OutputResult = Result<(), OutputError>;
 
 /// A protocol buffers output stream
 pub struct CodedOutput<'a> {
-    inner: &'a mut Write,
+    inner: &'a mut dyn Write,
 }
 
 impl<'a> CodedOutput<'a> {
     /// Creates a new CodedOutput using the specified Write object
-    pub fn new(inner: &'a mut Write) -> Self {
+    pub fn new(inner: &'a mut dyn Write) -> Self {
         CodedOutput { inner }
     }
 
@@ -807,13 +808,13 @@ impl<'a> CodedOutput<'a> {
     }
 
     /// Writes a group message to the output
-    pub fn write_group(&mut self, value: &CodedMessage) -> OutputResult {
+    pub fn write_group(&mut self, value: &dyn CodedMessage) -> OutputResult {
         value.write_to(self)
     }
 
     /// Writes a message value to the output
     #[cfg(checked_size)]
-    pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
+    pub fn write_message(&mut self, value: &dyn CodedMessage) -> OutputResult {
         if let Some(len) = value.calculate_size() {
             self.write_int32(len)?;
             value.write_to(self)
@@ -824,14 +825,14 @@ impl<'a> CodedOutput<'a> {
 
     /// Writes a message value to the output
     #[cfg(not(checked_size))]
-    pub fn write_message(&mut self, value: &CodedMessage) -> OutputResult {
+    pub fn write_message(&mut self, value: &dyn CodedMessage) -> OutputResult {
         self.write_int32(value.calculate_size())?;
         value.write_to(self)
     }
 
     #[inline(always)]
     #[doc(hidden)]
-    pub fn write_extension_message(&mut self, message: &CodedMessage) -> OutputResult {
+    pub fn write_extension_message(&mut self, message: &dyn CodedMessage) -> OutputResult {
         self.write_message(message)
     }
 
@@ -992,7 +993,7 @@ mod tests {
 
     // fuzzy roundtrips
 
-    type Result = std::result::Result<(), Box<std::error::Error>>;
+    type Result = std::result::Result<(), Box<dyn std::error::Error>>;
 
     fn roundtrip<T: Debug + PartialEq, W, R>(values: &[T], write: W, read: R) -> Result
     where

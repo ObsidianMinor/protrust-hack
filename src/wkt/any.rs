@@ -8,9 +8,9 @@ const DEFAULT_PREFIX: &'static str = "type.googleapis.com";
 
 fn get_type_url(descriptor: &MessageDescriptor, prefix: &str) -> String {
     if prefix.ends_with('/') {
-        format!("{}{}", prefix, &descriptor.full_name()[1..])
+        format!("{}{}", prefix, descriptor.full_name())
     } else {
-        format!("{}/{}", prefix, &descriptor.full_name()[1..])
+        format!("{}/{}", prefix, descriptor.full_name())
     }
 }
 
@@ -40,7 +40,7 @@ impl Any {
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
     ///
-    /// # fn main() -> Result<(), Box<Error>> {
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
     ///
@@ -62,7 +62,7 @@ impl Any {
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
     ///
-    /// # fn main() -> Result<(), Box<Error>> {
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack_with_prefix(&time, "example.com")?;
     ///
@@ -88,7 +88,7 @@ impl Any {
     /// use protrust::wkt::{any::Any, timestamp::Timestamp};
     /// # use std::error::Error;
     ///
-    /// # fn main() -> Result<(), Box<Error>> {
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// let time = Timestamp::new();
     /// let any = Any::pack(&time)?;
     ///
@@ -100,7 +100,7 @@ impl Any {
     /// ```
     pub fn is<T: Message>(&self) -> bool {
         match get_type_name(self.type_url()) {
-            Some(msg_type) => *msg_type == T::descriptor().full_name()[1..],
+            Some(msg_type) => msg_type == T::descriptor().full_name(),
             None => false,
         }
     }

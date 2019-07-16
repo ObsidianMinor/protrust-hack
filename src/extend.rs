@@ -8,7 +8,7 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 
 /// A message with extensions
-pub trait ExtensionMessage: LiteMessage {
+pub trait ExtendableMessage: LiteMessage {
     /// Gets the current registry in use by this message
     fn registry(&self) -> Option<&'static ExtensionRegistry>;
 
@@ -86,7 +86,7 @@ pub struct ExtensionField<'a, T: 'static, V: 'static, D: 'static> {
 
 impl<
         'a,
-        T: ExtensionMessage,
+        T: ExtendableMessage,
         V: Clone + PartialEq + Default + Debug + Send + Sync + 'static,
         D: Send + Sync + 'static,
     > ExtensionField<'a, T, V, D>
@@ -95,7 +95,7 @@ impl<
         unsafe {
             match self.entry {
                 Entry::Occupied(o) => Some(
-                    &(*(o.get().as_ref() as *const AnyExtension as *const ExtensionValue<V>)).value,
+                    &(*(o.get().as_ref() as *const dyn AnyExtension as *const ExtensionValue<V>)).value,
                 ),
                 _ => None,
             }
@@ -107,13 +107,13 @@ impl<
             match self.entry {
                 Entry::Occupied(mut o) => {
                     let ev =
-                        &mut *(o.get_mut().as_mut() as *mut AnyExtension as *mut ExtensionValue<V>);
+                        &mut *(o.get_mut().as_mut() as *mut dyn AnyExtension as *mut ExtensionValue<V>);
                     &mut ev.value
                 }
                 Entry::Vacant(v) => {
                     let ev = &mut *(v
                         .insert(self.extension.new_value(Default::default()))
-                        .as_mut() as *mut AnyExtension
+                        .as_mut() as *mut dyn AnyExtension
                         as *mut ExtensionValue<V>);
                     &mut ev.value
                 }
@@ -133,7 +133,7 @@ impl<
             match self.entry {
                 Entry::Occupied(mut o) => {
                     let ev =
-                        &mut *(o.get_mut().as_mut() as *mut AnyExtension as *mut ExtensionValue<V>);
+                        &mut *(o.get_mut().as_mut() as *mut dyn AnyExtension as *mut ExtensionValue<V>);
                     ev.value = value;
                 }
                 Entry::Vacant(v) => {
@@ -166,7 +166,7 @@ impl<
 
 impl<
         'a,
-        T: ExtensionMessage,
+        T: ExtendableMessage,
         V: Clone + PartialEq + Default + Debug + Send + Sync + Deref<Target = L> + 'static,
         D: Send + Sync + Deref<Target = L> + 'static,
         L: 'static,
@@ -183,14 +183,14 @@ pub struct RepeatedExtensionField<'a, T: 'static, V: 'static> {
     extension: &'static RepeatedExtension<T, V>,
 }
 
-impl<'a, T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync + 'static>
+impl<'a, T: ExtendableMessage, V: Clone + PartialEq + Debug + Send + Sync + 'static>
     RepeatedExtensionField<'a, T, V>
 {
     pub fn get(self) -> Option<&'a RepeatedField<V>> {
         unsafe {
             match self.entry {
                 Entry::Occupied(o) => Some(
-                    &(*(o.get().as_ref() as *const AnyExtension
+                    &(*(o.get().as_ref() as *const dyn AnyExtension
                         as *const RepeatedExtensionValue<V>))
                         .value,
                 ),
@@ -203,12 +203,12 @@ impl<'a, T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync + 'stat
         unsafe {
             match self.entry {
                 Entry::Occupied(mut o) => {
-                    &mut (*(o.get_mut().as_mut() as *mut AnyExtension
+                    &mut (*(o.get_mut().as_mut() as *mut dyn AnyExtension
                         as *mut RepeatedExtensionValue<V>))
                         .value
                 }
                 Entry::Vacant(v) => {
-                    &mut (*(v.insert(self.extension.new_value()).as_mut() as *mut AnyExtension
+                    &mut (*(v.insert(self.extension.new_value()).as_mut() as *mut dyn AnyExtension
                         as *mut RepeatedExtensionValue<V>))
                         .value
                 }
@@ -227,7 +227,7 @@ impl<'a, T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync + 'stat
         unsafe {
             match self.entry {
                 Entry::Occupied(mut o) => {
-                    (*(o.get_mut().as_mut() as *mut AnyExtension
+                    (*(o.get_mut().as_mut() as *mut dyn AnyExtension
                         as *mut RepeatedExtensionValue<V>))
                         .value = value
                 }
@@ -408,7 +408,7 @@ impl<T, M: LiteMessage> Extension<T, M> {
     }
 }
 
-impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync, D: Sync> ExtensionIdentifier
+impl<T: ExtendableMessage, V: Clone + PartialEq + Debug + Send + Sync, D: Sync> ExtensionIdentifier
     for Extension<T, V, D>
 {
     fn tag(&'static self) -> Tag {
@@ -420,12 +420,12 @@ impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync, D: Sync> E
     fn read_value(&'static self, input: &mut CodedInput) -> InputResult<Box<dyn AnyExtension>> {
         Ok(Box::new(ExtensionValue {
             value: self.codec.read_from(input)?,
-            codec: &self.codec
+            codec: &self.codec,
         }))
     }
 }
 
-impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync, D: Send + Sync>
+impl<T: ExtendableMessage, V: Clone + PartialEq + Debug + Send + Sync, D: Send + Sync>
     Extension<T, V, D>
 {
     fn new_value(&'static self, value: V) -> Box<dyn AnyExtension> {
@@ -585,7 +585,7 @@ impl<T, M: LiteMessage> RepeatedExtension<T, M> {
 }
 
 #[doc(hidden)]
-impl<T, M: ExtensionMessage> RepeatedExtension<T, M> {
+impl<T, M: ExtendableMessage> RepeatedExtension<T, M> {
     pub const fn extension_message(tag: u32) -> RepeatedExtension<T, M> {
         RepeatedExtension {
             t: PhantomData,
@@ -594,7 +594,7 @@ impl<T, M: ExtensionMessage> RepeatedExtension<T, M> {
     }
 }
 
-impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync> ExtensionIdentifier
+impl<T: ExtendableMessage, V: Clone + PartialEq + Debug + Send + Sync> ExtensionIdentifier
     for RepeatedExtension<T, V>
 {
     fn tag(&'static self) -> Tag {
@@ -610,7 +610,7 @@ impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync> ExtensionI
     }
 }
 
-impl<T: ExtensionMessage, V: Clone + PartialEq + Debug + Send + Sync> RepeatedExtension<T, V> {
+impl<T: ExtendableMessage, V: Clone + PartialEq + Debug + Send + Sync> RepeatedExtension<T, V> {
     fn new_value(&'static self) -> Box<dyn AnyExtension> {
         Box::new(RepeatedExtensionValue {
             value: RepeatedField::new(),
@@ -692,7 +692,7 @@ pub struct ExtensionSet<T> {
     values_by_tag: HashMap<Tag, Box<dyn AnyExtension>>,
 }
 
-impl<T: ExtensionMessage> ExtensionSet<T> {
+impl<T: ExtendableMessage> ExtensionSet<T> {
     fn registry_has_extension<I: ExtensionIdentifier>(&self, extension: &'static I) -> bool {
         self.registry.map_or(false, |r| r.has_extension(extension))
     }
@@ -732,7 +732,7 @@ impl<T: ExtensionMessage> ExtensionSet<T> {
         if self.registry_has_extension(extension) {
             unsafe {
                 self.values_by_tag.get(&extension.tag()).map(|b| {
-                    &(*(b.as_ref() as *const AnyExtension as *const ExtensionValue<V>)).value
+                    &(*(b.as_ref() as *const dyn AnyExtension as *const ExtensionValue<V>)).value
                 })
             }
         } else {
@@ -753,7 +753,7 @@ impl<T: ExtensionMessage> ExtensionSet<T> {
                 self.values_by_tag
                     .get(&extension.tag())
                     .map(|b| {
-                        &*(*(b.as_ref() as *const AnyExtension as *const ExtensionValue<V>)).value
+                        &*(*(b.as_ref() as *const dyn AnyExtension as *const ExtensionValue<V>)).value
                     })
                     .or(extension.default.as_ref().map(|r| &**r))
             }
@@ -769,7 +769,7 @@ impl<T: ExtensionMessage> ExtensionSet<T> {
         if self.registry_has_extension(extension) {
             unsafe {
                 self.values_by_tag.get(&extension.tag()).map(|b| {
-                    &(*(b.as_ref() as *const AnyExtension as *const RepeatedExtensionValue<V>))
+                    &(*(b.as_ref() as *const dyn AnyExtension as *const RepeatedExtensionValue<V>))
                         .value
                 })
             }
@@ -811,8 +811,7 @@ impl<T: ExtensionMessage> ExtensionSet<T> {
             if let Some(value) = self.values_by_tag.get_mut(&last_tag) {
                 value.merge_from(input)?;
                 return Ok(true);
-            } else
-            if let Some(id) = self.registry.and_then(|r| r.for_tag::<T>(last_tag)) {
+            } else if let Some(id) = self.registry.and_then(|r| r.for_tag::<T>(last_tag)) {
                 let value = id.read_value(input)?;
                 self.values_by_tag.insert(last_tag, value);
                 return Ok(true);
@@ -891,7 +890,8 @@ impl<T> PartialEq for ExtensionSet<T> {
                     }
                 }
                 true
-            }
+            },
+            (None, None) => true,
             _ => false,
         }
     }
@@ -899,10 +899,9 @@ impl<T> PartialEq for ExtensionSet<T> {
 
 impl<T> Debug for ExtensionSet<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        let mut map = fmt.debug_map();
-        for (tag, value) in &self.values_by_tag {
-            map.entry(tag, value);
-        }
-        Ok(())
+        fmt.debug_struct("ExtensionSet")
+            .field("registry", &self.registry.map(|r| r as *const _))
+            .field("values", &self.values_by_tag)
+            .finish()
     }
 }

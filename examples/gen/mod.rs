@@ -4,20 +4,20 @@ mod externals {
     pub(super) use protrust::generated::*;
 }
 use self::externals::google_protobuf_timestamp_proto;
-static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static ::protrust::ExtensionRegistry; 0]> =
+static mut EXTERNAL_REGISTRIES: ::std::option::Option<[&'static ::protrust::ExtensionRegistry; 1]> =
     ::std::option::Option::None;
 static mut EXTENSIONS_REGISTRY: ::std::option::Option<::protrust::ExtensionRegistry> =
     ::std::option::Option::None;
 static EXTENSIONS_INIT: ::std::sync::Once = ::std::sync::Once::new();
 fn extensions_init() {
     unsafe {
-        self::EXTERNAL_REGISTRIES = ::std::option::Option::Some([]);
+        self::EXTERNAL_REGISTRIES =
+            ::std::option::Option::Some([::protrust::generated::extensions()]);
         self::EXTENSIONS_REGISTRY = ::std::option::Option::Some(
             ::protrust::ExtensionRegistry::new(self::EXTERNAL_REGISTRIES.as_ref().unwrap(), &[]),
         );
     }
 }
-#[doc = r" Gets the extension registry containing all the extensions contained in this generated code module"]
 pub fn extensions() -> &'static ::protrust::ExtensionRegistry {
     unsafe {
         self::EXTENSIONS_INIT.call_once(extensions_init);
@@ -25,7 +25,7 @@ pub fn extensions() -> &'static ::protrust::ExtensionRegistry {
     }
 }
 static mut EXTERNAL_DEPS: ::std::option::Option<
-    [&'static ::protrust::reflect::DescriptorPool<'static>; 0],
+    [&'static ::protrust::reflect::DescriptorPool<'static>; 1],
 > = ::std::option::Option::None;
 static mut FILES: ::std::option::Option<[::protrust::descriptor::FileDescriptorProto; 1]> =
     ::std::option::Option::None;
@@ -34,16 +34,15 @@ static mut POOL: ::std::option::Option<::protrust::reflect::DescriptorPool<'stat
 static POOL_INIT: ::std::sync::Once = ::std::sync::Once::new();
 fn pool_init() {
     unsafe {
-        self::EXTERNAL_DEPS = ::std::option::Option::Some([]);
+        self::EXTERNAL_DEPS = ::std::option::Option::Some([::protrust::generated::pool()]);
         self::FILES = ::std::option::Option::Some([::protrust::LiteMessage::read_new_from_input(
             &mut ::protrust::io::CodedInput::new(&mut ADDRESSBOOK_PROTO_BINARY.as_ref())
                 .with_registry(::std::option::Option::Some(self::extensions())),
         )
         .expect("couldn't read file descriptor")]);
-        self :: POOL = :: std :: option :: Option :: Some ( :: protrust :: reflect :: DescriptorPool :: build_from_generated_code ( self :: FILES . as_ref ( ) . unwrap ( ) . as_ref ( ) , self :: EXTERNAL_DEPS . as_ref ( ) . unwrap ( ) , :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: Person as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: person :: PhoneNumber as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: phone_number :: NUMBER_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: phone_number :: TYPE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: NAME_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: ID_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: EMAIL_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Repeated ( & self :: addressbook_proto :: person :: PHONES_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: LAST_UPDATED_REFLECTOR ) , ] ) ) , } , :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: AddressBook as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Repeated ( & self :: addressbook_proto :: address_book :: PEOPLE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , ] ) ) ) ;
+        self :: POOL = :: std :: option :: Option :: Some ( :: protrust :: reflect :: DescriptorPool :: build_from_generated_code ( self :: FILES . as_ref ( ) . unwrap ( ) . as_ref ( ) , self :: EXTERNAL_DEPS . as_ref ( ) . unwrap ( ) , :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: Person as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: person :: PhoneNumber as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: phone_number :: NUMBER_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: phone_number :: TYPE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: NAME_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: ID_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: EMAIL_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Repeated ( & self :: addressbook_proto :: person :: PHONES_REFLECTOR ) , :: protrust :: reflect :: access :: FieldAccessor :: Single ( & self :: addressbook_proto :: person :: LAST_UPDATED_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , :: protrust :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: addressbook_proto :: AddressBook as :: protrust :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ :: protrust :: reflect :: access :: FieldAccessor :: Repeated ( & self :: addressbook_proto :: address_book :: PEOPLE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) ) ;
     }
 }
-#[doc = r" Gets the descriptor pool containing all the reflection information contained in this generated code module"]
 pub fn pool() -> &'static ::protrust::reflect::DescriptorPool<'static> {
     unsafe {
         self::POOL_INIT.call_once(pool_init);
@@ -78,13 +77,11 @@ static ADDRESSBOOK_PROTO_BINARY: &'static [u8] = &[
     101, 115, 115, 66, 111, 111, 107, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod addressbook_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static ::protrust::reflect::FileDescriptor {
+    pub fn file() -> &'static ::protrust::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("addressbook.proto")
             .unwrap()
     }
-    #[doc = " [START messages]"]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Person {
         name: ::std::string::String,
@@ -193,81 +190,44 @@ pub mod addressbook_proto {
         }
     }
     impl ::protrust::Message for self::Person {
-        fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
+        fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Person {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`id`] field"]
-        #[doc = ""]
-        #[doc = "[`id`]: #method.id"]
         pub const ID_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`id`] field"]
-        #[doc = ""]
-        #[doc = "[`id`]: #method.id"]
         pub const ID_DEFAULT_VALUE: i32 = 0;
-        #[doc = " Unique ID number for this person."]
         pub fn id(&self) -> &i32 {
             &self.id
         }
-        #[doc = "Gets a unique reference to the [`id`] field"]
-        #[doc = ""]
-        #[doc = "[`id`]: #method.id"]
         pub fn id_mut(&mut self) -> &mut i32 {
             &mut self.id
         }
-        #[doc = "The field number for the [`email`] field"]
-        #[doc = ""]
-        #[doc = "[`email`]: #method.email"]
         pub const EMAIL_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`email`] field"]
-        #[doc = ""]
-        #[doc = "[`email`]: #method.email"]
         pub const EMAIL_DEFAULT_VALUE: &'static str = "";
         pub fn email(&self) -> &::std::string::String {
             &self.email
         }
-        #[doc = "Gets a unique reference to the [`email`] field"]
-        #[doc = ""]
-        #[doc = "[`email`]: #method.email"]
         pub fn email_mut(&mut self) -> &mut ::std::string::String {
             &mut self.email
         }
-        #[doc = "The field number for the [`phones`] field"]
-        #[doc = ""]
-        #[doc = "[`phones`]: #method.phones"]
         pub const PHONES_FIELD_NUMBER: i32 = 4;
         pub fn phones(&self) -> &::protrust::collections::RepeatedField<self::person::PhoneNumber> {
             &self.phones
         }
-        #[doc = "Gets a unique reference to the [`phones`] field"]
-        #[doc = ""]
-        #[doc = "[`phones`]: #method.phones"]
         pub fn phones_mut(
             &mut self,
         ) -> &mut ::protrust::collections::RepeatedField<self::person::PhoneNumber> {
             &mut self.phones
         }
-        #[doc = "The field number for the [`last_updated`] field"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub const LAST_UPDATED_FIELD_NUMBER: i32 = 5;
         pub fn last_updated(
             &self,
@@ -275,89 +235,32 @@ pub mod addressbook_proto {
         {
             self.last_updated.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`last_updated`] field"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub fn last_updated_mut(
             &mut self,
         ) -> &mut self::super::google_protobuf_timestamp_proto::Timestamp {
             self.last_updated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`last_updated`] field"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub fn has_last_updated(&self) -> bool {
             self.last_updated.is_some()
         }
-        #[doc = "Sets the value of the [`last_updated`] field"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub fn set_last_updated(
             &mut self,
             value: self::super::google_protobuf_timestamp_proto::Timestamp,
         ) {
             self.last_updated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`last_updated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub fn take_last_updated(
             &mut self,
         ) -> ::std::option::Option<self::super::google_protobuf_timestamp_proto::Timestamp>
         {
             self.last_updated.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`last_updated`] field"]
-        #[doc = ""]
-        #[doc = "[`last_updated`]: #method.last_updated"]
         pub fn clear_last_updated(&mut self) {
             self.last_updated = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod person {
-        pub(super) static PHONES_CODEC: ::protrust::Codec<self::PhoneNumber> =
-            ::protrust::Codec::message(34);
-        pub(in super::super) static NAME_REFLECTOR:
-            ::protrust::reflect::access::SimpleFieldAccessor<
-                self::super::Person,
-                ::std::string::String,
-            > = ::protrust::reflect::access::SimpleFieldAccessor {
-            get: self::super::Person::name,
-            get_mut: self::super::Person::name_mut,
-        };
-        pub(in super::super) static ID_REFLECTOR: ::protrust::reflect::access::SimpleFieldAccessor<
-            self::super::Person,
-            i32,
-        > = ::protrust::reflect::access::SimpleFieldAccessor {
-            get: self::super::Person::id,
-            get_mut: self::super::Person::id_mut,
-        };
-        pub(in super::super) static EMAIL_REFLECTOR:
-            ::protrust::reflect::access::SimpleFieldAccessor<
-                self::super::Person,
-                ::std::string::String,
-            > = ::protrust::reflect::access::SimpleFieldAccessor {
-            get: self::super::Person::email,
-            get_mut: self::super::Person::email_mut,
-        };
-        pub(in super::super) static PHONES_REFLECTOR:
-            ::protrust::reflect::access::SimpleFieldAccessor<
-                self::super::Person,
-                ::protrust::collections::RepeatedField<self::PhoneNumber>,
-            > = ::protrust::reflect::access::SimpleFieldAccessor {
-            get: self::super::Person::phones,
-            get_mut: self::super::Person::phones_mut,
-        };
-        pub(in super::super) static LAST_UPDATED_REFLECTOR:
-            ::protrust::reflect::access::SimpleOptionFieldAccessor<
-                self::super::Person,
-                self::super::super::google_protobuf_timestamp_proto::Timestamp,
-            > = ::protrust::reflect::access::SimpleOptionFieldAccessor {
-            get: self::super::Person::last_updated,
-            get_mut: self::super::Person::last_updated_mut,
-        };
         #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
         pub enum PhoneType {
             Mobile,
@@ -365,7 +268,7 @@ pub mod addressbook_proto {
             Work,
         }
         impl ::protrust::Enum for self::PhoneType {
-            fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor {
+            fn descriptor() -> &'static ::protrust::reflect::EnumDescriptor<'static> {
                 &<self::super::Person as ::protrust::Message>::descriptor().enums()[0]
             }
         }
@@ -456,49 +359,30 @@ pub mod addressbook_proto {
             }
         }
         impl ::protrust::Message for self::PhoneNumber {
-            fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
+            fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor<'static> {
                 &<self::super::Person as ::protrust::Message>::descriptor().messages()[0]
             }
         }
         impl self::PhoneNumber {
-            #[doc = "The field number for the [`number`] field"]
-            #[doc = ""]
-            #[doc = "[`number`]: #method.number"]
             pub const NUMBER_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`number`] field"]
-            #[doc = ""]
-            #[doc = "[`number`]: #method.number"]
             pub const NUMBER_DEFAULT_VALUE: &'static str = "";
             pub fn number(&self) -> &::std::string::String {
                 &self.number
             }
-            #[doc = "Gets a unique reference to the [`number`] field"]
-            #[doc = ""]
-            #[doc = "[`number`]: #method.number"]
             pub fn number_mut(&mut self) -> &mut ::std::string::String {
                 &mut self.number
             }
-            #[doc = "The field number for the [`type`] field"]
-            #[doc = ""]
-            #[doc = "[`type`]: #method.r#type"]
             pub const TYPE_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`type`] field"]
-            #[doc = ""]
-            #[doc = "[`type`]: #method.r#type"]
             pub const TYPE_DEFAULT_VALUE: ::protrust::EnumValue<self::PhoneType> =
                 ::protrust::EnumValue::Defined(self::PhoneType::Mobile);
             pub fn r#type(&self) -> &::protrust::EnumValue<self::PhoneType> {
                 &self.r#type
             }
-            #[doc = "Gets a unique reference to the [`type`] field"]
-            #[doc = ""]
-            #[doc = "[`type`]: #method.r#type"]
             pub fn type_mut(&mut self) -> &mut ::protrust::EnumValue<self::PhoneType> {
                 &mut self.r#type
             }
         }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod phone_number {
+        pub(in super::super::super) mod phone_number {
             pub(in super::super::super) static NUMBER_REFLECTOR:
                 ::protrust::reflect::access::SimpleFieldAccessor<
                     self::super::PhoneNumber,
@@ -516,8 +400,51 @@ pub mod addressbook_proto {
                 get_mut: self::super::PhoneNumber::type_mut,
             };
         }
+        pub(super) static PHONES_CODEC: ::protrust::Codec<self::PhoneNumber> =
+            ::protrust::Codec::message(34);
+        pub(in super::super) static NAME_REFLECTOR:
+            ::protrust::reflect::access::SimpleFieldAccessor<
+                self::super::Person,
+                ::std::string::String,
+            > = ::protrust::reflect::access::SimpleFieldAccessor {
+            get: self::super::Person::name,
+            get_mut: self::super::Person::name_mut,
+        };
+        pub(in super::super) static ID_REFLECTOR: ::protrust::reflect::access::SimpleFieldAccessor<
+            self::super::Person,
+            i32,
+        > = ::protrust::reflect::access::SimpleFieldAccessor {
+            get: self::super::Person::id,
+            get_mut: self::super::Person::id_mut,
+        };
+        pub(in super::super) static EMAIL_REFLECTOR:
+            ::protrust::reflect::access::SimpleFieldAccessor<
+                self::super::Person,
+                ::std::string::String,
+            > = ::protrust::reflect::access::SimpleFieldAccessor {
+            get: self::super::Person::email,
+            get_mut: self::super::Person::email_mut,
+        };
+        pub(in super::super) static PHONES_REFLECTOR:
+            ::protrust::reflect::access::SimpleFieldAccessor<
+                self::super::Person,
+                ::protrust::collections::RepeatedField<self::PhoneNumber>,
+            > = ::protrust::reflect::access::SimpleFieldAccessor {
+            get: self::super::Person::phones,
+            get_mut: self::super::Person::phones_mut,
+        };
+        pub(in super::super) static LAST_UPDATED_REFLECTOR:
+            ::protrust::reflect::access::VerboseFieldAccessor<
+                self::super::Person,
+                self::super::super::google_protobuf_timestamp_proto::Timestamp,
+            > = ::protrust::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::Person::last_updated,
+            get_mut: self::super::Person::last_updated_mut,
+            set: self::super::Person::set_last_updated,
+            take: self::super::Person::take_last_updated,
+            clear: self::super::Person::clear_last_updated,
+        };
     }
-    #[doc = " Our address book file is just one of these."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct AddressBook {
         people: ::protrust::collections::RepeatedField<self::Person>,
@@ -569,27 +496,20 @@ pub mod addressbook_proto {
         }
     }
     impl ::protrust::Message for self::AddressBook {
-        fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor {
+        fn descriptor() -> &'static ::protrust::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::AddressBook {
-        #[doc = "The field number for the [`people`] field"]
-        #[doc = ""]
-        #[doc = "[`people`]: #method.people"]
         pub const PEOPLE_FIELD_NUMBER: i32 = 1;
         pub fn people(&self) -> &::protrust::collections::RepeatedField<self::Person> {
             &self.people
         }
-        #[doc = "Gets a unique reference to the [`people`] field"]
-        #[doc = ""]
-        #[doc = "[`people`]: #method.people"]
         pub fn people_mut(&mut self) -> &mut ::protrust::collections::RepeatedField<self::Person> {
             &mut self.people
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod address_book {
+    pub(in super::super) mod address_book {
         pub(super) static PEOPLE_CODEC: ::protrust::Codec<self::super::Person> =
             ::protrust::Codec::message(10);
         pub(in super::super) static PEOPLE_REFLECTOR:

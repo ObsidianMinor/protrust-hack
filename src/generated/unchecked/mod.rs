@@ -15,7 +15,6 @@ fn extensions_init() {
         ));
     }
 }
-#[doc = r" Gets the extension registry containing all the extensions contained in this generated code module"]
 pub fn extensions() -> &'static crate::ExtensionRegistry {
     unsafe {
         self::EXTENSIONS_INIT.call_once(extensions_init);
@@ -109,10 +108,9 @@ fn pool_init() {
             )
             .expect("couldn't read file descriptor"),
         ]);
-        self :: POOL = :: std :: option :: Option :: Some ( crate :: reflect :: DescriptorPool :: build_from_generated_code ( self :: FILES . as_ref ( ) . unwrap ( ) . as_ref ( ) , self :: EXTERNAL_DEPS . as_ref ( ) . unwrap ( ) , :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_any_proto :: Any as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_any_proto :: any :: TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_any_proto :: any :: VALUE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Api as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: METHODS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: VERSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: MIXINS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: SYNTAX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Method as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: REQUEST_TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: REQUEST_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: RESPONSE_TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: RESPONSE_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: method :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: SYNTAX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Mixin as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: mixin :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: mixin :: ROOT_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileDescriptorSet as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_set :: FILE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: PUBLIC_DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: WEAK_DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: MESSAGE_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: ENUM_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SERVICE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: EXTENSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SOURCE_CODE_INFO_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SYNTAX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: DescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: descriptor_proto :: ExtensionRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: END_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: descriptor_proto :: ReservedRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: reserved_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: reserved_range :: END_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: FIELD_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: EXTENSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: NESTED_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: ENUM_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: EXTENSION_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: ONEOF_DECL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: RESERVED_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: RESERVED_NAME_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ExtensionRangeOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: extension_range_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FieldDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: LABEL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: TYPE_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: EXTENDEE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: DEFAULT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: ONEOF_INDEX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: JSON_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: OneofDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: oneof_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: oneof_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: EnumReservedRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: enum_reserved_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: enum_reserved_range :: END_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: RESERVED_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: RESERVED_NAME_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumValueDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ServiceDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: METHOD_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MethodDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: INPUT_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: OUTPUT_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: CLIENT_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: SERVER_STREAMING_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_OUTER_CLASSNAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_MULTIPLE_FILES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_GENERATE_EQUALS_AND_HASH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_STRING_CHECK_UTF8_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: OPTIMIZE_FOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: GO_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CC_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PY_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CC_ENABLE_ARENAS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: OBJC_CLASS_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CSHARP_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: SWIFT_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_CLASS_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_METADATA_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: RUBY_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MessageOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: MESSAGE_SET_WIRE_FORMAT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: NO_STANDARD_DESCRIPTOR_ACCESSOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: MAP_ENTRY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: message_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FieldOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: CTYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: PACKED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: JSTYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: LAZY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: WEAK_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: field_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: OneofOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: oneof_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_options :: ALLOW_ALIAS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumValueOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_value_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ServiceOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: service_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MethodOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_options :: IDEMPOTENCY_LEVEL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: method_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: UninterpretedOption as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NamePart as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: name_part :: NAME_PART_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: name_part :: IS_EXTENSION_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: IDENTIFIER_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: POSITIVE_INT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NEGATIVE_INT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: DOUBLE_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: STRING_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: AGGREGATE_VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: SourceCodeInfo as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: source_code_info :: Location as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: PATH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: SPAN_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: LEADING_COMMENTS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: TRAILING_COMMENTS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: LEADING_DETACHED_COMMENTS_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: LOCATION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: GeneratedCodeInfo as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: generated_code_info :: Annotation as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: PATH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: SOURCE_FILE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: BEGIN_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: END_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: ANNOTATION_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_duration_proto :: Duration as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_duration_proto :: duration :: SECONDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_duration_proto :: duration :: NANOS_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_empty_proto :: Empty as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_field_mask_proto :: FieldMask as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_field_mask_proto :: field_mask :: PATHS_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_source_context_proto :: SourceContext as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_source_context_proto :: source_context :: FILE_NAME_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: Struct as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Map ( & self :: google_protobuf_struct_proto :: r#struct :: FIELDS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: NULL_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: NUMBER_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: STRING_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: BOOL_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: STRUCT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: LIST_VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: ListValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_struct_proto :: list_value :: VALUES_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_timestamp_proto :: Timestamp as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_timestamp_proto :: timestamp :: SECONDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_timestamp_proto :: timestamp :: NANOS_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Type as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: FIELDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: ONEOFS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: SYNTAX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Field as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: KIND_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: CARDINALITY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: ONEOF_INDEX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: PACKED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: field :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: JSON_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: DEFAULT_VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Enum as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#enum :: ENUMVALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#enum :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: SYNTAX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: EnumValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: enum_value :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: enum_value :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: enum_value :: OPTIONS_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Option as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: option :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: option :: VALUE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: DoubleValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: double_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: FloatValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: float_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: Int64Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: int64_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: UInt64Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: u_int64_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: Int32Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: int32_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: UInt32Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: u_int32_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: BoolValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: bool_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: StringValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: string_value :: VALUE_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: BytesValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: bytes_value :: VALUE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: Version as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: MAJOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: MINOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: PATCH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: SUFFIX_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: CodeGeneratorRequest as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: FILE_TO_GENERATE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: PARAMETER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: PROTO_FILE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: COMPILER_VERSION_REFLECTOR ) , ] ) ) , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: CodeGeneratorResponse as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: File as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: INSERTION_POINT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: CONTENT_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: ERROR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: FILE_REFLECTOR ) , ] ) ) , } , ] ) ) , fields : :: std :: option :: Option :: None , } , ] ) ) ) ;
+        self :: POOL = :: std :: option :: Option :: Some ( crate :: reflect :: DescriptorPool :: build_from_generated_code ( self :: FILES . as_ref ( ) . unwrap ( ) . as_ref ( ) , self :: EXTERNAL_DEPS . as_ref ( ) . unwrap ( ) , :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_any_proto :: Any as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_any_proto :: any :: TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_any_proto :: any :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Api as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: METHODS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: VERSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: api :: MIXINS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: api :: SYNTAX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Method as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: REQUEST_TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: REQUEST_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: RESPONSE_TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: RESPONSE_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_api_proto :: method :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: method :: SYNTAX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_api_proto :: Mixin as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: mixin :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_api_proto :: mixin :: ROOT_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileDescriptorSet as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_set :: FILE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: PUBLIC_DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: WEAK_DEPENDENCY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: MESSAGE_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: ENUM_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SERVICE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: EXTENSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SOURCE_CODE_INFO_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_descriptor_proto :: SYNTAX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: DescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: descriptor_proto :: ExtensionRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: END_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: extension_range :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: descriptor_proto :: ReservedRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: reserved_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: reserved_range :: END_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: FIELD_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: EXTENSION_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: NESTED_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: ENUM_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: EXTENSION_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: ONEOF_DECL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: RESERVED_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: descriptor_proto :: RESERVED_NAME_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ExtensionRangeOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: extension_range_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FieldDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: LABEL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: TYPE_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: EXTENDEE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: DEFAULT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: ONEOF_INDEX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: JSON_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: OneofDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: oneof_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: oneof_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: EnumReservedRange as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: enum_reserved_range :: START_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: enum_reserved_range :: END_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: RESERVED_RANGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_descriptor_proto :: RESERVED_NAME_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumValueDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ServiceDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: METHOD_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_descriptor_proto :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MethodDescriptorProto as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: INPUT_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: OUTPUT_TYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: CLIENT_STREAMING_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_descriptor_proto :: SERVER_STREAMING_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FileOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_OUTER_CLASSNAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_MULTIPLE_FILES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_GENERATE_EQUALS_AND_HASH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_STRING_CHECK_UTF8_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: OPTIMIZE_FOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: GO_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CC_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: JAVA_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PY_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_GENERIC_SERVICES_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CC_ENABLE_ARENAS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: OBJC_CLASS_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: CSHARP_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: SWIFT_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_CLASS_PREFIX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: PHP_METADATA_NAMESPACE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: file_options :: RUBY_PACKAGE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: file_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MessageOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: MESSAGE_SET_WIRE_FORMAT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: NO_STANDARD_DESCRIPTOR_ACCESSOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: message_options :: MAP_ENTRY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: message_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: FieldOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: CTYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: PACKED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: JSTYPE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: LAZY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: field_options :: WEAK_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: field_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: OneofOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: oneof_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_options :: ALLOW_ALIAS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: EnumValueOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: enum_value_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: enum_value_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: ServiceOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: service_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: service_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: MethodOptions as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_options :: DEPRECATED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: method_options :: IDEMPOTENCY_LEVEL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: method_options :: UNINTERPRETED_OPTION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: UninterpretedOption as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NamePart as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: name_part :: NAME_PART_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: name_part :: IS_EXTENSION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: IDENTIFIER_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: POSITIVE_INT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: NEGATIVE_INT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: DOUBLE_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: STRING_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: uninterpreted_option :: AGGREGATE_VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: SourceCodeInfo as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: source_code_info :: Location as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: PATH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: SPAN_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: LEADING_COMMENTS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: TRAILING_COMMENTS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: location :: LEADING_DETACHED_COMMENTS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: source_code_info :: LOCATION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: GeneratedCodeInfo as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_descriptor_proto :: generated_code_info :: Annotation as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: PATH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: SOURCE_FILE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: BEGIN_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: annotation :: END_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_descriptor_proto :: generated_code_info :: ANNOTATION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_duration_proto :: Duration as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_duration_proto :: duration :: SECONDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_duration_proto :: duration :: NANOS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_empty_proto :: Empty as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: None , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_field_mask_proto :: FieldMask as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_field_mask_proto :: field_mask :: PATHS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_source_context_proto :: SourceContext as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_source_context_proto :: source_context :: FILE_NAME_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: Struct as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Map ( & self :: google_protobuf_struct_proto :: r#struct :: FIELDS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: NULL_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: NUMBER_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: STRING_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: BOOL_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: STRUCT_VALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_struct_proto :: value :: LIST_VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_struct_proto :: ListValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_struct_proto :: list_value :: VALUES_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_timestamp_proto :: Timestamp as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_timestamp_proto :: timestamp :: SECONDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_timestamp_proto :: timestamp :: NANOS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Type as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: FIELDS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: ONEOFS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#type :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#type :: SYNTAX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Field as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: KIND_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: CARDINALITY_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: TYPE_URL_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: ONEOF_INDEX_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: PACKED_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: field :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: JSON_NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: field :: DEFAULT_VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Enum as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#enum :: ENUMVALUE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: r#enum :: OPTIONS_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: SOURCE_CONTEXT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: r#enum :: SYNTAX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: EnumValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: enum_value :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: enum_value :: NUMBER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_type_proto :: enum_value :: OPTIONS_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_type_proto :: Option as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: option :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_type_proto :: option :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: DoubleValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: double_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: FloatValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: float_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: Int64Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: int64_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: UInt64Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: u_int64_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: Int32Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: int32_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: UInt32Value as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: u_int32_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: BoolValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: bool_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: StringValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: string_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_wrappers_proto :: BytesValue as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_wrappers_proto :: bytes_value :: VALUE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedCodeInfo { structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: Version as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: MAJOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: MINOR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: PATCH_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: version :: SUFFIX_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: CodeGeneratorRequest as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: FILE_TO_GENERATE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: PARAMETER_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: PROTO_FILE_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_request :: COMPILER_VERSION_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: CodeGeneratorResponse as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: GeneratedStructInfo { new : || :: std :: boxed :: Box :: new ( < self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: File as crate :: LiteMessage > :: new ( ) ) , structs : :: std :: option :: Option :: None , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: NAME_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: INSERTION_POINT_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: file :: CONTENT_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , fields : :: std :: option :: Option :: Some ( :: std :: boxed :: Box :: new ( [ crate :: reflect :: access :: FieldAccessor :: Single ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: ERROR_REFLECTOR ) , crate :: reflect :: access :: FieldAccessor :: Repeated ( & self :: google_protobuf_compiler_plugin_proto :: code_generator_response :: FILE_REFLECTOR ) , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) , extensions : :: std :: option :: Option :: None , } , ] ) ) ) ;
     }
 }
-#[doc = r" Gets the descriptor pool containing all the reflection information contained in this generated code module"]
 pub fn pool() -> &'static crate::reflect::DescriptorPool<'static> {
     unsafe {
         self::POOL_INIT.call_once(pool_init);
@@ -133,92 +131,11 @@ static GOOGLE_PROTOBUF_ANY_PROTO_BINARY: &'static [u8] = &[
     84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_any_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/any.proto")
             .unwrap()
     }
-    #[doc = " `Any` contains an arbitrary serialized protocol buffer message along with a"]
-    #[doc = " URL that describes the type of the serialized message."]
-    #[doc = ""]
-    #[doc = " Protobuf library provides support to pack/unpack Any values in the form"]
-    #[doc = " of utility functions or additional generated methods of the Any type."]
-    #[doc = ""]
-    #[doc = " Example 1: Pack and unpack a message in C++."]
-    #[doc = ""]
-    #[doc = "     Foo foo = ...;"]
-    #[doc = "     Any any;"]
-    #[doc = "     any.PackFrom(foo);"]
-    #[doc = "     ..."]
-    #[doc = "     if (any.UnpackTo(&foo)) {"]
-    #[doc = "       ..."]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Example 2: Pack and unpack a message in Java."]
-    #[doc = ""]
-    #[doc = "     Foo foo = ...;"]
-    #[doc = "     Any any = Any.pack(foo);"]
-    #[doc = "     ..."]
-    #[doc = "     if (any.is(Foo.class)) {"]
-    #[doc = "       foo = any.unpack(Foo.class);"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = "  Example 3: Pack and unpack a message in Python."]
-    #[doc = ""]
-    #[doc = "     foo = Foo(...)"]
-    #[doc = "     any = Any()"]
-    #[doc = "     any.Pack(foo)"]
-    #[doc = "     ..."]
-    #[doc = "     if any.Is(Foo.DESCRIPTOR):"]
-    #[doc = "       any.Unpack(foo)"]
-    #[doc = "       ..."]
-    #[doc = ""]
-    #[doc = "  Example 4: Pack and unpack a message in Go"]
-    #[doc = ""]
-    #[doc = "      foo := &pb.Foo{...}"]
-    #[doc = "      any, err := ptypes.MarshalAny(foo)"]
-    #[doc = "      ..."]
-    #[doc = "      foo := &pb.Foo{}"]
-    #[doc = "      if err := ptypes.UnmarshalAny(any, foo); err != nil {"]
-    #[doc = "        ..."]
-    #[doc = "      }"]
-    #[doc = ""]
-    #[doc = " The pack methods provided by protobuf library will by default use"]
-    #[doc = " 'type.googleapis.com/full.type.name' as the type URL and the unpack"]
-    #[doc = " methods only use the fully qualified type name after the last '/'"]
-    #[doc = " in the type URL, for example \"foo.bar.com/x/y.z\" will yield type"]
-    #[doc = " name \"y.z\"."]
-    #[doc = ""]
-    #[doc = ""]
-    #[doc = " JSON"]
-    #[doc = " ===="]
-    #[doc = " The JSON representation of an `Any` value uses the regular"]
-    #[doc = " representation of the deserialized, embedded message, with an"]
-    #[doc = " additional field `@type` which contains the type URL. Example:"]
-    #[doc = ""]
-    #[doc = "     package google.profile;"]
-    #[doc = "     message Person {"]
-    #[doc = "       string first_name = 1;"]
-    #[doc = "       string last_name = 2;"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = "     {"]
-    #[doc = "       \"@type\": \"type.googleapis.com/google.profile.Person\","]
-    #[doc = "       \"firstName\": <string>,"]
-    #[doc = "       \"lastName\": <string>"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " If the embedded message type is well-known and has a custom JSON"]
-    #[doc = " representation, that representation will be embedded adding a field"]
-    #[doc = " `value` which holds the custom JSON in addition to the `@type`"]
-    #[doc = " field. Example (for message [google.protobuf.Duration][]):"]
-    #[doc = ""]
-    #[doc = "     {"]
-    #[doc = "       \"@type\": \"type.googleapis.com/google.protobuf.Duration\","]
-    #[doc = "       \"value\": \"1.212s\""]
-    #[doc = "     }"]
-    #[doc = ""]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Any {
         type_url: ::std::string::String,
@@ -277,76 +194,29 @@ pub mod google_protobuf_any_proto {
         }
     }
     impl crate::Message for self::Any {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Any {
-        #[doc = "The field number for the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub const TYPE_URL_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        #[doc = " A URL/resource name that uniquely identifies the type of the serialized"]
-        #[doc = " protocol buffer message. The last segment of the URL's path must represent"]
-        #[doc = " the fully qualified name of the type (as in"]
-        #[doc = " `path/google.protobuf.Duration`). The name should be in a canonical form"]
-        #[doc = " (e.g., leading \".\" is not accepted)."]
-        #[doc = ""]
-        #[doc = " In practice, teams usually precompile into the binary all types that they"]
-        #[doc = " expect it to use in the context of Any. However, for URLs which use the"]
-        #[doc = " scheme `http`, `https`, or no scheme, one can optionally set up a type"]
-        #[doc = " server that maps type URLs to message definitions as follows:"]
-        #[doc = ""]
-        #[doc = " * If no scheme is provided, `https` is assumed."]
-        #[doc = " * An HTTP GET on the URL must yield a [google.protobuf.Type][]"]
-        #[doc = "   value in binary format, or produce an error."]
-        #[doc = " * Applications are allowed to cache lookup results based on the"]
-        #[doc = "   URL, or have them precompiled into a binary to avoid any"]
-        #[doc = "   lookup. Therefore, binary compatibility needs to be preserved"]
-        #[doc = "   on changes to types. (Use versioned type names to manage"]
-        #[doc = "   breaking changes.)"]
-        #[doc = ""]
-        #[doc = " Note: this functionality is not currently available in the official"]
-        #[doc = " protobuf release, and it is not used for type URLs beginning with"]
-        #[doc = " type.googleapis.com."]
-        #[doc = ""]
-        #[doc = " Schemes other than `http`, `https` (or the empty scheme) might be"]
-        #[doc = " used with implementation specific semantics."]
-        #[doc = ""]
         pub fn type_url(&self) -> &::std::string::String {
             &self.type_url
         }
-        #[doc = "Gets a unique reference to the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub fn type_url_mut(&mut self) -> &mut ::std::string::String {
             &mut self.type_url
         }
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-        #[doc = " Must be a valid serialized protocol buffer of the above specified type."]
         pub fn value(&self) -> &::std::vec::Vec<u8> {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod any {
+    pub(in super::super) mod any {
         pub(in super::super) static TYPE_URL_REFLECTOR:
             crate::reflect::access::SimpleFieldAccessor<self::super::Any, ::std::string::String> =
             crate::reflect::access::SimpleFieldAccessor {
@@ -410,21 +280,11 @@ static GOOGLE_PROTOBUF_API_PROTO_BINARY: &'static [u8] = &[
     114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_api_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/api.proto")
             .unwrap()
     }
-    #[doc = " Api is a light-weight descriptor for an API Interface."]
-    #[doc = ""]
-    #[doc = " Interfaces are also described as \"protocol buffer services\" in some contexts,"]
-    #[doc = " such as by the \"service\" keyword in a .proto file, but they are different"]
-    #[doc = " from API Services, which represent a concrete implementation of an interface"]
-    #[doc = " as opposed to simply a description of methods and bindings. They are also"]
-    #[doc = " sometimes simply referred to as \"APIs\" in other contexts, such as the name of"]
-    #[doc = " this message itself. See https://cloud.google.com/apis/design/glossary for"]
-    #[doc = " detailed terminology."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Api {
         name: ::std::string::String,
@@ -540,192 +400,99 @@ pub mod google_protobuf_api_proto {
         }
     }
     impl crate::Message for self::Api {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Api {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The fully qualified name of this interface, including package name"]
-        #[doc = " followed by the interface's simple name."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`methods`] field"]
-        #[doc = ""]
-        #[doc = "[`methods`]: #method.methods"]
         pub const METHODS_FIELD_NUMBER: i32 = 2;
-        #[doc = " The methods of this interface, in unspecified order."]
         pub fn methods(&self) -> &crate::collections::RepeatedField<self::Method> {
             &self.methods
         }
-        #[doc = "Gets a unique reference to the [`methods`] field"]
-        #[doc = ""]
-        #[doc = "[`methods`]: #method.methods"]
         pub fn methods_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Method> {
             &mut self.methods
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        #[doc = " Any metadata attached to the interface."]
         pub fn options(
             &self,
         ) -> &crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>
         {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>
         {
             &mut self.options
         }
-        #[doc = "The field number for the [`version`] field"]
-        #[doc = ""]
-        #[doc = "[`version`]: #method.version"]
         pub const VERSION_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`version`] field"]
-        #[doc = ""]
-        #[doc = "[`version`]: #method.version"]
         pub const VERSION_DEFAULT_VALUE: &'static str = "";
-        #[doc = " A version string for this interface. If specified, must have the form"]
-        #[doc = " `major-version.minor-version`, as in `1.10`. If the minor version is"]
-        #[doc = " omitted, it defaults to zero. If the entire version field is empty, the"]
-        #[doc = " major version is derived from the package name, as outlined below. If the"]
-        #[doc = " field is not empty, the version in the package name will be verified to be"]
-        #[doc = " consistent with what is provided here."]
-        #[doc = ""]
-        #[doc = " The versioning schema uses [semantic"]
-        #[doc = " versioning](http://semver.org) where the major version number"]
-        #[doc = " indicates a breaking change and the minor version an additive,"]
-        #[doc = " non-breaking change. Both version numbers are signals to users"]
-        #[doc = " what to expect from different versions, and should be carefully"]
-        #[doc = " chosen based on the product plan."]
-        #[doc = ""]
-        #[doc = " The major version is also reflected in the package name of the"]
-        #[doc = " interface, which must end in `v<major-version>`, as in"]
-        #[doc = " `google.feature.v1`. For major versions 0 and 1, the suffix can"]
-        #[doc = " be omitted. Zero major versions must only be used for"]
-        #[doc = " experimental, non-GA interfaces."]
-        #[doc = ""]
-        #[doc = ""]
         pub fn version(&self) -> &::std::string::String {
             &self.version
         }
-        #[doc = "Gets a unique reference to the [`version`] field"]
-        #[doc = ""]
-        #[doc = "[`version`]: #method.version"]
         pub fn version_mut(&mut self) -> &mut ::std::string::String {
             &mut self.version
         }
-        #[doc = "The field number for the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-        #[doc = " Source context for the protocol buffer service represented by this"]
-        #[doc = " message."]
         pub fn source_context(
             &self,
         ) -> ::std::option::Option<&self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn source_context_mut(
             &mut self,
         ) -> &mut self::super::google_protobuf_source_context_proto::SourceContext {
             self.source_context
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn has_source_context(&self) -> bool {
             self.source_context.is_some()
         }
-        #[doc = "Sets the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn set_source_context(
             &mut self,
             value: self::super::google_protobuf_source_context_proto::SourceContext,
         ) {
             self.source_context = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`source_context`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn take_source_context(
             &mut self,
         ) -> ::std::option::Option<self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn clear_source_context(&mut self) {
             self.source_context = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`mixins`] field"]
-        #[doc = ""]
-        #[doc = "[`mixins`]: #method.mixins"]
         pub const MIXINS_FIELD_NUMBER: i32 = 6;
-        #[doc = " Included interfaces. See [Mixin][]."]
         pub fn mixins(&self) -> &crate::collections::RepeatedField<self::Mixin> {
             &self.mixins
         }
-        #[doc = "Gets a unique reference to the [`mixins`] field"]
-        #[doc = ""]
-        #[doc = "[`mixins`]: #method.mixins"]
         pub fn mixins_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Mixin> {
             &mut self.mixins
         }
-        #[doc = "The field number for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<
             self::super::google_protobuf_type_proto::Syntax,
         > = crate::EnumValue::Defined(self::super::google_protobuf_type_proto::Syntax::Proto2);
-        #[doc = " The source syntax of the service."]
         pub fn syntax(&self) -> &crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
             &self.syntax
         }
-        #[doc = "Gets a unique reference to the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_mut(
             &mut self,
         ) -> &mut crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
             &mut self.syntax
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod api {
+    pub(in super::super) mod api {
         pub(super) static METHODS_CODEC: crate::Codec<self::super::Method> =
             crate::Codec::message(18);
         pub(super) static OPTIONS_CODEC: crate::Codec<
@@ -764,12 +531,15 @@ pub mod google_protobuf_api_proto {
             get_mut: self::super::Api::version_mut,
         };
         pub(in super::super) static SOURCE_CONTEXT_REFLECTOR:
-            crate::reflect::access::SimpleOptionFieldAccessor<
+            crate::reflect::access::VerboseFieldAccessor<
                 self::super::Api,
                 self::super::super::google_protobuf_source_context_proto::SourceContext,
-            > = crate::reflect::access::SimpleOptionFieldAccessor {
-            get: self::super::Api::source_context,
+            > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::Api::source_context,
             get_mut: self::super::Api::source_context_mut,
+            set: self::super::Api::set_source_context,
+            take: self::super::Api::take_source_context,
+            clear: self::super::Api::clear_source_context,
         };
         pub(in super::super) static MIXINS_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Api,
@@ -786,7 +556,6 @@ pub mod google_protobuf_api_proto {
             get_mut: self::super::Api::syntax_mut,
         };
     }
-    #[doc = " Method represents a method of an API interface."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Method {
         name: ::std::string::String,
@@ -909,146 +678,78 @@ pub mod google_protobuf_api_proto {
         }
     }
     impl crate::Message for self::Method {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::Method {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The simple name of this method."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`request_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`request_type_url`]: #method.request_type_url"]
         pub const REQUEST_TYPE_URL_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`request_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`request_type_url`]: #method.request_type_url"]
         pub const REQUEST_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        #[doc = " A URL of the input message type."]
         pub fn request_type_url(&self) -> &::std::string::String {
             &self.request_type_url
         }
-        #[doc = "Gets a unique reference to the [`request_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`request_type_url`]: #method.request_type_url"]
         pub fn request_type_url_mut(&mut self) -> &mut ::std::string::String {
             &mut self.request_type_url
         }
-        #[doc = "The field number for the [`request_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`request_streaming`]: #method.request_streaming"]
         pub const REQUEST_STREAMING_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`request_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`request_streaming`]: #method.request_streaming"]
         pub const REQUEST_STREAMING_DEFAULT_VALUE: bool = false;
-        #[doc = " If true, the request is streamed."]
         pub fn request_streaming(&self) -> &bool {
             &self.request_streaming
         }
-        #[doc = "Gets a unique reference to the [`request_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`request_streaming`]: #method.request_streaming"]
         pub fn request_streaming_mut(&mut self) -> &mut bool {
             &mut self.request_streaming
         }
-        #[doc = "The field number for the [`response_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`response_type_url`]: #method.response_type_url"]
         pub const RESPONSE_TYPE_URL_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`response_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`response_type_url`]: #method.response_type_url"]
         pub const RESPONSE_TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The URL of the output message type."]
         pub fn response_type_url(&self) -> &::std::string::String {
             &self.response_type_url
         }
-        #[doc = "Gets a unique reference to the [`response_type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`response_type_url`]: #method.response_type_url"]
         pub fn response_type_url_mut(&mut self) -> &mut ::std::string::String {
             &mut self.response_type_url
         }
-        #[doc = "The field number for the [`response_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`response_streaming`]: #method.response_streaming"]
         pub const RESPONSE_STREAMING_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`response_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`response_streaming`]: #method.response_streaming"]
         pub const RESPONSE_STREAMING_DEFAULT_VALUE: bool = false;
-        #[doc = " If true, the response is streamed."]
         pub fn response_streaming(&self) -> &bool {
             &self.response_streaming
         }
-        #[doc = "Gets a unique reference to the [`response_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`response_streaming`]: #method.response_streaming"]
         pub fn response_streaming_mut(&mut self) -> &mut bool {
             &mut self.response_streaming
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 6;
-        #[doc = " Any metadata attached to the method."]
         pub fn options(
             &self,
         ) -> &crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>
         {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::super::google_protobuf_type_proto::Option>
         {
             &mut self.options
         }
-        #[doc = "The field number for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<
             self::super::google_protobuf_type_proto::Syntax,
         > = crate::EnumValue::Defined(self::super::google_protobuf_type_proto::Syntax::Proto2);
-        #[doc = " The source syntax of this method."]
         pub fn syntax(&self) -> &crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
             &self.syntax
         }
-        #[doc = "Gets a unique reference to the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_mut(
             &mut self,
         ) -> &mut crate::EnumValue<self::super::google_protobuf_type_proto::Syntax> {
             &mut self.syntax
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod method {
+    pub(in super::super) mod method {
         pub(super) static OPTIONS_CODEC: crate::Codec<
             self::super::super::google_protobuf_type_proto::Option,
         > = crate::Codec::message(50);
@@ -1100,84 +801,6 @@ pub mod google_protobuf_api_proto {
             get_mut: self::super::Method::syntax_mut,
         };
     }
-    #[doc = " Declares an API Interface to be included in this interface. The including"]
-    #[doc = " interface must redeclare all the methods from the included interface, but"]
-    #[doc = " documentation and options are inherited as follows:"]
-    #[doc = ""]
-    #[doc = " - If after comment and whitespace stripping, the documentation"]
-    #[doc = "   string of the redeclared method is empty, it will be inherited"]
-    #[doc = "   from the original method."]
-    #[doc = ""]
-    #[doc = " - Each annotation belonging to the service config (http,"]
-    #[doc = "   visibility) which is not set in the redeclared method will be"]
-    #[doc = "   inherited."]
-    #[doc = ""]
-    #[doc = " - If an http annotation is inherited, the path pattern will be"]
-    #[doc = "   modified as follows. Any version prefix will be replaced by the"]
-    #[doc = "   version of the including interface plus the [root][] path if"]
-    #[doc = "   specified."]
-    #[doc = ""]
-    #[doc = " Example of a simple mixin:"]
-    #[doc = ""]
-    #[doc = "     package google.acl.v1;"]
-    #[doc = "     service AccessControl {"]
-    #[doc = "       // Get the underlying ACL object."]
-    #[doc = "       rpc GetAcl(GetAclRequest) returns (Acl) {"]
-    #[doc = "         option (google.api.http).get = \"/v1/{resource=**}:getAcl\";"]
-    #[doc = "       }"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = "     package google.storage.v2;"]
-    #[doc = "     service Storage {"]
-    #[doc = "       rpc GetAcl(GetAclRequest) returns (Acl);"]
-    #[doc = ""]
-    #[doc = "       // Get a data record."]
-    #[doc = "       rpc GetData(GetDataRequest) returns (Data) {"]
-    #[doc = "         option (google.api.http).get = \"/v2/{resource=**}\";"]
-    #[doc = "       }"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Example of a mixin configuration:"]
-    #[doc = ""]
-    #[doc = "     apis:"]
-    #[doc = "     - name: google.storage.v2.Storage"]
-    #[doc = "       mixins:"]
-    #[doc = "       - name: google.acl.v1.AccessControl"]
-    #[doc = ""]
-    #[doc = " The mixin construct implies that all methods in `AccessControl` are"]
-    #[doc = " also declared with same name and request/response types in"]
-    #[doc = " `Storage`. A documentation generator or annotation processor will"]
-    #[doc = " see the effective `Storage.GetAcl` method after inherting"]
-    #[doc = " documentation and annotations as follows:"]
-    #[doc = ""]
-    #[doc = "     service Storage {"]
-    #[doc = "       // Get the underlying ACL object."]
-    #[doc = "       rpc GetAcl(GetAclRequest) returns (Acl) {"]
-    #[doc = "         option (google.api.http).get = \"/v2/{resource=**}:getAcl\";"]
-    #[doc = "       }"]
-    #[doc = "       ..."]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Note how the version in the path pattern changed from `v1` to `v2`."]
-    #[doc = ""]
-    #[doc = " If the `root` field in the mixin is specified, it should be a"]
-    #[doc = " relative path under which inherited HTTP paths are placed. Example:"]
-    #[doc = ""]
-    #[doc = "     apis:"]
-    #[doc = "     - name: google.storage.v2.Storage"]
-    #[doc = "       mixins:"]
-    #[doc = "       - name: google.acl.v1.AccessControl"]
-    #[doc = "         root: acls"]
-    #[doc = ""]
-    #[doc = " This implies the following inherited HTTP annotation:"]
-    #[doc = ""]
-    #[doc = "     service Storage {"]
-    #[doc = "       // Get the underlying ACL object."]
-    #[doc = "       rpc GetAcl(GetAclRequest) returns (Acl) {"]
-    #[doc = "         option (google.api.http).get = \"/v2/acls/{resource=**}:getAcl\";"]
-    #[doc = "       }"]
-    #[doc = "       ..."]
-    #[doc = "     }"]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Mixin {
         name: ::std::string::String,
@@ -1236,51 +859,29 @@ pub mod google_protobuf_api_proto {
         }
     }
     impl crate::Message for self::Mixin {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::Mixin {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The fully qualified name of the interface which is included."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`root`] field"]
-        #[doc = ""]
-        #[doc = "[`root`]: #method.root"]
         pub const ROOT_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`root`] field"]
-        #[doc = ""]
-        #[doc = "[`root`]: #method.root"]
         pub const ROOT_DEFAULT_VALUE: &'static str = "";
-        #[doc = " If non-empty specifies a path under which inherited HTTP paths"]
-        #[doc = " are rooted."]
         pub fn root(&self) -> &::std::string::String {
             &self.root
         }
-        #[doc = "Gets a unique reference to the [`root`] field"]
-        #[doc = ""]
-        #[doc = "[`root`]: #method.root"]
         pub fn root_mut(&mut self) -> &mut ::std::string::String {
             &mut self.root
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod mixin {
+    pub(in super::super) mod mixin {
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Mixin,
             ::std::string::String,
@@ -1660,14 +1261,11 @@ static GOOGLE_PROTOBUF_DESCRIPTOR_PROTO_BINARY: &'static [u8] = &[
     102, 46, 82, 101, 102, 108, 101, 99, 116, 105, 111, 110,
 ];
 pub mod google_protobuf_descriptor_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/descriptor.proto")
             .unwrap()
     }
-    #[doc = " The protocol compiler can output a FileDescriptorSet containing the .proto"]
-    #[doc = " files it parses."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FileDescriptorSet {
         file: crate::collections::RepeatedField<self::FileDescriptorProto>,
@@ -1713,29 +1311,22 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::FileDescriptorSet {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::FileDescriptorSet {
-        #[doc = "The field number for the [`file`] field"]
-        #[doc = ""]
-        #[doc = "[`file`]: #method.file"]
         pub const FILE_FIELD_NUMBER: i32 = 1;
         pub fn file(&self) -> &crate::collections::RepeatedField<self::FileDescriptorProto> {
             &self.file
         }
-        #[doc = "Gets a unique reference to the [`file`] field"]
-        #[doc = ""]
-        #[doc = "[`file`]: #method.file"]
         pub fn file_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::FileDescriptorProto> {
             &mut self.file
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod file_descriptor_set {
+    pub(in super::super) mod file_descriptor_set {
         pub(super) static FILE_CODEC: crate::Codec<self::super::FileDescriptorProto> =
             crate::Codec::message(10);
         pub(in super::super) static FILE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
@@ -1746,7 +1337,6 @@ pub mod google_protobuf_descriptor_proto {
             get_mut: self::super::FileDescriptorSet::file_mut,
         };
     }
-    #[doc = " Describes a complete .proto file."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FileDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -1939,357 +1529,193 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::FileDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::FileDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " file name, relative to root of source tree"]
         pub fn name(&self) -> &str {
             self.name
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub const PACKAGE_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub const PACKAGE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " e.g. \"foo\", \"foo.bar\", etc."]
         pub fn package(&self) -> &str {
             self.package
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::PACKAGE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn package_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.package.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn package_mut(&mut self) -> &mut ::std::string::String {
             self.package
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn has_package(&self) -> bool {
             self.package.is_some()
         }
-        #[doc = "Sets the value of the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn set_package(&mut self, value: ::std::string::String) {
             self.package = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`package`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn take_package(&mut self) -> ::std::option::Option<::std::string::String> {
             self.package.take()
         }
-        #[doc = "Clears the value of the [`package`] field"]
-        #[doc = ""]
-        #[doc = "[`package`]: #method.package"]
         pub fn clear_package(&mut self) {
             self.package = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`dependency`]: #method.dependency"]
         pub const DEPENDENCY_FIELD_NUMBER: i32 = 3;
-        #[doc = " Names of files imported by this file."]
         pub fn dependency(&self) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.dependency
         }
-        #[doc = "Gets a unique reference to the [`dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`dependency`]: #method.dependency"]
         pub fn dependency_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.dependency
         }
-        #[doc = "The field number for the [`public_dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`public_dependency`]: #method.public_dependency"]
         pub const PUBLIC_DEPENDENCY_FIELD_NUMBER: i32 = 10;
-        #[doc = " Indexes of the public imported files in the dependency list above."]
         pub fn public_dependency(&self) -> &crate::collections::RepeatedField<i32> {
             &self.public_dependency
         }
-        #[doc = "Gets a unique reference to the [`public_dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`public_dependency`]: #method.public_dependency"]
         pub fn public_dependency_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
             &mut self.public_dependency
         }
-        #[doc = "The field number for the [`weak_dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`weak_dependency`]: #method.weak_dependency"]
         pub const WEAK_DEPENDENCY_FIELD_NUMBER: i32 = 11;
-        #[doc = " Indexes of the weak imported files in the dependency list."]
-        #[doc = " For Google-internal migration only. Do not use."]
         pub fn weak_dependency(&self) -> &crate::collections::RepeatedField<i32> {
             &self.weak_dependency
         }
-        #[doc = "Gets a unique reference to the [`weak_dependency`] field"]
-        #[doc = ""]
-        #[doc = "[`weak_dependency`]: #method.weak_dependency"]
         pub fn weak_dependency_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
             &mut self.weak_dependency
         }
-        #[doc = "The field number for the [`message_type`] field"]
-        #[doc = ""]
-        #[doc = "[`message_type`]: #method.message_type"]
         pub const MESSAGE_TYPE_FIELD_NUMBER: i32 = 4;
-        #[doc = " All top-level definitions in this file."]
         pub fn message_type(&self) -> &crate::collections::RepeatedField<self::DescriptorProto> {
             &self.message_type
         }
-        #[doc = "Gets a unique reference to the [`message_type`] field"]
-        #[doc = ""]
-        #[doc = "[`message_type`]: #method.message_type"]
         pub fn message_type_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::DescriptorProto> {
             &mut self.message_type
         }
-        #[doc = "The field number for the [`enum_type`] field"]
-        #[doc = ""]
-        #[doc = "[`enum_type`]: #method.enum_type"]
         pub const ENUM_TYPE_FIELD_NUMBER: i32 = 5;
         pub fn enum_type(&self) -> &crate::collections::RepeatedField<self::EnumDescriptorProto> {
             &self.enum_type
         }
-        #[doc = "Gets a unique reference to the [`enum_type`] field"]
-        #[doc = ""]
-        #[doc = "[`enum_type`]: #method.enum_type"]
         pub fn enum_type_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::EnumDescriptorProto> {
             &mut self.enum_type
         }
-        #[doc = "The field number for the [`service`] field"]
-        #[doc = ""]
-        #[doc = "[`service`]: #method.service"]
         pub const SERVICE_FIELD_NUMBER: i32 = 6;
         pub fn service(&self) -> &crate::collections::RepeatedField<self::ServiceDescriptorProto> {
             &self.service
         }
-        #[doc = "Gets a unique reference to the [`service`] field"]
-        #[doc = ""]
-        #[doc = "[`service`]: #method.service"]
         pub fn service_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::ServiceDescriptorProto> {
             &mut self.service
         }
-        #[doc = "The field number for the [`extension`] field"]
-        #[doc = ""]
-        #[doc = "[`extension`]: #method.extension"]
         pub const EXTENSION_FIELD_NUMBER: i32 = 7;
         pub fn extension(&self) -> &crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &self.extension
         }
-        #[doc = "Gets a unique reference to the [`extension`] field"]
-        #[doc = ""]
-        #[doc = "[`extension`]: #method.extension"]
         pub fn extension_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &mut self.extension
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 8;
         pub fn options(&self) -> ::std::option::Option<&self::FileOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::FileOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::FileOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::FileOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`source_code_info`] field"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub const SOURCE_CODE_INFO_FIELD_NUMBER: i32 = 9;
-        #[doc = " This field contains optional information about the original source code."]
-        #[doc = " You may safely remove this entire field without harming runtime"]
-        #[doc = " functionality of the descriptors -- the information is needed only by"]
-        #[doc = " development tools."]
         pub fn source_code_info(&self) -> ::std::option::Option<&self::SourceCodeInfo> {
             self.source_code_info.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`source_code_info`] field"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub fn source_code_info_mut(&mut self) -> &mut self::SourceCodeInfo {
             self.source_code_info
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`source_code_info`] field"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub fn has_source_code_info(&self) -> bool {
             self.source_code_info.is_some()
         }
-        #[doc = "Sets the value of the [`source_code_info`] field"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub fn set_source_code_info(&mut self, value: self::SourceCodeInfo) {
             self.source_code_info = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`source_code_info`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub fn take_source_code_info(&mut self) -> ::std::option::Option<self::SourceCodeInfo> {
             self.source_code_info.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`source_code_info`] field"]
-        #[doc = ""]
-        #[doc = "[`source_code_info`]: #method.source_code_info"]
         pub fn clear_source_code_info(&mut self) {
             self.source_code_info = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_FIELD_NUMBER: i32 = 12;
-        #[doc = "The default value for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The syntax of the proto file."]
-        #[doc = " The supported values are \"proto2\" and \"proto3\"."]
         pub fn syntax(&self) -> &str {
             self.syntax
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::SYNTAX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.syntax.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_mut(&mut self) -> &mut ::std::string::String {
             self.syntax
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn has_syntax(&self) -> bool {
             self.syntax.is_some()
         }
-        #[doc = "Sets the value of the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn set_syntax(&mut self, value: ::std::string::String) {
             self.syntax = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`syntax`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn take_syntax(&mut self) -> ::std::option::Option<::std::string::String> {
             self.syntax.take()
         }
-        #[doc = "Clears the value of the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn clear_syntax(&mut self) {
             self.syntax = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod file_descriptor_proto {
+    pub(in super::super) mod file_descriptor_proto {
         pub(super) static DEPENDENCY_CODEC: crate::Codec<::std::string::String> =
             crate::Codec::string(26);
         pub(super) static PUBLIC_DEPENDENCY_CODEC: crate::Codec<i32> = crate::Codec::int32(80);
@@ -2411,7 +1837,6 @@ pub mod google_protobuf_descriptor_proto {
             clear: self::super::FileDescriptorProto::clear_syntax,
         };
     }
-    #[doc = " Describes a message type."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct DescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -2576,18 +2001,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::DescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::DescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -2595,211 +2014,445 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`field`] field"]
-        #[doc = ""]
-        #[doc = "[`field`]: #method.field"]
         pub const FIELD_FIELD_NUMBER: i32 = 2;
         pub fn field(&self) -> &crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &self.field
         }
-        #[doc = "Gets a unique reference to the [`field`] field"]
-        #[doc = ""]
-        #[doc = "[`field`]: #method.field"]
         pub fn field_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &mut self.field
         }
-        #[doc = "The field number for the [`extension`] field"]
-        #[doc = ""]
-        #[doc = "[`extension`]: #method.extension"]
         pub const EXTENSION_FIELD_NUMBER: i32 = 6;
         pub fn extension(&self) -> &crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &self.extension
         }
-        #[doc = "Gets a unique reference to the [`extension`] field"]
-        #[doc = ""]
-        #[doc = "[`extension`]: #method.extension"]
         pub fn extension_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::FieldDescriptorProto> {
             &mut self.extension
         }
-        #[doc = "The field number for the [`nested_type`] field"]
-        #[doc = ""]
-        #[doc = "[`nested_type`]: #method.nested_type"]
         pub const NESTED_TYPE_FIELD_NUMBER: i32 = 3;
         pub fn nested_type(&self) -> &crate::collections::RepeatedField<self::DescriptorProto> {
             &self.nested_type
         }
-        #[doc = "Gets a unique reference to the [`nested_type`] field"]
-        #[doc = ""]
-        #[doc = "[`nested_type`]: #method.nested_type"]
         pub fn nested_type_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::DescriptorProto> {
             &mut self.nested_type
         }
-        #[doc = "The field number for the [`enum_type`] field"]
-        #[doc = ""]
-        #[doc = "[`enum_type`]: #method.enum_type"]
         pub const ENUM_TYPE_FIELD_NUMBER: i32 = 4;
         pub fn enum_type(&self) -> &crate::collections::RepeatedField<self::EnumDescriptorProto> {
             &self.enum_type
         }
-        #[doc = "Gets a unique reference to the [`enum_type`] field"]
-        #[doc = ""]
-        #[doc = "[`enum_type`]: #method.enum_type"]
         pub fn enum_type_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::EnumDescriptorProto> {
             &mut self.enum_type
         }
-        #[doc = "The field number for the [`extension_range`] field"]
-        #[doc = ""]
-        #[doc = "[`extension_range`]: #method.extension_range"]
         pub const EXTENSION_RANGE_FIELD_NUMBER: i32 = 5;
         pub fn extension_range(
             &self,
         ) -> &crate::collections::RepeatedField<self::descriptor_proto::ExtensionRange> {
             &self.extension_range
         }
-        #[doc = "Gets a unique reference to the [`extension_range`] field"]
-        #[doc = ""]
-        #[doc = "[`extension_range`]: #method.extension_range"]
         pub fn extension_range_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::descriptor_proto::ExtensionRange>
         {
             &mut self.extension_range
         }
-        #[doc = "The field number for the [`oneof_decl`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_decl`]: #method.oneof_decl"]
         pub const ONEOF_DECL_FIELD_NUMBER: i32 = 8;
         pub fn oneof_decl(&self) -> &crate::collections::RepeatedField<self::OneofDescriptorProto> {
             &self.oneof_decl
         }
-        #[doc = "Gets a unique reference to the [`oneof_decl`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_decl`]: #method.oneof_decl"]
         pub fn oneof_decl_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::OneofDescriptorProto> {
             &mut self.oneof_decl
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 7;
         pub fn options(&self) -> ::std::option::Option<&self::MessageOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::MessageOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::MessageOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::MessageOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`reserved_range`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_range`]: #method.reserved_range"]
         pub const RESERVED_RANGE_FIELD_NUMBER: i32 = 9;
         pub fn reserved_range(
             &self,
         ) -> &crate::collections::RepeatedField<self::descriptor_proto::ReservedRange> {
             &self.reserved_range
         }
-        #[doc = "Gets a unique reference to the [`reserved_range`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_range`]: #method.reserved_range"]
         pub fn reserved_range_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::descriptor_proto::ReservedRange> {
             &mut self.reserved_range
         }
-        #[doc = "The field number for the [`reserved_name`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_name`]: #method.reserved_name"]
         pub const RESERVED_NAME_FIELD_NUMBER: i32 = 10;
-        #[doc = " Reserved field names, which may not be used by fields in the same message."]
-        #[doc = " A given name may only be reserved once."]
         pub fn reserved_name(&self) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.reserved_name
         }
-        #[doc = "Gets a unique reference to the [`reserved_name`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_name`]: #method.reserved_name"]
         pub fn reserved_name_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.reserved_name
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod descriptor_proto {
+        #[derive(Clone, Debug, PartialEq, Default)]
+        pub struct ExtensionRange {
+            start: ::std::option::Option<i32>,
+            end: ::std::option::Option<i32>,
+            options: ::std::option::Option<::std::boxed::Box<self::super::ExtensionRangeOptions>>,
+            unknown_fields: crate::UnknownFieldSet,
+        }
+        impl crate::CodedMessage for self::ExtensionRange {
+            fn merge_from(
+                &mut self,
+                input: &mut crate::io::CodedInput,
+            ) -> crate::io::InputResult<()> {
+                while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                    match tag.get() {
+                        8 | 10 => self.set_start(input.read_int32()?),
+                        16 | 18 => self.set_end(input.read_int32()?),
+                        26 => input.read_extension_message(self.options_mut())?,
+                        _ => self.unknown_fields.merge_from(tag, input)?,
+                    }
+                }
+                ::std::result::Result::Ok(())
+            }
+            fn calculate_size(&self) -> i32 {
+                let mut size = 0i32;
+                if let ::std::option::Option::Some(start) = self.start_option() {
+                    size += 1;
+                    size += crate::io::sizes::int32(*start);
+                }
+                if let ::std::option::Option::Some(end) = self.end_option() {
+                    size += 1;
+                    size += crate::io::sizes::int32(*end);
+                }
+                if let ::std::option::Option::Some(options) = self.options() {
+                    size += 1;
+                    size += crate::io::sizes::extension_message(options);
+                }
+                size += self.unknown_fields.calculate_size();
+                size
+            }
+            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+                if let ::std::option::Option::Some(start) = self.start_option() {
+                    output.write_raw_tag_bytes(&[8])?;
+                    output.write_int32(*start)?;
+                }
+                if let ::std::option::Option::Some(end) = self.end_option() {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(*end)?;
+                }
+                if let ::std::option::Option::Some(options) = self.options() {
+                    output.write_raw_tag_bytes(&[26])?;
+                    output.write_extension_message(options)?;
+                }
+                self.unknown_fields.write_to(output)?;
+                ::std::result::Result::Ok(())
+            }
+            fn is_initialized(&self) -> bool {
+                if let ::std::option::Option::Some(options) = self.options() {
+                    if !crate::CodedMessage::is_initialized(options) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+        impl crate::LiteMessage for self::ExtensionRange {
+            fn merge(&mut self, other: &Self) {
+                if let ::std::option::Option::Some(start) = other.start_option() {
+                    self.set_start(*start);
+                }
+                if let ::std::option::Option::Some(end) = other.end_option() {
+                    self.set_end(*end);
+                }
+                if let ::std::option::Option::Some(options) = &other.options() {
+                    crate::LiteMessage::merge(self.options_mut(), options);
+                }
+                self.unknown_fields.merge(&other.unknown_fields);
+            }
+        }
+        impl crate::Message for self::ExtensionRange {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
+                &<self::super::DescriptorProto as crate::Message>::descriptor().messages()[0]
+            }
+        }
+        impl self::ExtensionRange {
+            pub const START_FIELD_NUMBER: i32 = 1;
+            pub const START_DEFAULT_VALUE: i32 = 0;
+            pub fn start(&self) -> i32 {
+                self.start.unwrap_or(Self::START_DEFAULT_VALUE)
+            }
+            pub fn start_option(&self) -> ::std::option::Option<&i32> {
+                self.start.as_ref()
+            }
+            pub fn start_mut(&mut self) -> &mut i32 {
+                self.start
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_start(&self) -> bool {
+                self.start.is_some()
+            }
+            pub fn set_start(&mut self, value: i32) {
+                self.start = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_start(&mut self) -> ::std::option::Option<i32> {
+                self.start.take()
+            }
+            pub fn clear_start(&mut self) {
+                self.start = ::std::option::Option::None;
+            }
+            pub const END_FIELD_NUMBER: i32 = 2;
+            pub const END_DEFAULT_VALUE: i32 = 0;
+            pub fn end(&self) -> i32 {
+                self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+            }
+            pub fn end_option(&self) -> ::std::option::Option<&i32> {
+                self.end.as_ref()
+            }
+            pub fn end_mut(&mut self) -> &mut i32 {
+                self.end
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_end(&self) -> bool {
+                self.end.is_some()
+            }
+            pub fn set_end(&mut self, value: i32) {
+                self.end = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_end(&mut self) -> ::std::option::Option<i32> {
+                self.end.take()
+            }
+            pub fn clear_end(&mut self) {
+                self.end = ::std::option::Option::None;
+            }
+            pub const OPTIONS_FIELD_NUMBER: i32 = 3;
+            pub fn options(&self) -> ::std::option::Option<&self::super::ExtensionRangeOptions> {
+                self.options.as_ref().map(|v| &**v)
+            }
+            pub fn options_mut(&mut self) -> &mut self::super::ExtensionRangeOptions {
+                self.options
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_options(&self) -> bool {
+                self.options.is_some()
+            }
+            pub fn set_options(&mut self, value: self::super::ExtensionRangeOptions) {
+                self.options = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_options(
+                &mut self,
+            ) -> ::std::option::Option<self::super::ExtensionRangeOptions> {
+                self.options.take().map(|v| *v)
+            }
+            pub fn clear_options(&mut self) {
+                self.options = ::std::option::Option::None;
+            }
+        }
+        pub(in super::super::super) mod extension_range {
+            pub(in super::super::super) static START_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<self::super::ExtensionRange, i32> =
+                crate::reflect::access::VerboseFieldAccessor {
+                    get_option: self::super::ExtensionRange::start_option,
+                    get_mut: self::super::ExtensionRange::start_mut,
+                    set: self::super::ExtensionRange::set_start,
+                    take: self::super::ExtensionRange::take_start,
+                    clear: self::super::ExtensionRange::clear_start,
+                };
+            pub(in super::super::super) static END_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<self::super::ExtensionRange, i32> =
+                crate::reflect::access::VerboseFieldAccessor {
+                    get_option: self::super::ExtensionRange::end_option,
+                    get_mut: self::super::ExtensionRange::end_mut,
+                    set: self::super::ExtensionRange::set_end,
+                    take: self::super::ExtensionRange::take_end,
+                    clear: self::super::ExtensionRange::clear_end,
+                };
+            pub(in super::super::super) static OPTIONS_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<
+                    self::super::ExtensionRange,
+                    self::super::super::ExtensionRangeOptions,
+                > = crate::reflect::access::VerboseFieldAccessor {
+                get_option: self::super::ExtensionRange::options,
+                get_mut: self::super::ExtensionRange::options_mut,
+                set: self::super::ExtensionRange::set_options,
+                take: self::super::ExtensionRange::take_options,
+                clear: self::super::ExtensionRange::clear_options,
+            };
+        }
+        #[derive(Clone, Debug, PartialEq, Default)]
+        pub struct ReservedRange {
+            start: ::std::option::Option<i32>,
+            end: ::std::option::Option<i32>,
+            unknown_fields: crate::UnknownFieldSet,
+        }
+        impl crate::CodedMessage for self::ReservedRange {
+            fn merge_from(
+                &mut self,
+                input: &mut crate::io::CodedInput,
+            ) -> crate::io::InputResult<()> {
+                while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                    match tag.get() {
+                        8 | 10 => self.set_start(input.read_int32()?),
+                        16 | 18 => self.set_end(input.read_int32()?),
+                        _ => self.unknown_fields.merge_from(tag, input)?,
+                    }
+                }
+                ::std::result::Result::Ok(())
+            }
+            fn calculate_size(&self) -> i32 {
+                let mut size = 0i32;
+                if let ::std::option::Option::Some(start) = self.start_option() {
+                    size += 1;
+                    size += crate::io::sizes::int32(*start);
+                }
+                if let ::std::option::Option::Some(end) = self.end_option() {
+                    size += 1;
+                    size += crate::io::sizes::int32(*end);
+                }
+                size += self.unknown_fields.calculate_size();
+                size
+            }
+            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+                if let ::std::option::Option::Some(start) = self.start_option() {
+                    output.write_raw_tag_bytes(&[8])?;
+                    output.write_int32(*start)?;
+                }
+                if let ::std::option::Option::Some(end) = self.end_option() {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_int32(*end)?;
+                }
+                self.unknown_fields.write_to(output)?;
+                ::std::result::Result::Ok(())
+            }
+            fn is_initialized(&self) -> bool {
+                true
+            }
+        }
+        impl crate::LiteMessage for self::ReservedRange {
+            fn merge(&mut self, other: &Self) {
+                if let ::std::option::Option::Some(start) = other.start_option() {
+                    self.set_start(*start);
+                }
+                if let ::std::option::Option::Some(end) = other.end_option() {
+                    self.set_end(*end);
+                }
+                self.unknown_fields.merge(&other.unknown_fields);
+            }
+        }
+        impl crate::Message for self::ReservedRange {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
+                &<self::super::DescriptorProto as crate::Message>::descriptor().messages()[1]
+            }
+        }
+        impl self::ReservedRange {
+            pub const START_FIELD_NUMBER: i32 = 1;
+            pub const START_DEFAULT_VALUE: i32 = 0;
+            pub fn start(&self) -> i32 {
+                self.start.unwrap_or(Self::START_DEFAULT_VALUE)
+            }
+            pub fn start_option(&self) -> ::std::option::Option<&i32> {
+                self.start.as_ref()
+            }
+            pub fn start_mut(&mut self) -> &mut i32 {
+                self.start
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_start(&self) -> bool {
+                self.start.is_some()
+            }
+            pub fn set_start(&mut self, value: i32) {
+                self.start = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_start(&mut self) -> ::std::option::Option<i32> {
+                self.start.take()
+            }
+            pub fn clear_start(&mut self) {
+                self.start = ::std::option::Option::None;
+            }
+            pub const END_FIELD_NUMBER: i32 = 2;
+            pub const END_DEFAULT_VALUE: i32 = 0;
+            pub fn end(&self) -> i32 {
+                self.end.unwrap_or(Self::END_DEFAULT_VALUE)
+            }
+            pub fn end_option(&self) -> ::std::option::Option<&i32> {
+                self.end.as_ref()
+            }
+            pub fn end_mut(&mut self) -> &mut i32 {
+                self.end
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_end(&self) -> bool {
+                self.end.is_some()
+            }
+            pub fn set_end(&mut self, value: i32) {
+                self.end = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_end(&mut self) -> ::std::option::Option<i32> {
+                self.end.take()
+            }
+            pub fn clear_end(&mut self) {
+                self.end = ::std::option::Option::None;
+            }
+        }
+        pub(in super::super::super) mod reserved_range {
+            pub(in super::super::super) static START_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<self::super::ReservedRange, i32> =
+                crate::reflect::access::VerboseFieldAccessor {
+                    get_option: self::super::ReservedRange::start_option,
+                    get_mut: self::super::ReservedRange::start_mut,
+                    set: self::super::ReservedRange::set_start,
+                    take: self::super::ReservedRange::take_start,
+                    clear: self::super::ReservedRange::clear_start,
+                };
+            pub(in super::super::super) static END_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<self::super::ReservedRange, i32> =
+                crate::reflect::access::VerboseFieldAccessor {
+                    get_option: self::super::ReservedRange::end_option,
+                    get_mut: self::super::ReservedRange::end_mut,
+                    set: self::super::ReservedRange::set_end,
+                    take: self::super::ReservedRange::take_end,
+                    clear: self::super::ReservedRange::clear_end,
+                };
+        }
         pub(super) static FIELD_CODEC: crate::Codec<self::super::FieldDescriptorProto> =
             crate::Codec::message(18);
         pub(super) static EXTENSION_CODEC: crate::Codec<self::super::FieldDescriptorProto> =
@@ -2900,448 +2553,6 @@ pub mod google_protobuf_descriptor_proto {
             get: self::super::DescriptorProto::reserved_name,
             get_mut: self::super::DescriptorProto::reserved_name_mut,
         };
-        #[derive(Clone, Debug, PartialEq, Default)]
-        pub struct ExtensionRange {
-            start: ::std::option::Option<i32>,
-            end: ::std::option::Option<i32>,
-            options: ::std::option::Option<::std::boxed::Box<self::super::ExtensionRangeOptions>>,
-            unknown_fields: crate::UnknownFieldSet,
-        }
-        impl crate::CodedMessage for self::ExtensionRange {
-            fn merge_from(
-                &mut self,
-                input: &mut crate::io::CodedInput,
-            ) -> crate::io::InputResult<()> {
-                while let ::std::option::Option::Some(tag) = input.read_tag()? {
-                    match tag.get() {
-                        8 | 10 => self.set_start(input.read_int32()?),
-                        16 | 18 => self.set_end(input.read_int32()?),
-                        26 => input.read_extension_message(self.options_mut())?,
-                        _ => self.unknown_fields.merge_from(tag, input)?,
-                    }
-                }
-                ::std::result::Result::Ok(())
-            }
-            fn calculate_size(&self) -> i32 {
-                let mut size = 0i32;
-                if let ::std::option::Option::Some(start) = self.start_option() {
-                    size += 1;
-                    size += crate::io::sizes::int32(*start);
-                }
-                if let ::std::option::Option::Some(end) = self.end_option() {
-                    size += 1;
-                    size += crate::io::sizes::int32(*end);
-                }
-                if let ::std::option::Option::Some(options) = self.options() {
-                    size += 1;
-                    size += crate::io::sizes::extension_message(options);
-                }
-                size += self.unknown_fields.calculate_size();
-                size
-            }
-            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-                if let ::std::option::Option::Some(start) = self.start_option() {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(*start)?;
-                }
-                if let ::std::option::Option::Some(end) = self.end_option() {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int32(*end)?;
-                }
-                if let ::std::option::Option::Some(options) = self.options() {
-                    output.write_raw_tag_bytes(&[26])?;
-                    output.write_extension_message(options)?;
-                }
-                self.unknown_fields.write_to(output)?;
-                ::std::result::Result::Ok(())
-            }
-            fn is_initialized(&self) -> bool {
-                if let ::std::option::Option::Some(options) = self.options() {
-                    if !crate::CodedMessage::is_initialized(options) {
-                        return false;
-                    }
-                }
-                true
-            }
-        }
-        impl crate::LiteMessage for self::ExtensionRange {
-            fn merge(&mut self, other: &Self) {
-                if let ::std::option::Option::Some(start) = other.start_option() {
-                    self.set_start(*start);
-                }
-                if let ::std::option::Option::Some(end) = other.end_option() {
-                    self.set_end(*end);
-                }
-                if let ::std::option::Option::Some(options) = &other.options() {
-                    crate::LiteMessage::merge(self.options_mut(), options);
-                }
-                self.unknown_fields.merge(&other.unknown_fields);
-            }
-        }
-        impl crate::Message for self::ExtensionRange {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-                &<self::super::DescriptorProto as crate::Message>::descriptor().messages()[0]
-            }
-        }
-        impl self::ExtensionRange {
-            #[doc = "The field number for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub const START_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub const START_DEFAULT_VALUE: i32 = 0;
-            pub fn start(&self) -> i32 {
-                self.start.unwrap_or(Self::START_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn start_option(&self) -> ::std::option::Option<&i32> {
-                self.start.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn start_mut(&mut self) -> &mut i32 {
-                self.start
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn has_start(&self) -> bool {
-                self.start.is_some()
-            }
-            #[doc = "Sets the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn set_start(&mut self, value: i32) {
-                self.start = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`start`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn take_start(&mut self) -> ::std::option::Option<i32> {
-                self.start.take()
-            }
-            #[doc = "Clears the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn clear_start(&mut self) {
-                self.start = ::std::option::Option::None;
-            }
-            #[doc = "The field number for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub const END_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub const END_DEFAULT_VALUE: i32 = 0;
-            pub fn end(&self) -> i32 {
-                self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn end_option(&self) -> ::std::option::Option<&i32> {
-                self.end.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn end_mut(&mut self) -> &mut i32 {
-                self.end
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn has_end(&self) -> bool {
-                self.end.is_some()
-            }
-            #[doc = "Sets the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn set_end(&mut self, value: i32) {
-                self.end = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`end`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn take_end(&mut self) -> ::std::option::Option<i32> {
-                self.end.take()
-            }
-            #[doc = "Clears the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn clear_end(&mut self) {
-                self.end = ::std::option::Option::None;
-            }
-            #[doc = "The field number for the [`options`] field"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-            pub fn options(&self) -> ::std::option::Option<&self::super::ExtensionRangeOptions> {
-                self.options.as_ref().map(|v| &**v)
-            }
-            #[doc = "Gets a unique reference to the [`options`] field"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub fn options_mut(&mut self) -> &mut self::super::ExtensionRangeOptions {
-                self.options
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub fn has_options(&self) -> bool {
-                self.options.is_some()
-            }
-            #[doc = "Sets the value of the [`options`] field"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub fn set_options(&mut self, value: self::super::ExtensionRangeOptions) {
-                self.options = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub fn take_options(
-                &mut self,
-            ) -> ::std::option::Option<self::super::ExtensionRangeOptions> {
-                self.options.take().map(|v| *v)
-            }
-            #[doc = "Clears the value of the [`options`] field"]
-            #[doc = ""]
-            #[doc = "[`options`]: #method.options"]
-            pub fn clear_options(&mut self) {
-                self.options = ::std::option::Option::None;
-            }
-        }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod extension_range {
-            pub(in super::super::super) static START_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<self::super::ExtensionRange, i32> =
-                crate::reflect::access::VerboseFieldAccessor {
-                    get_option: self::super::ExtensionRange::start_option,
-                    get_mut: self::super::ExtensionRange::start_mut,
-                    set: self::super::ExtensionRange::set_start,
-                    take: self::super::ExtensionRange::take_start,
-                    clear: self::super::ExtensionRange::clear_start,
-                };
-            pub(in super::super::super) static END_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<self::super::ExtensionRange, i32> =
-                crate::reflect::access::VerboseFieldAccessor {
-                    get_option: self::super::ExtensionRange::end_option,
-                    get_mut: self::super::ExtensionRange::end_mut,
-                    set: self::super::ExtensionRange::set_end,
-                    take: self::super::ExtensionRange::take_end,
-                    clear: self::super::ExtensionRange::clear_end,
-                };
-            pub(in super::super::super) static OPTIONS_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<
-                    self::super::ExtensionRange,
-                    self::super::super::ExtensionRangeOptions,
-                > = crate::reflect::access::VerboseFieldAccessor {
-                get_option: self::super::ExtensionRange::options,
-                get_mut: self::super::ExtensionRange::options_mut,
-                set: self::super::ExtensionRange::set_options,
-                take: self::super::ExtensionRange::take_options,
-                clear: self::super::ExtensionRange::clear_options,
-            };
-        }
-        #[doc = " Range of reserved tag numbers. Reserved tag numbers may not be used by"]
-        #[doc = " fields or extension ranges in the same message. Reserved ranges may"]
-        #[doc = " not overlap."]
-        #[derive(Clone, Debug, PartialEq, Default)]
-        pub struct ReservedRange {
-            start: ::std::option::Option<i32>,
-            end: ::std::option::Option<i32>,
-            unknown_fields: crate::UnknownFieldSet,
-        }
-        impl crate::CodedMessage for self::ReservedRange {
-            fn merge_from(
-                &mut self,
-                input: &mut crate::io::CodedInput,
-            ) -> crate::io::InputResult<()> {
-                while let ::std::option::Option::Some(tag) = input.read_tag()? {
-                    match tag.get() {
-                        8 | 10 => self.set_start(input.read_int32()?),
-                        16 | 18 => self.set_end(input.read_int32()?),
-                        _ => self.unknown_fields.merge_from(tag, input)?,
-                    }
-                }
-                ::std::result::Result::Ok(())
-            }
-            fn calculate_size(&self) -> i32 {
-                let mut size = 0i32;
-                if let ::std::option::Option::Some(start) = self.start_option() {
-                    size += 1;
-                    size += crate::io::sizes::int32(*start);
-                }
-                if let ::std::option::Option::Some(end) = self.end_option() {
-                    size += 1;
-                    size += crate::io::sizes::int32(*end);
-                }
-                size += self.unknown_fields.calculate_size();
-                size
-            }
-            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-                if let ::std::option::Option::Some(start) = self.start_option() {
-                    output.write_raw_tag_bytes(&[8])?;
-                    output.write_int32(*start)?;
-                }
-                if let ::std::option::Option::Some(end) = self.end_option() {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_int32(*end)?;
-                }
-                self.unknown_fields.write_to(output)?;
-                ::std::result::Result::Ok(())
-            }
-            fn is_initialized(&self) -> bool {
-                true
-            }
-        }
-        impl crate::LiteMessage for self::ReservedRange {
-            fn merge(&mut self, other: &Self) {
-                if let ::std::option::Option::Some(start) = other.start_option() {
-                    self.set_start(*start);
-                }
-                if let ::std::option::Option::Some(end) = other.end_option() {
-                    self.set_end(*end);
-                }
-                self.unknown_fields.merge(&other.unknown_fields);
-            }
-        }
-        impl crate::Message for self::ReservedRange {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-                &<self::super::DescriptorProto as crate::Message>::descriptor().messages()[1]
-            }
-        }
-        impl self::ReservedRange {
-            #[doc = "The field number for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub const START_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub const START_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Inclusive."]
-            pub fn start(&self) -> i32 {
-                self.start.unwrap_or(Self::START_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn start_option(&self) -> ::std::option::Option<&i32> {
-                self.start.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn start_mut(&mut self) -> &mut i32 {
-                self.start
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn has_start(&self) -> bool {
-                self.start.is_some()
-            }
-            #[doc = "Sets the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn set_start(&mut self, value: i32) {
-                self.start = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`start`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn take_start(&mut self) -> ::std::option::Option<i32> {
-                self.start.take()
-            }
-            #[doc = "Clears the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
-            pub fn clear_start(&mut self) {
-                self.start = ::std::option::Option::None;
-            }
-            #[doc = "The field number for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub const END_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub const END_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Exclusive."]
-            pub fn end(&self) -> i32 {
-                self.end.unwrap_or(Self::END_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn end_option(&self) -> ::std::option::Option<&i32> {
-                self.end.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn end_mut(&mut self) -> &mut i32 {
-                self.end
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn has_end(&self) -> bool {
-                self.end.is_some()
-            }
-            #[doc = "Sets the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn set_end(&mut self, value: i32) {
-                self.end = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`end`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn take_end(&mut self) -> ::std::option::Option<i32> {
-                self.end.take()
-            }
-            #[doc = "Clears the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
-            pub fn clear_end(&mut self) {
-                self.end = ::std::option::Option::None;
-            }
-        }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod reserved_range {
-            pub(in super::super::super) static START_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<self::super::ReservedRange, i32> =
-                crate::reflect::access::VerboseFieldAccessor {
-                    get_option: self::super::ReservedRange::start_option,
-                    get_mut: self::super::ReservedRange::start_mut,
-                    set: self::super::ReservedRange::set_start,
-                    take: self::super::ReservedRange::take_start,
-                    clear: self::super::ReservedRange::clear_start,
-                };
-            pub(in super::super::super) static END_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<self::super::ReservedRange, i32> =
-                crate::reflect::access::VerboseFieldAccessor {
-                    get_option: self::super::ReservedRange::end_option,
-                    get_mut: self::super::ReservedRange::end_mut,
-                    set: self::super::ReservedRange::set_end,
-                    take: self::super::ReservedRange::take_end,
-                    clear: self::super::ReservedRange::clear_end,
-                };
-        }
     }
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct ExtensionRangeOptions {
@@ -3398,7 +2609,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::ExtensionRangeOptions {
+    impl crate::ExtendableMessage for self::ExtensionRangeOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -3485,32 +2696,24 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::ExtensionRangeOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[3]
         }
     }
     impl self::ExtensionRangeOptions {
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod extension_range_options {
+    pub(in super::super) mod extension_range_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -3523,7 +2726,6 @@ pub mod google_protobuf_descriptor_proto {
             get_mut: self::super::ExtensionRangeOptions::uninterpreted_option_mut,
         };
     }
-    #[doc = " Describes a field within a message."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FieldDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -3691,18 +2893,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::FieldDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[4]
         }
     }
     impl self::FieldDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -3710,510 +2906,370 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_DEFAULT_VALUE: i32 = 0;
         pub fn number(&self) -> i32 {
             self.number.unwrap_or(Self::NUMBER_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_option(&self) -> ::std::option::Option<&i32> {
             self.number.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_mut(&mut self) -> &mut i32 {
             self.number
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn has_number(&self) -> bool {
             self.number.is_some()
         }
-        #[doc = "Sets the value of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn set_number(&mut self, value: i32) {
             self.number = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`number`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn take_number(&mut self) -> ::std::option::Option<i32> {
             self.number.take()
         }
-        #[doc = "Clears the value of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn clear_number(&mut self) {
             self.number = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub const LABEL_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub const LABEL_DEFAULT_VALUE: crate::EnumValue<self::field_descriptor_proto::Label> =
             crate::EnumValue::Undefined(0);
         pub fn label(&self) -> crate::EnumValue<self::field_descriptor_proto::Label> {
             self.label.unwrap_or(Self::LABEL_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn label_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::field_descriptor_proto::Label>> {
             self.label.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn label_mut(&mut self) -> &mut crate::EnumValue<self::field_descriptor_proto::Label> {
             self.label
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn has_label(&self) -> bool {
             self.label.is_some()
         }
-        #[doc = "Sets the value of the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn set_label(&mut self, value: crate::EnumValue<self::field_descriptor_proto::Label>) {
             self.label = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`label`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn take_label(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Label>> {
             self.label.take()
         }
-        #[doc = "Clears the value of the [`label`] field"]
-        #[doc = ""]
-        #[doc = "[`label`]: #method.label"]
         pub fn clear_label(&mut self) {
             self.label = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub const TYPE_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub const TYPE_DEFAULT_VALUE: crate::EnumValue<self::field_descriptor_proto::Type> =
             crate::EnumValue::Undefined(0);
-        #[doc = " If type_name is set, this need not be set.  If both this and type_name"]
-        #[doc = " are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP."]
         pub fn r#type(&self) -> crate::EnumValue<self::field_descriptor_proto::Type> {
             self.r#type.unwrap_or(Self::TYPE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn type_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::field_descriptor_proto::Type>> {
             self.r#type.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn type_mut(&mut self) -> &mut crate::EnumValue<self::field_descriptor_proto::Type> {
             self.r#type
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn has_type(&self) -> bool {
             self.r#type.is_some()
         }
-        #[doc = "Sets the value of the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn set_type(&mut self, value: crate::EnumValue<self::field_descriptor_proto::Type>) {
             self.r#type = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`type`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn take_type(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::field_descriptor_proto::Type>> {
             self.r#type.take()
         }
-        #[doc = "Clears the value of the [`type`] field"]
-        #[doc = ""]
-        #[doc = "[`type`]: #method.r#type"]
         pub fn clear_type(&mut self) {
             self.r#type = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub const TYPE_NAME_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub const TYPE_NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " For message and enum types, this is the name of the type.  If the name"]
-        #[doc = " starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping"]
-        #[doc = " rules are used to find the type (i.e. first the nested types within this"]
-        #[doc = " message are searched, then within the parent, on up to the root"]
-        #[doc = " namespace)."]
         pub fn type_name(&self) -> &str {
             self.type_name
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::TYPE_NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn type_name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.type_name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn type_name_mut(&mut self) -> &mut ::std::string::String {
             self.type_name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn has_type_name(&self) -> bool {
             self.type_name.is_some()
         }
-        #[doc = "Sets the value of the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn set_type_name(&mut self, value: ::std::string::String) {
             self.type_name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`type_name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn take_type_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.type_name.take()
         }
-        #[doc = "Clears the value of the [`type_name`] field"]
-        #[doc = ""]
-        #[doc = "[`type_name`]: #method.type_name"]
         pub fn clear_type_name(&mut self) {
             self.type_name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub const EXTENDEE_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub const EXTENDEE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " For extensions, this is the name of the type being extended.  It is"]
-        #[doc = " resolved in the same manner as type_name."]
         pub fn extendee(&self) -> &str {
             self.extendee
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::EXTENDEE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn extendee_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.extendee.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn extendee_mut(&mut self) -> &mut ::std::string::String {
             self.extendee
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn has_extendee(&self) -> bool {
             self.extendee.is_some()
         }
-        #[doc = "Sets the value of the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn set_extendee(&mut self, value: ::std::string::String) {
             self.extendee = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`extendee`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn take_extendee(&mut self) -> ::std::option::Option<::std::string::String> {
             self.extendee.take()
         }
-        #[doc = "Clears the value of the [`extendee`] field"]
-        #[doc = ""]
-        #[doc = "[`extendee`]: #method.extendee"]
         pub fn clear_extendee(&mut self) {
             self.extendee = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub const DEFAULT_VALUE_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " For numeric types, contains the original text representation of the value."]
-        #[doc = " For booleans, \"true\" or \"false\"."]
-        #[doc = " For strings, contains the default text contents (not escaped in any way)."]
-        #[doc = " For bytes, contains the C escaped value.  All bytes >= 128 are escaped."]
-        #[doc = " TODO(kenton):  Base-64 encode?"]
         pub fn default_value(&self) -> &str {
             self.default_value
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::DEFAULT_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn default_value_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.default_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn default_value_mut(&mut self) -> &mut ::std::string::String {
             self.default_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn has_default_value(&self) -> bool {
             self.default_value.is_some()
         }
-        #[doc = "Sets the value of the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn set_default_value(&mut self, value: ::std::string::String) {
             self.default_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`default_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn take_default_value(&mut self) -> ::std::option::Option<::std::string::String> {
             self.default_value.take()
         }
-        #[doc = "Clears the value of the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn clear_default_value(&mut self) {
             self.default_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub const ONEOF_INDEX_FIELD_NUMBER: i32 = 9;
-        #[doc = "The default value for the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-        #[doc = " If set, gives the index of a oneof in the containing type's oneof_decl"]
-        #[doc = " list.  This field is a member of that oneof."]
         pub fn oneof_index(&self) -> i32 {
             self.oneof_index.unwrap_or(Self::ONEOF_INDEX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn oneof_index_option(&self) -> ::std::option::Option<&i32> {
             self.oneof_index.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn oneof_index_mut(&mut self) -> &mut i32 {
             self.oneof_index
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn has_oneof_index(&self) -> bool {
             self.oneof_index.is_some()
         }
-        #[doc = "Sets the value of the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn set_oneof_index(&mut self, value: i32) {
             self.oneof_index = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`oneof_index`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn take_oneof_index(&mut self) -> ::std::option::Option<i32> {
             self.oneof_index.take()
         }
-        #[doc = "Clears the value of the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn clear_oneof_index(&mut self) {
             self.oneof_index = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub const JSON_NAME_FIELD_NUMBER: i32 = 10;
-        #[doc = "The default value for the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " JSON name of this field. The value is set by protocol compiler. If the"]
-        #[doc = " user has set a \"json_name\" option on this field, that option's value"]
-        #[doc = " will be used. Otherwise, it's deduced from the field's name by converting"]
-        #[doc = " it to camelCase."]
         pub fn json_name(&self) -> &str {
             self.json_name
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::JSON_NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn json_name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.json_name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn json_name_mut(&mut self) -> &mut ::std::string::String {
             self.json_name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn has_json_name(&self) -> bool {
             self.json_name.is_some()
         }
-        #[doc = "Sets the value of the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn set_json_name(&mut self, value: ::std::string::String) {
             self.json_name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`json_name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn take_json_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.json_name.take()
         }
-        #[doc = "Clears the value of the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn clear_json_name(&mut self) {
             self.json_name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 8;
         pub fn options(&self) -> ::std::option::Option<&self::FieldOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::FieldOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::FieldOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::FieldOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod field_descriptor_proto {
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum Type {
+            Double,
+            Float,
+            Int64,
+            Uint64,
+            Int32,
+            Fixed64,
+            Fixed32,
+            Bool,
+            String,
+            Group,
+            Message,
+            Bytes,
+            Uint32,
+            Enum,
+            Sfixed32,
+            Sfixed64,
+            Sint32,
+            Sint64,
+        }
+        impl crate::Enum for self::Type {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::FieldDescriptorProto as crate::Message>::descriptor().enums()[0]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::Type {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    1 => ::std::result::Result::Ok(self::Type::Double),
+                    2 => ::std::result::Result::Ok(self::Type::Float),
+                    3 => ::std::result::Result::Ok(self::Type::Int64),
+                    4 => ::std::result::Result::Ok(self::Type::Uint64),
+                    5 => ::std::result::Result::Ok(self::Type::Int32),
+                    6 => ::std::result::Result::Ok(self::Type::Fixed64),
+                    7 => ::std::result::Result::Ok(self::Type::Fixed32),
+                    8 => ::std::result::Result::Ok(self::Type::Bool),
+                    9 => ::std::result::Result::Ok(self::Type::String),
+                    10 => ::std::result::Result::Ok(self::Type::Group),
+                    11 => ::std::result::Result::Ok(self::Type::Message),
+                    12 => ::std::result::Result::Ok(self::Type::Bytes),
+                    13 => ::std::result::Result::Ok(self::Type::Uint32),
+                    14 => ::std::result::Result::Ok(self::Type::Enum),
+                    15 => ::std::result::Result::Ok(self::Type::Sfixed32),
+                    16 => ::std::result::Result::Ok(self::Type::Sfixed64),
+                    17 => ::std::result::Result::Ok(self::Type::Sint32),
+                    18 => ::std::result::Result::Ok(self::Type::Sint64),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::Type> for i32 {
+            fn from(value: self::Type) -> i32 {
+                match value {
+                    self::Type::Double => 1,
+                    self::Type::Float => 2,
+                    self::Type::Int64 => 3,
+                    self::Type::Uint64 => 4,
+                    self::Type::Int32 => 5,
+                    self::Type::Fixed64 => 6,
+                    self::Type::Fixed32 => 7,
+                    self::Type::Bool => 8,
+                    self::Type::String => 9,
+                    self::Type::Group => 10,
+                    self::Type::Message => 11,
+                    self::Type::Bytes => 12,
+                    self::Type::Uint32 => 13,
+                    self::Type::Enum => 14,
+                    self::Type::Sfixed32 => 15,
+                    self::Type::Sfixed64 => 16,
+                    self::Type::Sint32 => 17,
+                    self::Type::Sint64 => 18,
+                }
+            }
+        }
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum Label {
+            Optional,
+            Required,
+            Repeated,
+        }
+        impl crate::Enum for self::Label {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::FieldDescriptorProto as crate::Message>::descriptor().enums()[1]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::Label {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    1 => ::std::result::Result::Ok(self::Label::Optional),
+                    2 => ::std::result::Result::Ok(self::Label::Required),
+                    3 => ::std::result::Result::Ok(self::Label::Repeated),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::Label> for i32 {
+            fn from(value: self::Label) -> i32 {
+                match value {
+                    self::Label::Optional => 1,
+                    self::Label::Required => 2,
+                    self::Label::Repeated => 3,
+                }
+            }
+        }
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
             self::super::FieldDescriptorProto,
             ::std::string::String,
@@ -4318,117 +3374,7 @@ pub mod google_protobuf_descriptor_proto {
             take: self::super::FieldDescriptorProto::take_options,
             clear: self::super::FieldDescriptorProto::clear_options,
         };
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum Type {
-            Double,
-            Float,
-            Int64,
-            Uint64,
-            Int32,
-            Fixed64,
-            Fixed32,
-            Bool,
-            String,
-            Group,
-            Message,
-            Bytes,
-            Uint32,
-            Enum,
-            Sfixed32,
-            Sfixed64,
-            Sint32,
-            Sint64,
-        }
-        impl crate::Enum for self::Type {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::FieldDescriptorProto as crate::Message>::descriptor().enums()[0]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::Type {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    1 => ::std::result::Result::Ok(self::Type::Double),
-                    2 => ::std::result::Result::Ok(self::Type::Float),
-                    3 => ::std::result::Result::Ok(self::Type::Int64),
-                    4 => ::std::result::Result::Ok(self::Type::Uint64),
-                    5 => ::std::result::Result::Ok(self::Type::Int32),
-                    6 => ::std::result::Result::Ok(self::Type::Fixed64),
-                    7 => ::std::result::Result::Ok(self::Type::Fixed32),
-                    8 => ::std::result::Result::Ok(self::Type::Bool),
-                    9 => ::std::result::Result::Ok(self::Type::String),
-                    10 => ::std::result::Result::Ok(self::Type::Group),
-                    11 => ::std::result::Result::Ok(self::Type::Message),
-                    12 => ::std::result::Result::Ok(self::Type::Bytes),
-                    13 => ::std::result::Result::Ok(self::Type::Uint32),
-                    14 => ::std::result::Result::Ok(self::Type::Enum),
-                    15 => ::std::result::Result::Ok(self::Type::Sfixed32),
-                    16 => ::std::result::Result::Ok(self::Type::Sfixed64),
-                    17 => ::std::result::Result::Ok(self::Type::Sint32),
-                    18 => ::std::result::Result::Ok(self::Type::Sint64),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::Type> for i32 {
-            fn from(value: self::Type) -> i32 {
-                match value {
-                    self::Type::Double => 1,
-                    self::Type::Float => 2,
-                    self::Type::Int64 => 3,
-                    self::Type::Uint64 => 4,
-                    self::Type::Int32 => 5,
-                    self::Type::Fixed64 => 6,
-                    self::Type::Fixed32 => 7,
-                    self::Type::Bool => 8,
-                    self::Type::String => 9,
-                    self::Type::Group => 10,
-                    self::Type::Message => 11,
-                    self::Type::Bytes => 12,
-                    self::Type::Uint32 => 13,
-                    self::Type::Enum => 14,
-                    self::Type::Sfixed32 => 15,
-                    self::Type::Sfixed64 => 16,
-                    self::Type::Sint32 => 17,
-                    self::Type::Sint64 => 18,
-                }
-            }
-        }
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum Label {
-            Optional,
-            Required,
-            Repeated,
-        }
-        impl crate::Enum for self::Label {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::FieldDescriptorProto as crate::Message>::descriptor().enums()[1]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::Label {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    1 => ::std::result::Result::Ok(self::Label::Optional),
-                    2 => ::std::result::Result::Ok(self::Label::Required),
-                    3 => ::std::result::Result::Ok(self::Label::Repeated),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::Label> for i32 {
-            fn from(value: self::Label) -> i32 {
-                match value {
-                    self::Label::Optional => 1,
-                    self::Label::Required => 2,
-                    self::Label::Repeated => 3,
-                }
-            }
-        }
     }
-    #[doc = " Describes a oneof."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OneofDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -4492,18 +3438,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::OneofDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[5]
         }
     }
     impl self::OneofDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -4511,84 +3451,47 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 2;
         pub fn options(&self) -> ::std::option::Option<&self::OneofOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::OneofOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::OneofOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::OneofOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod oneof_descriptor_proto {
+    pub(in super::super) mod oneof_descriptor_proto {
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
             self::super::OneofDescriptorProto,
             ::std::string::String,
@@ -4611,7 +3514,6 @@ pub mod google_protobuf_descriptor_proto {
             clear: self::super::OneofDescriptorProto::clear_options,
         };
     }
-    #[doc = " Describes an enum type."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct EnumDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -4712,18 +3614,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::EnumDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[6]
         }
     }
     impl self::EnumDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -4731,194 +3627,78 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 2;
         pub fn value(&self) -> &crate::collections::RepeatedField<self::EnumValueDescriptorProto> {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::EnumValueDescriptorProto> {
             &mut self.value
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
         pub fn options(&self) -> ::std::option::Option<&self::EnumOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::EnumOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::EnumOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::EnumOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`reserved_range`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_range`]: #method.reserved_range"]
         pub const RESERVED_RANGE_FIELD_NUMBER: i32 = 4;
-        #[doc = " Range of reserved numeric values. Reserved numeric values may not be used"]
-        #[doc = " by enum values in the same enum declaration. Reserved ranges may not"]
-        #[doc = " overlap."]
         pub fn reserved_range(
             &self,
         ) -> &crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange>
         {
             &self.reserved_range
         }
-        #[doc = "Gets a unique reference to the [`reserved_range`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_range`]: #method.reserved_range"]
         pub fn reserved_range_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::enum_descriptor_proto::EnumReservedRange>
         {
             &mut self.reserved_range
         }
-        #[doc = "The field number for the [`reserved_name`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_name`]: #method.reserved_name"]
         pub const RESERVED_NAME_FIELD_NUMBER: i32 = 5;
-        #[doc = " Reserved enum value names, which may not be reused. A given name may only"]
-        #[doc = " be reserved once."]
         pub fn reserved_name(&self) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.reserved_name
         }
-        #[doc = "Gets a unique reference to the [`reserved_name`] field"]
-        #[doc = ""]
-        #[doc = "[`reserved_name`]: #method.reserved_name"]
         pub fn reserved_name_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.reserved_name
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod enum_descriptor_proto {
-        pub(super) static VALUE_CODEC: crate::Codec<self::super::EnumValueDescriptorProto> =
-            crate::Codec::message(18);
-        pub(super) static RESERVED_RANGE_CODEC: crate::Codec<self::EnumReservedRange> =
-            crate::Codec::message(34);
-        pub(super) static RESERVED_NAME_CODEC: crate::Codec<::std::string::String> =
-            crate::Codec::string(42);
-        pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
-            self::super::EnumDescriptorProto,
-            ::std::string::String,
-        > = crate::reflect::access::VerboseFieldAccessor {
-            get_option: self::super::EnumDescriptorProto::name_option,
-            get_mut: self::super::EnumDescriptorProto::name_mut,
-            set: self::super::EnumDescriptorProto::set_name,
-            take: self::super::EnumDescriptorProto::take_name,
-            clear: self::super::EnumDescriptorProto::clear_name,
-        };
-        pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
-            self::super::EnumDescriptorProto,
-            crate::collections::RepeatedField<self::super::EnumValueDescriptorProto>,
-        > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::EnumDescriptorProto::value,
-            get_mut: self::super::EnumDescriptorProto::value_mut,
-        };
-        pub(in super::super) static OPTIONS_REFLECTOR:
-            crate::reflect::access::VerboseFieldAccessor<
-                self::super::EnumDescriptorProto,
-                self::super::EnumOptions,
-            > = crate::reflect::access::VerboseFieldAccessor {
-            get_option: self::super::EnumDescriptorProto::options,
-            get_mut: self::super::EnumDescriptorProto::options_mut,
-            set: self::super::EnumDescriptorProto::set_options,
-            take: self::super::EnumDescriptorProto::take_options,
-            clear: self::super::EnumDescriptorProto::clear_options,
-        };
-        pub(in super::super) static RESERVED_RANGE_REFLECTOR:
-            crate::reflect::access::SimpleFieldAccessor<
-                self::super::EnumDescriptorProto,
-                crate::collections::RepeatedField<self::EnumReservedRange>,
-            > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::EnumDescriptorProto::reserved_range,
-            get_mut: self::super::EnumDescriptorProto::reserved_range_mut,
-        };
-        pub(in super::super) static RESERVED_NAME_REFLECTOR:
-            crate::reflect::access::SimpleFieldAccessor<
-                self::super::EnumDescriptorProto,
-                crate::collections::RepeatedField<::std::string::String>,
-            > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::EnumDescriptorProto::reserved_name,
-            get_mut: self::super::EnumDescriptorProto::reserved_name_mut,
-        };
-        #[doc = " Range of reserved numeric values. Reserved values may not be used by"]
-        #[doc = " entries in the same enum. Reserved ranges may not overlap."]
-        #[doc = ""]
-        #[doc = " Note that this is distinct from DescriptorProto.ReservedRange in that it"]
-        #[doc = " is inclusive such that it can appropriately represent the entire int32"]
-        #[doc = " domain."]
         #[derive(Clone, Debug, PartialEq, Default)]
         pub struct EnumReservedRange {
             start: ::std::option::Option<i32>,
@@ -4980,112 +3760,61 @@ pub mod google_protobuf_descriptor_proto {
             }
         }
         impl crate::Message for self::EnumReservedRange {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
                 &<self::super::EnumDescriptorProto as crate::Message>::descriptor().messages()[0]
             }
         }
         impl self::EnumReservedRange {
-            #[doc = "The field number for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub const START_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub const START_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Inclusive."]
             pub fn start(&self) -> i32 {
                 self.start.unwrap_or(Self::START_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn start_option(&self) -> ::std::option::Option<&i32> {
                 self.start.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn start_mut(&mut self) -> &mut i32 {
                 self.start
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn has_start(&self) -> bool {
                 self.start.is_some()
             }
-            #[doc = "Sets the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn set_start(&mut self, value: i32) {
                 self.start = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`start`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn take_start(&mut self) -> ::std::option::Option<i32> {
                 self.start.take()
             }
-            #[doc = "Clears the value of the [`start`] field"]
-            #[doc = ""]
-            #[doc = "[`start`]: #method.start"]
             pub fn clear_start(&mut self) {
                 self.start = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub const END_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub const END_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Inclusive."]
             pub fn end(&self) -> i32 {
                 self.end.unwrap_or(Self::END_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn end_option(&self) -> ::std::option::Option<&i32> {
                 self.end.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn end_mut(&mut self) -> &mut i32 {
                 self.end
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn has_end(&self) -> bool {
                 self.end.is_some()
             }
-            #[doc = "Sets the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn set_end(&mut self, value: i32) {
                 self.end = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`end`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn take_end(&mut self) -> ::std::option::Option<i32> {
                 self.end.take()
             }
-            #[doc = "Clears the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn clear_end(&mut self) {
                 self.end = ::std::option::Option::None;
             }
         }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod enum_reserved_range {
+        pub(in super::super::super) mod enum_reserved_range {
             pub(in super::super::super) static START_REFLECTOR:
                 crate::reflect::access::VerboseFieldAccessor<self::super::EnumReservedRange, i32> =
                 crate::reflect::access::VerboseFieldAccessor {
@@ -5105,8 +3834,57 @@ pub mod google_protobuf_descriptor_proto {
                     clear: self::super::EnumReservedRange::clear_end,
                 };
         }
+        pub(super) static VALUE_CODEC: crate::Codec<self::super::EnumValueDescriptorProto> =
+            crate::Codec::message(18);
+        pub(super) static RESERVED_RANGE_CODEC: crate::Codec<self::EnumReservedRange> =
+            crate::Codec::message(34);
+        pub(super) static RESERVED_NAME_CODEC: crate::Codec<::std::string::String> =
+            crate::Codec::string(42);
+        pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
+            self::super::EnumDescriptorProto,
+            ::std::string::String,
+        > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::EnumDescriptorProto::name_option,
+            get_mut: self::super::EnumDescriptorProto::name_mut,
+            set: self::super::EnumDescriptorProto::set_name,
+            take: self::super::EnumDescriptorProto::take_name,
+            clear: self::super::EnumDescriptorProto::clear_name,
+        };
+        pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
+            self::super::EnumDescriptorProto,
+            crate::collections::RepeatedField<self::super::EnumValueDescriptorProto>,
+        > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::EnumDescriptorProto::value,
+            get_mut: self::super::EnumDescriptorProto::value_mut,
+        };
+        pub(in super::super) static OPTIONS_REFLECTOR:
+            crate::reflect::access::VerboseFieldAccessor<
+                self::super::EnumDescriptorProto,
+                self::super::EnumOptions,
+            > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::EnumDescriptorProto::options,
+            get_mut: self::super::EnumDescriptorProto::options_mut,
+            set: self::super::EnumDescriptorProto::set_options,
+            take: self::super::EnumDescriptorProto::take_options,
+            clear: self::super::EnumDescriptorProto::clear_options,
+        };
+        pub(in super::super) static RESERVED_RANGE_REFLECTOR:
+            crate::reflect::access::SimpleFieldAccessor<
+                self::super::EnumDescriptorProto,
+                crate::collections::RepeatedField<self::EnumReservedRange>,
+            > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::EnumDescriptorProto::reserved_range,
+            get_mut: self::super::EnumDescriptorProto::reserved_range_mut,
+        };
+        pub(in super::super) static RESERVED_NAME_REFLECTOR:
+            crate::reflect::access::SimpleFieldAccessor<
+                self::super::EnumDescriptorProto,
+                crate::collections::RepeatedField<::std::string::String>,
+            > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::EnumDescriptorProto::reserved_name,
+            get_mut: self::super::EnumDescriptorProto::reserved_name_mut,
+        };
     }
-    #[doc = " Describes a value within an enum."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct EnumValueDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -5183,18 +3961,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::EnumValueDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[7]
         }
     }
     impl self::EnumValueDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -5202,132 +3974,71 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_DEFAULT_VALUE: i32 = 0;
         pub fn number(&self) -> i32 {
             self.number.unwrap_or(Self::NUMBER_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_option(&self) -> ::std::option::Option<&i32> {
             self.number.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_mut(&mut self) -> &mut i32 {
             self.number
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn has_number(&self) -> bool {
             self.number.is_some()
         }
-        #[doc = "Sets the value of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn set_number(&mut self, value: i32) {
             self.number = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`number`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn take_number(&mut self) -> ::std::option::Option<i32> {
             self.number.take()
         }
-        #[doc = "Clears the value of the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn clear_number(&mut self) {
             self.number = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
         pub fn options(&self) -> ::std::option::Option<&self::EnumValueOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::EnumValueOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::EnumValueOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::EnumValueOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod enum_value_descriptor_proto {
+    pub(in super::super) mod enum_value_descriptor_proto {
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
             self::super::EnumValueDescriptorProto,
             ::std::string::String,
@@ -5360,7 +4071,6 @@ pub mod google_protobuf_descriptor_proto {
             clear: self::super::EnumValueDescriptorProto::clear_options,
         };
     }
-    #[doc = " Describes a service."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct ServiceDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -5437,18 +4147,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::ServiceDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[8]
         }
     }
     impl self::ServiceDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -5456,99 +4160,56 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`method`] field"]
-        #[doc = ""]
-        #[doc = "[`method`]: #method.method"]
         pub const METHOD_FIELD_NUMBER: i32 = 2;
         pub fn method(&self) -> &crate::collections::RepeatedField<self::MethodDescriptorProto> {
             &self.method
         }
-        #[doc = "Gets a unique reference to the [`method`] field"]
-        #[doc = ""]
-        #[doc = "[`method`]: #method.method"]
         pub fn method_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::MethodDescriptorProto> {
             &mut self.method
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
         pub fn options(&self) -> ::std::option::Option<&self::ServiceOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::ServiceOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::ServiceOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::ServiceOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod service_descriptor_proto {
+    pub(in super::super) mod service_descriptor_proto {
         pub(super) static METHOD_CODEC: crate::Codec<self::super::MethodDescriptorProto> =
             crate::Codec::message(18);
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
@@ -5580,7 +4241,6 @@ pub mod google_protobuf_descriptor_proto {
             clear: self::super::ServiceDescriptorProto::clear_options,
         };
     }
-    #[doc = " Describes a method of a service."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct MethodDescriptorProto {
         name: ::std::option::Option<::std::string::String>,
@@ -5696,18 +4356,12 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::MethodDescriptorProto {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[9]
         }
     }
     impl self::MethodDescriptorProto {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
         pub fn name(&self) -> &str {
             self.name
@@ -5715,103 +4369,53 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::NAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.name.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             self.name
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn has_name(&self) -> bool {
             self.name.is_some()
         }
-        #[doc = "Sets the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn set_name(&mut self, value: ::std::string::String) {
             self.name = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
             self.name.take()
         }
-        #[doc = "Clears the value of the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn clear_name(&mut self) {
             self.name = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub const INPUT_TYPE_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub const INPUT_TYPE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Input and output type names.  These are resolved in the same way as"]
-        #[doc = " FieldDescriptorProto.type_name, but must refer to a message type."]
         pub fn input_type(&self) -> &str {
             self.input_type
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::INPUT_TYPE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn input_type_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.input_type.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn input_type_mut(&mut self) -> &mut ::std::string::String {
             self.input_type
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn has_input_type(&self) -> bool {
             self.input_type.is_some()
         }
-        #[doc = "Sets the value of the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn set_input_type(&mut self, value: ::std::string::String) {
             self.input_type = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`input_type`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn take_input_type(&mut self) -> ::std::option::Option<::std::string::String> {
             self.input_type.take()
         }
-        #[doc = "Clears the value of the [`input_type`] field"]
-        #[doc = ""]
-        #[doc = "[`input_type`]: #method.input_type"]
         pub fn clear_input_type(&mut self) {
             self.input_type = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub const OUTPUT_TYPE_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub const OUTPUT_TYPE_DEFAULT_VALUE: &'static str = "";
         pub fn output_type(&self) -> &str {
             self.output_type
@@ -5819,184 +4423,97 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::OUTPUT_TYPE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn output_type_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.output_type.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn output_type_mut(&mut self) -> &mut ::std::string::String {
             self.output_type
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn has_output_type(&self) -> bool {
             self.output_type.is_some()
         }
-        #[doc = "Sets the value of the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn set_output_type(&mut self, value: ::std::string::String) {
             self.output_type = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`output_type`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn take_output_type(&mut self) -> ::std::option::Option<::std::string::String> {
             self.output_type.take()
         }
-        #[doc = "Clears the value of the [`output_type`] field"]
-        #[doc = ""]
-        #[doc = "[`output_type`]: #method.output_type"]
         pub fn clear_output_type(&mut self) {
             self.output_type = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 4;
         pub fn options(&self) -> ::std::option::Option<&self::MethodOptions> {
             self.options.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut self::MethodOptions {
             self.options
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn has_options(&self) -> bool {
             self.options.is_some()
         }
-        #[doc = "Sets the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn set_options(&mut self, value: self::MethodOptions) {
             self.options = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`options`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn take_options(&mut self) -> ::std::option::Option<self::MethodOptions> {
             self.options.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn clear_options(&mut self) {
             self.options = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub const CLIENT_STREAMING_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub const CLIENT_STREAMING_DEFAULT_VALUE: bool = false;
-        #[doc = " Identifies if client streams multiple client messages"]
         pub fn client_streaming(&self) -> bool {
             self.client_streaming
                 .unwrap_or(Self::CLIENT_STREAMING_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn client_streaming_option(&self) -> ::std::option::Option<&bool> {
             self.client_streaming.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn client_streaming_mut(&mut self) -> &mut bool {
             self.client_streaming
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn has_client_streaming(&self) -> bool {
             self.client_streaming.is_some()
         }
-        #[doc = "Sets the value of the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn set_client_streaming(&mut self, value: bool) {
             self.client_streaming = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`client_streaming`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn take_client_streaming(&mut self) -> ::std::option::Option<bool> {
             self.client_streaming.take()
         }
-        #[doc = "Clears the value of the [`client_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`client_streaming`]: #method.client_streaming"]
         pub fn clear_client_streaming(&mut self) {
             self.client_streaming = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub const SERVER_STREAMING_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub const SERVER_STREAMING_DEFAULT_VALUE: bool = false;
-        #[doc = " Identifies if server streams multiple server messages"]
         pub fn server_streaming(&self) -> bool {
             self.server_streaming
                 .unwrap_or(Self::SERVER_STREAMING_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn server_streaming_option(&self) -> ::std::option::Option<&bool> {
             self.server_streaming.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn server_streaming_mut(&mut self) -> &mut bool {
             self.server_streaming
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn has_server_streaming(&self) -> bool {
             self.server_streaming.is_some()
         }
-        #[doc = "Sets the value of the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn set_server_streaming(&mut self, value: bool) {
             self.server_streaming = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`server_streaming`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn take_server_streaming(&mut self) -> ::std::option::Option<bool> {
             self.server_streaming.take()
         }
-        #[doc = "Clears the value of the [`server_streaming`] field"]
-        #[doc = ""]
-        #[doc = "[`server_streaming`]: #method.server_streaming"]
         pub fn clear_server_streaming(&mut self) {
             self.server_streaming = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod method_descriptor_proto {
+    pub(in super::super) mod method_descriptor_proto {
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
             self::super::MethodDescriptorProto,
             ::std::string::String,
@@ -6428,7 +4945,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::FileOptions {
+    impl crate::ExtendableMessage for self::FileOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -6515,1118 +5032,600 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::FileOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[10]
         }
     }
     impl self::FileOptions {
-        #[doc = "The field number for the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub const JAVA_PACKAGE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub const JAVA_PACKAGE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Sets the Java package where classes generated from this .proto will be"]
-        #[doc = " placed.  By default, the proto package is used, but this is often"]
-        #[doc = " inappropriate because proto packages do not normally start with backwards"]
-        #[doc = " domain names."]
         pub fn java_package(&self) -> &str {
             self.java_package
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::JAVA_PACKAGE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn java_package_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.java_package.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn java_package_mut(&mut self) -> &mut ::std::string::String {
             self.java_package
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn has_java_package(&self) -> bool {
             self.java_package.is_some()
         }
-        #[doc = "Sets the value of the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn set_java_package(&mut self, value: ::std::string::String) {
             self.java_package = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_package`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn take_java_package(&mut self) -> ::std::option::Option<::std::string::String> {
             self.java_package.take()
         }
-        #[doc = "Clears the value of the [`java_package`] field"]
-        #[doc = ""]
-        #[doc = "[`java_package`]: #method.java_package"]
         pub fn clear_java_package(&mut self) {
             self.java_package = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub const JAVA_OUTER_CLASSNAME_FIELD_NUMBER: i32 = 8;
-        #[doc = "The default value for the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub const JAVA_OUTER_CLASSNAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " If set, all the classes from the .proto file are wrapped in a single"]
-        #[doc = " outer class with the given name.  This applies to both Proto1"]
-        #[doc = " (equivalent to the old \"--one_java_file\" option) and Proto2 (where"]
-        #[doc = " a .proto always translates to a single class, but you may want to"]
-        #[doc = " explicitly choose the class name)."]
         pub fn java_outer_classname(&self) -> &str {
             self.java_outer_classname
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::JAVA_OUTER_CLASSNAME_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn java_outer_classname_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.java_outer_classname.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn java_outer_classname_mut(&mut self) -> &mut ::std::string::String {
             self.java_outer_classname
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn has_java_outer_classname(&self) -> bool {
             self.java_outer_classname.is_some()
         }
-        #[doc = "Sets the value of the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn set_java_outer_classname(&mut self, value: ::std::string::String) {
             self.java_outer_classname =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_outer_classname`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn take_java_outer_classname(
             &mut self,
         ) -> ::std::option::Option<::std::string::String> {
             self.java_outer_classname.take()
         }
-        #[doc = "Clears the value of the [`java_outer_classname`] field"]
-        #[doc = ""]
-        #[doc = "[`java_outer_classname`]: #method.java_outer_classname"]
         pub fn clear_java_outer_classname(&mut self) {
             self.java_outer_classname = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub const JAVA_MULTIPLE_FILES_FIELD_NUMBER: i32 = 10;
-        #[doc = "The default value for the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub const JAVA_MULTIPLE_FILES_DEFAULT_VALUE: bool = false;
-        #[doc = " If set true, then the Java code generator will generate a separate .java"]
-        #[doc = " file for each top-level message, enum, and service defined in the .proto"]
-        #[doc = " file.  Thus, these types will *not* be nested inside the outer class"]
-        #[doc = " named by java_outer_classname.  However, the outer class will still be"]
-        #[doc = " generated to contain the file's getDescriptor() method as well as any"]
-        #[doc = " top-level extensions defined in the file."]
         pub fn java_multiple_files(&self) -> bool {
             self.java_multiple_files
                 .unwrap_or(Self::JAVA_MULTIPLE_FILES_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn java_multiple_files_option(&self) -> ::std::option::Option<&bool> {
             self.java_multiple_files.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn java_multiple_files_mut(&mut self) -> &mut bool {
             self.java_multiple_files
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn has_java_multiple_files(&self) -> bool {
             self.java_multiple_files.is_some()
         }
-        #[doc = "Sets the value of the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn set_java_multiple_files(&mut self, value: bool) {
             self.java_multiple_files =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_multiple_files`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn take_java_multiple_files(&mut self) -> ::std::option::Option<bool> {
             self.java_multiple_files.take()
         }
-        #[doc = "Clears the value of the [`java_multiple_files`] field"]
-        #[doc = ""]
-        #[doc = "[`java_multiple_files`]: #method.java_multiple_files"]
         pub fn clear_java_multiple_files(&mut self) {
             self.java_multiple_files = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub const JAVA_GENERATE_EQUALS_AND_HASH_FIELD_NUMBER: i32 = 20;
-        #[doc = "The default value for the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub const JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE: bool = false;
-        #[doc = " This option does nothing."]
         pub fn java_generate_equals_and_hash(&self) -> bool {
             self.java_generate_equals_and_hash
                 .unwrap_or(Self::JAVA_GENERATE_EQUALS_AND_HASH_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn java_generate_equals_and_hash_option(&self) -> ::std::option::Option<&bool> {
             self.java_generate_equals_and_hash.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn java_generate_equals_and_hash_mut(&mut self) -> &mut bool {
             self.java_generate_equals_and_hash
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn has_java_generate_equals_and_hash(&self) -> bool {
             self.java_generate_equals_and_hash.is_some()
         }
-        #[doc = "Sets the value of the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn set_java_generate_equals_and_hash(&mut self, value: bool) {
             self.java_generate_equals_and_hash =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_generate_equals_and_hash`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn take_java_generate_equals_and_hash(&mut self) -> ::std::option::Option<bool> {
             self.java_generate_equals_and_hash.take()
         }
-        #[doc = "Clears the value of the [`java_generate_equals_and_hash`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generate_equals_and_hash`]: #method.java_generate_equals_and_hash"]
         pub fn clear_java_generate_equals_and_hash(&mut self) {
             self.java_generate_equals_and_hash = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub const JAVA_STRING_CHECK_UTF8_FIELD_NUMBER: i32 = 27;
-        #[doc = "The default value for the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub const JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE: bool = false;
-        #[doc = " If set true, then the Java2 code generator will generate code that"]
-        #[doc = " throws an exception whenever an attempt is made to assign a non-UTF-8"]
-        #[doc = " byte sequence to a string field."]
-        #[doc = " Message reflection will do the same."]
-        #[doc = " However, an extension field still accepts non-UTF-8 byte sequences."]
-        #[doc = " This option has no effect on when used with the lite runtime."]
         pub fn java_string_check_utf8(&self) -> bool {
             self.java_string_check_utf8
                 .unwrap_or(Self::JAVA_STRING_CHECK_UTF8_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn java_string_check_utf8_option(&self) -> ::std::option::Option<&bool> {
             self.java_string_check_utf8.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn java_string_check_utf8_mut(&mut self) -> &mut bool {
             self.java_string_check_utf8
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn has_java_string_check_utf8(&self) -> bool {
             self.java_string_check_utf8.is_some()
         }
-        #[doc = "Sets the value of the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn set_java_string_check_utf8(&mut self, value: bool) {
             self.java_string_check_utf8 =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_string_check_utf8`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn take_java_string_check_utf8(&mut self) -> ::std::option::Option<bool> {
             self.java_string_check_utf8.take()
         }
-        #[doc = "Clears the value of the [`java_string_check_utf8`] field"]
-        #[doc = ""]
-        #[doc = "[`java_string_check_utf8`]: #method.java_string_check_utf8"]
         pub fn clear_java_string_check_utf8(&mut self) {
             self.java_string_check_utf8 = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub const OPTIMIZE_FOR_FIELD_NUMBER: i32 = 9;
-        #[doc = "The default value for the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub const OPTIMIZE_FOR_DEFAULT_VALUE: crate::EnumValue<self::file_options::OptimizeMode> =
             crate::EnumValue::Defined(self::file_options::OptimizeMode::Speed);
         pub fn optimize_for(&self) -> crate::EnumValue<self::file_options::OptimizeMode> {
             self.optimize_for
                 .unwrap_or(Self::OPTIMIZE_FOR_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn optimize_for_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::file_options::OptimizeMode>> {
             self.optimize_for.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn optimize_for_mut(
             &mut self,
         ) -> &mut crate::EnumValue<self::file_options::OptimizeMode> {
             self.optimize_for
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn has_optimize_for(&self) -> bool {
             self.optimize_for.is_some()
         }
-        #[doc = "Sets the value of the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn set_optimize_for(
             &mut self,
             value: crate::EnumValue<self::file_options::OptimizeMode>,
         ) {
             self.optimize_for = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`optimize_for`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn take_optimize_for(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::file_options::OptimizeMode>> {
             self.optimize_for.take()
         }
-        #[doc = "Clears the value of the [`optimize_for`] field"]
-        #[doc = ""]
-        #[doc = "[`optimize_for`]: #method.optimize_for"]
         pub fn clear_optimize_for(&mut self) {
             self.optimize_for = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub const GO_PACKAGE_FIELD_NUMBER: i32 = 11;
-        #[doc = "The default value for the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub const GO_PACKAGE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Sets the Go package where structs generated from this .proto will be"]
-        #[doc = " placed. If omitted, the Go package will be derived from the following:"]
-        #[doc = "   - The basename of the package import path, if provided."]
-        #[doc = "   - Otherwise, the package statement in the .proto file, if present."]
-        #[doc = "   - Otherwise, the basename of the .proto file, without extension."]
         pub fn go_package(&self) -> &str {
             self.go_package
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::GO_PACKAGE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn go_package_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.go_package.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn go_package_mut(&mut self) -> &mut ::std::string::String {
             self.go_package
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn has_go_package(&self) -> bool {
             self.go_package.is_some()
         }
-        #[doc = "Sets the value of the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn set_go_package(&mut self, value: ::std::string::String) {
             self.go_package = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`go_package`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn take_go_package(&mut self) -> ::std::option::Option<::std::string::String> {
             self.go_package.take()
         }
-        #[doc = "Clears the value of the [`go_package`] field"]
-        #[doc = ""]
-        #[doc = "[`go_package`]: #method.go_package"]
         pub fn clear_go_package(&mut self) {
             self.go_package = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub const CC_GENERIC_SERVICES_FIELD_NUMBER: i32 = 16;
-        #[doc = "The default value for the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub const CC_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
-        #[doc = " Should generic services be generated in each language?  \"Generic\" services"]
-        #[doc = " are not specific to any particular RPC system.  They are generated by the"]
-        #[doc = " main code generators in each language (without additional plugins)."]
-        #[doc = " Generic services were the only kind of service generation supported by"]
-        #[doc = " early versions of google.protobuf."]
-        #[doc = ""]
-        #[doc = " Generic services are now considered deprecated in favor of using plugins"]
-        #[doc = " that generate code specific to your particular RPC system.  Therefore,"]
-        #[doc = " these default to false.  Old code which depends on generic services should"]
-        #[doc = " explicitly set them to true."]
         pub fn cc_generic_services(&self) -> bool {
             self.cc_generic_services
                 .unwrap_or(Self::CC_GENERIC_SERVICES_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn cc_generic_services_option(&self) -> ::std::option::Option<&bool> {
             self.cc_generic_services.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn cc_generic_services_mut(&mut self) -> &mut bool {
             self.cc_generic_services
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn has_cc_generic_services(&self) -> bool {
             self.cc_generic_services.is_some()
         }
-        #[doc = "Sets the value of the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn set_cc_generic_services(&mut self, value: bool) {
             self.cc_generic_services =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`cc_generic_services`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn take_cc_generic_services(&mut self) -> ::std::option::Option<bool> {
             self.cc_generic_services.take()
         }
-        #[doc = "Clears the value of the [`cc_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_generic_services`]: #method.cc_generic_services"]
         pub fn clear_cc_generic_services(&mut self) {
             self.cc_generic_services = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub const JAVA_GENERIC_SERVICES_FIELD_NUMBER: i32 = 17;
-        #[doc = "The default value for the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub const JAVA_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
         pub fn java_generic_services(&self) -> bool {
             self.java_generic_services
                 .unwrap_or(Self::JAVA_GENERIC_SERVICES_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn java_generic_services_option(&self) -> ::std::option::Option<&bool> {
             self.java_generic_services.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn java_generic_services_mut(&mut self) -> &mut bool {
             self.java_generic_services
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn has_java_generic_services(&self) -> bool {
             self.java_generic_services.is_some()
         }
-        #[doc = "Sets the value of the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn set_java_generic_services(&mut self, value: bool) {
             self.java_generic_services =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`java_generic_services`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn take_java_generic_services(&mut self) -> ::std::option::Option<bool> {
             self.java_generic_services.take()
         }
-        #[doc = "Clears the value of the [`java_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`java_generic_services`]: #method.java_generic_services"]
         pub fn clear_java_generic_services(&mut self) {
             self.java_generic_services = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub const PY_GENERIC_SERVICES_FIELD_NUMBER: i32 = 18;
-        #[doc = "The default value for the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub const PY_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
         pub fn py_generic_services(&self) -> bool {
             self.py_generic_services
                 .unwrap_or(Self::PY_GENERIC_SERVICES_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn py_generic_services_option(&self) -> ::std::option::Option<&bool> {
             self.py_generic_services.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn py_generic_services_mut(&mut self) -> &mut bool {
             self.py_generic_services
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn has_py_generic_services(&self) -> bool {
             self.py_generic_services.is_some()
         }
-        #[doc = "Sets the value of the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn set_py_generic_services(&mut self, value: bool) {
             self.py_generic_services =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`py_generic_services`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn take_py_generic_services(&mut self) -> ::std::option::Option<bool> {
             self.py_generic_services.take()
         }
-        #[doc = "Clears the value of the [`py_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`py_generic_services`]: #method.py_generic_services"]
         pub fn clear_py_generic_services(&mut self) {
             self.py_generic_services = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub const PHP_GENERIC_SERVICES_FIELD_NUMBER: i32 = 42;
-        #[doc = "The default value for the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub const PHP_GENERIC_SERVICES_DEFAULT_VALUE: bool = false;
         pub fn php_generic_services(&self) -> bool {
             self.php_generic_services
                 .unwrap_or(Self::PHP_GENERIC_SERVICES_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn php_generic_services_option(&self) -> ::std::option::Option<&bool> {
             self.php_generic_services.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn php_generic_services_mut(&mut self) -> &mut bool {
             self.php_generic_services
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn has_php_generic_services(&self) -> bool {
             self.php_generic_services.is_some()
         }
-        #[doc = "Sets the value of the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn set_php_generic_services(&mut self, value: bool) {
             self.php_generic_services =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`php_generic_services`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn take_php_generic_services(&mut self) -> ::std::option::Option<bool> {
             self.php_generic_services.take()
         }
-        #[doc = "Clears the value of the [`php_generic_services`] field"]
-        #[doc = ""]
-        #[doc = "[`php_generic_services`]: #method.php_generic_services"]
         pub fn clear_php_generic_services(&mut self) {
             self.php_generic_services = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 23;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this file deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for everything in the file, or it will be completely ignored; in the very"]
-        #[doc = " least, this is a formalization for deprecating files."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub const CC_ENABLE_ARENAS_FIELD_NUMBER: i32 = 31;
-        #[doc = "The default value for the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub const CC_ENABLE_ARENAS_DEFAULT_VALUE: bool = false;
-        #[doc = " Enables the use of arenas for the proto messages in this file. This applies"]
-        #[doc = " only to generated classes for C++."]
         pub fn cc_enable_arenas(&self) -> bool {
             self.cc_enable_arenas
                 .unwrap_or(Self::CC_ENABLE_ARENAS_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn cc_enable_arenas_option(&self) -> ::std::option::Option<&bool> {
             self.cc_enable_arenas.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn cc_enable_arenas_mut(&mut self) -> &mut bool {
             self.cc_enable_arenas
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn has_cc_enable_arenas(&self) -> bool {
             self.cc_enable_arenas.is_some()
         }
-        #[doc = "Sets the value of the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn set_cc_enable_arenas(&mut self, value: bool) {
             self.cc_enable_arenas = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`cc_enable_arenas`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn take_cc_enable_arenas(&mut self) -> ::std::option::Option<bool> {
             self.cc_enable_arenas.take()
         }
-        #[doc = "Clears the value of the [`cc_enable_arenas`] field"]
-        #[doc = ""]
-        #[doc = "[`cc_enable_arenas`]: #method.cc_enable_arenas"]
         pub fn clear_cc_enable_arenas(&mut self) {
             self.cc_enable_arenas = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub const OBJC_CLASS_PREFIX_FIELD_NUMBER: i32 = 36;
-        #[doc = "The default value for the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub const OBJC_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Sets the objective c class prefix which is prepended to all objective c"]
-        #[doc = " generated classes from this .proto. There is no default."]
         pub fn objc_class_prefix(&self) -> &str {
             self.objc_class_prefix
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::OBJC_CLASS_PREFIX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn objc_class_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.objc_class_prefix.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn objc_class_prefix_mut(&mut self) -> &mut ::std::string::String {
             self.objc_class_prefix
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn has_objc_class_prefix(&self) -> bool {
             self.objc_class_prefix.is_some()
         }
-        #[doc = "Sets the value of the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn set_objc_class_prefix(&mut self, value: ::std::string::String) {
             self.objc_class_prefix = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`objc_class_prefix`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn take_objc_class_prefix(&mut self) -> ::std::option::Option<::std::string::String> {
             self.objc_class_prefix.take()
         }
-        #[doc = "Clears the value of the [`objc_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`objc_class_prefix`]: #method.objc_class_prefix"]
         pub fn clear_objc_class_prefix(&mut self) {
             self.objc_class_prefix = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub const CSHARP_NAMESPACE_FIELD_NUMBER: i32 = 37;
-        #[doc = "The default value for the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub const CSHARP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Namespace for generated classes; defaults to the package."]
         pub fn csharp_namespace(&self) -> &str {
             self.csharp_namespace
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::CSHARP_NAMESPACE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn csharp_namespace_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.csharp_namespace.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn csharp_namespace_mut(&mut self) -> &mut ::std::string::String {
             self.csharp_namespace
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn has_csharp_namespace(&self) -> bool {
             self.csharp_namespace.is_some()
         }
-        #[doc = "Sets the value of the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn set_csharp_namespace(&mut self, value: ::std::string::String) {
             self.csharp_namespace = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`csharp_namespace`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn take_csharp_namespace(&mut self) -> ::std::option::Option<::std::string::String> {
             self.csharp_namespace.take()
         }
-        #[doc = "Clears the value of the [`csharp_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`csharp_namespace`]: #method.csharp_namespace"]
         pub fn clear_csharp_namespace(&mut self) {
             self.csharp_namespace = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub const SWIFT_PREFIX_FIELD_NUMBER: i32 = 39;
-        #[doc = "The default value for the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub const SWIFT_PREFIX_DEFAULT_VALUE: &'static str = "";
-        #[doc = " By default Swift generators will take the proto package and CamelCase it"]
-        #[doc = " replacing '.' with underscore and use that to prefix the types/symbols"]
-        #[doc = " defined. When this options is provided, they will use this value instead"]
-        #[doc = " to prefix the types/symbols defined."]
         pub fn swift_prefix(&self) -> &str {
             self.swift_prefix
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::SWIFT_PREFIX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn swift_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.swift_prefix.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn swift_prefix_mut(&mut self) -> &mut ::std::string::String {
             self.swift_prefix
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn has_swift_prefix(&self) -> bool {
             self.swift_prefix.is_some()
         }
-        #[doc = "Sets the value of the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn set_swift_prefix(&mut self, value: ::std::string::String) {
             self.swift_prefix = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`swift_prefix`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn take_swift_prefix(&mut self) -> ::std::option::Option<::std::string::String> {
             self.swift_prefix.take()
         }
-        #[doc = "Clears the value of the [`swift_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`swift_prefix`]: #method.swift_prefix"]
         pub fn clear_swift_prefix(&mut self) {
             self.swift_prefix = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub const PHP_CLASS_PREFIX_FIELD_NUMBER: i32 = 40;
-        #[doc = "The default value for the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub const PHP_CLASS_PREFIX_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Sets the php class prefix which is prepended to all php generated classes"]
-        #[doc = " from this .proto. Default is empty."]
         pub fn php_class_prefix(&self) -> &str {
             self.php_class_prefix
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::PHP_CLASS_PREFIX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn php_class_prefix_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.php_class_prefix.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn php_class_prefix_mut(&mut self) -> &mut ::std::string::String {
             self.php_class_prefix
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn has_php_class_prefix(&self) -> bool {
             self.php_class_prefix.is_some()
         }
-        #[doc = "Sets the value of the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn set_php_class_prefix(&mut self, value: ::std::string::String) {
             self.php_class_prefix = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`php_class_prefix`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn take_php_class_prefix(&mut self) -> ::std::option::Option<::std::string::String> {
             self.php_class_prefix.take()
         }
-        #[doc = "Clears the value of the [`php_class_prefix`] field"]
-        #[doc = ""]
-        #[doc = "[`php_class_prefix`]: #method.php_class_prefix"]
         pub fn clear_php_class_prefix(&mut self) {
             self.php_class_prefix = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub const PHP_NAMESPACE_FIELD_NUMBER: i32 = 41;
-        #[doc = "The default value for the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub const PHP_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Use this option to change the namespace of php generated classes. Default"]
-        #[doc = " is empty. When this option is empty, the package name will be used for"]
-        #[doc = " determining the namespace."]
         pub fn php_namespace(&self) -> &str {
             self.php_namespace
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::PHP_NAMESPACE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn php_namespace_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.php_namespace.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn php_namespace_mut(&mut self) -> &mut ::std::string::String {
             self.php_namespace
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn has_php_namespace(&self) -> bool {
             self.php_namespace.is_some()
         }
-        #[doc = "Sets the value of the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn set_php_namespace(&mut self, value: ::std::string::String) {
             self.php_namespace = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`php_namespace`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn take_php_namespace(&mut self) -> ::std::option::Option<::std::string::String> {
             self.php_namespace.take()
         }
-        #[doc = "Clears the value of the [`php_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_namespace`]: #method.php_namespace"]
         pub fn clear_php_namespace(&mut self) {
             self.php_namespace = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub const PHP_METADATA_NAMESPACE_FIELD_NUMBER: i32 = 44;
-        #[doc = "The default value for the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub const PHP_METADATA_NAMESPACE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Use this option to change the namespace of php generated metadata classes."]
-        #[doc = " Default is empty. When this option is empty, the proto file name will be used"]
-        #[doc = " for determining the namespace."]
         pub fn php_metadata_namespace(&self) -> &str {
             self.php_metadata_namespace
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::PHP_METADATA_NAMESPACE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn php_metadata_namespace_option(
             &self,
         ) -> ::std::option::Option<&::std::string::String> {
             self.php_metadata_namespace.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn php_metadata_namespace_mut(&mut self) -> &mut ::std::string::String {
             self.php_metadata_namespace
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn has_php_metadata_namespace(&self) -> bool {
             self.php_metadata_namespace.is_some()
         }
-        #[doc = "Sets the value of the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn set_php_metadata_namespace(&mut self, value: ::std::string::String) {
             self.php_metadata_namespace =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`php_metadata_namespace`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn take_php_metadata_namespace(
             &mut self,
         ) -> ::std::option::Option<::std::string::String> {
             self.php_metadata_namespace.take()
         }
-        #[doc = "Clears the value of the [`php_metadata_namespace`] field"]
-        #[doc = ""]
-        #[doc = "[`php_metadata_namespace`]: #method.php_metadata_namespace"]
         pub fn clear_php_metadata_namespace(&mut self) {
             self.php_metadata_namespace = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub const RUBY_PACKAGE_FIELD_NUMBER: i32 = 45;
-        #[doc = "The default value for the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub const RUBY_PACKAGE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Use this option to change the package of ruby generated classes. Default"]
-        #[doc = " is empty. When this option is not set, the package name will be used for"]
-        #[doc = " determining the ruby package."]
         pub fn ruby_package(&self) -> &str {
             self.ruby_package
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::RUBY_PACKAGE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn ruby_package_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.ruby_package.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn ruby_package_mut(&mut self) -> &mut ::std::string::String {
             self.ruby_package
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn has_ruby_package(&self) -> bool {
             self.ruby_package.is_some()
         }
-        #[doc = "Sets the value of the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn set_ruby_package(&mut self, value: ::std::string::String) {
             self.ruby_package = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`ruby_package`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn take_ruby_package(&mut self) -> ::std::option::Option<::std::string::String> {
             self.ruby_package.take()
         }
-        #[doc = "Clears the value of the [`ruby_package`] field"]
-        #[doc = ""]
-        #[doc = "[`ruby_package`]: #method.ruby_package"]
         pub fn clear_ruby_package(&mut self) {
             self.ruby_package = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here."]
-        #[doc = " See the documentation for the \"Options\" section above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod file_options {
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum OptimizeMode {
+            Speed,
+            CodeSize,
+            LiteRuntime,
+        }
+        impl crate::Enum for self::OptimizeMode {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::FileOptions as crate::Message>::descriptor().enums()[0]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::OptimizeMode {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    1 => ::std::result::Result::Ok(self::OptimizeMode::Speed),
+                    2 => ::std::result::Result::Ok(self::OptimizeMode::CodeSize),
+                    3 => ::std::result::Result::Ok(self::OptimizeMode::LiteRuntime),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::OptimizeMode> for i32 {
+            fn from(value: self::OptimizeMode) -> i32 {
+                match value {
+                    self::OptimizeMode::Speed => 1,
+                    self::OptimizeMode::CodeSize => 2,
+                    self::OptimizeMode::LiteRuntime => 3,
+                }
+            }
+        }
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -7840,39 +5839,6 @@ pub mod google_protobuf_descriptor_proto {
             get: self::super::FileOptions::uninterpreted_option,
             get_mut: self::super::FileOptions::uninterpreted_option_mut,
         };
-        #[doc = " Generated classes can be optimized for speed or code size."]
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum OptimizeMode {
-            Speed,
-            CodeSize,
-            LiteRuntime,
-        }
-        impl crate::Enum for self::OptimizeMode {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::FileOptions as crate::Message>::descriptor().enums()[0]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::OptimizeMode {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    1 => ::std::result::Result::Ok(self::OptimizeMode::Speed),
-                    2 => ::std::result::Result::Ok(self::OptimizeMode::CodeSize),
-                    3 => ::std::result::Result::Ok(self::OptimizeMode::LiteRuntime),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::OptimizeMode> for i32 {
-            fn from(value: self::OptimizeMode) -> i32 {
-                match value {
-                    self::OptimizeMode::Speed => 1,
-                    self::OptimizeMode::CodeSize => 2,
-                    self::OptimizeMode::LiteRuntime => 3,
-                }
-            }
-        }
     }
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct MessageOptions {
@@ -7990,7 +5956,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::MessageOptions {
+    impl crate::ExtendableMessage for self::MessageOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -8077,274 +6043,124 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::MessageOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[11]
         }
     }
     impl self::MessageOptions {
-        #[doc = "The field number for the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub const MESSAGE_SET_WIRE_FORMAT_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub const MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE: bool = false;
-        #[doc = " Set true to use the old proto1 MessageSet wire format for extensions."]
-        #[doc = " This is provided for backwards-compatibility with the MessageSet wire"]
-        #[doc = " format.  You should not use this for any other reason:  It's less"]
-        #[doc = " efficient, has fewer features, and is more complicated."]
-        #[doc = ""]
-        #[doc = " The message must be defined exactly as follows:"]
-        #[doc = "   message Foo {"]
-        #[doc = "     option message_set_wire_format = true;"]
-        #[doc = "     extensions 4 to max;"]
-        #[doc = "   }"]
-        #[doc = " Note that the message cannot have any defined fields; MessageSets only"]
-        #[doc = " have extensions."]
-        #[doc = ""]
-        #[doc = " All extensions of your type must be singular messages; e.g. they cannot"]
-        #[doc = " be int32s, enums, or repeated messages."]
-        #[doc = ""]
-        #[doc = " Because this is an option, the above two restrictions are not enforced by"]
-        #[doc = " the protocol compiler."]
         pub fn message_set_wire_format(&self) -> bool {
             self.message_set_wire_format
                 .unwrap_or(Self::MESSAGE_SET_WIRE_FORMAT_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn message_set_wire_format_option(&self) -> ::std::option::Option<&bool> {
             self.message_set_wire_format.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn message_set_wire_format_mut(&mut self) -> &mut bool {
             self.message_set_wire_format
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn has_message_set_wire_format(&self) -> bool {
             self.message_set_wire_format.is_some()
         }
-        #[doc = "Sets the value of the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn set_message_set_wire_format(&mut self, value: bool) {
             self.message_set_wire_format =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`message_set_wire_format`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn take_message_set_wire_format(&mut self) -> ::std::option::Option<bool> {
             self.message_set_wire_format.take()
         }
-        #[doc = "Clears the value of the [`message_set_wire_format`] field"]
-        #[doc = ""]
-        #[doc = "[`message_set_wire_format`]: #method.message_set_wire_format"]
         pub fn clear_message_set_wire_format(&mut self) {
             self.message_set_wire_format = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub const NO_STANDARD_DESCRIPTOR_ACCESSOR_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub const NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE: bool = false;
-        #[doc = " Disables the generation of the standard \"descriptor()\" accessor, which can"]
-        #[doc = " conflict with a field of the same name.  This is meant to make migration"]
-        #[doc = " from proto1 easier; new code should avoid fields named \"descriptor\"."]
         pub fn no_standard_descriptor_accessor(&self) -> bool {
             self.no_standard_descriptor_accessor
                 .unwrap_or(Self::NO_STANDARD_DESCRIPTOR_ACCESSOR_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn no_standard_descriptor_accessor_option(&self) -> ::std::option::Option<&bool> {
             self.no_standard_descriptor_accessor.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn no_standard_descriptor_accessor_mut(&mut self) -> &mut bool {
             self.no_standard_descriptor_accessor
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn has_no_standard_descriptor_accessor(&self) -> bool {
             self.no_standard_descriptor_accessor.is_some()
         }
-        #[doc = "Sets the value of the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn set_no_standard_descriptor_accessor(&mut self, value: bool) {
             self.no_standard_descriptor_accessor =
                 ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`no_standard_descriptor_accessor`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn take_no_standard_descriptor_accessor(&mut self) -> ::std::option::Option<bool> {
             self.no_standard_descriptor_accessor.take()
         }
-        #[doc = "Clears the value of the [`no_standard_descriptor_accessor`] field"]
-        #[doc = ""]
-        #[doc = "[`no_standard_descriptor_accessor`]: #method.no_standard_descriptor_accessor"]
         pub fn clear_no_standard_descriptor_accessor(&mut self) {
             self.no_standard_descriptor_accessor = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this message deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for the message, or it will be completely ignored; in the very least,"]
-        #[doc = " this is a formalization for deprecating messages."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub const MAP_ENTRY_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub const MAP_ENTRY_DEFAULT_VALUE: bool = false;
-        #[doc = " Whether the message is an automatically generated map entry type for the"]
-        #[doc = " maps field."]
-        #[doc = ""]
-        #[doc = " For maps fields:"]
-        #[doc = "     map<KeyType, ValueType> map_field = 1;"]
-        #[doc = " The parsed descriptor looks like:"]
-        #[doc = "     message MapFieldEntry {"]
-        #[doc = "         option map_entry = true;"]
-        #[doc = "         optional KeyType key = 1;"]
-        #[doc = "         optional ValueType value = 2;"]
-        #[doc = "     }"]
-        #[doc = "     repeated MapFieldEntry map_field = 1;"]
-        #[doc = ""]
-        #[doc = " Implementations may choose not to generate the map_entry=true message, but"]
-        #[doc = " use a native map in the target language to hold the keys and values."]
-        #[doc = " The reflection APIs in such implementions still need to work as"]
-        #[doc = " if the field is a repeated message field."]
-        #[doc = ""]
-        #[doc = " NOTE: Do not set the option in .proto files. Always use the maps syntax"]
-        #[doc = " instead. The option should only be implicitly set by the proto compiler"]
-        #[doc = " parser."]
         pub fn map_entry(&self) -> bool {
             self.map_entry.unwrap_or(Self::MAP_ENTRY_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn map_entry_option(&self) -> ::std::option::Option<&bool> {
             self.map_entry.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn map_entry_mut(&mut self) -> &mut bool {
             self.map_entry
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn has_map_entry(&self) -> bool {
             self.map_entry.is_some()
         }
-        #[doc = "Sets the value of the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn set_map_entry(&mut self, value: bool) {
             self.map_entry = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`map_entry`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn take_map_entry(&mut self) -> ::std::option::Option<bool> {
             self.map_entry.take()
         }
-        #[doc = "Clears the value of the [`map_entry`] field"]
-        #[doc = ""]
-        #[doc = "[`map_entry`]: #method.map_entry"]
         pub fn clear_map_entry(&mut self) {
             self.map_entry = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod message_options {
+    pub(in super::super) mod message_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -8523,7 +6339,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::FieldOptions {
+    impl crate::ExtendableMessage for self::FieldOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -8610,383 +6426,242 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::FieldOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[12]
         }
     }
     impl self::FieldOptions {
-        #[doc = "The field number for the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub const CTYPE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub const CTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::CType> =
             crate::EnumValue::Defined(self::field_options::CType::String);
-        #[doc = " The ctype option instructs the C++ code generator to use a different"]
-        #[doc = " representation of the field than it normally would.  See the specific"]
-        #[doc = " options below.  This option is not yet implemented in the open source"]
-        #[doc = " release -- sorry, we'll try to include it in a future version!"]
         pub fn ctype(&self) -> crate::EnumValue<self::field_options::CType> {
             self.ctype.unwrap_or(Self::CTYPE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn ctype_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::field_options::CType>> {
             self.ctype.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn ctype_mut(&mut self) -> &mut crate::EnumValue<self::field_options::CType> {
             self.ctype
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn has_ctype(&self) -> bool {
             self.ctype.is_some()
         }
-        #[doc = "Sets the value of the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn set_ctype(&mut self, value: crate::EnumValue<self::field_options::CType>) {
             self.ctype = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`ctype`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn take_ctype(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::field_options::CType>> {
             self.ctype.take()
         }
-        #[doc = "Clears the value of the [`ctype`] field"]
-        #[doc = ""]
-        #[doc = "[`ctype`]: #method.ctype"]
         pub fn clear_ctype(&mut self) {
             self.ctype = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub const PACKED_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub const PACKED_DEFAULT_VALUE: bool = false;
-        #[doc = " The packed option can be enabled for repeated primitive fields to enable"]
-        #[doc = " a more efficient representation on the wire. Rather than repeatedly"]
-        #[doc = " writing the tag and type for each element, the entire array is encoded as"]
-        #[doc = " a single length-delimited blob. In proto3, only explicit setting it to"]
-        #[doc = " false will avoid using packed encoding."]
         pub fn packed(&self) -> bool {
             self.packed.unwrap_or(Self::PACKED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn packed_option(&self) -> ::std::option::Option<&bool> {
             self.packed.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn packed_mut(&mut self) -> &mut bool {
             self.packed
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn has_packed(&self) -> bool {
             self.packed.is_some()
         }
-        #[doc = "Sets the value of the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn set_packed(&mut self, value: bool) {
             self.packed = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`packed`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn take_packed(&mut self) -> ::std::option::Option<bool> {
             self.packed.take()
         }
-        #[doc = "Clears the value of the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn clear_packed(&mut self) {
             self.packed = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub const JSTYPE_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub const JSTYPE_DEFAULT_VALUE: crate::EnumValue<self::field_options::JSType> =
             crate::EnumValue::Defined(self::field_options::JSType::JsNormal);
-        #[doc = " The jstype option determines the JavaScript type used for values of the"]
-        #[doc = " field.  The option is permitted only for 64 bit integral and fixed types"]
-        #[doc = " (int64, uint64, sint64, fixed64, sfixed64).  A field with jstype JS_STRING"]
-        #[doc = " is represented as JavaScript string, which avoids loss of precision that"]
-        #[doc = " can happen when a large value is converted to a floating point JavaScript."]
-        #[doc = " Specifying JS_NUMBER for the jstype causes the generated JavaScript code to"]
-        #[doc = " use the JavaScript \"number\" type.  The behavior of the default option"]
-        #[doc = " JS_NORMAL is implementation dependent."]
-        #[doc = ""]
-        #[doc = " This option is an enum to permit additional types to be added, e.g."]
-        #[doc = " goog.math.Integer."]
         pub fn jstype(&self) -> crate::EnumValue<self::field_options::JSType> {
             self.jstype.unwrap_or(Self::JSTYPE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn jstype_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::field_options::JSType>> {
             self.jstype.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn jstype_mut(&mut self) -> &mut crate::EnumValue<self::field_options::JSType> {
             self.jstype
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn has_jstype(&self) -> bool {
             self.jstype.is_some()
         }
-        #[doc = "Sets the value of the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn set_jstype(&mut self, value: crate::EnumValue<self::field_options::JSType>) {
             self.jstype = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`jstype`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn take_jstype(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::field_options::JSType>> {
             self.jstype.take()
         }
-        #[doc = "Clears the value of the [`jstype`] field"]
-        #[doc = ""]
-        #[doc = "[`jstype`]: #method.jstype"]
         pub fn clear_jstype(&mut self) {
             self.jstype = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub const LAZY_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub const LAZY_DEFAULT_VALUE: bool = false;
-        #[doc = " Should this field be parsed lazily?  Lazy applies only to message-type"]
-        #[doc = " fields.  It means that when the outer message is initially parsed, the"]
-        #[doc = " inner message's contents will not be parsed but instead stored in encoded"]
-        #[doc = " form.  The inner message will actually be parsed when it is first accessed."]
-        #[doc = ""]
-        #[doc = " This is only a hint.  Implementations are free to choose whether to use"]
-        #[doc = " eager or lazy parsing regardless of the value of this option.  However,"]
-        #[doc = " setting this option true suggests that the protocol author believes that"]
-        #[doc = " using lazy parsing on this field is worth the additional bookkeeping"]
-        #[doc = " overhead typically needed to implement it."]
-        #[doc = ""]
-        #[doc = " This option does not affect the public interface of any generated code;"]
-        #[doc = " all method signatures remain the same.  Furthermore, thread-safety of the"]
-        #[doc = " interface is not affected by this option; const methods remain safe to"]
-        #[doc = " call from multiple threads concurrently, while non-const methods continue"]
-        #[doc = " to require exclusive access."]
-        #[doc = ""]
-        #[doc = ""]
-        #[doc = " Note that implementations may choose not to check required fields within"]
-        #[doc = " a lazy sub-message.  That is, calling IsInitialized() on the outer message"]
-        #[doc = " may return true even if the inner message has missing required fields."]
-        #[doc = " This is necessary because otherwise the inner message would have to be"]
-        #[doc = " parsed in order to perform the check, defeating the purpose of lazy"]
-        #[doc = " parsing.  An implementation which chooses not to check required fields"]
-        #[doc = " must be consistent about it.  That is, for any particular sub-message, the"]
-        #[doc = " implementation must either *always* check its required fields, or *never*"]
-        #[doc = " check its required fields, regardless of whether or not the message has"]
-        #[doc = " been parsed."]
         pub fn lazy(&self) -> bool {
             self.lazy.unwrap_or(Self::LAZY_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn lazy_option(&self) -> ::std::option::Option<&bool> {
             self.lazy.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn lazy_mut(&mut self) -> &mut bool {
             self.lazy
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn has_lazy(&self) -> bool {
             self.lazy.is_some()
         }
-        #[doc = "Sets the value of the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn set_lazy(&mut self, value: bool) {
             self.lazy = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`lazy`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn take_lazy(&mut self) -> ::std::option::Option<bool> {
             self.lazy.take()
         }
-        #[doc = "Clears the value of the [`lazy`] field"]
-        #[doc = ""]
-        #[doc = "[`lazy`]: #method.lazy"]
         pub fn clear_lazy(&mut self) {
             self.lazy = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this field deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for accessors, or it will be completely ignored; in the very least, this"]
-        #[doc = " is a formalization for deprecating fields."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub const WEAK_FIELD_NUMBER: i32 = 10;
-        #[doc = "The default value for the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub const WEAK_DEFAULT_VALUE: bool = false;
-        #[doc = " For Google-internal migration only. Do not use."]
         pub fn weak(&self) -> bool {
             self.weak.unwrap_or(Self::WEAK_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn weak_option(&self) -> ::std::option::Option<&bool> {
             self.weak.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn weak_mut(&mut self) -> &mut bool {
             self.weak
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn has_weak(&self) -> bool {
             self.weak.is_some()
         }
-        #[doc = "Sets the value of the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn set_weak(&mut self, value: bool) {
             self.weak = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`weak`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn take_weak(&mut self) -> ::std::option::Option<bool> {
             self.weak.take()
         }
-        #[doc = "Clears the value of the [`weak`] field"]
-        #[doc = ""]
-        #[doc = "[`weak`]: #method.weak"]
         pub fn clear_weak(&mut self) {
             self.weak = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod field_options {
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum CType {
+            String,
+            Cord,
+            StringPiece,
+        }
+        impl crate::Enum for self::CType {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::FieldOptions as crate::Message>::descriptor().enums()[0]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::CType {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    0 => ::std::result::Result::Ok(self::CType::String),
+                    1 => ::std::result::Result::Ok(self::CType::Cord),
+                    2 => ::std::result::Result::Ok(self::CType::StringPiece),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::CType> for i32 {
+            fn from(value: self::CType) -> i32 {
+                match value {
+                    self::CType::String => 0,
+                    self::CType::Cord => 1,
+                    self::CType::StringPiece => 2,
+                }
+            }
+        }
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum JSType {
+            JsNormal,
+            JsString,
+            JsNumber,
+        }
+        impl crate::Enum for self::JSType {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::FieldOptions as crate::Message>::descriptor().enums()[1]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::JSType {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    0 => ::std::result::Result::Ok(self::JSType::JsNormal),
+                    1 => ::std::result::Result::Ok(self::JSType::JsString),
+                    2 => ::std::result::Result::Ok(self::JSType::JsNumber),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::JSType> for i32 {
+            fn from(value: self::JSType) -> i32 {
+                match value {
+                    self::JSType::JsNormal => 0,
+                    self::JSType::JsString => 1,
+                    self::JSType::JsNumber => 2,
+                }
+            }
+        }
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -9057,70 +6732,6 @@ pub mod google_protobuf_descriptor_proto {
             get: self::super::FieldOptions::uninterpreted_option,
             get_mut: self::super::FieldOptions::uninterpreted_option_mut,
         };
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum CType {
-            String,
-            Cord,
-            StringPiece,
-        }
-        impl crate::Enum for self::CType {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::FieldOptions as crate::Message>::descriptor().enums()[0]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::CType {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    0 => ::std::result::Result::Ok(self::CType::String),
-                    1 => ::std::result::Result::Ok(self::CType::Cord),
-                    2 => ::std::result::Result::Ok(self::CType::StringPiece),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::CType> for i32 {
-            fn from(value: self::CType) -> i32 {
-                match value {
-                    self::CType::String => 0,
-                    self::CType::Cord => 1,
-                    self::CType::StringPiece => 2,
-                }
-            }
-        }
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum JSType {
-            JsNormal,
-            JsString,
-            JsNumber,
-        }
-        impl crate::Enum for self::JSType {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::FieldOptions as crate::Message>::descriptor().enums()[1]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::JSType {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    0 => ::std::result::Result::Ok(self::JSType::JsNormal),
-                    1 => ::std::result::Result::Ok(self::JSType::JsString),
-                    2 => ::std::result::Result::Ok(self::JSType::JsNumber),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::JSType> for i32 {
-            fn from(value: self::JSType) -> i32 {
-                match value {
-                    self::JSType::JsNormal => 0,
-                    self::JSType::JsString => 1,
-                    self::JSType::JsNumber => 2,
-                }
-            }
-        }
     }
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct OneofOptions {
@@ -9174,7 +6785,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::OneofOptions {
+    impl crate::ExtendableMessage for self::OneofOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -9261,32 +6872,24 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::OneofOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[13]
         }
     }
     impl self::OneofOptions {
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod oneof_options {
+    pub(in super::super) mod oneof_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -9377,7 +6980,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::EnumOptions {
+    impl crate::ExtendableMessage for self::EnumOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -9464,134 +7067,72 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::EnumOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[14]
         }
     }
     impl self::EnumOptions {
-        #[doc = "The field number for the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub const ALLOW_ALIAS_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub const ALLOW_ALIAS_DEFAULT_VALUE: bool = false;
-        #[doc = " Set this option to true to allow mapping different tag names to the same"]
-        #[doc = " value."]
         pub fn allow_alias(&self) -> bool {
             self.allow_alias.unwrap_or(Self::ALLOW_ALIAS_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn allow_alias_option(&self) -> ::std::option::Option<&bool> {
             self.allow_alias.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn allow_alias_mut(&mut self) -> &mut bool {
             self.allow_alias
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn has_allow_alias(&self) -> bool {
             self.allow_alias.is_some()
         }
-        #[doc = "Sets the value of the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn set_allow_alias(&mut self, value: bool) {
             self.allow_alias = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`allow_alias`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn take_allow_alias(&mut self) -> ::std::option::Option<bool> {
             self.allow_alias.take()
         }
-        #[doc = "Clears the value of the [`allow_alias`] field"]
-        #[doc = ""]
-        #[doc = "[`allow_alias`]: #method.allow_alias"]
         pub fn clear_allow_alias(&mut self) {
             self.allow_alias = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this enum deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for the enum, or it will be completely ignored; in the very least, this"]
-        #[doc = " is a formalization for deprecating enums."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod enum_options {
+    pub(in super::super) mod enum_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -9690,7 +7231,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::EnumValueOptions {
+    impl crate::ExtendableMessage for self::EnumValueOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -9777,84 +7318,48 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::EnumValueOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[15]
         }
     }
     impl self::EnumValueOptions {
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this enum value deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for the enum value, or it will be completely ignored; in the very least,"]
-        #[doc = " this is a formalization for deprecating enum values."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod enum_value_options {
+    pub(in super::super) mod enum_value_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -9941,7 +7446,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::ServiceOptions {
+    impl crate::ExtendableMessage for self::ServiceOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -10028,84 +7533,48 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::ServiceOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[16]
         }
     }
     impl self::ServiceOptions {
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 33;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this service deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for the service, or it will be completely ignored; in the very least,"]
-        #[doc = " this is a formalization for deprecating services."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod service_options {
+    pub(in super::super) mod service_options {
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -10209,7 +7678,7 @@ pub mod google_protobuf_descriptor_proto {
             self.unknown_fields.merge(&other.unknown_fields);
         }
     }
-    impl crate::ExtensionMessage for self::MethodOptions {
+    impl crate::ExtendableMessage for self::MethodOptions {
         fn registry(&self) -> ::std::option::Option<&'static crate::ExtensionRegistry> {
             self.extensions.registry()
         }
@@ -10296,70 +7765,36 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::MethodOptions {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[17]
         }
     }
     impl self::MethodOptions {
-        #[doc = "The field number for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_FIELD_NUMBER: i32 = 33;
-        #[doc = "The default value for the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub const DEPRECATED_DEFAULT_VALUE: bool = false;
-        #[doc = " Is this method deprecated?"]
-        #[doc = " Depending on the target platform, this can emit Deprecated annotations"]
-        #[doc = " for the method, or it will be completely ignored; in the very least,"]
-        #[doc = " this is a formalization for deprecating methods."]
         pub fn deprecated(&self) -> bool {
             self.deprecated.unwrap_or(Self::DEPRECATED_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_option(&self) -> ::std::option::Option<&bool> {
             self.deprecated.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn deprecated_mut(&mut self) -> &mut bool {
             self.deprecated
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn has_deprecated(&self) -> bool {
             self.deprecated.is_some()
         }
-        #[doc = "Sets the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn set_deprecated(&mut self, value: bool) {
             self.deprecated = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`deprecated`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn take_deprecated(&mut self) -> ::std::option::Option<bool> {
             self.deprecated.take()
         }
-        #[doc = "Clears the value of the [`deprecated`] field"]
-        #[doc = ""]
-        #[doc = "[`deprecated`]: #method.deprecated"]
         pub fn clear_deprecated(&mut self) {
             self.deprecated = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub const IDEMPOTENCY_LEVEL_FIELD_NUMBER: i32 = 34;
-        #[doc = "The default value for the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub const IDEMPOTENCY_LEVEL_DEFAULT_VALUE: crate::EnumValue<
             self::method_options::IdempotencyLevel,
         > = crate::EnumValue::Defined(self::method_options::IdempotencyLevel::IdempotencyUnknown);
@@ -10369,75 +7804,81 @@ pub mod google_protobuf_descriptor_proto {
             self.idempotency_level
                 .unwrap_or(Self::IDEMPOTENCY_LEVEL_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn idempotency_level_option(
             &self,
         ) -> ::std::option::Option<&crate::EnumValue<self::method_options::IdempotencyLevel>>
         {
             self.idempotency_level.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn idempotency_level_mut(
             &mut self,
         ) -> &mut crate::EnumValue<self::method_options::IdempotencyLevel> {
             self.idempotency_level
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn has_idempotency_level(&self) -> bool {
             self.idempotency_level.is_some()
         }
-        #[doc = "Sets the value of the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn set_idempotency_level(
             &mut self,
             value: crate::EnumValue<self::method_options::IdempotencyLevel>,
         ) {
             self.idempotency_level = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`idempotency_level`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn take_idempotency_level(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::method_options::IdempotencyLevel>>
         {
             self.idempotency_level.take()
         }
-        #[doc = "Clears the value of the [`idempotency_level`] field"]
-        #[doc = ""]
-        #[doc = "[`idempotency_level`]: #method.idempotency_level"]
         pub fn clear_idempotency_level(&mut self) {
             self.idempotency_level = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub const UNINTERPRETED_OPTION_FIELD_NUMBER: i32 = 999;
-        #[doc = " The parser stores options it doesn't recognize here. See above."]
         pub fn uninterpreted_option(
             &self,
         ) -> &crate::collections::RepeatedField<self::UninterpretedOption> {
             &self.uninterpreted_option
         }
-        #[doc = "Gets a unique reference to the [`uninterpreted_option`] field"]
-        #[doc = ""]
-        #[doc = "[`uninterpreted_option`]: #method.uninterpreted_option"]
         pub fn uninterpreted_option_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::UninterpretedOption> {
             &mut self.uninterpreted_option
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod method_options {
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum IdempotencyLevel {
+            IdempotencyUnknown,
+            NoSideEffects,
+            Idempotent,
+        }
+        impl crate::Enum for self::IdempotencyLevel {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::MethodOptions as crate::Message>::descriptor().enums()[0]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::IdempotencyLevel {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    0 => ::std::result::Result::Ok(self::IdempotencyLevel::IdempotencyUnknown),
+                    1 => ::std::result::Result::Ok(self::IdempotencyLevel::NoSideEffects),
+                    2 => ::std::result::Result::Ok(self::IdempotencyLevel::Idempotent),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::IdempotencyLevel> for i32 {
+            fn from(value: self::IdempotencyLevel) -> i32 {
+                match value {
+                    self::IdempotencyLevel::IdempotencyUnknown => 0,
+                    self::IdempotencyLevel::NoSideEffects => 1,
+                    self::IdempotencyLevel::Idempotent => 2,
+                }
+            }
+        }
         pub(super) static UNINTERPRETED_OPTION_CODEC: crate::Codec<
             self::super::UninterpretedOption,
         > = crate::Codec::message(7994);
@@ -10469,48 +7910,7 @@ pub mod google_protobuf_descriptor_proto {
             get: self::super::MethodOptions::uninterpreted_option,
             get_mut: self::super::MethodOptions::uninterpreted_option_mut,
         };
-        #[doc = " Is this method side-effect-free (or safe in HTTP parlance), or idempotent,"]
-        #[doc = " or neither? HTTP based RPC implementation may choose GET verb for safe"]
-        #[doc = " methods, and PUT verb for idempotent methods instead of the default POST."]
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum IdempotencyLevel {
-            IdempotencyUnknown,
-            NoSideEffects,
-            Idempotent,
-        }
-        impl crate::Enum for self::IdempotencyLevel {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::MethodOptions as crate::Message>::descriptor().enums()[0]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::IdempotencyLevel {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    0 => ::std::result::Result::Ok(self::IdempotencyLevel::IdempotencyUnknown),
-                    1 => ::std::result::Result::Ok(self::IdempotencyLevel::NoSideEffects),
-                    2 => ::std::result::Result::Ok(self::IdempotencyLevel::Idempotent),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::IdempotencyLevel> for i32 {
-            fn from(value: self::IdempotencyLevel) -> i32 {
-                match value {
-                    self::IdempotencyLevel::IdempotencyUnknown => 0,
-                    self::IdempotencyLevel::NoSideEffects => 1,
-                    self::IdempotencyLevel::Idempotent => 2,
-                }
-            }
-        }
     }
-    #[doc = " A message representing a option the parser does not recognize. This only"]
-    #[doc = " appears in options protos created by the compiler::Parser class."]
-    #[doc = " DescriptorPool resolves these when building Descriptor objects. Therefore,"]
-    #[doc = " options protos in descriptor objects (e.g. returned by Descriptor::options(),"]
-    #[doc = " or produced by Descriptor::CopyTo()) will never have UninterpretedOptions"]
-    #[doc = " in them."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct UninterpretedOption {
         name: crate::collections::RepeatedField<self::uninterpreted_option::NamePart>,
@@ -10646,235 +8046,125 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::UninterpretedOption {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[18]
         }
     }
     impl self::UninterpretedOption {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 2;
         pub fn name(
             &self,
         ) -> &crate::collections::RepeatedField<self::uninterpreted_option::NamePart> {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::uninterpreted_option::NamePart> {
             &mut self.name
         }
-        #[doc = "The field number for the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub const IDENTIFIER_VALUE_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub const IDENTIFIER_VALUE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The value of the uninterpreted option, in whatever type the tokenizer"]
-        #[doc = " identified it as during parsing. Exactly one of these should be set."]
         pub fn identifier_value(&self) -> &str {
             self.identifier_value
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::IDENTIFIER_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn identifier_value_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.identifier_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn identifier_value_mut(&mut self) -> &mut ::std::string::String {
             self.identifier_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn has_identifier_value(&self) -> bool {
             self.identifier_value.is_some()
         }
-        #[doc = "Sets the value of the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn set_identifier_value(&mut self, value: ::std::string::String) {
             self.identifier_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`identifier_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn take_identifier_value(&mut self) -> ::std::option::Option<::std::string::String> {
             self.identifier_value.take()
         }
-        #[doc = "Clears the value of the [`identifier_value`] field"]
-        #[doc = ""]
-        #[doc = "[`identifier_value`]: #method.identifier_value"]
         pub fn clear_identifier_value(&mut self) {
             self.identifier_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub const POSITIVE_INT_VALUE_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub const POSITIVE_INT_VALUE_DEFAULT_VALUE: u64 = 0;
         pub fn positive_int_value(&self) -> u64 {
             self.positive_int_value
                 .unwrap_or(Self::POSITIVE_INT_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn positive_int_value_option(&self) -> ::std::option::Option<&u64> {
             self.positive_int_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn positive_int_value_mut(&mut self) -> &mut u64 {
             self.positive_int_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn has_positive_int_value(&self) -> bool {
             self.positive_int_value.is_some()
         }
-        #[doc = "Sets the value of the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn set_positive_int_value(&mut self, value: u64) {
             self.positive_int_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`positive_int_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn take_positive_int_value(&mut self) -> ::std::option::Option<u64> {
             self.positive_int_value.take()
         }
-        #[doc = "Clears the value of the [`positive_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`positive_int_value`]: #method.positive_int_value"]
         pub fn clear_positive_int_value(&mut self) {
             self.positive_int_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub const NEGATIVE_INT_VALUE_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub const NEGATIVE_INT_VALUE_DEFAULT_VALUE: i64 = 0;
         pub fn negative_int_value(&self) -> i64 {
             self.negative_int_value
                 .unwrap_or(Self::NEGATIVE_INT_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn negative_int_value_option(&self) -> ::std::option::Option<&i64> {
             self.negative_int_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn negative_int_value_mut(&mut self) -> &mut i64 {
             self.negative_int_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn has_negative_int_value(&self) -> bool {
             self.negative_int_value.is_some()
         }
-        #[doc = "Sets the value of the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn set_negative_int_value(&mut self, value: i64) {
             self.negative_int_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`negative_int_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn take_negative_int_value(&mut self) -> ::std::option::Option<i64> {
             self.negative_int_value.take()
         }
-        #[doc = "Clears the value of the [`negative_int_value`] field"]
-        #[doc = ""]
-        #[doc = "[`negative_int_value`]: #method.negative_int_value"]
         pub fn clear_negative_int_value(&mut self) {
             self.negative_int_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub const DOUBLE_VALUE_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub const DOUBLE_VALUE_DEFAULT_VALUE: f64 = 0.0;
         pub fn double_value(&self) -> f64 {
             self.double_value
                 .unwrap_or(Self::DOUBLE_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn double_value_option(&self) -> ::std::option::Option<&f64> {
             self.double_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn double_value_mut(&mut self) -> &mut f64 {
             self.double_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn has_double_value(&self) -> bool {
             self.double_value.is_some()
         }
-        #[doc = "Sets the value of the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn set_double_value(&mut self, value: f64) {
             self.double_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`double_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn take_double_value(&mut self) -> ::std::option::Option<f64> {
             self.double_value.take()
         }
-        #[doc = "Clears the value of the [`double_value`] field"]
-        #[doc = ""]
-        #[doc = "[`double_value`]: #method.double_value"]
         pub fn clear_double_value(&mut self) {
             self.double_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub const STRING_VALUE_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub const STRING_VALUE_DEFAULT_VALUE: &'static [u8] = &[];
         pub fn string_value(&self) -> &[u8] {
             self.string_value
@@ -10882,50 +8172,26 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::STRING_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn string_value_option(&self) -> ::std::option::Option<&::std::vec::Vec<u8>> {
             self.string_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn string_value_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
             self.string_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn has_string_value(&self) -> bool {
             self.string_value.is_some()
         }
-        #[doc = "Sets the value of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn set_string_value(&mut self, value: ::std::vec::Vec<u8>) {
             self.string_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`string_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn take_string_value(&mut self) -> ::std::option::Option<::std::vec::Vec<u8>> {
             self.string_value.take()
         }
-        #[doc = "Clears the value of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn clear_string_value(&mut self) {
             self.string_value = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub const AGGREGATE_VALUE_FIELD_NUMBER: i32 = 8;
-        #[doc = "The default value for the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub const AGGREGATE_VALUE_DEFAULT_VALUE: &'static str = "";
         pub fn aggregate_value(&self) -> &str {
             self.aggregate_value
@@ -10933,46 +8199,174 @@ pub mod google_protobuf_descriptor_proto {
                 .map(|v| &**v)
                 .unwrap_or(Self::AGGREGATE_VALUE_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn aggregate_value_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.aggregate_value.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn aggregate_value_mut(&mut self) -> &mut ::std::string::String {
             self.aggregate_value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn has_aggregate_value(&self) -> bool {
             self.aggregate_value.is_some()
         }
-        #[doc = "Sets the value of the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn set_aggregate_value(&mut self, value: ::std::string::String) {
             self.aggregate_value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`aggregate_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn take_aggregate_value(&mut self) -> ::std::option::Option<::std::string::String> {
             self.aggregate_value.take()
         }
-        #[doc = "Clears the value of the [`aggregate_value`] field"]
-        #[doc = ""]
-        #[doc = "[`aggregate_value`]: #method.aggregate_value"]
         pub fn clear_aggregate_value(&mut self) {
             self.aggregate_value = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod uninterpreted_option {
+        #[derive(Clone, Debug, PartialEq, Default)]
+        pub struct NamePart {
+            name_part: ::std::option::Option<::std::string::String>,
+            is_extension: ::std::option::Option<bool>,
+            unknown_fields: crate::UnknownFieldSet,
+        }
+        impl crate::CodedMessage for self::NamePart {
+            fn merge_from(
+                &mut self,
+                input: &mut crate::io::CodedInput,
+            ) -> crate::io::InputResult<()> {
+                while let ::std::option::Option::Some(tag) = input.read_tag()? {
+                    match tag.get() {
+                        10 => self.set_name_part(input.read_string()?),
+                        16 | 18 => self.set_is_extension(input.read_bool()?),
+                        _ => self.unknown_fields.merge_from(tag, input)?,
+                    }
+                }
+                ::std::result::Result::Ok(())
+            }
+            fn calculate_size(&self) -> i32 {
+                let mut size = 0i32;
+                if let ::std::option::Option::Some(name_part) = self.name_part_option() {
+                    size += 1;
+                    size += crate::io::sizes::string(name_part);
+                }
+                if let ::std::option::Option::Some(is_extension) = self.is_extension_option() {
+                    size += 1;
+                    size += crate::io::sizes::bool(*is_extension);
+                }
+                size += self.unknown_fields.calculate_size();
+                size
+            }
+            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
+                if let ::std::option::Option::Some(name_part) = self.name_part_option() {
+                    output.write_raw_tag_bytes(&[10])?;
+                    output.write_string(name_part)?;
+                }
+                if let ::std::option::Option::Some(is_extension) = self.is_extension_option() {
+                    output.write_raw_tag_bytes(&[16])?;
+                    output.write_bool(*is_extension)?;
+                }
+                self.unknown_fields.write_to(output)?;
+                ::std::result::Result::Ok(())
+            }
+            fn is_initialized(&self) -> bool {
+                if !self.has_name_part() {
+                    return false;
+                }
+                if !self.has_is_extension() {
+                    return false;
+                }
+                true
+            }
+        }
+        impl crate::LiteMessage for self::NamePart {
+            fn merge(&mut self, other: &Self) {
+                if let ::std::option::Option::Some(name_part) = other.name_part_option() {
+                    self.set_name_part(::std::clone::Clone::clone(name_part));
+                }
+                if let ::std::option::Option::Some(is_extension) = other.is_extension_option() {
+                    self.set_is_extension(*is_extension);
+                }
+                self.unknown_fields.merge(&other.unknown_fields);
+            }
+        }
+        impl crate::Message for self::NamePart {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
+                &<self::super::UninterpretedOption as crate::Message>::descriptor().messages()[0]
+            }
+        }
+        impl self::NamePart {
+            pub const NAME_PART_FIELD_NUMBER: i32 = 1;
+            pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
+            pub fn name_part(&self) -> &str {
+                self.name_part
+                    .as_ref()
+                    .map(|v| &**v)
+                    .unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
+            }
+            pub fn name_part_option(&self) -> ::std::option::Option<&::std::string::String> {
+                self.name_part.as_ref()
+            }
+            pub fn name_part_mut(&mut self) -> &mut ::std::string::String {
+                self.name_part
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_name_part(&self) -> bool {
+                self.name_part.is_some()
+            }
+            pub fn set_name_part(&mut self, value: ::std::string::String) {
+                self.name_part = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_name_part(&mut self) -> ::std::option::Option<::std::string::String> {
+                self.name_part.take()
+            }
+            pub fn clear_name_part(&mut self) {
+                self.name_part = ::std::option::Option::None;
+            }
+            pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
+            pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
+            pub fn is_extension(&self) -> bool {
+                self.is_extension
+                    .unwrap_or(Self::IS_EXTENSION_DEFAULT_VALUE)
+            }
+            pub fn is_extension_option(&self) -> ::std::option::Option<&bool> {
+                self.is_extension.as_ref()
+            }
+            pub fn is_extension_mut(&mut self) -> &mut bool {
+                self.is_extension
+                    .get_or_insert_with(::std::default::Default::default)
+            }
+            pub fn has_is_extension(&self) -> bool {
+                self.is_extension.is_some()
+            }
+            pub fn set_is_extension(&mut self, value: bool) {
+                self.is_extension = ::std::option::Option::Some(::std::convert::From::from(value))
+            }
+            pub fn take_is_extension(&mut self) -> ::std::option::Option<bool> {
+                self.is_extension.take()
+            }
+            pub fn clear_is_extension(&mut self) {
+                self.is_extension = ::std::option::Option::None;
+            }
+        }
+        pub(in super::super::super) mod name_part {
+            pub(in super::super::super) static NAME_PART_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<
+                    self::super::NamePart,
+                    ::std::string::String,
+                > = crate::reflect::access::VerboseFieldAccessor {
+                get_option: self::super::NamePart::name_part_option,
+                get_mut: self::super::NamePart::name_part_mut,
+                set: self::super::NamePart::set_name_part,
+                take: self::super::NamePart::take_name_part,
+                clear: self::super::NamePart::clear_name_part,
+            };
+            pub(in super::super::super) static IS_EXTENSION_REFLECTOR:
+                crate::reflect::access::VerboseFieldAccessor<self::super::NamePart, bool> =
+                crate::reflect::access::VerboseFieldAccessor {
+                    get_option: self::super::NamePart::is_extension_option,
+                    get_mut: self::super::NamePart::is_extension_mut,
+                    set: self::super::NamePart::set_is_extension,
+                    take: self::super::NamePart::take_is_extension,
+                    clear: self::super::NamePart::clear_is_extension,
+                };
+        }
         pub(super) static NAME_CODEC: crate::Codec<self::NamePart> = crate::Codec::message(18);
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::UninterpretedOption,
@@ -11041,210 +8435,7 @@ pub mod google_protobuf_descriptor_proto {
             take: self::super::UninterpretedOption::take_aggregate_value,
             clear: self::super::UninterpretedOption::clear_aggregate_value,
         };
-        #[doc = " The name of the uninterpreted option.  Each string represents a segment in"]
-        #[doc = " a dot-separated name.  is_extension is true iff a segment represents an"]
-        #[doc = " extension (denoted with parentheses in options specs in .proto files)."]
-        #[doc = " E.g.,{ [\"foo\", false], [\"bar.baz\", true], [\"qux\", false] } represents"]
-        #[doc = " \"foo.(bar.baz).qux\"."]
-        #[derive(Clone, Debug, PartialEq, Default)]
-        pub struct NamePart {
-            name_part: ::std::option::Option<::std::string::String>,
-            is_extension: ::std::option::Option<bool>,
-            unknown_fields: crate::UnknownFieldSet,
-        }
-        impl crate::CodedMessage for self::NamePart {
-            fn merge_from(
-                &mut self,
-                input: &mut crate::io::CodedInput,
-            ) -> crate::io::InputResult<()> {
-                while let ::std::option::Option::Some(tag) = input.read_tag()? {
-                    match tag.get() {
-                        10 => self.set_name_part(input.read_string()?),
-                        16 | 18 => self.set_is_extension(input.read_bool()?),
-                        _ => self.unknown_fields.merge_from(tag, input)?,
-                    }
-                }
-                ::std::result::Result::Ok(())
-            }
-            fn calculate_size(&self) -> i32 {
-                let mut size = 0i32;
-                if let ::std::option::Option::Some(name_part) = self.name_part_option() {
-                    size += 1;
-                    size += crate::io::sizes::string(name_part);
-                }
-                if let ::std::option::Option::Some(is_extension) = self.is_extension_option() {
-                    size += 1;
-                    size += crate::io::sizes::bool(*is_extension);
-                }
-                size += self.unknown_fields.calculate_size();
-                size
-            }
-            fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-                if let ::std::option::Option::Some(name_part) = self.name_part_option() {
-                    output.write_raw_tag_bytes(&[10])?;
-                    output.write_string(name_part)?;
-                }
-                if let ::std::option::Option::Some(is_extension) = self.is_extension_option() {
-                    output.write_raw_tag_bytes(&[16])?;
-                    output.write_bool(*is_extension)?;
-                }
-                self.unknown_fields.write_to(output)?;
-                ::std::result::Result::Ok(())
-            }
-            fn is_initialized(&self) -> bool {
-                if !self.has_name_part() {
-                    return false;
-                }
-                if !self.has_is_extension() {
-                    return false;
-                }
-                true
-            }
-        }
-        impl crate::LiteMessage for self::NamePart {
-            fn merge(&mut self, other: &Self) {
-                if let ::std::option::Option::Some(name_part) = other.name_part_option() {
-                    self.set_name_part(::std::clone::Clone::clone(name_part));
-                }
-                if let ::std::option::Option::Some(is_extension) = other.is_extension_option() {
-                    self.set_is_extension(*is_extension);
-                }
-                self.unknown_fields.merge(&other.unknown_fields);
-            }
-        }
-        impl crate::Message for self::NamePart {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
-                &<self::super::UninterpretedOption as crate::Message>::descriptor().messages()[0]
-            }
-        }
-        impl self::NamePart {
-            #[doc = "The field number for the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub const NAME_PART_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub const NAME_PART_DEFAULT_VALUE: &'static str = "";
-            pub fn name_part(&self) -> &str {
-                self.name_part
-                    .as_ref()
-                    .map(|v| &**v)
-                    .unwrap_or(Self::NAME_PART_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn name_part_option(&self) -> ::std::option::Option<&::std::string::String> {
-                self.name_part.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn name_part_mut(&mut self) -> &mut ::std::string::String {
-                self.name_part
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn has_name_part(&self) -> bool {
-                self.name_part.is_some()
-            }
-            #[doc = "Sets the value of the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn set_name_part(&mut self, value: ::std::string::String) {
-                self.name_part = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`name_part`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn take_name_part(&mut self) -> ::std::option::Option<::std::string::String> {
-                self.name_part.take()
-            }
-            #[doc = "Clears the value of the [`name_part`] field"]
-            #[doc = ""]
-            #[doc = "[`name_part`]: #method.name_part"]
-            pub fn clear_name_part(&mut self) {
-                self.name_part = ::std::option::Option::None;
-            }
-            #[doc = "The field number for the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub const IS_EXTENSION_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub const IS_EXTENSION_DEFAULT_VALUE: bool = false;
-            pub fn is_extension(&self) -> bool {
-                self.is_extension
-                    .unwrap_or(Self::IS_EXTENSION_DEFAULT_VALUE)
-            }
-            #[doc = "Gets an option indicating the presence of the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn is_extension_option(&self) -> ::std::option::Option<&bool> {
-                self.is_extension.as_ref()
-            }
-            #[doc = "Gets a unique reference to the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn is_extension_mut(&mut self) -> &mut bool {
-                self.is_extension
-                    .get_or_insert_with(::std::default::Default::default)
-            }
-            #[doc = "Gets a bool indicating the presence of the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn has_is_extension(&self) -> bool {
-                self.is_extension.is_some()
-            }
-            #[doc = "Sets the value of the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn set_is_extension(&mut self, value: bool) {
-                self.is_extension = ::std::option::Option::Some(::std::convert::From::from(value))
-            }
-            #[doc = "Takes the value out of the [`is_extension`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn take_is_extension(&mut self) -> ::std::option::Option<bool> {
-                self.is_extension.take()
-            }
-            #[doc = "Clears the value of the [`is_extension`] field"]
-            #[doc = ""]
-            #[doc = "[`is_extension`]: #method.is_extension"]
-            pub fn clear_is_extension(&mut self) {
-                self.is_extension = ::std::option::Option::None;
-            }
-        }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod name_part {
-            pub(in super::super::super) static NAME_PART_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<
-                    self::super::NamePart,
-                    ::std::string::String,
-                > = crate::reflect::access::VerboseFieldAccessor {
-                get_option: self::super::NamePart::name_part_option,
-                get_mut: self::super::NamePart::name_part_mut,
-                set: self::super::NamePart::set_name_part,
-                take: self::super::NamePart::take_name_part,
-                clear: self::super::NamePart::clear_name_part,
-            };
-            pub(in super::super::super) static IS_EXTENSION_REFLECTOR:
-                crate::reflect::access::VerboseFieldAccessor<self::super::NamePart, bool> =
-                crate::reflect::access::VerboseFieldAccessor {
-                    get_option: self::super::NamePart::is_extension_option,
-                    get_mut: self::super::NamePart::is_extension_mut,
-                    set: self::super::NamePart::set_is_extension,
-                    take: self::super::NamePart::take_is_extension,
-                    clear: self::super::NamePart::clear_is_extension,
-                };
-        }
     }
-    #[doc = " Encapsulates information about the original source file from which a"]
-    #[doc = " FileDescriptorProto was generated."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct SourceCodeInfo {
         location: crate::collections::RepeatedField<self::source_code_info::Location>,
@@ -11290,83 +8481,24 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::SourceCodeInfo {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[19]
         }
     }
     impl self::SourceCodeInfo {
-        #[doc = "The field number for the [`location`] field"]
-        #[doc = ""]
-        #[doc = "[`location`]: #method.location"]
         pub const LOCATION_FIELD_NUMBER: i32 = 1;
-        #[doc = " A Location identifies a piece of source code in a .proto file which"]
-        #[doc = " corresponds to a particular definition.  This information is intended"]
-        #[doc = " to be useful to IDEs, code indexers, documentation generators, and similar"]
-        #[doc = " tools."]
-        #[doc = ""]
-        #[doc = " For example, say we have a file like:"]
-        #[doc = "   message Foo {"]
-        #[doc = "     optional string foo = 1;"]
-        #[doc = "   }"]
-        #[doc = " Let's look at just the field definition:"]
-        #[doc = "   optional string foo = 1;"]
-        #[doc = "   ^       ^^     ^^  ^  ^^^"]
-        #[doc = "   a       bc     de  f  ghi"]
-        #[doc = " We have the following locations:"]
-        #[doc = "   span   path               represents"]
-        #[doc = "   [a,i)  [ 4, 0, 2, 0 ]     The whole field definition."]
-        #[doc = "   [a,b)  [ 4, 0, 2, 0, 4 ]  The label (optional)."]
-        #[doc = "   [c,d)  [ 4, 0, 2, 0, 5 ]  The type (string)."]
-        #[doc = "   [e,f)  [ 4, 0, 2, 0, 1 ]  The name (foo)."]
-        #[doc = "   [g,h)  [ 4, 0, 2, 0, 3 ]  The number (1)."]
-        #[doc = ""]
-        #[doc = " Notes:"]
-        #[doc = " - A location may refer to a repeated field itself (i.e. not to any"]
-        #[doc = "   particular index within it).  This is used whenever a set of elements are"]
-        #[doc = "   logically enclosed in a single code segment.  For example, an entire"]
-        #[doc = "   extend block (possibly containing multiple extension definitions) will"]
-        #[doc = "   have an outer location whose path refers to the \"extensions\" repeated"]
-        #[doc = "   field without an index."]
-        #[doc = " - Multiple locations may have the same path.  This happens when a single"]
-        #[doc = "   logical declaration is spread out across multiple places.  The most"]
-        #[doc = "   obvious example is the \"extend\" block again -- there may be multiple"]
-        #[doc = "   extend blocks in the same scope, each of which will have the same path."]
-        #[doc = " - A location's span is not always a subset of its parent's span.  For"]
-        #[doc = "   example, the \"extendee\" of an extension declaration appears at the"]
-        #[doc = "   beginning of the \"extend\" block and is shared by all extensions within"]
-        #[doc = "   the block."]
-        #[doc = " - Just because a location's span is a subset of some other location's span"]
-        #[doc = "   does not mean that it is a descendent.  For example, a \"group\" defines"]
-        #[doc = "   both a type and a field in a single declaration.  Thus, the locations"]
-        #[doc = "   corresponding to the type and field and their components will overlap."]
-        #[doc = " - Code which tries to interpret locations should probably be designed to"]
-        #[doc = "   ignore those that it doesn't understand, as more types of locations could"]
-        #[doc = "   be recorded in the future."]
         pub fn location(
             &self,
         ) -> &crate::collections::RepeatedField<self::source_code_info::Location> {
             &self.location
         }
-        #[doc = "Gets a unique reference to the [`location`] field"]
-        #[doc = ""]
-        #[doc = "[`location`]: #method.location"]
         pub fn location_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::source_code_info::Location> {
             &mut self.location
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod source_code_info {
-        pub(super) static LOCATION_CODEC: crate::Codec<self::Location> = crate::Codec::message(10);
-        pub(in super::super) static LOCATION_REFLECTOR:
-            crate::reflect::access::SimpleFieldAccessor<
-                self::super::SourceCodeInfo,
-                crate::collections::RepeatedField<self::Location>,
-            > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::SourceCodeInfo::location,
-            get_mut: self::super::SourceCodeInfo::location_mut,
-        };
         #[derive(Clone, Debug, PartialEq, Default)]
         pub struct Location {
             path: crate::collections::RepeatedField<i32>,
@@ -11461,173 +8593,56 @@ pub mod google_protobuf_descriptor_proto {
             }
         }
         impl crate::Message for self::Location {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
                 &<self::super::SourceCodeInfo as crate::Message>::descriptor().messages()[0]
             }
         }
         impl self::Location {
-            #[doc = "The field number for the [`path`] field"]
-            #[doc = ""]
-            #[doc = "[`path`]: #method.path"]
             pub const PATH_FIELD_NUMBER: i32 = 1;
-            #[doc = " Identifies which part of the FileDescriptorProto was defined at this"]
-            #[doc = " location."]
-            #[doc = ""]
-            #[doc = " Each element is a field number or an index.  They form a path from"]
-            #[doc = " the root FileDescriptorProto to the place where the definition.  For"]
-            #[doc = " example, this path:"]
-            #[doc = "   [ 4, 3, 2, 7, 1 ]"]
-            #[doc = " refers to:"]
-            #[doc = "   file.message_type(3)  // 4, 3"]
-            #[doc = "       .field(7)         // 2, 7"]
-            #[doc = "       .name()           // 1"]
-            #[doc = " This is because FileDescriptorProto.message_type has field number 4:"]
-            #[doc = "   repeated DescriptorProto message_type = 4;"]
-            #[doc = " and DescriptorProto.field has field number 2:"]
-            #[doc = "   repeated FieldDescriptorProto field = 2;"]
-            #[doc = " and FieldDescriptorProto.name has field number 1:"]
-            #[doc = "   optional string name = 1;"]
-            #[doc = ""]
-            #[doc = " Thus, the above path gives the location of a field name.  If we removed"]
-            #[doc = " the last element:"]
-            #[doc = "   [ 4, 3, 2, 7 ]"]
-            #[doc = " this path refers to the whole field declaration (from the beginning"]
-            #[doc = " of the label to the terminating semicolon)."]
             pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
                 &self.path
             }
-            #[doc = "Gets a unique reference to the [`path`] field"]
-            #[doc = ""]
-            #[doc = "[`path`]: #method.path"]
             pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
                 &mut self.path
             }
-            #[doc = "The field number for the [`span`] field"]
-            #[doc = ""]
-            #[doc = "[`span`]: #method.span"]
             pub const SPAN_FIELD_NUMBER: i32 = 2;
-            #[doc = " Always has exactly three or four elements: start line, start column,"]
-            #[doc = " end line (optional, otherwise assumed same as start line), end column."]
-            #[doc = " These are packed into a single field for efficiency.  Note that line"]
-            #[doc = " and column numbers are zero-based -- typically you will want to add"]
-            #[doc = " 1 to each before displaying to a user."]
             pub fn span(&self) -> &crate::collections::RepeatedField<i32> {
                 &self.span
             }
-            #[doc = "Gets a unique reference to the [`span`] field"]
-            #[doc = ""]
-            #[doc = "[`span`]: #method.span"]
             pub fn span_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
                 &mut self.span
             }
-            #[doc = "The field number for the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub const LEADING_COMMENTS_FIELD_NUMBER: i32 = 3;
-            #[doc = "The default value for the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub const LEADING_COMMENTS_DEFAULT_VALUE: &'static str = "";
-            #[doc = " If this SourceCodeInfo represents a complete declaration, these are any"]
-            #[doc = " comments appearing before and after the declaration which appear to be"]
-            #[doc = " attached to the declaration."]
-            #[doc = ""]
-            #[doc = " A series of line comments appearing on consecutive lines, with no other"]
-            #[doc = " tokens appearing on those lines, will be treated as a single comment."]
-            #[doc = ""]
-            #[doc = " leading_detached_comments will keep paragraphs of comments that appear"]
-            #[doc = " before (but not connected to) the current element. Each paragraph,"]
-            #[doc = " separated by empty lines, will be one comment element in the repeated"]
-            #[doc = " field."]
-            #[doc = ""]
-            #[doc = " Only the comment content is provided; comment markers (e.g. //) are"]
-            #[doc = " stripped out.  For block comments, leading whitespace and an asterisk"]
-            #[doc = " will be stripped from the beginning of each line other than the first."]
-            #[doc = " Newlines are included in the output."]
-            #[doc = ""]
-            #[doc = " Examples:"]
-            #[doc = ""]
-            #[doc = "   optional int32 foo = 1;  // Comment attached to foo."]
-            #[doc = "   // Comment attached to bar."]
-            #[doc = "   optional int32 bar = 2;"]
-            #[doc = ""]
-            #[doc = "   optional string baz = 3;"]
-            #[doc = "   // Comment attached to baz."]
-            #[doc = "   // Another line attached to baz."]
-            #[doc = ""]
-            #[doc = "   // Comment attached to qux."]
-            #[doc = "   //"]
-            #[doc = "   // Another line attached to qux."]
-            #[doc = "   optional double qux = 4;"]
-            #[doc = ""]
-            #[doc = "   // Detached comment for corge. This is not leading or trailing comments"]
-            #[doc = "   // to qux or corge because there are blank lines separating it from"]
-            #[doc = "   // both."]
-            #[doc = ""]
-            #[doc = "   // Detached comment for corge paragraph 2."]
-            #[doc = ""]
-            #[doc = "   optional string corge = 5;"]
-            #[doc = "   /* Block comment attached"]
-            #[doc = "    * to corge.  Leading asterisks"]
-            #[doc = "    * will be removed. */"]
-            #[doc = "   /* Block comment attached to"]
-            #[doc = "    * grault. */"]
-            #[doc = "   optional int32 grault = 6;"]
-            #[doc = ""]
-            #[doc = "   // ignored detached comments."]
             pub fn leading_comments(&self) -> &str {
                 self.leading_comments
                     .as_ref()
                     .map(|v| &**v)
                     .unwrap_or(Self::LEADING_COMMENTS_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn leading_comments_option(&self) -> ::std::option::Option<&::std::string::String> {
                 self.leading_comments.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn leading_comments_mut(&mut self) -> &mut ::std::string::String {
                 self.leading_comments
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn has_leading_comments(&self) -> bool {
                 self.leading_comments.is_some()
             }
-            #[doc = "Sets the value of the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn set_leading_comments(&mut self, value: ::std::string::String) {
                 self.leading_comments =
                     ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`leading_comments`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn take_leading_comments(
                 &mut self,
             ) -> ::std::option::Option<::std::string::String> {
                 self.leading_comments.take()
             }
-            #[doc = "Clears the value of the [`leading_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_comments`]: #method.leading_comments"]
             pub fn clear_leading_comments(&mut self) {
                 self.leading_comments = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub const TRAILING_COMMENTS_FIELD_NUMBER: i32 = 4;
-            #[doc = "The default value for the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub const TRAILING_COMMENTS_DEFAULT_VALUE: &'static str = "";
             pub fn trailing_comments(&self) -> &str {
                 self.trailing_comments
@@ -11635,68 +8650,43 @@ pub mod google_protobuf_descriptor_proto {
                     .map(|v| &**v)
                     .unwrap_or(Self::TRAILING_COMMENTS_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn trailing_comments_option(
                 &self,
             ) -> ::std::option::Option<&::std::string::String> {
                 self.trailing_comments.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn trailing_comments_mut(&mut self) -> &mut ::std::string::String {
                 self.trailing_comments
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn has_trailing_comments(&self) -> bool {
                 self.trailing_comments.is_some()
             }
-            #[doc = "Sets the value of the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn set_trailing_comments(&mut self, value: ::std::string::String) {
                 self.trailing_comments =
                     ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`trailing_comments`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn take_trailing_comments(
                 &mut self,
             ) -> ::std::option::Option<::std::string::String> {
                 self.trailing_comments.take()
             }
-            #[doc = "Clears the value of the [`trailing_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`trailing_comments`]: #method.trailing_comments"]
             pub fn clear_trailing_comments(&mut self) {
                 self.trailing_comments = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`leading_detached_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_detached_comments`]: #method.leading_detached_comments"]
             pub const LEADING_DETACHED_COMMENTS_FIELD_NUMBER: i32 = 6;
             pub fn leading_detached_comments(
                 &self,
             ) -> &crate::collections::RepeatedField<::std::string::String> {
                 &self.leading_detached_comments
             }
-            #[doc = "Gets a unique reference to the [`leading_detached_comments`] field"]
-            #[doc = ""]
-            #[doc = "[`leading_detached_comments`]: #method.leading_detached_comments"]
             pub fn leading_detached_comments_mut(
                 &mut self,
             ) -> &mut crate::collections::RepeatedField<::std::string::String> {
                 &mut self.leading_detached_comments
             }
         }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod location {
+        pub(in super::super::super) mod location {
             pub(super) static PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
             pub(super) static SPAN_CODEC: crate::Codec<i32> = crate::Codec::int32(18);
             pub(super) static LEADING_DETACHED_COMMENTS_CODEC: crate::Codec<::std::string::String> =
@@ -11748,10 +8738,16 @@ pub mod google_protobuf_descriptor_proto {
                 get_mut: self::super::Location::leading_detached_comments_mut,
             };
         }
+        pub(super) static LOCATION_CODEC: crate::Codec<self::Location> = crate::Codec::message(10);
+        pub(in super::super) static LOCATION_REFLECTOR:
+            crate::reflect::access::SimpleFieldAccessor<
+                self::super::SourceCodeInfo,
+                crate::collections::RepeatedField<self::Location>,
+            > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::SourceCodeInfo::location,
+            get_mut: self::super::SourceCodeInfo::location_mut,
+        };
     }
-    #[doc = " Describes the relationship between generated code and its original source"]
-    #[doc = " file. A GeneratedCodeInfo message is associated with only one generated"]
-    #[doc = " source file, but may contain references to different source .proto files."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct GeneratedCodeInfo {
         annotation: crate::collections::RepeatedField<self::generated_code_info::Annotation>,
@@ -11797,43 +8793,24 @@ pub mod google_protobuf_descriptor_proto {
         }
     }
     impl crate::Message for self::GeneratedCodeInfo {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[20]
         }
     }
     impl self::GeneratedCodeInfo {
-        #[doc = "The field number for the [`annotation`] field"]
-        #[doc = ""]
-        #[doc = "[`annotation`]: #method.annotation"]
         pub const ANNOTATION_FIELD_NUMBER: i32 = 1;
-        #[doc = " An Annotation connects some span of text in generated code to an element"]
-        #[doc = " of its generating .proto file."]
         pub fn annotation(
             &self,
         ) -> &crate::collections::RepeatedField<self::generated_code_info::Annotation> {
             &self.annotation
         }
-        #[doc = "Gets a unique reference to the [`annotation`] field"]
-        #[doc = ""]
-        #[doc = "[`annotation`]: #method.annotation"]
         pub fn annotation_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::generated_code_info::Annotation> {
             &mut self.annotation
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod generated_code_info {
-        pub(super) static ANNOTATION_CODEC: crate::Codec<self::Annotation> =
-            crate::Codec::message(10);
-        pub(in super::super) static ANNOTATION_REFLECTOR:
-            crate::reflect::access::SimpleFieldAccessor<
-                self::super::GeneratedCodeInfo,
-                crate::collections::RepeatedField<self::Annotation>,
-            > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::GeneratedCodeInfo::annotation,
-            get_mut: self::super::GeneratedCodeInfo::annotation_mut,
-        };
         #[derive(Clone, Debug, PartialEq, Default)]
         pub struct Annotation {
             path: crate::collections::RepeatedField<i32>,
@@ -11916,182 +8893,95 @@ pub mod google_protobuf_descriptor_proto {
             }
         }
         impl crate::Message for self::Annotation {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
                 &<self::super::GeneratedCodeInfo as crate::Message>::descriptor().messages()[0]
             }
         }
         impl self::Annotation {
-            #[doc = "The field number for the [`path`] field"]
-            #[doc = ""]
-            #[doc = "[`path`]: #method.path"]
             pub const PATH_FIELD_NUMBER: i32 = 1;
-            #[doc = " Identifies the element in the original source .proto file. This field"]
-            #[doc = " is formatted the same as SourceCodeInfo.Location.path."]
             pub fn path(&self) -> &crate::collections::RepeatedField<i32> {
                 &self.path
             }
-            #[doc = "Gets a unique reference to the [`path`] field"]
-            #[doc = ""]
-            #[doc = "[`path`]: #method.path"]
             pub fn path_mut(&mut self) -> &mut crate::collections::RepeatedField<i32> {
                 &mut self.path
             }
-            #[doc = "The field number for the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub const SOURCE_FILE_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub const SOURCE_FILE_DEFAULT_VALUE: &'static str = "";
-            #[doc = " Identifies the filesystem path to the original source .proto."]
             pub fn source_file(&self) -> &str {
                 self.source_file
                     .as_ref()
                     .map(|v| &**v)
                     .unwrap_or(Self::SOURCE_FILE_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn source_file_option(&self) -> ::std::option::Option<&::std::string::String> {
                 self.source_file.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn source_file_mut(&mut self) -> &mut ::std::string::String {
                 self.source_file
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn has_source_file(&self) -> bool {
                 self.source_file.is_some()
             }
-            #[doc = "Sets the value of the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn set_source_file(&mut self, value: ::std::string::String) {
                 self.source_file = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`source_file`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn take_source_file(&mut self) -> ::std::option::Option<::std::string::String> {
                 self.source_file.take()
             }
-            #[doc = "Clears the value of the [`source_file`] field"]
-            #[doc = ""]
-            #[doc = "[`source_file`]: #method.source_file"]
             pub fn clear_source_file(&mut self) {
                 self.source_file = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub const BEGIN_FIELD_NUMBER: i32 = 3;
-            #[doc = "The default value for the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub const BEGIN_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Identifies the starting offset in bytes in the generated code"]
-            #[doc = " that relates to the identified object."]
             pub fn begin(&self) -> i32 {
                 self.begin.unwrap_or(Self::BEGIN_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn begin_option(&self) -> ::std::option::Option<&i32> {
                 self.begin.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn begin_mut(&mut self) -> &mut i32 {
                 self.begin
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn has_begin(&self) -> bool {
                 self.begin.is_some()
             }
-            #[doc = "Sets the value of the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn set_begin(&mut self, value: i32) {
                 self.begin = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`begin`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn take_begin(&mut self) -> ::std::option::Option<i32> {
                 self.begin.take()
             }
-            #[doc = "Clears the value of the [`begin`] field"]
-            #[doc = ""]
-            #[doc = "[`begin`]: #method.begin"]
             pub fn clear_begin(&mut self) {
                 self.begin = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub const END_FIELD_NUMBER: i32 = 4;
-            #[doc = "The default value for the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub const END_DEFAULT_VALUE: i32 = 0;
-            #[doc = " Identifies the ending offset in bytes in the generated code that"]
-            #[doc = " relates to the identified offset. The end offset should be one past"]
-            #[doc = " the last relevant byte (so the length of the text = end - begin)."]
             pub fn end(&self) -> i32 {
                 self.end.unwrap_or(Self::END_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn end_option(&self) -> ::std::option::Option<&i32> {
                 self.end.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn end_mut(&mut self) -> &mut i32 {
                 self.end
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn has_end(&self) -> bool {
                 self.end.is_some()
             }
-            #[doc = "Sets the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn set_end(&mut self, value: i32) {
                 self.end = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`end`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn take_end(&mut self) -> ::std::option::Option<i32> {
                 self.end.take()
             }
-            #[doc = "Clears the value of the [`end`] field"]
-            #[doc = ""]
-            #[doc = "[`end`]: #method.end"]
             pub fn clear_end(&mut self) {
                 self.end = ::std::option::Option::None;
             }
         }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod annotation {
+        pub(in super::super::super) mod annotation {
             pub(super) static PATH_CODEC: crate::Codec<i32> = crate::Codec::int32(10);
             pub(in super::super::super) static PATH_REFLECTOR:
                 crate::reflect::access::SimpleFieldAccessor<
@@ -12131,6 +9021,16 @@ pub mod google_protobuf_descriptor_proto {
                     clear: self::super::Annotation::clear_end,
                 };
         }
+        pub(super) static ANNOTATION_CODEC: crate::Codec<self::Annotation> =
+            crate::Codec::message(10);
+        pub(in super::super) static ANNOTATION_REFLECTOR:
+            crate::reflect::access::SimpleFieldAccessor<
+                self::super::GeneratedCodeInfo,
+                crate::collections::RepeatedField<self::Annotation>,
+            > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::GeneratedCodeInfo::annotation,
+            get_mut: self::super::GeneratedCodeInfo::annotation_mut,
+        };
     }
 }
 static GOOGLE_PROTOBUF_DURATION_PROTO_BINARY: &'static [u8] = &[
@@ -12148,72 +9048,11 @@ static GOOGLE_PROTOBUF_DURATION_PROTO_BINARY: &'static [u8] = &[
     84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_duration_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/duration.proto")
             .unwrap()
     }
-    #[doc = " A Duration represents a signed, fixed-length span of time represented"]
-    #[doc = " as a count of seconds and fractions of seconds at nanosecond"]
-    #[doc = " resolution. It is independent of any calendar and concepts like \"day\""]
-    #[doc = " or \"month\". It is related to Timestamp in that the difference between"]
-    #[doc = " two Timestamp values is a Duration and it can be added or subtracted"]
-    #[doc = " from a Timestamp. Range is approximately +-10,000 years."]
-    #[doc = ""]
-    #[doc = " # Examples"]
-    #[doc = ""]
-    #[doc = " Example 1: Compute Duration from two Timestamps in pseudo code."]
-    #[doc = ""]
-    #[doc = "     Timestamp start = ...;"]
-    #[doc = "     Timestamp end = ...;"]
-    #[doc = "     Duration duration = ...;"]
-    #[doc = ""]
-    #[doc = "     duration.seconds = end.seconds - start.seconds;"]
-    #[doc = "     duration.nanos = end.nanos - start.nanos;"]
-    #[doc = ""]
-    #[doc = "     if (duration.seconds < 0 && duration.nanos > 0) {"]
-    #[doc = "       duration.seconds += 1;"]
-    #[doc = "       duration.nanos -= 1000000000;"]
-    #[doc = "     } else if (durations.seconds > 0 && duration.nanos < 0) {"]
-    #[doc = "       duration.seconds -= 1;"]
-    #[doc = "       duration.nanos += 1000000000;"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Example 2: Compute Timestamp from Timestamp + Duration in pseudo code."]
-    #[doc = ""]
-    #[doc = "     Timestamp start = ...;"]
-    #[doc = "     Duration duration = ...;"]
-    #[doc = "     Timestamp end = ...;"]
-    #[doc = ""]
-    #[doc = "     end.seconds = start.seconds + duration.seconds;"]
-    #[doc = "     end.nanos = start.nanos + duration.nanos;"]
-    #[doc = ""]
-    #[doc = "     if (end.nanos < 0) {"]
-    #[doc = "       end.seconds -= 1;"]
-    #[doc = "       end.nanos += 1000000000;"]
-    #[doc = "     } else if (end.nanos >= 1000000000) {"]
-    #[doc = "       end.seconds += 1;"]
-    #[doc = "       end.nanos -= 1000000000;"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Example 3: Compute Duration from datetime.timedelta in Python."]
-    #[doc = ""]
-    #[doc = "     td = datetime.timedelta(days=3, minutes=10)"]
-    #[doc = "     duration = Duration()"]
-    #[doc = "     duration.FromTimedelta(td)"]
-    #[doc = ""]
-    #[doc = " # JSON Mapping"]
-    #[doc = ""]
-    #[doc = " In JSON format, the Duration type is encoded as a string rather than an"]
-    #[doc = " object, where the string ends in the suffix \"s\" (indicating seconds) and"]
-    #[doc = " is preceded by the number of seconds, with nanoseconds expressed as"]
-    #[doc = " fractional seconds. For example, 3 seconds with 0 nanoseconds should be"]
-    #[doc = " encoded in JSON format as \"3s\", while 3 seconds and 1 nanosecond should"]
-    #[doc = " be expressed in JSON format as \"3.000000001s\", and 3 seconds and 1"]
-    #[doc = " microsecond should be expressed in JSON format as \"3.000001s\"."]
-    #[doc = ""]
-    #[doc = ""]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Duration {
         seconds: i64,
@@ -12272,57 +9111,29 @@ pub mod google_protobuf_duration_proto {
         }
     }
     impl crate::Message for self::Duration {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Duration {
-        #[doc = "The field number for the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub const SECONDS_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub const SECONDS_DEFAULT_VALUE: i64 = 0;
-        #[doc = " Signed seconds of the span of time. Must be from -315,576,000,000"]
-        #[doc = " to +315,576,000,000 inclusive. Note: these bounds are computed from:"]
-        #[doc = " 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years"]
         pub fn seconds(&self) -> &i64 {
             &self.seconds
         }
-        #[doc = "Gets a unique reference to the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub fn seconds_mut(&mut self) -> &mut i64 {
             &mut self.seconds
         }
-        #[doc = "The field number for the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub const NANOS_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub const NANOS_DEFAULT_VALUE: i32 = 0;
-        #[doc = " Signed fractions of a second at nanosecond resolution of the span"]
-        #[doc = " of time. Durations less than one second are represented with a 0"]
-        #[doc = " `seconds` field and a positive or negative `nanos` field. For durations"]
-        #[doc = " of one second or more, a non-zero value for the `nanos` field must be"]
-        #[doc = " of the same sign as the `seconds` field. Must be from -999,999,999"]
-        #[doc = " to +999,999,999 inclusive."]
         pub fn nanos(&self) -> &i32 {
             &self.nanos
         }
-        #[doc = "Gets a unique reference to the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub fn nanos_mut(&mut self) -> &mut i32 {
             &mut self.nanos
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod duration {
+    pub(in super::super) mod duration {
         pub(in super::super) static SECONDS_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Duration,
             i64,
@@ -12351,21 +9162,11 @@ static GOOGLE_PROTOBUF_EMPTY_PROTO_BINARY: &'static [u8] = &[
     108, 75, 110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_empty_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/empty.proto")
             .unwrap()
     }
-    #[doc = " A generic empty message that you can re-use to avoid defining duplicated"]
-    #[doc = " empty messages in your APIs. A typical example is to use it as the request"]
-    #[doc = " or the response type of an API method. For instance:"]
-    #[doc = ""]
-    #[doc = "     service Foo {"]
-    #[doc = "       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " The JSON representation for `Empty` is empty JSON object `{}`."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Empty {
         unknown_fields: crate::UnknownFieldSet,
@@ -12398,7 +9199,7 @@ pub mod google_protobuf_empty_proto {
         }
     }
     impl crate::Message for self::Empty {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
@@ -12419,219 +9220,11 @@ static GOOGLE_PROTOBUF_FIELD_MASK_PROTO_BINARY: &'static [u8] = &[
     115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_field_mask_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/field_mask.proto")
             .unwrap()
     }
-    #[doc = " `FieldMask` represents a set of symbolic field paths, for example:"]
-    #[doc = ""]
-    #[doc = "     paths: \"f.a\""]
-    #[doc = "     paths: \"f.b.d\""]
-    #[doc = ""]
-    #[doc = " Here `f` represents a field in some root message, `a` and `b`"]
-    #[doc = " fields in the message found in `f`, and `d` a field found in the"]
-    #[doc = " message in `f.b`."]
-    #[doc = ""]
-    #[doc = " Field masks are used to specify a subset of fields that should be"]
-    #[doc = " returned by a get operation or modified by an update operation."]
-    #[doc = " Field masks also have a custom JSON encoding (see below)."]
-    #[doc = ""]
-    #[doc = " # Field Masks in Projections"]
-    #[doc = ""]
-    #[doc = " When used in the context of a projection, a response message or"]
-    #[doc = " sub-message is filtered by the API to only contain those fields as"]
-    #[doc = " specified in the mask. For example, if the mask in the previous"]
-    #[doc = " example is applied to a response message as follows:"]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       a : 22"]
-    #[doc = "       b {"]
-    #[doc = "         d : 1"]
-    #[doc = "         x : 2"]
-    #[doc = "       }"]
-    #[doc = "       y : 13"]
-    #[doc = "     }"]
-    #[doc = "     z: 8"]
-    #[doc = ""]
-    #[doc = " The result will not contain specific values for fields x,y and z"]
-    #[doc = " (their value will be set to the default, and omitted in proto text"]
-    #[doc = " output):"]
-    #[doc = ""]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       a : 22"]
-    #[doc = "       b {"]
-    #[doc = "         d : 1"]
-    #[doc = "       }"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " A repeated field is not allowed except at the last position of a"]
-    #[doc = " paths string."]
-    #[doc = ""]
-    #[doc = " If a FieldMask object is not present in a get operation, the"]
-    #[doc = " operation applies to all fields (as if a FieldMask of all fields"]
-    #[doc = " had been specified)."]
-    #[doc = ""]
-    #[doc = " Note that a field mask does not necessarily apply to the"]
-    #[doc = " top-level response message. In case of a REST get operation, the"]
-    #[doc = " field mask applies directly to the response, but in case of a REST"]
-    #[doc = " list operation, the mask instead applies to each individual message"]
-    #[doc = " in the returned resource list. In case of a REST custom method,"]
-    #[doc = " other definitions may be used. Where the mask applies will be"]
-    #[doc = " clearly documented together with its declaration in the API.  In"]
-    #[doc = " any case, the effect on the returned resource/resources is required"]
-    #[doc = " behavior for APIs."]
-    #[doc = ""]
-    #[doc = " # Field Masks in Update Operations"]
-    #[doc = ""]
-    #[doc = " A field mask in update operations specifies which fields of the"]
-    #[doc = " targeted resource are going to be updated. The API is required"]
-    #[doc = " to only change the values of the fields as specified in the mask"]
-    #[doc = " and leave the others untouched. If a resource is passed in to"]
-    #[doc = " describe the updated values, the API ignores the values of all"]
-    #[doc = " fields not covered by the mask."]
-    #[doc = ""]
-    #[doc = " If a repeated field is specified for an update operation, the existing"]
-    #[doc = " repeated values in the target resource will be overwritten by the new values."]
-    #[doc = " Note that a repeated field is only allowed in the last position of a `paths`"]
-    #[doc = " string."]
-    #[doc = ""]
-    #[doc = " If a sub-message is specified in the last position of the field mask for an"]
-    #[doc = " update operation, then the existing sub-message in the target resource is"]
-    #[doc = " overwritten. Given the target message:"]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       b {"]
-    #[doc = "         d : 1"]
-    #[doc = "         x : 2"]
-    #[doc = "       }"]
-    #[doc = "       c : 1"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " And an update message:"]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       b {"]
-    #[doc = "         d : 10"]
-    #[doc = "       }"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " then if the field mask is:"]
-    #[doc = ""]
-    #[doc = "  paths: \"f.b\""]
-    #[doc = ""]
-    #[doc = " then the result will be:"]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       b {"]
-    #[doc = "         d : 10"]
-    #[doc = "       }"]
-    #[doc = "       c : 1"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " However, if the update mask was:"]
-    #[doc = ""]
-    #[doc = "  paths: \"f.b.d\""]
-    #[doc = ""]
-    #[doc = " then the result would be:"]
-    #[doc = ""]
-    #[doc = "     f {"]
-    #[doc = "       b {"]
-    #[doc = "         d : 10"]
-    #[doc = "         x : 2"]
-    #[doc = "       }"]
-    #[doc = "       c : 1"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " In order to reset a field's value to the default, the field must"]
-    #[doc = " be in the mask and set to the default value in the provided resource."]
-    #[doc = " Hence, in order to reset all fields of a resource, provide a default"]
-    #[doc = " instance of the resource and set all fields in the mask, or do"]
-    #[doc = " not provide a mask as described below."]
-    #[doc = ""]
-    #[doc = " If a field mask is not present on update, the operation applies to"]
-    #[doc = " all fields (as if a field mask of all fields has been specified)."]
-    #[doc = " Note that in the presence of schema evolution, this may mean that"]
-    #[doc = " fields the client does not know and has therefore not filled into"]
-    #[doc = " the request will be reset to their default. If this is unwanted"]
-    #[doc = " behavior, a specific service may require a client to always specify"]
-    #[doc = " a field mask, producing an error if not."]
-    #[doc = ""]
-    #[doc = " As with get operations, the location of the resource which"]
-    #[doc = " describes the updated values in the request message depends on the"]
-    #[doc = " operation kind. In any case, the effect of the field mask is"]
-    #[doc = " required to be honored by the API."]
-    #[doc = ""]
-    #[doc = " ## Considerations for HTTP REST"]
-    #[doc = ""]
-    #[doc = " The HTTP kind of an update operation which uses a field mask must"]
-    #[doc = " be set to PATCH instead of PUT in order to satisfy HTTP semantics"]
-    #[doc = " (PUT must only be used for full updates)."]
-    #[doc = ""]
-    #[doc = " # JSON Encoding of Field Masks"]
-    #[doc = ""]
-    #[doc = " In JSON, a field mask is encoded as a single string where paths are"]
-    #[doc = " separated by a comma. Fields name in each path are converted"]
-    #[doc = " to/from lower-camel naming conventions."]
-    #[doc = ""]
-    #[doc = " As an example, consider the following message declarations:"]
-    #[doc = ""]
-    #[doc = "     message Profile {"]
-    #[doc = "       User user = 1;"]
-    #[doc = "       Photo photo = 2;"]
-    #[doc = "     }"]
-    #[doc = "     message User {"]
-    #[doc = "       string display_name = 1;"]
-    #[doc = "       string address = 2;"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " In proto a field mask for `Profile` may look as such:"]
-    #[doc = ""]
-    #[doc = "     mask {"]
-    #[doc = "       paths: \"user.display_name\""]
-    #[doc = "       paths: \"photo\""]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " In JSON, the same mask is represented as below:"]
-    #[doc = ""]
-    #[doc = "     {"]
-    #[doc = "       mask: \"user.displayName,photo\""]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " # Field Masks and Oneof Fields"]
-    #[doc = ""]
-    #[doc = " Field masks treat fields in oneofs just as regular fields. Consider the"]
-    #[doc = " following message:"]
-    #[doc = ""]
-    #[doc = "     message SampleMessage {"]
-    #[doc = "       oneof test_oneof {"]
-    #[doc = "         string name = 4;"]
-    #[doc = "         SubMessage sub_message = 9;"]
-    #[doc = "       }"]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " The field mask can be:"]
-    #[doc = ""]
-    #[doc = "     mask {"]
-    #[doc = "       paths: \"name\""]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Or:"]
-    #[doc = ""]
-    #[doc = "     mask {"]
-    #[doc = "       paths: \"sub_message\""]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = " Note that oneof type names (\"test_oneof\" in this case) cannot be used in"]
-    #[doc = " paths."]
-    #[doc = ""]
-    #[doc = " ## Field Mask Verification"]
-    #[doc = ""]
-    #[doc = " The implementation of any API method which has a FieldMask type field in the"]
-    #[doc = " request should verify the included field paths, and return an"]
-    #[doc = " `INVALID_ARGUMENT` error if any path is duplicated or unmappable."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FieldMask {
         paths: crate::collections::RepeatedField<::std::string::String>,
@@ -12672,30 +9265,22 @@ pub mod google_protobuf_field_mask_proto {
         }
     }
     impl crate::Message for self::FieldMask {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::FieldMask {
-        #[doc = "The field number for the [`paths`] field"]
-        #[doc = ""]
-        #[doc = "[`paths`]: #method.paths"]
         pub const PATHS_FIELD_NUMBER: i32 = 1;
-        #[doc = " The set of field mask paths."]
         pub fn paths(&self) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.paths
         }
-        #[doc = "Gets a unique reference to the [`paths`] field"]
-        #[doc = ""]
-        #[doc = "[`paths`]: #method.paths"]
         pub fn paths_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.paths
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod field_mask {
+    pub(in super::super) mod field_mask {
         pub(super) static PATHS_CODEC: crate::Codec<::std::string::String> =
             crate::Codec::string(10);
         pub(in super::super) static PATHS_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
@@ -12723,14 +9308,11 @@ static GOOGLE_PROTOBUF_SOURCE_CONTEXT_PROTO_BINARY: &'static [u8] = &[
     110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_source_context_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/source_context.proto")
             .unwrap()
     }
-    #[doc = " `SourceContext` represents information about the source of a"]
-    #[doc = " protobuf element, like the file in which it is defined."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct SourceContext {
         file_name: ::std::string::String,
@@ -12776,33 +9358,21 @@ pub mod google_protobuf_source_context_proto {
         }
     }
     impl crate::Message for self::SourceContext {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::SourceContext {
-        #[doc = "The field number for the [`file_name`] field"]
-        #[doc = ""]
-        #[doc = "[`file_name`]: #method.file_name"]
         pub const FILE_NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`file_name`] field"]
-        #[doc = ""]
-        #[doc = "[`file_name`]: #method.file_name"]
         pub const FILE_NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The path-qualified name of the .proto file that contained the associated"]
-        #[doc = " protobuf element.  For example: `\"google/protobuf/source_context.proto\"`."]
         pub fn file_name(&self) -> &::std::string::String {
             &self.file_name
         }
-        #[doc = "Gets a unique reference to the [`file_name`] field"]
-        #[doc = ""]
-        #[doc = "[`file_name`]: #method.file_name"]
         pub fn file_name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.file_name
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod source_context {
+    pub(in super::super) mod source_context {
         pub(in super::super) static FILE_NAME_REFLECTOR:
             crate::reflect::access::SimpleFieldAccessor<
                 self::super::SourceContext,
@@ -12851,20 +9421,11 @@ static GOOGLE_PROTOBUF_STRUCT_PROTO_BINARY: &'static [u8] = &[
     108, 108, 75, 110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_struct_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/struct.proto")
             .unwrap()
     }
-    #[doc = " `Struct` represents a structured data value, consisting of fields"]
-    #[doc = " which map to dynamically typed values. In some languages, `Struct`"]
-    #[doc = " might be supported by a native representation. For example, in"]
-    #[doc = " scripting languages like JS a struct is represented as an"]
-    #[doc = " object. The details of that representation are described together"]
-    #[doc = " with the proto support for the language."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `Struct` is JSON object."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Struct {
         fields: crate::collections::MapField<::std::string::String, self::Value>,
@@ -12908,30 +9469,22 @@ pub mod google_protobuf_struct_proto {
         }
     }
     impl crate::Message for self::Struct {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Struct {
-        #[doc = "The field number for the [`fields`] field"]
-        #[doc = ""]
-        #[doc = "[`fields`]: #method.fields"]
         pub const FIELDS_FIELD_NUMBER: i32 = 1;
-        #[doc = " Unordered map of dynamically typed values."]
         pub fn fields(&self) -> &crate::collections::MapField<::std::string::String, self::Value> {
             &self.fields
         }
-        #[doc = "Gets a unique reference to the [`fields`] field"]
-        #[doc = ""]
-        #[doc = "[`fields`]: #method.fields"]
         pub fn fields_mut(
             &mut self,
         ) -> &mut crate::collections::MapField<::std::string::String, self::Value> {
             &mut self.fields
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod r#struct {
+    pub(in super::super) mod r#struct {
         pub(super) static FIELDS_CODEC: crate::collections::MapCodec<
             ::std::string::String,
             self::super::Value,
@@ -12948,12 +9501,6 @@ pub mod google_protobuf_struct_proto {
             get_mut: self::super::Struct::fields_mut,
         };
     }
-    #[doc = " `Value` represents a dynamically typed value which can be either"]
-    #[doc = " null, a number, a string, a boolean, a recursive struct value, or a"]
-    #[doc = " list of values. A producer of value is expected to set one of that"]
-    #[doc = " variants, absence of any variant indicates an error."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `Value` is JSON value."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Value {
         kind: self::value::Kind,
@@ -13069,30 +9616,20 @@ pub mod google_protobuf_struct_proto {
         }
     }
     impl crate::Message for self::Value {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::Value {
-        #[doc = "The field number for the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub const NULL_VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub const NULL_VALUE_DEFAULT_VALUE: crate::EnumValue<self::NullValue> =
             crate::EnumValue::Defined(self::NullValue::NullValue);
-        #[doc = " Represents a null value."]
         pub fn null_value(&self) -> ::std::option::Option<&crate::EnumValue<self::NullValue>> {
             match &self.kind {
                 self::value::Kind::NullValue(kind) => ::std::option::Option::Some(kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub fn null_value_mut(&mut self) -> &mut crate::EnumValue<self::NullValue> {
             match self.kind {
                 self::value::Kind::NullValue(_) => (),
@@ -13103,24 +9640,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub fn has_null_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::NullValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub fn set_null_value(&mut self, value: crate::EnumValue<self::NullValue>) {
             self.kind = self::value::Kind::NullValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`null_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub fn take_null_value(
             &mut self,
         ) -> ::std::option::Option<crate::EnumValue<self::NullValue>> {
@@ -13133,9 +9661,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`null_value`] field"]
-        #[doc = ""]
-        #[doc = "[`null_value`]: #method.null_value"]
         pub fn clear_null_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13143,24 +9668,14 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = "The field number for the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub const NUMBER_VALUE_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub const NUMBER_VALUE_DEFAULT_VALUE: f64 = 0.0;
-        #[doc = " Represents a double value."]
         pub fn number_value(&self) -> ::std::option::Option<&f64> {
             match &self.kind {
                 self::value::Kind::NumberValue(kind) => ::std::option::Option::Some(kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub fn number_value_mut(&mut self) -> &mut f64 {
             match self.kind {
                 self::value::Kind::NumberValue(_) => (),
@@ -13171,24 +9686,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub fn has_number_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::NumberValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub fn set_number_value(&mut self, value: f64) {
             self.kind = self::value::Kind::NumberValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`number_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub fn take_number_value(&mut self) -> ::std::option::Option<f64> {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13199,9 +9705,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`number_value`] field"]
-        #[doc = ""]
-        #[doc = "[`number_value`]: #method.number_value"]
         pub fn clear_number_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13209,24 +9712,14 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = "The field number for the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub const STRING_VALUE_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub const STRING_VALUE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Represents a string value."]
         pub fn string_value(&self) -> ::std::option::Option<&::std::string::String> {
             match &self.kind {
                 self::value::Kind::StringValue(kind) => ::std::option::Option::Some(kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn string_value_mut(&mut self) -> &mut ::std::string::String {
             match self.kind {
                 self::value::Kind::StringValue(_) => (),
@@ -13237,24 +9730,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn has_string_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::StringValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn set_string_value(&mut self, value: ::std::string::String) {
             self.kind = self::value::Kind::StringValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`string_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn take_string_value(&mut self) -> ::std::option::Option<::std::string::String> {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13265,9 +9749,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`string_value`] field"]
-        #[doc = ""]
-        #[doc = "[`string_value`]: #method.string_value"]
         pub fn clear_string_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13275,24 +9756,14 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = "The field number for the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub const BOOL_VALUE_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub const BOOL_VALUE_DEFAULT_VALUE: bool = false;
-        #[doc = " Represents a boolean value."]
         pub fn bool_value(&self) -> ::std::option::Option<&bool> {
             match &self.kind {
                 self::value::Kind::BoolValue(kind) => ::std::option::Option::Some(kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub fn bool_value_mut(&mut self) -> &mut bool {
             match self.kind {
                 self::value::Kind::BoolValue(_) => (),
@@ -13303,24 +9774,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub fn has_bool_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::BoolValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub fn set_bool_value(&mut self, value: bool) {
             self.kind = self::value::Kind::BoolValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`bool_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub fn take_bool_value(&mut self) -> ::std::option::Option<bool> {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13331,9 +9793,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`bool_value`] field"]
-        #[doc = ""]
-        #[doc = "[`bool_value`]: #method.bool_value"]
         pub fn clear_bool_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13341,20 +9800,13 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = "The field number for the [`struct_value`] field"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub const STRUCT_VALUE_FIELD_NUMBER: i32 = 5;
-        #[doc = " Represents a structured value."]
         pub fn struct_value(&self) -> ::std::option::Option<&self::Struct> {
             match &self.kind {
                 self::value::Kind::StructValue(kind) => ::std::option::Option::Some(&**kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`struct_value`] field"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub fn struct_value_mut(&mut self) -> &mut self::Struct {
             match self.kind {
                 self::value::Kind::StructValue(_) => (),
@@ -13365,24 +9817,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`struct_value`] field"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub fn has_struct_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::StructValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`struct_value`] field"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub fn set_struct_value(&mut self, value: self::Struct) {
             self.kind = self::value::Kind::StructValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`struct_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub fn take_struct_value(&mut self) -> ::std::option::Option<self::Struct> {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13393,9 +9836,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`struct_value`] field"]
-        #[doc = ""]
-        #[doc = "[`struct_value`]: #method.struct_value"]
         pub fn clear_struct_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13403,20 +9843,13 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = "The field number for the [`list_value`] field"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub const LIST_VALUE_FIELD_NUMBER: i32 = 6;
-        #[doc = " Represents a repeated `Value`."]
         pub fn list_value(&self) -> ::std::option::Option<&self::ListValue> {
             match &self.kind {
                 self::value::Kind::ListValue(kind) => ::std::option::Option::Some(&**kind),
                 _ => ::std::option::Option::None,
             }
         }
-        #[doc = "Gets a unique reference to the [`list_value`] field"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub fn list_value_mut(&mut self) -> &mut self::ListValue {
             match self.kind {
                 self::value::Kind::ListValue(_) => (),
@@ -13427,24 +9860,15 @@ pub mod google_protobuf_struct_proto {
                 _ => unsafe { std::hint::unreachable_unchecked() },
             }
         }
-        #[doc = "Gets a bool indicating the presence of the [`list_value`] field"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub fn has_list_value(&self) -> bool {
             match self.kind {
                 self::value::Kind::ListValue(_) => true,
                 _ => false,
             }
         }
-        #[doc = "Sets the value of the [`list_value`] field"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub fn set_list_value(&mut self, value: self::ListValue) {
             self.kind = self::value::Kind::ListValue(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`list_value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub fn take_list_value(&mut self) -> ::std::option::Option<self::ListValue> {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13455,9 +9879,6 @@ pub mod google_protobuf_struct_proto {
                 }
             }
         }
-        #[doc = "Clears the value of the [`list_value`] field"]
-        #[doc = ""]
-        #[doc = "[`list_value`]: #method.list_value"]
         pub fn clear_list_value(&mut self) {
             let kind = ::std::mem::replace(&mut self.kind, self::value::Kind::None);
             match kind {
@@ -13465,21 +9886,29 @@ pub mod google_protobuf_struct_proto {
                 mut kind => ::std::mem::swap(&mut self.kind, &mut kind),
             }
         }
-        #[doc = " Gets a shared reference to the [`kind`] oneof field"]
-        #[doc = " "]
-        #[doc = " [`kind`]: enum.Kind.html"]
         pub fn kind(&self) -> &self::value::Kind {
             &self.kind
         }
-        #[doc = " Gets a unique reference to the [`kind`] oneof field"]
-        #[doc = " "]
-        #[doc = " [`kind`]: enum.Kind.html"]
         pub fn kind_mut(&mut self) -> &mut self::value::Kind {
             &mut self.kind
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod value {
+        #[derive(Clone, Debug, PartialEq)]
+        pub enum Kind {
+            None,
+            NullValue(crate::EnumValue<self::super::NullValue>),
+            NumberValue(f64),
+            StringValue(::std::string::String),
+            BoolValue(bool),
+            StructValue(::std::boxed::Box<self::super::Struct>),
+            ListValue(::std::boxed::Box<self::super::ListValue>),
+        }
+        impl ::std::default::Default for self::Kind {
+            fn default() -> Self {
+                self::Kind::None
+            }
+        }
         pub(in super::super) static NULL_VALUE_REFLECTOR:
             crate::reflect::access::VerboseFieldAccessor<
                 self::super::Value,
@@ -13536,27 +9965,7 @@ pub mod google_protobuf_struct_proto {
                 take: self::super::Value::take_list_value,
                 clear: self::super::Value::clear_list_value,
             };
-        #[doc = " The kind of value."]
-        #[derive(Clone, Debug, PartialEq)]
-        pub enum Kind {
-            #[doc = r" No value"]
-            None,
-            NullValue(crate::EnumValue<self::super::NullValue>),
-            NumberValue(f64),
-            StringValue(::std::string::String),
-            BoolValue(bool),
-            StructValue(::std::boxed::Box<self::super::Struct>),
-            ListValue(::std::boxed::Box<self::super::ListValue>),
-        }
-        impl ::std::default::Default for self::Kind {
-            fn default() -> Self {
-                self::Kind::None
-            }
-        }
     }
-    #[doc = " `ListValue` is a wrapper around a repeated field of values."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `ListValue` is JSON array."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct ListValue {
         values: crate::collections::RepeatedField<self::Value>,
@@ -13602,28 +10011,20 @@ pub mod google_protobuf_struct_proto {
         }
     }
     impl crate::Message for self::ListValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::ListValue {
-        #[doc = "The field number for the [`values`] field"]
-        #[doc = ""]
-        #[doc = "[`values`]: #method.values"]
         pub const VALUES_FIELD_NUMBER: i32 = 1;
-        #[doc = " Repeated field of dynamically typed values."]
         pub fn values(&self) -> &crate::collections::RepeatedField<self::Value> {
             &self.values
         }
-        #[doc = "Gets a unique reference to the [`values`] field"]
-        #[doc = ""]
-        #[doc = "[`values`]: #method.values"]
         pub fn values_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Value> {
             &mut self.values
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod list_value {
+    pub(in super::super) mod list_value {
         pub(super) static VALUES_CODEC: crate::Codec<self::super::Value> =
             crate::Codec::message(10);
         pub(in super::super) static VALUES_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
@@ -13634,16 +10035,12 @@ pub mod google_protobuf_struct_proto {
             get_mut: self::super::ListValue::values_mut,
         };
     }
-    #[doc = " `NullValue` is a singleton enumeration to represent the null value for the"]
-    #[doc = " `Value` type union."]
-    #[doc = ""]
-    #[doc = "  The JSON representation for `NullValue` is JSON `null`."]
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum NullValue {
         NullValue,
     }
     impl crate::Enum for self::NullValue {
-        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
             &self::file().enums()[0]
         }
     }
@@ -13680,92 +10077,11 @@ static GOOGLE_PROTOBUF_TIMESTAMP_PROTO_BINARY: &'static [u8] = &[
     75, 110, 111, 119, 110, 84, 121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_timestamp_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/timestamp.proto")
             .unwrap()
     }
-    #[doc = " A Timestamp represents a point in time independent of any time zone"]
-    #[doc = " or calendar, represented as seconds and fractions of seconds at"]
-    #[doc = " nanosecond resolution in UTC Epoch time. It is encoded using the"]
-    #[doc = " Proleptic Gregorian Calendar which extends the Gregorian calendar"]
-    #[doc = " backwards to year one. It is encoded assuming all minutes are 60"]
-    #[doc = " seconds long, i.e. leap seconds are \"smeared\" so that no leap second"]
-    #[doc = " table is needed for interpretation. Range is from"]
-    #[doc = " 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z."]
-    #[doc = " By restricting to that range, we ensure that we can convert to"]
-    #[doc = " and from  RFC 3339 date strings."]
-    #[doc = " See [https://www.ietf.org/rfc/rfc3339.txt](https://www.ietf.org/rfc/rfc3339.txt)."]
-    #[doc = ""]
-    #[doc = " # Examples"]
-    #[doc = ""]
-    #[doc = " Example 1: Compute Timestamp from POSIX `time()`."]
-    #[doc = ""]
-    #[doc = "     Timestamp timestamp;"]
-    #[doc = "     timestamp.set_seconds(time(NULL));"]
-    #[doc = "     timestamp.set_nanos(0);"]
-    #[doc = ""]
-    #[doc = " Example 2: Compute Timestamp from POSIX `gettimeofday()`."]
-    #[doc = ""]
-    #[doc = "     struct timeval tv;"]
-    #[doc = "     gettimeofday(&tv, NULL);"]
-    #[doc = ""]
-    #[doc = "     Timestamp timestamp;"]
-    #[doc = "     timestamp.set_seconds(tv.tv_sec);"]
-    #[doc = "     timestamp.set_nanos(tv.tv_usec * 1000);"]
-    #[doc = ""]
-    #[doc = " Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`."]
-    #[doc = ""]
-    #[doc = "     FILETIME ft;"]
-    #[doc = "     GetSystemTimeAsFileTime(&ft);"]
-    #[doc = "     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;"]
-    #[doc = ""]
-    #[doc = "     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z"]
-    #[doc = "     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z."]
-    #[doc = "     Timestamp timestamp;"]
-    #[doc = "     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));"]
-    #[doc = "     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));"]
-    #[doc = ""]
-    #[doc = " Example 4: Compute Timestamp from Java `System.currentTimeMillis()`."]
-    #[doc = ""]
-    #[doc = "     long millis = System.currentTimeMillis();"]
-    #[doc = ""]
-    #[doc = "     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)"]
-    #[doc = "         .setNanos((int) ((millis % 1000) * 1000000)).build();"]
-    #[doc = ""]
-    #[doc = ""]
-    #[doc = " Example 5: Compute Timestamp from current time in Python."]
-    #[doc = ""]
-    #[doc = "     timestamp = Timestamp()"]
-    #[doc = "     timestamp.GetCurrentTime()"]
-    #[doc = ""]
-    #[doc = " # JSON Mapping"]
-    #[doc = ""]
-    #[doc = " In JSON format, the Timestamp type is encoded as a string in the"]
-    #[doc = " [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the"]
-    #[doc = " format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\""]
-    #[doc = " where {year} is always expressed using four digits while {month}, {day},"]
-    #[doc = " {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional"]
-    #[doc = " seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),"]
-    #[doc = " are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone"]
-    #[doc = " is required. A proto3 JSON serializer should always use UTC (as indicated by"]
-    #[doc = " \"Z\") when printing the Timestamp type and a proto3 JSON parser should be"]
-    #[doc = " able to accept both UTC and other timezones (as indicated by an offset)."]
-    #[doc = ""]
-    #[doc = " For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past"]
-    #[doc = " 01:30 UTC on January 15, 2017."]
-    #[doc = ""]
-    #[doc = " In JavaScript, one can convert a Date object to this format using the"]
-    #[doc = " standard [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString]"]
-    #[doc = " method. In Python, a standard `datetime.datetime` object can be converted"]
-    #[doc = " to this format using [`strftime`](https://docs.python.org/2/library/time.html#time.strftime)"]
-    #[doc = " with the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one"]
-    #[doc = " can use the Joda Time's [`ISODateTimeFormat.dateTime()`]("]
-    #[doc = " http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime--"]
-    #[doc = " ) to obtain a formatter capable of generating timestamps in this format."]
-    #[doc = ""]
-    #[doc = ""]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Timestamp {
         seconds: i64,
@@ -13824,55 +10140,29 @@ pub mod google_protobuf_timestamp_proto {
         }
     }
     impl crate::Message for self::Timestamp {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Timestamp {
-        #[doc = "The field number for the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub const SECONDS_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub const SECONDS_DEFAULT_VALUE: i64 = 0;
-        #[doc = " Represents seconds of UTC time since Unix epoch"]
-        #[doc = " 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to"]
-        #[doc = " 9999-12-31T23:59:59Z inclusive."]
         pub fn seconds(&self) -> &i64 {
             &self.seconds
         }
-        #[doc = "Gets a unique reference to the [`seconds`] field"]
-        #[doc = ""]
-        #[doc = "[`seconds`]: #method.seconds"]
         pub fn seconds_mut(&mut self) -> &mut i64 {
             &mut self.seconds
         }
-        #[doc = "The field number for the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub const NANOS_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub const NANOS_DEFAULT_VALUE: i32 = 0;
-        #[doc = " Non-negative fractions of a second at nanosecond resolution. Negative"]
-        #[doc = " second values with fractions must still have non-negative nanos values"]
-        #[doc = " that count forward in time. Must be from 0 to 999,999,999"]
-        #[doc = " inclusive."]
         pub fn nanos(&self) -> &i32 {
             &self.nanos
         }
-        #[doc = "Gets a unique reference to the [`nanos`] field"]
-        #[doc = ""]
-        #[doc = "[`nanos`]: #method.nanos"]
         pub fn nanos_mut(&mut self) -> &mut i32 {
             &mut self.nanos
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod timestamp {
+    pub(in super::super) mod timestamp {
         pub(in super::super) static SECONDS_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Timestamp,
             i64,
@@ -13977,13 +10267,11 @@ static GOOGLE_PROTOBUF_TYPE_PROTO_BINARY: &'static [u8] = &[
     111, 116, 111, 51,
 ];
 pub mod google_protobuf_type_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/type.proto")
             .unwrap()
     }
-    #[doc = " A protocol buffer message type."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Type {
         name: ::std::string::String,
@@ -14092,145 +10380,84 @@ pub mod google_protobuf_type_proto {
         }
     }
     impl crate::Message for self::Type {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Type {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The fully qualified message name."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`fields`] field"]
-        #[doc = ""]
-        #[doc = "[`fields`]: #method.fields"]
         pub const FIELDS_FIELD_NUMBER: i32 = 2;
-        #[doc = " The list of fields."]
         pub fn fields(&self) -> &crate::collections::RepeatedField<self::Field> {
             &self.fields
         }
-        #[doc = "Gets a unique reference to the [`fields`] field"]
-        #[doc = ""]
-        #[doc = "[`fields`]: #method.fields"]
         pub fn fields_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Field> {
             &mut self.fields
         }
-        #[doc = "The field number for the [`oneofs`] field"]
-        #[doc = ""]
-        #[doc = "[`oneofs`]: #method.oneofs"]
         pub const ONEOFS_FIELD_NUMBER: i32 = 3;
-        #[doc = " The list of types appearing in `oneof` definitions in this type."]
         pub fn oneofs(&self) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.oneofs
         }
-        #[doc = "Gets a unique reference to the [`oneofs`] field"]
-        #[doc = ""]
-        #[doc = "[`oneofs`]: #method.oneofs"]
         pub fn oneofs_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.oneofs
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 4;
-        #[doc = " The protocol buffer options."]
         pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Option> {
             &mut self.options
         }
-        #[doc = "The field number for the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 5;
-        #[doc = " The source context."]
         pub fn source_context(
             &self,
         ) -> ::std::option::Option<&self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn source_context_mut(
             &mut self,
         ) -> &mut self::super::google_protobuf_source_context_proto::SourceContext {
             self.source_context
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn has_source_context(&self) -> bool {
             self.source_context.is_some()
         }
-        #[doc = "Sets the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn set_source_context(
             &mut self,
             value: self::super::google_protobuf_source_context_proto::SourceContext,
         ) {
             self.source_context = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`source_context`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn take_source_context(
             &mut self,
         ) -> ::std::option::Option<self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn clear_source_context(&mut self) {
             self.source_context = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> =
             crate::EnumValue::Defined(self::Syntax::Proto2);
-        #[doc = " The source syntax."]
         pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
             &self.syntax
         }
-        #[doc = "Gets a unique reference to the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
             &mut self.syntax
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod r#type {
+    pub(in super::super) mod r#type {
         pub(super) static FIELDS_CODEC: crate::Codec<self::super::Field> =
             crate::Codec::message(18);
         pub(super) static ONEOFS_CODEC: crate::Codec<::std::string::String> =
@@ -14266,12 +10493,15 @@ pub mod google_protobuf_type_proto {
             get_mut: self::super::Type::options_mut,
         };
         pub(in super::super) static SOURCE_CONTEXT_REFLECTOR:
-            crate::reflect::access::SimpleOptionFieldAccessor<
+            crate::reflect::access::VerboseFieldAccessor<
                 self::super::Type,
                 self::super::super::google_protobuf_source_context_proto::SourceContext,
-            > = crate::reflect::access::SimpleOptionFieldAccessor {
-            get: self::super::Type::source_context,
+            > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::Type::source_context,
             get_mut: self::super::Type::source_context_mut,
+            set: self::super::Type::set_source_context,
+            take: self::super::Type::take_source_context,
+            clear: self::super::Type::clear_source_context,
         };
         pub(in super::super) static SYNTAX_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Type,
@@ -14281,7 +10511,6 @@ pub mod google_protobuf_type_proto {
             get_mut: self::super::Type::syntax_mut,
         };
     }
-    #[doc = " A single field of a message type."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Field {
         kind: crate::EnumValue<self::field::Kind>,
@@ -14442,194 +10671,209 @@ pub mod google_protobuf_type_proto {
         }
     }
     impl crate::Message for self::Field {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::Field {
-        #[doc = "The field number for the [`kind`] field"]
-        #[doc = ""]
-        #[doc = "[`kind`]: #method.kind"]
         pub const KIND_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`kind`] field"]
-        #[doc = ""]
-        #[doc = "[`kind`]: #method.kind"]
         pub const KIND_DEFAULT_VALUE: crate::EnumValue<self::field::Kind> =
             crate::EnumValue::Defined(self::field::Kind::TypeUnknown);
-        #[doc = " The field type."]
         pub fn kind(&self) -> &crate::EnumValue<self::field::Kind> {
             &self.kind
         }
-        #[doc = "Gets a unique reference to the [`kind`] field"]
-        #[doc = ""]
-        #[doc = "[`kind`]: #method.kind"]
         pub fn kind_mut(&mut self) -> &mut crate::EnumValue<self::field::Kind> {
             &mut self.kind
         }
-        #[doc = "The field number for the [`cardinality`] field"]
-        #[doc = ""]
-        #[doc = "[`cardinality`]: #method.cardinality"]
         pub const CARDINALITY_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`cardinality`] field"]
-        #[doc = ""]
-        #[doc = "[`cardinality`]: #method.cardinality"]
         pub const CARDINALITY_DEFAULT_VALUE: crate::EnumValue<self::field::Cardinality> =
             crate::EnumValue::Defined(self::field::Cardinality::Unknown);
-        #[doc = " The field cardinality."]
         pub fn cardinality(&self) -> &crate::EnumValue<self::field::Cardinality> {
             &self.cardinality
         }
-        #[doc = "Gets a unique reference to the [`cardinality`] field"]
-        #[doc = ""]
-        #[doc = "[`cardinality`]: #method.cardinality"]
         pub fn cardinality_mut(&mut self) -> &mut crate::EnumValue<self::field::Cardinality> {
             &mut self.cardinality
         }
-        #[doc = "The field number for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-        #[doc = " The field number."]
         pub fn number(&self) -> &i32 {
             &self.number
         }
-        #[doc = "Gets a unique reference to the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_mut(&mut self) -> &mut i32 {
             &mut self.number
         }
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The field name."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub const TYPE_URL_FIELD_NUMBER: i32 = 6;
-        #[doc = "The default value for the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub const TYPE_URL_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The field type URL, without the scheme, for message or enumeration"]
-        #[doc = " types. Example: `\"type.googleapis.com/google.protobuf.Timestamp\"`."]
         pub fn type_url(&self) -> &::std::string::String {
             &self.type_url
         }
-        #[doc = "Gets a unique reference to the [`type_url`] field"]
-        #[doc = ""]
-        #[doc = "[`type_url`]: #method.type_url"]
         pub fn type_url_mut(&mut self) -> &mut ::std::string::String {
             &mut self.type_url
         }
-        #[doc = "The field number for the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub const ONEOF_INDEX_FIELD_NUMBER: i32 = 7;
-        #[doc = "The default value for the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub const ONEOF_INDEX_DEFAULT_VALUE: i32 = 0;
-        #[doc = " The index of the field type in `Type.oneofs`, for message or enumeration"]
-        #[doc = " types. The first type has index 1; zero means the type is not in the list."]
         pub fn oneof_index(&self) -> &i32 {
             &self.oneof_index
         }
-        #[doc = "Gets a unique reference to the [`oneof_index`] field"]
-        #[doc = ""]
-        #[doc = "[`oneof_index`]: #method.oneof_index"]
         pub fn oneof_index_mut(&mut self) -> &mut i32 {
             &mut self.oneof_index
         }
-        #[doc = "The field number for the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub const PACKED_FIELD_NUMBER: i32 = 8;
-        #[doc = "The default value for the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub const PACKED_DEFAULT_VALUE: bool = false;
-        #[doc = " Whether to use alternative packed wire representation."]
         pub fn packed(&self) -> &bool {
             &self.packed
         }
-        #[doc = "Gets a unique reference to the [`packed`] field"]
-        #[doc = ""]
-        #[doc = "[`packed`]: #method.packed"]
         pub fn packed_mut(&mut self) -> &mut bool {
             &mut self.packed
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 9;
-        #[doc = " The protocol buffer options."]
         pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Option> {
             &mut self.options
         }
-        #[doc = "The field number for the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub const JSON_NAME_FIELD_NUMBER: i32 = 10;
-        #[doc = "The default value for the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub const JSON_NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The field JSON name."]
         pub fn json_name(&self) -> &::std::string::String {
             &self.json_name
         }
-        #[doc = "Gets a unique reference to the [`json_name`] field"]
-        #[doc = ""]
-        #[doc = "[`json_name`]: #method.json_name"]
         pub fn json_name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.json_name
         }
-        #[doc = "The field number for the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub const DEFAULT_VALUE_FIELD_NUMBER: i32 = 11;
-        #[doc = "The default value for the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub const DEFAULT_VALUE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The string value of the default value of this field. Proto2 syntax only."]
         pub fn default_value(&self) -> &::std::string::String {
             &self.default_value
         }
-        #[doc = "Gets a unique reference to the [`default_value`] field"]
-        #[doc = ""]
-        #[doc = "[`default_value`]: #method.default_value"]
         pub fn default_value_mut(&mut self) -> &mut ::std::string::String {
             &mut self.default_value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod field {
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum Kind {
+            TypeUnknown,
+            TypeDouble,
+            TypeFloat,
+            TypeInt64,
+            TypeUint64,
+            TypeInt32,
+            TypeFixed64,
+            TypeFixed32,
+            TypeBool,
+            TypeString,
+            TypeGroup,
+            TypeMessage,
+            TypeBytes,
+            TypeUint32,
+            TypeEnum,
+            TypeSfixed32,
+            TypeSfixed64,
+            TypeSint32,
+            TypeSint64,
+        }
+        impl crate::Enum for self::Kind {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::Field as crate::Message>::descriptor().enums()[0]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::Kind {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    0 => ::std::result::Result::Ok(self::Kind::TypeUnknown),
+                    1 => ::std::result::Result::Ok(self::Kind::TypeDouble),
+                    2 => ::std::result::Result::Ok(self::Kind::TypeFloat),
+                    3 => ::std::result::Result::Ok(self::Kind::TypeInt64),
+                    4 => ::std::result::Result::Ok(self::Kind::TypeUint64),
+                    5 => ::std::result::Result::Ok(self::Kind::TypeInt32),
+                    6 => ::std::result::Result::Ok(self::Kind::TypeFixed64),
+                    7 => ::std::result::Result::Ok(self::Kind::TypeFixed32),
+                    8 => ::std::result::Result::Ok(self::Kind::TypeBool),
+                    9 => ::std::result::Result::Ok(self::Kind::TypeString),
+                    10 => ::std::result::Result::Ok(self::Kind::TypeGroup),
+                    11 => ::std::result::Result::Ok(self::Kind::TypeMessage),
+                    12 => ::std::result::Result::Ok(self::Kind::TypeBytes),
+                    13 => ::std::result::Result::Ok(self::Kind::TypeUint32),
+                    14 => ::std::result::Result::Ok(self::Kind::TypeEnum),
+                    15 => ::std::result::Result::Ok(self::Kind::TypeSfixed32),
+                    16 => ::std::result::Result::Ok(self::Kind::TypeSfixed64),
+                    17 => ::std::result::Result::Ok(self::Kind::TypeSint32),
+                    18 => ::std::result::Result::Ok(self::Kind::TypeSint64),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::Kind> for i32 {
+            fn from(value: self::Kind) -> i32 {
+                match value {
+                    self::Kind::TypeUnknown => 0,
+                    self::Kind::TypeDouble => 1,
+                    self::Kind::TypeFloat => 2,
+                    self::Kind::TypeInt64 => 3,
+                    self::Kind::TypeUint64 => 4,
+                    self::Kind::TypeInt32 => 5,
+                    self::Kind::TypeFixed64 => 6,
+                    self::Kind::TypeFixed32 => 7,
+                    self::Kind::TypeBool => 8,
+                    self::Kind::TypeString => 9,
+                    self::Kind::TypeGroup => 10,
+                    self::Kind::TypeMessage => 11,
+                    self::Kind::TypeBytes => 12,
+                    self::Kind::TypeUint32 => 13,
+                    self::Kind::TypeEnum => 14,
+                    self::Kind::TypeSfixed32 => 15,
+                    self::Kind::TypeSfixed64 => 16,
+                    self::Kind::TypeSint32 => 17,
+                    self::Kind::TypeSint64 => 18,
+                }
+            }
+        }
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+        pub enum Cardinality {
+            Unknown,
+            Optional,
+            Required,
+            Repeated,
+        }
+        impl crate::Enum for self::Cardinality {
+            fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
+                &<self::super::Field as crate::Message>::descriptor().enums()[1]
+            }
+        }
+        impl ::std::convert::TryFrom<i32> for self::Cardinality {
+            type Error = crate::VariantUndefinedError;
+            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
+                #[allow(unreachable_patterns)]
+                match value {
+                    0 => ::std::result::Result::Ok(self::Cardinality::Unknown),
+                    1 => ::std::result::Result::Ok(self::Cardinality::Optional),
+                    2 => ::std::result::Result::Ok(self::Cardinality::Required),
+                    3 => ::std::result::Result::Ok(self::Cardinality::Repeated),
+                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
+                }
+            }
+        }
+        impl ::std::convert::From<self::Cardinality> for i32 {
+            fn from(value: self::Cardinality) -> i32 {
+                match value {
+                    self::Cardinality::Unknown => 0,
+                    self::Cardinality::Optional => 1,
+                    self::Cardinality::Required => 2,
+                    self::Cardinality::Repeated => 3,
+                }
+            }
+        }
         pub(super) static OPTIONS_CODEC: crate::Codec<self::super::Option> =
             crate::Codec::message(74);
         pub(in super::super) static KIND_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
@@ -14699,125 +10943,7 @@ pub mod google_protobuf_type_proto {
                 get: self::super::Field::default_value,
                 get_mut: self::super::Field::default_value_mut,
             };
-        #[doc = " Basic field types."]
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum Kind {
-            TypeUnknown,
-            TypeDouble,
-            TypeFloat,
-            TypeInt64,
-            TypeUint64,
-            TypeInt32,
-            TypeFixed64,
-            TypeFixed32,
-            TypeBool,
-            TypeString,
-            TypeGroup,
-            TypeMessage,
-            TypeBytes,
-            TypeUint32,
-            TypeEnum,
-            TypeSfixed32,
-            TypeSfixed64,
-            TypeSint32,
-            TypeSint64,
-        }
-        impl crate::Enum for self::Kind {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::Field as crate::Message>::descriptor().enums()[0]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::Kind {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    0 => ::std::result::Result::Ok(self::Kind::TypeUnknown),
-                    1 => ::std::result::Result::Ok(self::Kind::TypeDouble),
-                    2 => ::std::result::Result::Ok(self::Kind::TypeFloat),
-                    3 => ::std::result::Result::Ok(self::Kind::TypeInt64),
-                    4 => ::std::result::Result::Ok(self::Kind::TypeUint64),
-                    5 => ::std::result::Result::Ok(self::Kind::TypeInt32),
-                    6 => ::std::result::Result::Ok(self::Kind::TypeFixed64),
-                    7 => ::std::result::Result::Ok(self::Kind::TypeFixed32),
-                    8 => ::std::result::Result::Ok(self::Kind::TypeBool),
-                    9 => ::std::result::Result::Ok(self::Kind::TypeString),
-                    10 => ::std::result::Result::Ok(self::Kind::TypeGroup),
-                    11 => ::std::result::Result::Ok(self::Kind::TypeMessage),
-                    12 => ::std::result::Result::Ok(self::Kind::TypeBytes),
-                    13 => ::std::result::Result::Ok(self::Kind::TypeUint32),
-                    14 => ::std::result::Result::Ok(self::Kind::TypeEnum),
-                    15 => ::std::result::Result::Ok(self::Kind::TypeSfixed32),
-                    16 => ::std::result::Result::Ok(self::Kind::TypeSfixed64),
-                    17 => ::std::result::Result::Ok(self::Kind::TypeSint32),
-                    18 => ::std::result::Result::Ok(self::Kind::TypeSint64),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::Kind> for i32 {
-            fn from(value: self::Kind) -> i32 {
-                match value {
-                    self::Kind::TypeUnknown => 0,
-                    self::Kind::TypeDouble => 1,
-                    self::Kind::TypeFloat => 2,
-                    self::Kind::TypeInt64 => 3,
-                    self::Kind::TypeUint64 => 4,
-                    self::Kind::TypeInt32 => 5,
-                    self::Kind::TypeFixed64 => 6,
-                    self::Kind::TypeFixed32 => 7,
-                    self::Kind::TypeBool => 8,
-                    self::Kind::TypeString => 9,
-                    self::Kind::TypeGroup => 10,
-                    self::Kind::TypeMessage => 11,
-                    self::Kind::TypeBytes => 12,
-                    self::Kind::TypeUint32 => 13,
-                    self::Kind::TypeEnum => 14,
-                    self::Kind::TypeSfixed32 => 15,
-                    self::Kind::TypeSfixed64 => 16,
-                    self::Kind::TypeSint32 => 17,
-                    self::Kind::TypeSint64 => 18,
-                }
-            }
-        }
-        #[doc = " Whether a field is optional, required, or repeated."]
-        #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-        pub enum Cardinality {
-            Unknown,
-            Optional,
-            Required,
-            Repeated,
-        }
-        impl crate::Enum for self::Cardinality {
-            fn descriptor() -> &'static crate::reflect::EnumDescriptor {
-                &<self::super::Field as crate::Message>::descriptor().enums()[1]
-            }
-        }
-        impl ::std::convert::TryFrom<i32> for self::Cardinality {
-            type Error = crate::VariantUndefinedError;
-            fn try_from(value: i32) -> ::std::result::Result<Self, crate::VariantUndefinedError> {
-                #[allow(unreachable_patterns)]
-                match value {
-                    0 => ::std::result::Result::Ok(self::Cardinality::Unknown),
-                    1 => ::std::result::Result::Ok(self::Cardinality::Optional),
-                    2 => ::std::result::Result::Ok(self::Cardinality::Required),
-                    3 => ::std::result::Result::Ok(self::Cardinality::Repeated),
-                    _ => ::std::result::Result::Err(crate::VariantUndefinedError),
-                }
-            }
-        }
-        impl ::std::convert::From<self::Cardinality> for i32 {
-            fn from(value: self::Cardinality) -> i32 {
-                match value {
-                    self::Cardinality::Unknown => 0,
-                    self::Cardinality::Optional => 1,
-                    self::Cardinality::Required => 2,
-                    self::Cardinality::Repeated => 3,
-                }
-            }
-        }
     }
-    #[doc = " Enum type definition."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Enum {
         name: ::std::string::String,
@@ -14920,129 +11046,75 @@ pub mod google_protobuf_type_proto {
         }
     }
     impl crate::Message for self::Enum {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::Enum {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Enum type name."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`enumvalue`] field"]
-        #[doc = ""]
-        #[doc = "[`enumvalue`]: #method.enumvalue"]
         pub const ENUMVALUE_FIELD_NUMBER: i32 = 2;
-        #[doc = " Enum value definitions."]
         pub fn enumvalue(&self) -> &crate::collections::RepeatedField<self::EnumValue> {
             &self.enumvalue
         }
-        #[doc = "Gets a unique reference to the [`enumvalue`] field"]
-        #[doc = ""]
-        #[doc = "[`enumvalue`]: #method.enumvalue"]
         pub fn enumvalue_mut(&mut self) -> &mut crate::collections::RepeatedField<self::EnumValue> {
             &mut self.enumvalue
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        #[doc = " Protocol buffer options."]
         pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Option> {
             &mut self.options
         }
-        #[doc = "The field number for the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub const SOURCE_CONTEXT_FIELD_NUMBER: i32 = 4;
-        #[doc = " The source context."]
         pub fn source_context(
             &self,
         ) -> ::std::option::Option<&self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn source_context_mut(
             &mut self,
         ) -> &mut self::super::google_protobuf_source_context_proto::SourceContext {
             self.source_context
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn has_source_context(&self) -> bool {
             self.source_context.is_some()
         }
-        #[doc = "Sets the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn set_source_context(
             &mut self,
             value: self::super::google_protobuf_source_context_proto::SourceContext,
         ) {
             self.source_context = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`source_context`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn take_source_context(
             &mut self,
         ) -> ::std::option::Option<self::super::google_protobuf_source_context_proto::SourceContext>
         {
             self.source_context.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`source_context`] field"]
-        #[doc = ""]
-        #[doc = "[`source_context`]: #method.source_context"]
         pub fn clear_source_context(&mut self) {
             self.source_context = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_FIELD_NUMBER: i32 = 5;
-        #[doc = "The default value for the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub const SYNTAX_DEFAULT_VALUE: crate::EnumValue<self::Syntax> =
             crate::EnumValue::Defined(self::Syntax::Proto2);
-        #[doc = " The source syntax."]
         pub fn syntax(&self) -> &crate::EnumValue<self::Syntax> {
             &self.syntax
         }
-        #[doc = "Gets a unique reference to the [`syntax`] field"]
-        #[doc = ""]
-        #[doc = "[`syntax`]: #method.syntax"]
         pub fn syntax_mut(&mut self) -> &mut crate::EnumValue<self::Syntax> {
             &mut self.syntax
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod r#enum {
+    pub(in super::super) mod r#enum {
         pub(super) static ENUMVALUE_CODEC: crate::Codec<self::super::EnumValue> =
             crate::Codec::message(18);
         pub(super) static OPTIONS_CODEC: crate::Codec<self::super::Option> =
@@ -15070,12 +11142,15 @@ pub mod google_protobuf_type_proto {
             get_mut: self::super::Enum::options_mut,
         };
         pub(in super::super) static SOURCE_CONTEXT_REFLECTOR:
-            crate::reflect::access::SimpleOptionFieldAccessor<
+            crate::reflect::access::VerboseFieldAccessor<
                 self::super::Enum,
                 self::super::super::google_protobuf_source_context_proto::SourceContext,
-            > = crate::reflect::access::SimpleOptionFieldAccessor {
-            get: self::super::Enum::source_context,
+            > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::Enum::source_context,
             get_mut: self::super::Enum::source_context_mut,
+            set: self::super::Enum::set_source_context,
+            take: self::super::Enum::take_source_context,
+            clear: self::super::Enum::clear_source_context,
         };
         pub(in super::super) static SYNTAX_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Enum,
@@ -15085,7 +11160,6 @@ pub mod google_protobuf_type_proto {
             get_mut: self::super::Enum::syntax_mut,
         };
     }
-    #[doc = " Enum value definition."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct EnumValue {
         name: ::std::string::String,
@@ -15157,64 +11231,36 @@ pub mod google_protobuf_type_proto {
         }
     }
     impl crate::Message for self::EnumValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[3]
         }
     }
     impl self::EnumValue {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Enum value name."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub const NUMBER_DEFAULT_VALUE: i32 = 0;
-        #[doc = " Enum value number."]
         pub fn number(&self) -> &i32 {
             &self.number
         }
-        #[doc = "Gets a unique reference to the [`number`] field"]
-        #[doc = ""]
-        #[doc = "[`number`]: #method.number"]
         pub fn number_mut(&mut self) -> &mut i32 {
             &mut self.number
         }
-        #[doc = "The field number for the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub const OPTIONS_FIELD_NUMBER: i32 = 3;
-        #[doc = " Protocol buffer options."]
         pub fn options(&self) -> &crate::collections::RepeatedField<self::Option> {
             &self.options
         }
-        #[doc = "Gets a unique reference to the [`options`] field"]
-        #[doc = ""]
-        #[doc = "[`options`]: #method.options"]
         pub fn options_mut(&mut self) -> &mut crate::collections::RepeatedField<self::Option> {
             &mut self.options
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod enum_value {
+    pub(in super::super) mod enum_value {
         pub(super) static OPTIONS_CODEC: crate::Codec<self::super::Option> =
             crate::Codec::message(26);
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
@@ -15239,8 +11285,6 @@ pub mod google_protobuf_type_proto {
             get_mut: self::super::EnumValue::options_mut,
         };
     }
-    #[doc = " A protocol buffer option, which can be attached to a message, field,"]
-    #[doc = " enumeration, etc."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Option {
         name: ::std::string::String,
@@ -15305,79 +11349,43 @@ pub mod google_protobuf_type_proto {
         }
     }
     impl crate::Message for self::Option {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[4]
         }
     }
     impl self::Option {
-        #[doc = "The field number for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub const NAME_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The option's name. For protobuf built-in options (options defined in"]
-        #[doc = " descriptor.proto), this is the short name. For example, `\"map_entry\"`."]
-        #[doc = " For custom options, it should be the fully-qualified name. For example,"]
-        #[doc = " `\"google.api.http\"`."]
         pub fn name(&self) -> &::std::string::String {
             &self.name
         }
-        #[doc = "Gets a unique reference to the [`name`] field"]
-        #[doc = ""]
-        #[doc = "[`name`]: #method.name"]
         pub fn name_mut(&mut self) -> &mut ::std::string::String {
             &mut self.name
         }
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 2;
-        #[doc = " The option's value packed in an Any message. If the value is a primitive,"]
-        #[doc = " the corresponding wrapper type defined in google/protobuf/wrappers.proto"]
-        #[doc = " should be used. If the value is an enum, it should be stored as an int32"]
-        #[doc = " value using the google.protobuf.Int32Value type."]
         pub fn value(&self) -> ::std::option::Option<&self::super::google_protobuf_any_proto::Any> {
             self.value.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut self::super::google_protobuf_any_proto::Any {
             self.value
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn has_value(&self) -> bool {
             self.value.is_some()
         }
-        #[doc = "Sets the value of the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn set_value(&mut self, value: self::super::google_protobuf_any_proto::Any) {
             self.value = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`value`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn take_value(
             &mut self,
         ) -> ::std::option::Option<self::super::google_protobuf_any_proto::Any> {
             self.value.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn clear_value(&mut self) {
             self.value = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod option {
+    pub(in super::super) mod option {
         pub(in super::super) static NAME_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Option,
             ::std::string::String,
@@ -15385,23 +11393,24 @@ pub mod google_protobuf_type_proto {
             get: self::super::Option::name,
             get_mut: self::super::Option::name_mut,
         };
-        pub(in super::super) static VALUE_REFLECTOR:
-            crate::reflect::access::SimpleOptionFieldAccessor<
-                self::super::Option,
-                self::super::super::google_protobuf_any_proto::Any,
-            > = crate::reflect::access::SimpleOptionFieldAccessor {
-            get: self::super::Option::value,
+        pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
+            self::super::Option,
+            self::super::super::google_protobuf_any_proto::Any,
+        > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::Option::value,
             get_mut: self::super::Option::value_mut,
+            set: self::super::Option::set_value,
+            take: self::super::Option::take_value,
+            clear: self::super::Option::clear_value,
         };
     }
-    #[doc = " The syntax in which a protocol buffer element is defined."]
     #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
     pub enum Syntax {
         Proto2,
         Proto3,
     }
     impl crate::Enum for self::Syntax {
-        fn descriptor() -> &'static crate::reflect::EnumDescriptor {
+        fn descriptor() -> &'static crate::reflect::EnumDescriptor<'static> {
             &self::file().enums()[0]
         }
     }
@@ -15452,15 +11461,11 @@ static GOOGLE_PROTOBUF_WRAPPERS_PROTO_BINARY: &'static [u8] = &[
     121, 112, 101, 115, 98, 6, 112, 114, 111, 116, 111, 51,
 ];
 pub mod google_protobuf_wrappers_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/wrappers.proto")
             .unwrap()
     }
-    #[doc = " Wrapper message for `double`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `DoubleValue` is JSON number."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct DoubleValue {
         value: f64,
@@ -15506,32 +11511,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::DoubleValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::DoubleValue {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: f64 = 0.0;
-        #[doc = " The double value."]
         pub fn value(&self) -> &f64 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut f64 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod double_value {
+    pub(in super::super) mod double_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::DoubleValue,
             f64,
@@ -15540,9 +11534,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::DoubleValue::value_mut,
         };
     }
-    #[doc = " Wrapper message for `float`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `FloatValue` is JSON number."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct FloatValue {
         value: f32,
@@ -15588,32 +11579,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::FloatValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::FloatValue {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: f32 = 0.0;
-        #[doc = " The float value."]
         pub fn value(&self) -> &f32 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut f32 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod float_value {
+    pub(in super::super) mod float_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::FloatValue,
             f32,
@@ -15622,9 +11602,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::FloatValue::value_mut,
         };
     }
-    #[doc = " Wrapper message for `int64`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `Int64Value` is JSON string."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Int64Value {
         value: i64,
@@ -15670,32 +11647,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::Int64Value {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::Int64Value {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: i64 = 0;
-        #[doc = " The int64 value."]
         pub fn value(&self) -> &i64 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut i64 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod int64_value {
+    pub(in super::super) mod int64_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Int64Value,
             i64,
@@ -15704,9 +11670,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::Int64Value::value_mut,
         };
     }
-    #[doc = " Wrapper message for `uint64`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `UInt64Value` is JSON string."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct UInt64Value {
         value: u64,
@@ -15752,32 +11715,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::UInt64Value {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[3]
         }
     }
     impl self::UInt64Value {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: u64 = 0;
-        #[doc = " The uint64 value."]
         pub fn value(&self) -> &u64 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut u64 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod u_int64_value {
+    pub(in super::super) mod u_int64_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::UInt64Value,
             u64,
@@ -15786,9 +11738,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::UInt64Value::value_mut,
         };
     }
-    #[doc = " Wrapper message for `int32`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `Int32Value` is JSON number."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Int32Value {
         value: i32,
@@ -15834,32 +11783,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::Int32Value {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[4]
         }
     }
     impl self::Int32Value {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: i32 = 0;
-        #[doc = " The int32 value."]
         pub fn value(&self) -> &i32 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut i32 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod int32_value {
+    pub(in super::super) mod int32_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::Int32Value,
             i32,
@@ -15868,9 +11806,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::Int32Value::value_mut,
         };
     }
-    #[doc = " Wrapper message for `uint32`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `UInt32Value` is JSON number."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct UInt32Value {
         value: u32,
@@ -15916,32 +11851,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::UInt32Value {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[5]
         }
     }
     impl self::UInt32Value {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: u32 = 0;
-        #[doc = " The uint32 value."]
         pub fn value(&self) -> &u32 {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut u32 {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod u_int32_value {
+    pub(in super::super) mod u_int32_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::UInt32Value,
             u32,
@@ -15950,9 +11874,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::UInt32Value::value_mut,
         };
     }
-    #[doc = " Wrapper message for `bool`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `BoolValue` is JSON `true` and `false`."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct BoolValue {
         value: bool,
@@ -15998,32 +11919,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::BoolValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[6]
         }
     }
     impl self::BoolValue {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: bool = false;
-        #[doc = " The bool value."]
         pub fn value(&self) -> &bool {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut bool {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod bool_value {
+    pub(in super::super) mod bool_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::BoolValue,
             bool,
@@ -16032,9 +11942,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::BoolValue::value_mut,
         };
     }
-    #[doc = " Wrapper message for `string`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `StringValue` is JSON string."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct StringValue {
         value: ::std::string::String,
@@ -16080,32 +11987,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::StringValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[7]
         }
     }
     impl self::StringValue {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The string value."]
         pub fn value(&self) -> &::std::string::String {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut ::std::string::String {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod string_value {
+    pub(in super::super) mod string_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::StringValue,
             ::std::string::String,
@@ -16114,9 +12010,6 @@ pub mod google_protobuf_wrappers_proto {
             get_mut: self::super::StringValue::value_mut,
         };
     }
-    #[doc = " Wrapper message for `bytes`."]
-    #[doc = ""]
-    #[doc = " The JSON representation for `BytesValue` is JSON string."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct BytesValue {
         value: ::std::vec::Vec<u8>,
@@ -16162,32 +12055,21 @@ pub mod google_protobuf_wrappers_proto {
         }
     }
     impl crate::Message for self::BytesValue {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[8]
         }
     }
     impl self::BytesValue {
-        #[doc = "The field number for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub const VALUE_DEFAULT_VALUE: &'static [u8] = &[];
-        #[doc = " The bytes value."]
         pub fn value(&self) -> &::std::vec::Vec<u8> {
             &self.value
         }
-        #[doc = "Gets a unique reference to the [`value`] field"]
-        #[doc = ""]
-        #[doc = "[`value`]: #method.value"]
         pub fn value_mut(&mut self) -> &mut ::std::vec::Vec<u8> {
             &mut self.value
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod bytes_value {
+    pub(in super::super) mod bytes_value {
         pub(in super::super) static VALUE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
             self::super::BytesValue,
             ::std::vec::Vec<u8>,
@@ -16237,13 +12119,11 @@ static GOOGLE_PROTOBUF_COMPILER_PLUGIN_PROTO_BINARY: &'static [u8] = &[
     103, 111, 47, 112, 108, 117, 103, 105, 110, 59, 112, 108, 117, 103, 105, 110, 95, 103, 111,
 ];
 pub mod google_protobuf_compiler_plugin_proto {
-    #[doc = r" Gets the descriptor for the file this module was generated for"]
-    pub fn file() -> &'static crate::reflect::FileDescriptor {
+    pub fn file() -> &'static crate::reflect::FileDescriptor<'static> {
         super::pool()
             .find_file_by_name("google/protobuf/compiler/plugin.proto")
             .unwrap()
     }
-    #[doc = " The version number of protocol compiler."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct Version {
         major: ::std::option::Option<i32>,
@@ -16328,211 +12208,112 @@ pub mod google_protobuf_compiler_plugin_proto {
         }
     }
     impl crate::Message for self::Version {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[0]
         }
     }
     impl self::Version {
-        #[doc = "The field number for the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub const MAJOR_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub const MAJOR_DEFAULT_VALUE: i32 = 0;
         pub fn major(&self) -> i32 {
             self.major.unwrap_or(Self::MAJOR_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn major_option(&self) -> ::std::option::Option<&i32> {
             self.major.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn major_mut(&mut self) -> &mut i32 {
             self.major
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn has_major(&self) -> bool {
             self.major.is_some()
         }
-        #[doc = "Sets the value of the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn set_major(&mut self, value: i32) {
             self.major = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`major`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn take_major(&mut self) -> ::std::option::Option<i32> {
             self.major.take()
         }
-        #[doc = "Clears the value of the [`major`] field"]
-        #[doc = ""]
-        #[doc = "[`major`]: #method.major"]
         pub fn clear_major(&mut self) {
             self.major = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub const MINOR_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub const MINOR_DEFAULT_VALUE: i32 = 0;
         pub fn minor(&self) -> i32 {
             self.minor.unwrap_or(Self::MINOR_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn minor_option(&self) -> ::std::option::Option<&i32> {
             self.minor.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn minor_mut(&mut self) -> &mut i32 {
             self.minor
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn has_minor(&self) -> bool {
             self.minor.is_some()
         }
-        #[doc = "Sets the value of the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn set_minor(&mut self, value: i32) {
             self.minor = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`minor`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn take_minor(&mut self) -> ::std::option::Option<i32> {
             self.minor.take()
         }
-        #[doc = "Clears the value of the [`minor`] field"]
-        #[doc = ""]
-        #[doc = "[`minor`]: #method.minor"]
         pub fn clear_minor(&mut self) {
             self.minor = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub const PATCH_FIELD_NUMBER: i32 = 3;
-        #[doc = "The default value for the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub const PATCH_DEFAULT_VALUE: i32 = 0;
         pub fn patch(&self) -> i32 {
             self.patch.unwrap_or(Self::PATCH_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn patch_option(&self) -> ::std::option::Option<&i32> {
             self.patch.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn patch_mut(&mut self) -> &mut i32 {
             self.patch
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn has_patch(&self) -> bool {
             self.patch.is_some()
         }
-        #[doc = "Sets the value of the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn set_patch(&mut self, value: i32) {
             self.patch = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`patch`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn take_patch(&mut self) -> ::std::option::Option<i32> {
             self.patch.take()
         }
-        #[doc = "Clears the value of the [`patch`] field"]
-        #[doc = ""]
-        #[doc = "[`patch`]: #method.patch"]
         pub fn clear_patch(&mut self) {
             self.patch = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub const SUFFIX_FIELD_NUMBER: i32 = 4;
-        #[doc = "The default value for the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub const SUFFIX_DEFAULT_VALUE: &'static str = "";
-        #[doc = " A suffix for alpha, beta or rc release, e.g., \"alpha-1\", \"rc2\". It should"]
-        #[doc = " be empty for mainline stable releases."]
         pub fn suffix(&self) -> &str {
             self.suffix
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::SUFFIX_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn suffix_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.suffix.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn suffix_mut(&mut self) -> &mut ::std::string::String {
             self.suffix
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn has_suffix(&self) -> bool {
             self.suffix.is_some()
         }
-        #[doc = "Sets the value of the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn set_suffix(&mut self, value: ::std::string::String) {
             self.suffix = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`suffix`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn take_suffix(&mut self) -> ::std::option::Option<::std::string::String> {
             self.suffix.take()
         }
-        #[doc = "Clears the value of the [`suffix`] field"]
-        #[doc = ""]
-        #[doc = "[`suffix`]: #method.suffix"]
         pub fn clear_suffix(&mut self) {
             self.suffix = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod version {
+    pub(in super::super) mod version {
         pub(in super::super) static MAJOR_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
             self::super::Version,
             i32,
@@ -16574,7 +12355,6 @@ pub mod google_protobuf_compiler_plugin_proto {
             clear: self::super::Version::clear_suffix,
         };
     }
-    #[doc = " An encoded CodeGeneratorRequest is written to the plugin's stdin."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct CodeGeneratorRequest {
         file_to_generate: crate::collections::RepeatedField<::std::string::String>,
@@ -16666,101 +12446,50 @@ pub mod google_protobuf_compiler_plugin_proto {
         }
     }
     impl crate::Message for self::CodeGeneratorRequest {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[1]
         }
     }
     impl self::CodeGeneratorRequest {
-        #[doc = "The field number for the [`file_to_generate`] field"]
-        #[doc = ""]
-        #[doc = "[`file_to_generate`]: #method.file_to_generate"]
         pub const FILE_TO_GENERATE_FIELD_NUMBER: i32 = 1;
-        #[doc = " The .proto files that were explicitly listed on the command-line.  The"]
-        #[doc = " code generator should generate code only for these files.  Each file's"]
-        #[doc = " descriptor will be included in proto_file, below."]
         pub fn file_to_generate(
             &self,
         ) -> &crate::collections::RepeatedField<::std::string::String> {
             &self.file_to_generate
         }
-        #[doc = "Gets a unique reference to the [`file_to_generate`] field"]
-        #[doc = ""]
-        #[doc = "[`file_to_generate`]: #method.file_to_generate"]
         pub fn file_to_generate_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<::std::string::String> {
             &mut self.file_to_generate
         }
-        #[doc = "The field number for the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub const PARAMETER_FIELD_NUMBER: i32 = 2;
-        #[doc = "The default value for the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub const PARAMETER_DEFAULT_VALUE: &'static str = "";
-        #[doc = " The generator parameter passed on the command-line."]
         pub fn parameter(&self) -> &str {
             self.parameter
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::PARAMETER_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn parameter_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.parameter.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn parameter_mut(&mut self) -> &mut ::std::string::String {
             self.parameter
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn has_parameter(&self) -> bool {
             self.parameter.is_some()
         }
-        #[doc = "Sets the value of the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn set_parameter(&mut self, value: ::std::string::String) {
             self.parameter = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`parameter`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn take_parameter(&mut self) -> ::std::option::Option<::std::string::String> {
             self.parameter.take()
         }
-        #[doc = "Clears the value of the [`parameter`] field"]
-        #[doc = ""]
-        #[doc = "[`parameter`]: #method.parameter"]
         pub fn clear_parameter(&mut self) {
             self.parameter = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`proto_file`] field"]
-        #[doc = ""]
-        #[doc = "[`proto_file`]: #method.proto_file"]
         pub const PROTO_FILE_FIELD_NUMBER: i32 = 15;
-        #[doc = " FileDescriptorProtos for all files in files_to_generate and everything"]
-        #[doc = " they import.  The files will appear in topological order, so each file"]
-        #[doc = " appears before any file that imports it."]
-        #[doc = ""]
-        #[doc = " protoc guarantees that all proto_files will be written after"]
-        #[doc = " the fields above, even though this is not technically guaranteed by the"]
-        #[doc = " protobuf wire format.  This theoretically could allow a plugin to stream"]
-        #[doc = " in the FileDescriptorProtos and handle them one by one rather than read"]
-        #[doc = " the entire set into memory at once.  However, as of this writing, this"]
-        #[doc = " is not similarly optimized on protoc's end -- it will store all fields in"]
-        #[doc = " memory at once before sending them to the plugin."]
-        #[doc = ""]
-        #[doc = " Type names of fields and extensions in the FileDescriptorProto are always"]
-        #[doc = " fully qualified."]
         pub fn proto_file(
             &self,
         ) -> &crate::collections::RepeatedField<
@@ -16768,9 +12497,6 @@ pub mod google_protobuf_compiler_plugin_proto {
         > {
             &self.proto_file
         }
-        #[doc = "Gets a unique reference to the [`proto_file`] field"]
-        #[doc = ""]
-        #[doc = "[`proto_file`]: #method.proto_file"]
         pub fn proto_file_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<
@@ -16778,48 +12504,28 @@ pub mod google_protobuf_compiler_plugin_proto {
         > {
             &mut self.proto_file
         }
-        #[doc = "The field number for the [`compiler_version`] field"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub const COMPILER_VERSION_FIELD_NUMBER: i32 = 3;
-        #[doc = " The version number of protocol compiler."]
         pub fn compiler_version(&self) -> ::std::option::Option<&self::Version> {
             self.compiler_version.as_ref().map(|v| &**v)
         }
-        #[doc = "Gets a unique reference to the [`compiler_version`] field"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub fn compiler_version_mut(&mut self) -> &mut self::Version {
             self.compiler_version
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`compiler_version`] field"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub fn has_compiler_version(&self) -> bool {
             self.compiler_version.is_some()
         }
-        #[doc = "Sets the value of the [`compiler_version`] field"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub fn set_compiler_version(&mut self, value: self::Version) {
             self.compiler_version = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`compiler_version`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub fn take_compiler_version(&mut self) -> ::std::option::Option<self::Version> {
             self.compiler_version.take().map(|v| *v)
         }
-        #[doc = "Clears the value of the [`compiler_version`] field"]
-        #[doc = ""]
-        #[doc = "[`compiler_version`]: #method.compiler_version"]
         pub fn clear_compiler_version(&mut self) {
             self.compiler_version = ::std::option::Option::None;
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-    pub mod code_generator_request {
+    pub(in super::super) mod code_generator_request {
         pub(super) static FILE_TO_GENERATE_CODEC: crate::Codec<::std::string::String> =
             crate::Codec::string(10);
         pub(super) static PROTO_FILE_CODEC: crate::Codec<
@@ -16866,7 +12572,6 @@ pub mod google_protobuf_compiler_plugin_proto {
             clear: self::super::CodeGeneratorRequest::clear_compiler_version,
         };
     }
-    #[doc = " The plugin writes an encoded CodeGeneratorResponse to stdout."]
     #[derive(Clone, Debug, PartialEq, Default)]
     pub struct CodeGeneratorResponse {
         error: ::std::option::Option<::std::string::String>,
@@ -16925,109 +12630,51 @@ pub mod google_protobuf_compiler_plugin_proto {
         }
     }
     impl crate::Message for self::CodeGeneratorResponse {
-        fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+        fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
             &self::file().messages()[2]
         }
     }
     impl self::CodeGeneratorResponse {
-        #[doc = "The field number for the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub const ERROR_FIELD_NUMBER: i32 = 1;
-        #[doc = "The default value for the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub const ERROR_DEFAULT_VALUE: &'static str = "";
-        #[doc = " Error message.  If non-empty, code generation failed.  The plugin process"]
-        #[doc = " should exit with status code zero even if it reports an error in this way."]
-        #[doc = ""]
-        #[doc = " This should be used to indicate errors in .proto files which prevent the"]
-        #[doc = " code generator from generating correct code.  Errors which indicate a"]
-        #[doc = " problem in protoc itself -- such as the input CodeGeneratorRequest being"]
-        #[doc = " unparseable -- should be reported by writing a message to stderr and"]
-        #[doc = " exiting with a non-zero status code."]
         pub fn error(&self) -> &str {
             self.error
                 .as_ref()
                 .map(|v| &**v)
                 .unwrap_or(Self::ERROR_DEFAULT_VALUE)
         }
-        #[doc = "Gets an option indicating the presence of the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn error_option(&self) -> ::std::option::Option<&::std::string::String> {
             self.error.as_ref()
         }
-        #[doc = "Gets a unique reference to the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn error_mut(&mut self) -> &mut ::std::string::String {
             self.error
                 .get_or_insert_with(::std::default::Default::default)
         }
-        #[doc = "Gets a bool indicating the presence of the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn has_error(&self) -> bool {
             self.error.is_some()
         }
-        #[doc = "Sets the value of the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn set_error(&mut self, value: ::std::string::String) {
             self.error = ::std::option::Option::Some(::std::convert::From::from(value))
         }
-        #[doc = "Takes the value out of the [`error`] field, leaving an empty field in its place"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn take_error(&mut self) -> ::std::option::Option<::std::string::String> {
             self.error.take()
         }
-        #[doc = "Clears the value of the [`error`] field"]
-        #[doc = ""]
-        #[doc = "[`error`]: #method.error"]
         pub fn clear_error(&mut self) {
             self.error = ::std::option::Option::None;
         }
-        #[doc = "The field number for the [`file`] field"]
-        #[doc = ""]
-        #[doc = "[`file`]: #method.file"]
         pub const FILE_FIELD_NUMBER: i32 = 15;
         pub fn file(
             &self,
         ) -> &crate::collections::RepeatedField<self::code_generator_response::File> {
             &self.file
         }
-        #[doc = "Gets a unique reference to the [`file`] field"]
-        #[doc = ""]
-        #[doc = "[`file`]: #method.file"]
         pub fn file_mut(
             &mut self,
         ) -> &mut crate::collections::RepeatedField<self::code_generator_response::File> {
             &mut self.file
         }
     }
-    #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
     pub mod code_generator_response {
-        pub(super) static FILE_CODEC: crate::Codec<self::File> = crate::Codec::message(122);
-        pub(in super::super) static ERROR_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
-            self::super::CodeGeneratorResponse,
-            ::std::string::String,
-        > = crate::reflect::access::VerboseFieldAccessor {
-            get_option: self::super::CodeGeneratorResponse::error_option,
-            get_mut: self::super::CodeGeneratorResponse::error_mut,
-            set: self::super::CodeGeneratorResponse::set_error,
-            take: self::super::CodeGeneratorResponse::take_error,
-            clear: self::super::CodeGeneratorResponse::clear_error,
-        };
-        pub(in super::super) static FILE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
-            self::super::CodeGeneratorResponse,
-            crate::collections::RepeatedField<self::File>,
-        > = crate::reflect::access::SimpleFieldAccessor {
-            get: self::super::CodeGeneratorResponse::file,
-            get_mut: self::super::CodeGeneratorResponse::file_mut,
-        };
-        #[doc = " Represents a single generated file."]
         #[derive(Clone, Debug, PartialEq, Default)]
         pub struct File {
             name: ::std::option::Option<::std::string::String>,
@@ -17105,217 +12752,95 @@ pub mod google_protobuf_compiler_plugin_proto {
             }
         }
         impl crate::Message for self::File {
-            fn descriptor() -> &'static crate::reflect::MessageDescriptor {
+            fn descriptor() -> &'static crate::reflect::MessageDescriptor<'static> {
                 &<self::super::CodeGeneratorResponse as crate::Message>::descriptor().messages()[0]
             }
         }
         impl self::File {
-            #[doc = "The field number for the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub const NAME_FIELD_NUMBER: i32 = 1;
-            #[doc = "The default value for the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub const NAME_DEFAULT_VALUE: &'static str = "";
-            #[doc = " The file name, relative to the output directory.  The name must not"]
-            #[doc = " contain \".\" or \"..\" components and must be relative, not be absolute (so,"]
-            #[doc = " the file cannot lie outside the output directory).  \"/\" must be used as"]
-            #[doc = " the path separator, not \"\\\"."]
-            #[doc = ""]
-            #[doc = " If the name is omitted, the content will be appended to the previous"]
-            #[doc = " file.  This allows the generator to break large files into small chunks,"]
-            #[doc = " and allows the generated text to be streamed back to protoc so that large"]
-            #[doc = " files need not reside completely in memory at one time.  Note that as of"]
-            #[doc = " this writing protoc does not optimize for this -- it will read the entire"]
-            #[doc = " CodeGeneratorResponse before writing files to disk."]
             pub fn name(&self) -> &str {
                 self.name
                     .as_ref()
                     .map(|v| &**v)
                     .unwrap_or(Self::NAME_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn name_option(&self) -> ::std::option::Option<&::std::string::String> {
                 self.name.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn name_mut(&mut self) -> &mut ::std::string::String {
                 self.name
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn has_name(&self) -> bool {
                 self.name.is_some()
             }
-            #[doc = "Sets the value of the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn set_name(&mut self, value: ::std::string::String) {
                 self.name = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`name`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn take_name(&mut self) -> ::std::option::Option<::std::string::String> {
                 self.name.take()
             }
-            #[doc = "Clears the value of the [`name`] field"]
-            #[doc = ""]
-            #[doc = "[`name`]: #method.name"]
             pub fn clear_name(&mut self) {
                 self.name = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub const INSERTION_POINT_FIELD_NUMBER: i32 = 2;
-            #[doc = "The default value for the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub const INSERTION_POINT_DEFAULT_VALUE: &'static str = "";
-            #[doc = " If non-empty, indicates that the named file should already exist, and the"]
-            #[doc = " content here is to be inserted into that file at a defined insertion"]
-            #[doc = " point.  This feature allows a code generator to extend the output"]
-            #[doc = " produced by another code generator.  The original generator may provide"]
-            #[doc = " insertion points by placing special annotations in the file that look"]
-            #[doc = " like:"]
-            #[doc = "   @@protoc_insertion_point(NAME)"]
-            #[doc = " The annotation can have arbitrary text before and after it on the line,"]
-            #[doc = " which allows it to be placed in a comment.  NAME should be replaced with"]
-            #[doc = " an identifier naming the point -- this is what other generators will use"]
-            #[doc = " as the insertion_point.  Code inserted at this point will be placed"]
-            #[doc = " immediately above the line containing the insertion point (thus multiple"]
-            #[doc = " insertions to the same point will come out in the order they were added)."]
-            #[doc = " The double-@ is intended to make it unlikely that the generated code"]
-            #[doc = " could contain things that look like insertion points by accident."]
-            #[doc = ""]
-            #[doc = " For example, the C++ code generator places the following line in the"]
-            #[doc = " .pb.h files that it generates:"]
-            #[doc = "   // @@protoc_insertion_point(namespace_scope)"]
-            #[doc = " This line appears within the scope of the file's package namespace, but"]
-            #[doc = " outside of any particular class.  Another plugin can then specify the"]
-            #[doc = " insertion_point \"namespace_scope\" to generate additional classes or"]
-            #[doc = " other declarations that should be placed in this scope."]
-            #[doc = ""]
-            #[doc = " Note that if the line containing the insertion point begins with"]
-            #[doc = " whitespace, the same whitespace will be added to every line of the"]
-            #[doc = " inserted text.  This is useful for languages like Python, where"]
-            #[doc = " indentation matters.  In these languages, the insertion point comment"]
-            #[doc = " should be indented the same amount as any inserted code will need to be"]
-            #[doc = " in order to work correctly in that context."]
-            #[doc = ""]
-            #[doc = " The code generator that generates the initial file and the one which"]
-            #[doc = " inserts into it must both run as part of a single invocation of protoc."]
-            #[doc = " Code generators are executed in the order in which they appear on the"]
-            #[doc = " command line."]
-            #[doc = ""]
-            #[doc = " If |insertion_point| is present, |name| must also be present."]
             pub fn insertion_point(&self) -> &str {
                 self.insertion_point
                     .as_ref()
                     .map(|v| &**v)
                     .unwrap_or(Self::INSERTION_POINT_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn insertion_point_option(&self) -> ::std::option::Option<&::std::string::String> {
                 self.insertion_point.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn insertion_point_mut(&mut self) -> &mut ::std::string::String {
                 self.insertion_point
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn has_insertion_point(&self) -> bool {
                 self.insertion_point.is_some()
             }
-            #[doc = "Sets the value of the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn set_insertion_point(&mut self, value: ::std::string::String) {
                 self.insertion_point =
                     ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`insertion_point`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn take_insertion_point(&mut self) -> ::std::option::Option<::std::string::String> {
                 self.insertion_point.take()
             }
-            #[doc = "Clears the value of the [`insertion_point`] field"]
-            #[doc = ""]
-            #[doc = "[`insertion_point`]: #method.insertion_point"]
             pub fn clear_insertion_point(&mut self) {
                 self.insertion_point = ::std::option::Option::None;
             }
-            #[doc = "The field number for the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub const CONTENT_FIELD_NUMBER: i32 = 15;
-            #[doc = "The default value for the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub const CONTENT_DEFAULT_VALUE: &'static str = "";
-            #[doc = " The file contents."]
             pub fn content(&self) -> &str {
                 self.content
                     .as_ref()
                     .map(|v| &**v)
                     .unwrap_or(Self::CONTENT_DEFAULT_VALUE)
             }
-            #[doc = "Gets an option indicating the presence of the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn content_option(&self) -> ::std::option::Option<&::std::string::String> {
                 self.content.as_ref()
             }
-            #[doc = "Gets a unique reference to the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn content_mut(&mut self) -> &mut ::std::string::String {
                 self.content
                     .get_or_insert_with(::std::default::Default::default)
             }
-            #[doc = "Gets a bool indicating the presence of the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn has_content(&self) -> bool {
                 self.content.is_some()
             }
-            #[doc = "Sets the value of the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn set_content(&mut self, value: ::std::string::String) {
                 self.content = ::std::option::Option::Some(::std::convert::From::from(value))
             }
-            #[doc = "Takes the value out of the [`content`] field, leaving an empty field in its place"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn take_content(&mut self) -> ::std::option::Option<::std::string::String> {
                 self.content.take()
             }
-            #[doc = "Clears the value of the [`content`] field"]
-            #[doc = ""]
-            #[doc = "[`content`]: #method.content"]
             pub fn clear_content(&mut self) {
                 self.content = ::std::option::Option::None;
             }
         }
-        #[doc = r" A module containing the types, extensions, and oneof enums contained in its corresponding message type"]
-        pub mod file {
+        pub(in super::super::super) mod file {
             pub(in super::super::super) static NAME_REFLECTOR:
                 crate::reflect::access::VerboseFieldAccessor<
                     self::super::File,
@@ -17350,5 +12875,23 @@ pub mod google_protobuf_compiler_plugin_proto {
                 clear: self::super::File::clear_content,
             };
         }
+        pub(super) static FILE_CODEC: crate::Codec<self::File> = crate::Codec::message(122);
+        pub(in super::super) static ERROR_REFLECTOR: crate::reflect::access::VerboseFieldAccessor<
+            self::super::CodeGeneratorResponse,
+            ::std::string::String,
+        > = crate::reflect::access::VerboseFieldAccessor {
+            get_option: self::super::CodeGeneratorResponse::error_option,
+            get_mut: self::super::CodeGeneratorResponse::error_mut,
+            set: self::super::CodeGeneratorResponse::set_error,
+            take: self::super::CodeGeneratorResponse::take_error,
+            clear: self::super::CodeGeneratorResponse::clear_error,
+        };
+        pub(in super::super) static FILE_REFLECTOR: crate::reflect::access::SimpleFieldAccessor<
+            self::super::CodeGeneratorResponse,
+            crate::collections::RepeatedField<self::File>,
+        > = crate::reflect::access::SimpleFieldAccessor {
+            get: self::super::CodeGeneratorResponse::file,
+            get_mut: self::super::CodeGeneratorResponse::file_mut,
+        };
     }
 }

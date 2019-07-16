@@ -4,4 +4,4 @@
 pub mod gen;
 pub mod util;
 
-pub type Result = std::result::Result<(), Box<std::error::Error>>;
+pub type Result = std::result::Result<(), Box<dyn std::error::Error>>;

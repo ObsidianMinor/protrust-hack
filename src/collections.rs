@@ -218,8 +218,8 @@ impl<K, V> DerefMut for MapField<K, V> {
 
 #[doc(hidden)]
 impl<
-        K: Eq + Hash + Clone + crate::internal::Primitive,
-        V: PartialEq + Clone + crate::internal::Primitive,
+        K: Default + Eq + Hash + Clone,
+        V: Default + PartialEq + Clone,
     > MapField<K, V>
 {
     pub fn add_entries(
@@ -229,11 +229,7 @@ impl<
     ) -> InputResult<()> {
         let mut adapter = MapReadAdapter::new(codec);
         input.read_message(&mut adapter)?;
-        if let Some(key) = adapter.key {
-            if let Some(value) = adapter.value {
-                self.insert(key, value);
-            }
-        }
+        self.insert(adapter.key.unwrap_or_default(), adapter.value.unwrap_or_default());
         Ok(())
     }
 
@@ -366,7 +362,7 @@ impl<'a, K, V> MapWriteAdapter<'a, K, V> {
     }
 }
 
-impl<K: crate::internal::Primitive, V: crate::internal::Primitive> crate::CodedMessage
+impl<K, V> crate::CodedMessage
     for MapWriteAdapter<'_, K, V>
 {
     fn merge_from(&mut self, _input: &mut crate::io::CodedInput) -> crate::io::InputResult<()> {
@@ -375,38 +371,26 @@ impl<K: crate::internal::Primitive, V: crate::internal::Primitive> crate::CodedM
     #[cfg(checked_size)]
     fn calculate_size(&self) -> Option<i32> {
         let mut size = 0i32;
-        if !self.key.unwrap().is_default() {
-            size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
-            size = size.checked_add(self.codec.value.calculate_size(self.value.unwrap())?)?;
-        }
-        if !self.value.unwrap().is_default() {
-            size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
-            size = size.checked_add(self.codec.key.calculate_size(self.key.unwrap())?)?;
-        }
+        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
+        size = size.checked_add(self.codec.value.calculate_size(self.value.unwrap())?)?;
+        size = size.checked_add(crate::io::sizes::uint32(self.codec.key.tag().get()))?;
+        size = size.checked_add(self.codec.key.calculate_size(self.key.unwrap())?)?;
         Some(size)
     }
     #[cfg(not(checked_size))]
     fn calculate_size(&self) -> i32 {
         let mut size = 0i32;
-        if !self.key.unwrap().is_default() {
-            size += crate::io::sizes::uint32(self.codec.key.tag().get());
-            size += self.codec.key.calculate_size(self.key.unwrap());
-        }
-        if !self.value.unwrap().is_default() {
-            size += crate::io::sizes::uint32(self.codec.key.tag().get());
-            size += self.codec.value.calculate_size(self.value.unwrap());
-        }
+        size += crate::io::sizes::uint32(self.codec.key.tag().get());
+        size += self.codec.key.calculate_size(self.key.unwrap());
+        size += crate::io::sizes::uint32(self.codec.key.tag().get());
+        size += self.codec.value.calculate_size(self.value.unwrap());
         size
     }
     fn write_to(&self, output: &mut crate::io::CodedOutput) -> crate::io::OutputResult {
-        if !self.key.unwrap().is_default() {
-            output.write_tag(self.codec.key.tag())?;
-            self.codec.key.write_to(output, self.key.unwrap())?;
-        }
-        if !self.value.unwrap().is_default() {
-            output.write_tag(self.codec.value.tag())?;
-            self.codec.value.write_to(output, self.value.unwrap())?;
-        }
+        output.write_tag(self.codec.key.tag())?;
+        self.codec.key.write_to(output, self.key.unwrap())?;
+        output.write_tag(self.codec.value.tag())?;
+        self.codec.value.write_to(output, self.value.unwrap())?;
         Ok(())
     }
 }

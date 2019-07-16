@@ -31,10 +31,6 @@ assert_eq!(*address_book.people()[0], person);
 ## Roadmap
 
  0. Tests everywhere
- 1. Well known types
- 2. Full reflection
- 3. Dynamic messages
- 4. JSON support
- 5. Plugin module
- 6. Refactor generator (again)
- 7. Docs everywhere
+ 1. Docs everywhere
+ 2. Well known types
+ 3. JSON support

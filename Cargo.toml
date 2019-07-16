@@ -32,6 +32,7 @@ gen = ["plugin", "pulldown-cmark", "itertools", "which"]
 chrono-time = ["chrono", "reflection"]
 
 [dependencies]
+hashbrown = "0.5.0"
 fnv = { version = "1.0.6", optional = true }
 chrono = { version = "0.4", optional = true }
 base64 = { version = "0.10.*", optional = true }
@@ -42,3 +43,6 @@ syn = { version = "0.15.*", optional = true, features = ["full", "extra-traits"]
 itertools = { version = "0.8.*", optional = true }
 heck = { version = "0.3.*", optional = true }
 which = { version = "2.0.*", optional = true }
+
+[dev-dependencies]
+pretty_assertions = "0.6.1"
